@@ -9,7 +9,7 @@
 7. Ergebnisse nennen Quellen, Pfade und verbleibende Unsicherheit.
 8. Aktive Jobs und Heartbeats bleiben vorerst deaktiviert.
 
-    ## Vorzimmer-spezifisch
+## Vorzimmer-spezifisch
 
-    Das Vorzimmer sortiert und verteilt. Es ersetzt keine fachliche
-    Source of Truth und schließt keine fachliche Arbeit dauerhaft ab.
+Das Vorzimmer sortiert und verteilt. Es ersetzt keine fachliche
+Source of Truth und schließt keine fachliche Arbeit dauerhaft ab.

@@ -9,9 +9,9 @@
 7. Ergebnisse nennen Quellen, Pfade und verbleibende Unsicherheit.
 8. Aktive Jobs und Heartbeats bleiben vorerst deaktiviert.
 
-    ## Weltgewebe-spezifisch
+## Weltgewebe-spezifisch
 
-    - Heimgewebe-Logik nicht automatisch übertragen.
-    - Produktentscheidung, Implementierung und Betrieb getrennt halten.
-    - Merge-Dump und Repository-Code gehen Vermutungen vor.
-    - Produktionsänderungen benötigen Runtime- und Rollback-Beleg.
+- Heimgewebe-Logik nicht automatisch übertragen.
+- Produktentscheidung, Implementierung und Betrieb getrennt halten.
+- Merge-Dump und Repository-Code gehen Vermutungen vor.
+- Produktionsänderungen benötigen Runtime- und Rollback-Beleg.

@@ -9,10 +9,10 @@
 7. Ergebnisse nennen Quellen, Pfade und verbleibende Unsicherheit.
 8. Aktive Jobs und Heartbeats bleiben vorerst deaktiviert.
 
-    ## Labor-spezifisch
+## Labor-spezifisch
 
-    - Jeder Versuch besitzt Hypothese und Messkriterium.
-    - Erfolg und Abbruch werden vor dem Versuch definiert.
-    - Negative Ergebnisse bleiben erhalten.
-    - Ein Befund ist keine Entscheidung.
-    - Keine direkte Übernahme in produktive Repositories.
+- Jeder Versuch besitzt Hypothese und Messkriterium.
+- Erfolg und Abbruch werden vor dem Versuch definiert.
+- Negative Ergebnisse bleiben erhalten.
+- Ein Befund ist keine Entscheidung.
+- Keine direkte Übernahme in produktive Repositories.

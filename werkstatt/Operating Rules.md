@@ -9,10 +9,10 @@
 7. Ergebnisse nennen Quellen, Pfade und verbleibende Unsicherheit.
 8. Aktive Jobs und Heartbeats bleiben vorerst deaktiviert.
 
-    ## Werkstatt-spezifisch
+## Werkstatt-spezifisch
 
-    - Kein Patch ohne Target-Proof.
-    - Branch, Arbeitsbaum und Remote vor Änderungen prüfen.
-    - Tests und Abnahme sind Bestandteil der Arbeit.
-    - Ungeklärte Hypothesen gehen zurück ins Labor.
-    - Runtime-Eingriffe werden an Betrieb übergeben.
+- Kein Patch ohne Target-Proof.
+- Branch, Arbeitsbaum und Remote vor Änderungen prüfen.
+- Tests und Abnahme sind Bestandteil der Arbeit.
+- Ungeklärte Hypothesen gehen zurück ins Labor.
+- Runtime-Eingriffe werden an Betrieb übergeben.

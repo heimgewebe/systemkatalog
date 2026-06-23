@@ -9,12 +9,12 @@
 7. Ergebnisse nennen Quellen, Pfade und verbleibende Unsicherheit.
 8. Aktive Jobs und Heartbeats bleiben vorerst deaktiviert.
 
-    ## Betrieb-spezifisch
+## Betrieb-spezifisch
 
-    - Maximal drei Diagnosehypothesen.
-    - Zwei bis fünf konkrete Checks.
-    - Kein Change ohne Vorher-Beleg.
-    - Kein Change ohne Rollback.
-    - Kein Internet-Ingress und kein stilles Port-Forwarding.
-    - DNS-Wahrheit bleibt auf Heimberry.
-    - Nach jedem Change ist der Runtime-Zustand erneut zu belegen.
+- Maximal drei Diagnosehypothesen.
+- Zwei bis fünf konkrete Checks.
+- Kein Change ohne Vorher-Beleg.
+- Kein Change ohne Rollback.
+- Kein Internet-Ingress und kein stilles Port-Forwarding.
+- DNS-Wahrheit bleibt auf Heimberry.
+- Nach jedem Change ist der Runtime-Zustand erneut zu belegen.

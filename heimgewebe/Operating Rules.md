@@ -9,11 +9,11 @@
 7. Ergebnisse nennen Quellen, Pfade und verbleibende Unsicherheit.
 8. Aktive Jobs und Heartbeats bleiben vorerst deaktiviert.
 
-    ## Heimgewebe-spezifisch
+## Heimgewebe-spezifisch
 
-    - Contracts first.
-    - Events sind keine Commands.
-    - Beobachtung ist keine Handlung.
-    - Erkenntnis ist keine Entscheidung.
-    - Owner, Produzenten und Konsumenten werden benannt.
-    - Bei nachlieferbaren Repo-Daten gilt Null-Interpolation.
+- Contracts first.
+- Events sind keine Commands.
+- Beobachtung ist keine Handlung.
+- Erkenntnis ist keine Entscheidung.
+- Owner, Produzenten und Konsumenten werden benannt.
+- Bei nachlieferbaren Repo-Daten gilt Null-Interpolation.
