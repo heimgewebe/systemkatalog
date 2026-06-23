@@ -2,7 +2,7 @@
 set -euo pipefail
 umask 077
 
-SOURCE="${1:-$HOME/cabinet}"
+SOURCE="${1:-$HOME/repos/cabinet}"
 
 if [[ $# -ge 2 ]]; then
   DESTINATION="$2"

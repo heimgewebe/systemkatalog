@@ -84,7 +84,7 @@ def main() -> int:
     root = (
         Path(sys.argv[1]).expanduser().resolve()
         if len(sys.argv) > 1
-        else (Path.home() / "cabinet").resolve()
+        else (Path.home() / "repos" / "cabinet").resolve()
     )
 
     policy_path = root / "policy/cabinet-layout.json"
