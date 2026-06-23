@@ -1,11 +1,12 @@
-# Steuerboard
+# Infra
 
+Primärer Ort für technische Arbeit am Infra-Repository.
 
-Primärer Ort für technische Entwicklung am Steuerboard.
-
-Produkt- oder Systembedeutung wird über die zuständigen
-Bedeutungsräume referenziert. Die Remote-Steuerung bleibt beim
-externen Cockpit.
+- Repository: `~/repos/infra`
+- Remote: `heimgewebe/infra`
+- Source of Truth: Git
+- Repository- und Entwicklungsarbeit gehört in die Werkstatt.
+- Tatsächlicher Host-, Dienst-, Netzwerk- und Runtime-Zustand gehört in den Betrieb.
 
 <!-- CABINET-SRC-001D:NAVIGATION:BEGIN -->
 ## Repository-Referenz
