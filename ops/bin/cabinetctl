@@ -1,0 +1,120 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+SERVICE="cabinet.service"
+RUNTIME_FILE="$HOME/repos/cabinet/.cabinet-state/runtime-ports.json"
+ENV_FILE="$HOME/.config/cabinet/runtime.env"
+LOG_FILE="$HOME/.local/state/cabinet/cabinet.log"
+FALLBACK_URL="http://127.0.0.1:4001"
+
+get_url() {
+  python3 - "$RUNTIME_FILE" "$FALLBACK_URL" <<'PY'
+from pathlib import Path
+import json
+import sys
+
+runtime = Path(sys.argv[1])
+fallback = sys.argv[2]
+
+try:
+    data = json.loads(runtime.read_text(encoding="utf-8"))
+    origin = (data.get("app") or {}).get("origin")
+    print(origin or fallback)
+except Exception:
+    print(fallback)
+PY
+}
+
+case "${1:-status}" in
+  start)
+    systemctl --user start "$SERVICE"
+    echo "Cabinet wurde gestartet."
+    ;;
+
+  stop)
+    systemctl --user stop "$SERVICE"
+    echo "Cabinet wurde gestoppt."
+    ;;
+
+  restart)
+    systemctl --user restart "$SERVICE"
+    echo "Cabinet wurde neu gestartet."
+    ;;
+
+  enable)
+    systemctl --user enable "$SERVICE"
+    echo "Cabinet-Autostart wurde aktiviert."
+    ;;
+
+  disable)
+    systemctl --user disable --now "$SERVICE"
+    echo "Cabinet-Autostart wurde deaktiviert."
+    ;;
+
+  status)
+    systemctl --user --no-pager --full status "$SERVICE" || true
+    echo
+    echo "URL: $(get_url)"
+    ;;
+
+  logs)
+    mkdir -p "$(dirname "$LOG_FILE")"
+    touch "$LOG_FILE"
+    tail -n 200 -F "$LOG_FILE"
+    ;;
+
+  journal)
+    journalctl --user \
+      -u "$SERVICE" \
+      -n 200 \
+      -f
+    ;;
+
+  url)
+    get_url
+    ;;
+
+  open)
+    URL="$(get_url)"
+    echo "Öffne: $URL"
+    xdg-open "$URL" >/dev/null 2>&1 &
+    ;;
+
+  password)
+    test -f "$ENV_FILE" || {
+      echo "STOP: $ENV_FILE fehlt." >&2
+      exit 2
+    }
+
+    set -a
+    # shellcheck disable=SC1090
+    . "$ENV_FILE"
+    set +a
+
+    if [[ -z "${KB_PASSWORD:-}" ]]; then
+      echo "STOP: KB_PASSWORD ist nicht gesetzt." >&2
+      exit 3
+    fi
+
+    printf '%s\n' "$KB_PASSWORD"
+    ;;
+
+  *)
+    cat <<'USAGE'
+Verwendung:
+
+  cabinetctl start
+  cabinetctl stop
+  cabinetctl restart
+  cabinetctl status
+  cabinetctl logs
+  cabinetctl journal
+  cabinetctl url
+  cabinetctl open
+  cabinetctl password
+  cabinetctl enable
+  cabinetctl disable
+USAGE
+    exit 1
+    ;;
+esac

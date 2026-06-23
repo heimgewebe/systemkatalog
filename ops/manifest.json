@@ -1,0 +1,51 @@
+{
+  "schema": "cabinet.local-runtime.v1",
+  "cabinet_version": "0.4.4",
+  "repository_root": "~/repos/cabinet",
+  "templates": [
+    {
+      "source": "ops/systemd/cabinet.service.tmpl",
+      "destination": "~/.config/systemd/user/cabinet.service",
+      "mode": "0644"
+    },
+    {
+      "source": "ops/systemd/cabinet.service.d/10-loopback-gate.conf.tmpl",
+      "destination": "~/.config/systemd/user/cabinet.service.d/10-loopback-gate.conf",
+      "mode": "0644"
+    }
+  ],
+  "executables": [
+    {
+      "source": "ops/bin/cabinet",
+      "destination": "~/.local/bin/cabinet",
+      "mode": "0755"
+    },
+    {
+      "source": "ops/bin/cabinet-session",
+      "destination": "~/.local/bin/cabinet-session",
+      "mode": "0755"
+    },
+    {
+      "source": "ops/bin/cabinetctl",
+      "destination": "~/.local/bin/cabinetctl",
+      "mode": "0755"
+    },
+    {
+      "source": "ops/bin/cabinet-security-gate",
+      "destination": "~/.local/bin/cabinet-security-gate",
+      "mode": "0755"
+    }
+  ],
+  "symlinks": [
+    {
+      "source": "scripts/cabinet-safe-export.sh",
+      "destination": "~/.local/bin/cabinet-safe-export"
+    }
+  ],
+  "local_only": [
+    "~/.config/cabinet/runtime.env",
+    "~/.local/state/cabinet/",
+    "~/.cabinet/",
+    ".cabinet-state/"
+  ]
+}
