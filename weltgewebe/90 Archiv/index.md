@@ -1,3 +1,3 @@
 # Archiv
 
-Historische PRs und abgeschlossene Vorhaben.
+Historische Produktstände.

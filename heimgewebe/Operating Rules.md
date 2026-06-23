@@ -7,7 +7,7 @@
 5. Externe Aktionen benötigen ausdrückliche Freigabe.
 6. Code und Contracts werden nicht still in Cabinet neu definiert.
 7. Ergebnisse nennen Quellen, Pfade und verbleibende Unsicherheit.
-8. Jobs und Heartbeats bleiben in der Aufbauphase deaktiviert.
+8. Aktive Jobs und Heartbeats bleiben vorerst deaktiviert.
 
     ## Heimgewebe-spezifisch
 
@@ -15,5 +15,5 @@
     - Events sind keine Commands.
     - Beobachtung ist keine Handlung.
     - Erkenntnis ist keine Entscheidung.
-    - Produzenten, Konsumenten und Owner müssen benannt sein.
+    - Owner, Produzenten und Konsumenten werden benannt.
     - Bei nachlieferbaren Repo-Daten gilt Null-Interpolation.

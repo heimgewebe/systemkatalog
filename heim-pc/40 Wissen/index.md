@@ -1,3 +1,0 @@
-# Wissen
-
-Wiederverwendbare technische Erklärungen.

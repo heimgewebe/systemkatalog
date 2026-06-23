@@ -1,3 +1,0 @@
-# Entscheidungen
-
-Begründete lokale Technikentscheidungen.

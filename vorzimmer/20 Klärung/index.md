@@ -1,3 +1,3 @@
 # Klärung
 
-Unklare Zuständigkeit, Quellenlage oder Handlungsnotwendigkeit.
+Zuständigkeit, Quellenlage und Zielstatus.

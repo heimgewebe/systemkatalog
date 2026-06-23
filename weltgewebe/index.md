@@ -1,8 +1,7 @@
 # Weltgewebe
 
-Produkt, Anwendung, Daten, Deployment und Betriebsentscheidungen.
+Produktbedeutung, Architektur, Interaktion, Daten und Roadmap.
 
 ## Einstieg
 
-Öffne zuerst **Start Here**. Dauerhafte Inhalte werden
-anschließend in den fachlich passenden Bereich einsortiert.
+Öffne zuerst **Start Here**.

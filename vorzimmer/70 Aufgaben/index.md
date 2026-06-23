@@ -1,3 +1,3 @@
 # Aufgaben
 
-Klare aktive Aufgaben mit Stop-Kriterium und Zielbeleg.
+Klare Aufgaben mit Zielbeleg.

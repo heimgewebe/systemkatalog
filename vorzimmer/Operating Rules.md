@@ -7,10 +7,9 @@
 5. Externe Aktionen benötigen ausdrückliche Freigabe.
 6. Code und Contracts werden nicht still in Cabinet neu definiert.
 7. Ergebnisse nennen Quellen, Pfade und verbleibende Unsicherheit.
-8. Jobs und Heartbeats bleiben in der Aufbauphase deaktiviert.
+8. Aktive Jobs und Heartbeats bleiben vorerst deaktiviert.
 
     ## Vorzimmer-spezifisch
 
-    Das Vorzimmer darf Inhalte sortieren, aber keine fachliche
-    Quellenwahrheit ersetzen. Nach geklärter Zuständigkeit wird der
-    Vorgang in Heim-PC, Heimgewebe oder Weltgewebe überführt.
+    Das Vorzimmer sortiert und verteilt. Es ersetzt keine fachliche
+    Source of Truth und schließt keine fachliche Arbeit dauerhaft ab.

@@ -1,7 +1,8 @@
 # Start Here
 
-Dieser Room hält den operativen Kontext für Heimgewebe.
+Dieser Room beschreibt die Bedeutung und Kohärenz des
+Heimgewebe-Organismus.
 
-Heimgewebe ist ein funktional gekoppelter Multi-Repo-Organismus.
-Die Control-Plane bleibt das Metarepo; Cabinet ersetzt weder
-Contracts noch Repository-Wahrheit.
+Konkrete Implementierungsaufträge werden an die Werkstatt
+übergeben. Experimente gehören ins Labor. Laufzeiteingriffe
+gehören in den Betrieb.

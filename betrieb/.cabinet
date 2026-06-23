@@ -1,0 +1,10 @@
+schemaVersion: 1
+id: "betrieb-room"
+name: "Betrieb"
+kind: room
+version: "0.1.0"
+description: "Hosts, Dienste, Runtime, Changes, Incidents und Runbooks."
+entry: index.md
+room:
+  icon: sparkles
+  color: "rgb(34, 197, 94)"

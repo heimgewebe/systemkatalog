@@ -1,3 +1,3 @@
 # Eingang
 
-Unsortierte neue Hinweise, Ideen, Links und Aufgaben.
+Unsortierte neue Vorgänge.

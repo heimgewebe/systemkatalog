@@ -1,3 +1,3 @@
 # Entscheidungen
 
-Artefaktisch belegte Architekturentscheidungen.
+Begründete systemische Entscheidungen.

@@ -1,3 +1,3 @@
 # Übergaben
 
-Projektübergreifende Übergaben mit Ziel, Owner und Belegen.
+Übergaben an Bedeutungs- oder Arbeitsräume.

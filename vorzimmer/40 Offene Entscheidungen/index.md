@@ -1,3 +1,3 @@
 # Offene Entscheidungen
 
-Noch nicht entschiedene Fragen mit sichtbaren Alternativen.
+Noch nicht entschiedene Querschnittsfragen.

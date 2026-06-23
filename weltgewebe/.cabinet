@@ -3,7 +3,7 @@ id: "weltgewebe-room"
 name: "Weltgewebe"
 kind: room
 version: "0.1.0"
-description: "Produkt, Anwendung, Daten, Deployment und Betriebsentscheidungen."
+description: "Produktbedeutung, Architektur, Interaktion, Daten und Roadmap."
 entry: index.md
 room:
   icon: sparkles

@@ -1,0 +1,10 @@
+schemaVersion: 1
+id: "labor-room"
+name: "Labor"
+kind: room
+version: "0.1.0"
+description: "Hypothesen, Experimente, Prototypen und Messreihen."
+entry: index.md
+room:
+  icon: sparkles
+  color: "rgb(6, 182, 212)"

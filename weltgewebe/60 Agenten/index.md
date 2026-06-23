@@ -1,3 +1,0 @@
-# Agenten
-
-Weltgewebe-spezifische Agentenrollen.

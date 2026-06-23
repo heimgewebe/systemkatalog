@@ -1,13 +1,24 @@
 # Cabinet-Modell
 
-## Ebenen
+## Bedeutungsräume
 
-- **Cockpit steuert** Hosts, Prozesse und Sessions.
-- **Cabinet ordnet** Arbeit, Wissen, Entscheidungen und Übergaben.
-- **Git belegt** Code, Historie und Implementierungszustand.
-- **Obsidian bewahrt** dauerhaftes persönliches Wissen.
+Heimgewebe und Weltgewebe beantworten:
 
-## Regel
+> Was bedeutet ein Vorgang im jeweiligen System?
 
-Der Begriff **Cockpit** bleibt der Remote-Steuerungsfläche
-vorbehalten und wird nicht als Cabinet-Room verwendet.
+## Arbeitsregime
+
+- Labor: Das könnte stimmen.
+- Werkstatt: Das lässt sich bauen.
+- Betrieb: Das läuft tatsächlich.
+
+## Vermittlung
+
+Das Vorzimmer klärt, welchem Bedeutungsraum und welchem
+Arbeitsregime ein Vorgang zugeordnet wird.
+
+## Externe Schichten
+
+- Cockpit steuert Hosts, Prozesse und Sessions.
+- Git belegt Code und Historie.
+- Obsidian bewahrt dauerhaftes persönliches Wissen.

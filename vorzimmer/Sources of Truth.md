@@ -2,8 +2,8 @@
 
 Das Vorzimmer besitzt keine eigene fachliche Source of Truth.
 
-- Code und Implementierungen: jeweiliges Git-Repository
-- Verträge und Schemas: zuständiges Contract-Repository
-- Infrastrukturzustand: überprüfbare Runtime- und Config-Ausgaben
+- Code und Implementierung: zuständiges Git-Repository
+- Contracts und Schemas: zuständiges Contract-Repository
+- Runtime: überprüfbare System- und Dienstausgaben
 - Dauerhaftes persönliches Wissen: Obsidian
-- Remote-Steuerung: Cockpit
+- Remote-Steuerung: externes Cockpit

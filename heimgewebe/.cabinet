@@ -3,7 +3,7 @@ id: "heimgewebe-room"
 name: "Heimgewebe"
 kind: room
 version: "0.1.0"
-description: "Multi-Repo-Architektur, Contracts, Artefaktflüsse und Fleet-Kohärenz."
+description: "Contracts, Artefaktflüsse, Fleet und systemische Kohärenz."
 entry: index.md
 room:
   icon: sparkles

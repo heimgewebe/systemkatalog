@@ -1,3 +1,3 @@
 # Eingang
 
-Neue Weltgewebe-Themen und Befunde.
+Neue Produkt- und Architekturthemen.

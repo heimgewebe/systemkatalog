@@ -1,0 +1,10 @@
+schemaVersion: 1
+id: "werkstatt-room"
+name: "Werkstatt"
+kind: room
+version: "0.1.0"
+description: "Reproduzierbare Umsetzung ausreichend geklärter Aufgaben."
+entry: index.md
+room:
+  icon: sparkles
+  color: "rgb(234, 88, 12)"

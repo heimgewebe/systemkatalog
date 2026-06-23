@@ -1,3 +1,3 @@
 # Erledigt
 
-Kurzfristige Ablage abgeschlossener Vorzimmer-Vorgänge.
+Kurzfristige Ablage abgeschlossener Vorgänge.

@@ -3,7 +3,7 @@ id: "vorzimmer-room"
 name: "Vorzimmer"
 kind: room
 version: "0.1.0"
-description: "Aufnahme, Klärung und Verteilung projektübergreifender Arbeit."
+description: "Aufnahme, Klärung und Verteilung neuer Arbeit."
 entry: index.md
 room:
   icon: sparkles

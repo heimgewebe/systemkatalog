@@ -1,3 +1,0 @@
-# Vorhaben
-
-Produkt- und Architekturvorhaben.

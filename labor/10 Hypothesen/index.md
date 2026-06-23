@@ -1,0 +1,3 @@
+# Hypothesen
+
+Widerlegbare Annahmen.

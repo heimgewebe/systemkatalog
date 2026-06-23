@@ -1,12 +1,20 @@
 # Cabinet Home
 
-Home ist der neutrale Eingang in die Arbeitsräume.
+Home ist der neutrale Eingang in sechs Arbeitsräume.
 
-## Rooms
+## Vermittlung
 
-- **Vorzimmer** – Aufnahme, Klärung und Verteilung
-- **Heim-PC** – lokale Infrastruktur und Runbooks
-- **Heimgewebe** – Multi-Repo-Architektur und Contracts
-- **Weltgewebe** – Produkt, Anwendung und Betrieb
+- **Vorzimmer** – aufnehmen, klären und verteilen
 
-Projektarbeit findet in den Rooms statt, nicht im Home-Container.
+## Bedeutungsräume
+
+- **Heimgewebe** – Contracts, Fleet und Kohärenz
+- **Weltgewebe** – Produkt, Architektur und Roadmap
+
+## Arbeitsregime
+
+- **Werkstatt** – bauen, testen und abnehmen
+- **Labor** – vermuten, messen und replizieren
+- **Betrieb** – laufen lassen, ändern und wiederherstellen
+
+Das externe Cockpit bleibt die Remote-Steuerungsfläche.

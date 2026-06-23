@@ -1,3 +1,0 @@
-# Wissen
-
-Produkt- und Technikkenntnisse.
