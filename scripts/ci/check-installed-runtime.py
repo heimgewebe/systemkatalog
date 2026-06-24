@@ -76,7 +76,6 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--home", type=Path, required=True)
     parser.add_argument("--repo-root", type=Path, required=True)
-    parser.add_argument("--app-root", type=Path, required=True)
     parser.add_argument("--systemctl-log", type=Path, required=True)
     parser.add_argument("--expected-systemctl-calls", type=int, required=True)
     parser.add_argument("--runtime-env-sha256", type=str, required=True)

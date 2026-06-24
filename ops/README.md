@@ -81,8 +81,8 @@ geprüft werden.
 
 ## Sicherheitsregel
 
-Das Repository enthält keine Secrets. Ein Remote-Push ist nur nach
-einem vollständigen Tree- und History-Scan zulässig.
+Secrets dürfen nicht versioniert werden. Vor Remote-Pushes werden
+Tree und Historie auf bekannte Secretmuster geprüft.
 
 ## CI und Validierung
 
@@ -108,8 +108,9 @@ Repository-Zustand und niemals den lokalen Betriebszustand.
 - Installiert in ein temporäres Home-Verzeichnis mit `systemctl`-Stub.
 - Prüft Binaries, Units, Symlink, `runtime.env`-Hash und systemctl-Aufrufe
   nach Lauf 1 und Lauf 2.
-- Beweist, dass das echte Repository-Verzeichnis vor und nach dem Test
-  bytegleich bleibt (`TARGET-PROOF: SOURCE REPOSITORY WAS NOT MODIFIED`).
+- Beweist, dass der getrackte Git-Zustand und HEAD des echten Repositorys
+  vor und nach dem Test unverändert bleiben
+  (`TARGET-PROOF: SOURCE REPOSITORY WAS NOT MODIFIED`).
 - Prüft fünf negative Zustandsmutationen gegen den Installationschecker
   (`check-installed-runtime.py`).
 
@@ -122,8 +123,8 @@ Repository-Zustand und niemals den lokalen Betriebszustand.
 - `--ignore-gitleaks-allow` ist gesetzt: gitleaks:allow-Kommentare werden
   nicht als Ausnahme akzeptiert.
 - Ein erfolgreicher Scan belegt, dass keine bekannten Secretmuster im
-  aktuellen Baum oder der Geschichte enthalten sind. Er beweist keine
-  vollständige Secret-Abwesenheit.
+  aktuellen Baum oder der Geschichte enthalten sind. Ein erfolgreicher
+  Scan beweist keine vollständige Secret-Abwesenheit.
 
 ### Grenzen der CI-Aussagekraft
 

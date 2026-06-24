@@ -94,7 +94,6 @@ run_checker() {
     python3 "$REAL_REPO/scripts/ci/check-installed-runtime.py" \
         --home "$TEMP_HOME" \
         --repo-root "$TEMP_REPO" \
-        --app-root "$APP_ROOT" \
         --systemctl-log "$SYSTEMCTL_LOG" \
         --expected-systemctl-calls "$1" \
         --runtime-env-sha256 "$RUNTIME_HASH"
@@ -177,41 +176,6 @@ fi
 echo "TARGET-PROOF: SECOND INSTALL IS IDEMPOTENT"
 echo "TARGET-PROOF: SYSTEMCTL CALL CONTRACT VERIFIED"
 
-# --- Negative Checker-Tests ---
-expect_install_contract_failure() {
-    local desc="$1"
-    local expected_msg="$2"
-    # Remaining args are mutation commands to run in the fixture home
-    local fixture_home="$TEMP_ROOT/neg-home-$$-${RANDOM}"
-    cp -a "$TEMP_HOME" "$fixture_home"
-    # Run the mutation function passed as third argument
-    (
-        FIXTURE_HOME="$fixture_home"
-        eval "${3:-}"
-    )
-    local out
-    if out=$(python3 "$REAL_REPO/scripts/ci/check-installed-runtime.py" \
-        --home "$fixture_home" \
-        --repo-root "$TEMP_REPO" \
-        --app-root "$APP_ROOT" \
-        --systemctl-log "$SYSTEMCTL_LOG" \
-        --expected-systemctl-calls 2 \
-        --runtime-env-sha256 "$RUNTIME_HASH" 2>&1); then
-        echo "FAIL [$desc]: Expected failure but checker passed."
-        rm -rf "$fixture_home"
-        exit 1
-    fi
-    if ! echo "$out" | grep -qF "$expected_msg"; then
-        echo "FAIL [$desc]: Expected marker not found."
-        echo "  Expected: $expected_msg"
-        echo "  Got: $out"
-        rm -rf "$fixture_home"
-        exit 1
-    fi
-    rm -rf "$fixture_home"
-    echo "PASS [$desc]"
-}
-
 echo "=== Negative Checker Tests ==="
 
 # T-N1: Kein systemctl-Aufruf — empty log, but home intact
@@ -221,7 +185,6 @@ out=""
 if out=$(python3 "$REAL_REPO/scripts/ci/check-installed-runtime.py" \
     --home "$TEMP_HOME" \
     --repo-root "$TEMP_REPO" \
-    --app-root "$APP_ROOT" \
     --systemctl-log "$neg_log" \
     --expected-systemctl-calls 1 \
     --runtime-env-sha256 "$RUNTIME_HASH" 2>&1); then
@@ -242,7 +205,6 @@ out=""
 if out=$(python3 "$REAL_REPO/scripts/ci/check-installed-runtime.py" \
     --home "$TEMP_HOME" \
     --repo-root "$TEMP_REPO" \
-    --app-root "$APP_ROOT" \
     --systemctl-log "$SYSTEMCTL_LOG" \
     --expected-systemctl-calls 2 \
     --runtime-env-sha256 "$RUNTIME_HASH" 2>&1); then
@@ -265,7 +227,6 @@ out=""
 if out=$(python3 "$REAL_REPO/scripts/ci/check-installed-runtime.py" \
     --home "$TEMP_HOME" \
     --repo-root "$TEMP_REPO" \
-    --app-root "$APP_ROOT" \
     --systemctl-log "$SYSTEMCTL_LOG" \
     --expected-systemctl-calls 2 \
     --runtime-env-sha256 "$RUNTIME_HASH" 2>&1); then
@@ -294,7 +255,6 @@ out=""
 if out=$(python3 "$REAL_REPO/scripts/ci/check-installed-runtime.py" \
     --home "$TEMP_HOME" \
     --repo-root "$TEMP_REPO" \
-    --app-root "$APP_ROOT" \
     --systemctl-log "$SYSTEMCTL_LOG" \
     --expected-systemctl-calls 2 \
     --runtime-env-sha256 "$RUNTIME_HASH" 2>&1); then
@@ -317,7 +277,6 @@ out=""
 if out=$(python3 "$REAL_REPO/scripts/ci/check-installed-runtime.py" \
     --home "$TEMP_HOME" \
     --repo-root "$TEMP_REPO" \
-    --app-root "$APP_ROOT" \
     --systemctl-log "$SYSTEMCTL_LOG" \
     --expected-systemctl-calls 2 \
     --runtime-env-sha256 "$ORIG_HASH" 2>&1); then

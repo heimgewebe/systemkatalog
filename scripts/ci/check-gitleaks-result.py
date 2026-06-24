@@ -15,10 +15,9 @@ def main():
     label = args.label
     rc = args.return_code
 
-    if rc != 0:
-        print(f"FAIL: gitleaks {label} scanner return code: {rc}")
-        sys.exit(1)
-
+    # 1. Read and validate report first, if it exists
+    data = None
+    report_valid = False
     if not args.report.exists():
         print(f"FAIL: gitleaks {label} report missing: {args.report}")
         sys.exit(1)
@@ -41,10 +40,18 @@ def main():
         sys.exit(1)
 
     n = len(data)
-    if n != 0:
+
+    # 2. Findings present → clear finding error
+    if n > 0:
         print(f"FAIL: gitleaks {label} findings: gefunden={n}, erwartet=0")
         sys.exit(1)
 
+    # 3. No findings but non-zero rc → scanner error
+    if rc != 0:
+        print(f"FAIL: gitleaks {label} scanner return code: {rc}")
+        sys.exit(1)
+
+    # 4. rc == 0 and empty list → pass
     label_upper = label.upper().replace("-", " ")
     print(f"TARGET-PROOF: GITLEAKS {label_upper} SCAN PASS")
 

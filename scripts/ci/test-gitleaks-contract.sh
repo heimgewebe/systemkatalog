@@ -74,36 +74,42 @@ expect_gitleaks_fail "T05: one finding + rc=0 → FAIL" \
 expect_gitleaks_fail "T06: missing report → FAIL" \
     "$TEMP_DIR/nonexistent.json" "history" 0 "gitleaks history report missing"
 
+if [[ "$fail_count" -gt 0 ]]; then
+    echo "FAIL: $fail_count gitleaks contract test(s) failed — skipping Target-Proof."
+    exit 1
+fi
+
 echo "TARGET-PROOF: GITLEAKS RESULT CONTRACT TESTS PASS"
 
 # --- gitleaks:allow bypass test (requires Docker) ---
 
 if ! command -v docker &>/dev/null; then
-    echo "SKIP: Docker not available for allow-bypass test"
-    echo "TARGET-PROOF: GITLEAKS ALLOW BYPASS TEST PASS (SKIPPED - no docker)"
-else
-    FAKE_REPO="$TEMP_DIR/fake-repo"
-    FAKE_CONFIG="$TEMP_DIR/gitleaks-test.toml"
-    FAKE_OUT="$TEMP_DIR/gitleaks-out"
-    mkdir -p "$FAKE_REPO" "$FAKE_OUT"
+    echo "FAIL: gitleaks:allow bypass test requires Docker — a mandatory security proof was not executed."
+    exit 1
+fi
 
-    git -C "$FAKE_REPO" init -q
-    git -C "$FAKE_REPO" config user.name "Cabinet CI Test"
-    git -C "$FAKE_REPO" config user.email "cabinet-ci-test@example.invalid"
+FAKE_REPO="$TEMP_DIR/fake-repo"
+FAKE_CONFIG="$TEMP_DIR/gitleaks-test.toml"
+FAKE_OUT="$TEMP_DIR/gitleaks-out"
+mkdir -p "$FAKE_REPO" "$FAKE_OUT"
 
-    # A unique artificial marker that no real tool or provider would use.
-    FAKE_MARKER="CABINET_FAKE_LEAK_FOR_TEST_0123456789"
+git -C "$FAKE_REPO" init -q
+git -C "$FAKE_REPO" config user.name "Cabinet CI Test"
+git -C "$FAKE_REPO" config user.email "cabinet-ci-test@example.invalid"
 
-    # File with marker AND a gitleaks:allow comment
-    cat > "$FAKE_REPO/test-secret.txt" <<EOF
+# A unique artificial marker that no real tool or provider would use.
+FAKE_MARKER="CABINET_FAKE_LEAK_FOR_TEST_0123456789"
+
+# File with marker AND a gitleaks:allow comment
+cat > "$FAKE_REPO/test-secret.txt" <<EOF
 # gitleaks:allow
 CABINET_TEST_VALUE=${FAKE_MARKER}
 EOF
-    git -C "$FAKE_REPO" add test-secret.txt
-    git -C "$FAKE_REPO" commit -q -m "add test secret with allow comment"
+git -C "$FAKE_REPO" add test-secret.txt
+git -C "$FAKE_REPO" commit -q -m "add test secret with allow comment"
 
-    # Minimal custom config that recognizes only the artificial marker
-    cat > "$FAKE_CONFIG" <<EOF
+# Minimal custom config that recognizes only the artificial marker
+cat > "$FAKE_CONFIG" <<EOF
 title = "Cabinet CI allow-bypass test"
 
 [[rules]]
@@ -112,51 +118,72 @@ description = "Detects artificial CI test marker"
 regex = '''CABINET_FAKE_LEAK_FOR_TEST_[0-9A-Z]+'''
 EOF
 
-    GITLEAKS_IMAGE="ghcr.io/gitleaks/gitleaks@sha256:c00b6bd0aeb3071cbcb79009cb16a60dd9e0a7c60e2be9ab65d25e6bc8abbb7f"
+GITLEAKS_IMAGE="ghcr.io/gitleaks/gitleaks@sha256:c00b6bd0aeb3071cbcb79009cb16a60dd9e0a7c60e2be9ab65d25e6bc8abbb7f"
 
-    set +e
-    docker run --rm \
-        -v "${FAKE_REPO}:/testrepo:ro" \
-        -v "${TEMP_DIR}:/cfg:ro" \
-        -v "${FAKE_OUT}:/out:rw" \
-        --network none \
-        --user "$(id -u):$(id -g)" \
-        "$GITLEAKS_IMAGE" \
-        dir /testrepo \
-        --config /cfg/gitleaks-test.toml \
-        --ignore-gitleaks-allow \
-        --report-format=json \
-        --report-path /out/allow-bypass.json \
-        -v
-    bypass_rc=$?
-    set -e
+set +e
+docker run --rm \
+    -v "${FAKE_REPO}:/testrepo:ro" \
+    -v "${TEMP_DIR}:/cfg:ro" \
+    -v "${FAKE_OUT}:/out:rw" \
+    --network none \
+    --user "$(id -u):$(id -g)" \
+    "$GITLEAKS_IMAGE" \
+    dir /testrepo \
+    --config /cfg/gitleaks-test.toml \
+    --ignore-gitleaks-allow \
+    --report-format=json \
+    --report-path /out/allow-bypass.json \
+    -v
+bypass_rc=$?
+set -e
 
-    BYPASS_REPORT="$FAKE_OUT/allow-bypass.json"
+BYPASS_REPORT="$FAKE_OUT/allow-bypass.json"
 
-    # Gitleaks exits 1 when it finds leaks — that's expected here.
-    # We use the checker to confirm exactly 1 finding was reported.
-    finding_count=0
-    if [[ -f "$BYPASS_REPORT" ]]; then
-        finding_count=$(python3 -c "import json,sys; d=json.load(open(sys.argv[1])); print(len(d))" "$BYPASS_REPORT" 2>/dev/null || echo 0)
-    fi
-
-    if [[ "$finding_count" -lt 1 ]]; then
-        echo "FAIL: gitleaks:allow bypass test did not produce a finding despite --ignore-gitleaks-allow"
-        echo "      finding_count=$finding_count, scan_rc=$bypass_rc"
-        exit 1
-    fi
-
-    # Now confirm the production checker correctly rejects this result.
-    if python3 "$CHECKER" \
-        --label "allow-bypass" \
-        --return-code "$bypass_rc" \
-        --report "$BYPASS_REPORT" 2>/dev/null; then
-        echo "FAIL: checker did not reject the bypass finding"
-        exit 1
-    fi
-
-    echo "TARGET-PROOF: GITLEAKS ALLOW BYPASS TEST PASS"
+# Verify: bypass_rc == 1 (gitleaks finds leaks, exits 1)
+if [[ "$bypass_rc" -ne 1 ]]; then
+    echo "FAIL: gitleaks:allow bypass test expected rc=1 (findings), got rc=$bypass_rc"
+    exit 1
 fi
+
+# Verify: report is valid JSON list with exactly 1 finding
+if [[ ! -f "$BYPASS_REPORT" ]]; then
+    echo "FAIL: gitleaks:allow bypass test did not produce a report"
+    exit 1
+fi
+
+finding_count=$(python3 -c "
+import json, sys
+d = json.load(open(sys.argv[1]))
+print(len(d))
+" "$BYPASS_REPORT" 2>/dev/null || echo "-1")
+
+if [[ "$finding_count" -ne 1 ]]; then
+    echo "FAIL: gitleaks:allow bypass test expected exactly 1 finding, got $finding_count"
+    exit 1
+fi
+
+# Verify: the finding matches the artificial test marker (not some other leak)
+python3 -c "
+import json, sys
+d = json.load(open(sys.argv[1]))
+assert len(d) == 1
+f = d[0]
+assert 'CABINET_FAKE_LEAK_FOR_TEST_0123456789' in f.get('Match', ''), f'Marker not found in finding: {f}'
+" "$BYPASS_REPORT" 2>/dev/null || {
+    echo "FAIL: gitleaks:allow bypass test finding does not match the artificial test marker"
+    exit 1
+}
+
+# Now confirm the production checker correctly rejects this result.
+if python3 "$CHECKER" \
+    --label "allow-bypass" \
+    --return-code "$bypass_rc" \
+    --report "$BYPASS_REPORT" 2>/dev/null; then
+    echo "FAIL: checker did not reject the bypass finding"
+    exit 1
+fi
+
+echo "TARGET-PROOF: GITLEAKS ALLOW BYPASS TEST PASS"
 
 if [[ "$fail_count" -gt 0 ]]; then
     echo "FAIL: $fail_count gitleaks contract test(s) failed."
