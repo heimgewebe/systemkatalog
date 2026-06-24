@@ -1,7 +1,3 @@
-# Weltgewebe
+# Weltgewebe - Migration
 
-Produktbedeutung, Architektur, Interaktion, Daten und Roadmap.
-
-## Einstieg
-
-Öffne zuerst **Start Here**.
+Dieser Bereich bleibt als historischer Projektkontext lesbar. Repository- und Projektkarten werden kuenftig im Bestand gefuehrt.
