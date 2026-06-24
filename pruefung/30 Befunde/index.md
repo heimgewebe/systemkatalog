@@ -1,3 +1,3 @@
-# Hinweise
+# Befunde
 
-Hier werden Abweichungen mit Quelle, Status und naechstem Pruefschritt gesammelt.
+Hier werden Abweichungen mit Quelle, Status und nächstem Prüfschritt gesammelt.
