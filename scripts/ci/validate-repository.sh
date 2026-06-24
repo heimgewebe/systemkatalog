@@ -57,3 +57,5 @@ echo "Bash: PASS"
 
 echo "=== Layout ==="
 python3 scripts/check-cabinet-layout.py --mode repository "$SNAPSHOT_ROOT"
+
+echo "TARGET-PROOF: CABINET REPOSITORY CONTRACT VALID"

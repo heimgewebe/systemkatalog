@@ -215,5 +215,68 @@ if python3 scripts/check-cabinet-layout.py --mode local . >/dev/null 2>&1; then
 fi
 echo "PASS"
 
+reset_state
+python3 -c 'import json; m=json.load(open("ops/manifest.json")); e=m["executables"][0]; m["executables"]=[e.copy() for _ in range(4)]; json.dump(m, open("ops/manifest.json","w"))'
+git commit -am "duplicate source" >/dev/null
+expect_failure "Test 27: Doppelte Quellen Executables" "duplicate source: ops/bin/cabinet"
+
+reset_state
+python3 -c 'import json; m=json.load(open("ops/manifest.json")); t=m["templates"][0]; m["templates"]=[t.copy(), t.copy()]; json.dump(m, open("ops/manifest.json","w"))'
+git commit -am "duplicate template source" >/dev/null
+expect_failure "Test 28: Doppelte Template-Quellen" "duplicate source: ops/systemd/cabinet.service.tmpl"
+
+reset_state
+python3 -c 'import json; m=json.load(open("ops/manifest.json")); m["executables"][1]["source"] = "ops/bin/cabinet"; json.dump(m, open("ops/manifest.json","w"))'
+git commit -am "wrong valid source" >/dev/null
+expect_failure "Test 29: Erlaubte Quelle ersetzt erwartete Quelle" "duplicate source: ops/bin/cabinet"
+
+reset_state
+python3 -c 'import json; m=json.load(open("ops/manifest.json")); m["executables"][0]["unexpected"]="value"; json.dump(m, open("ops/manifest.json","w"))'
+git commit -am "unexpected field" >/dev/null
+expect_failure "Test 30: Unerwartetes Feld" "unerwartet=['unexpected']"
+
+reset_state
+python3 -c 'import json; m=json.load(open("ops/manifest.json")); m["executables"][0].pop("mode"); json.dump(m, open("ops/manifest.json","w"))'
+git commit -am "missing mode" >/dev/null
+expect_failure "Test 31: Fehlendes mode-Feld" "fehlend=['mode']"
+
+reset_state
+python3 -c 'import json; m=json.load(open("ops/manifest.json")); m["executables"]={}; json.dump(m, open("ops/manifest.json","w"))'
+git commit -am "executables type" >/dev/null
+expect_failure "Test 32: executables als dict" "erwartet list, gefunden dict"
+
+reset_state
+python3 -c 'import json; m=json.load(open("ops/manifest.json")); m["local_only"]=[1]; json.dump(m, open("ops/manifest.json","w"))'
+git commit -am "local_only type" >/dev/null
+expect_failure "Test 33: local_only element type" "erwartet string, gefunden int"
+
+reset_state
+git update-index --chmod=-x scripts/cabinet-safe-export.sh
+git commit -m "wrong git mode for safe-export" >/dev/null
+git reset --hard HEAD >/dev/null
+expect_failure "Test 34: Safe-Export nicht ausführbar" "git_mode: gefunden=100644, erwartet=100755"
+
+reset_state
+git rm scripts/cabinet-safe-export.sh >/dev/null
+ln -s something scripts/cabinet-safe-export.sh
+git add scripts/cabinet-safe-export.sh
+git commit -m "safe-export symlink" >/dev/null
+expect_failure "Test 35: Safe-Export als Git-Symlink" "git_mode: gefunden=120000, erwartet=100755"
+
+reset_state
+echo "=== Test 36: Zu früher Target-Proof ==="
+echo "syntax error" > scripts/cabinet-safe-export.sh
+git commit -am "bash syntax error" >/dev/null
+out=$(./scripts/ci/validate-repository.sh 2>&1 || true)
+if ./scripts/ci/validate-repository.sh >/dev/null 2>&1; then
+    echo "FAIL: Expected validation to fail."
+    exit 1
+fi
+if echo "$out" | grep -qF "TARGET-PROOF: CABINET REPOSITORY CONTRACT VALID"; then
+    echo "FAIL: TARGET-PROOF printed prematurely"
+    exit 1
+fi
+echo "PASS"
+
 echo "TARGET-PROOF: CABINET REPOSITORY VALIDATOR TESTS PASS"
 echo "TARGET-PROOF: REPOSITORY MODE IGNORES UNTRACKED LOCAL STATE"

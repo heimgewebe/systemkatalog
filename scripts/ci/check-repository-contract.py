@@ -13,7 +13,6 @@ def get_git_tree(tree_ish: str, repo_root: Path) -> dict:
     for entry in res.stdout.split("\0"):
         if not entry:
             continue
-        # Format: <mode> SP <type> SP <object> TAB <file>
         metadata, path = entry.split("\t", 1)
         mode, obj_type, obj_hash = metadata.split(" ", 2)
         tree[path] = {"mode": mode, "type": obj_type, "hash": obj_hash}
@@ -33,7 +32,6 @@ def check_forbidden_paths(tree: dict):
         parts = path.split("/")
         basename = parts[-1]
 
-        # Databases
         if basename == ".cabinet.db" or basename.startswith(".cabinet.db-"):
             errors.append(f"database file: {path}")
             continue
@@ -41,28 +39,23 @@ def check_forbidden_paths(tree: dict):
             errors.append(f"database file: {path}")
             continue
 
-        # Runtimeverzeichnisse
         if ".cabinet-state" in parts:
             errors.append(f"runtime state: {path}")
             continue
 
-        # check sequence
         for i in range(len(parts) - 1):
             if parts[i] == ".agents" and parts[i+1] in [".runtime", ".conversations", ".memory", ".messages", ".config"]:
                 errors.append(f"agent runtime/config: {path}")
                 break
 
-        # Lokale Konfigurationsdateien
         if path.endswith(".agents/.config.json"):
             errors.append(f"local agent config: {path}")
             continue
 
-        # Globale lokale Agenten
         if parts[0] == ".global-agents" or ".global-agents" in parts:
             errors.append(f"global agents: {path}")
             continue
 
-        # Umgebungs- und Schlüsseldateien
         if basename in [".env", ".cabinet.env", "runtime.env"]:
             errors.append(f"env file: {path}")
             continue
@@ -86,13 +79,31 @@ def check_manifest(tree: dict, tree_ish: str, repo_root: Path):
         sys.exit(1)
 
     content = get_file_content(tree_ish, repo_root, manifest_path)
-    manifest = json.loads(content)
+    try:
+        manifest = json.loads(content)
+    except Exception as e:
+        print(f"FAIL: manifest.json invalid json: {e}")
+        sys.exit(1)
+
+    if not isinstance(manifest, dict):
+        print(f"FAIL: manifest: erwartet object, gefunden {type(manifest).__name__}")
+        sys.exit(1)
 
     expected_top_level = {"schema", "cabinet_version", "repository_root", "templates", "executables", "symlinks", "local_only"}
     actual_top_level = set(manifest.keys())
     if actual_top_level != expected_top_level:
         print(f"FAIL: manifest top-level fields: gefunden={sorted(actual_top_level)}, erwartet={sorted(expected_top_level)}")
         sys.exit(1)
+
+    for field in ["schema", "cabinet_version", "repository_root"]:
+        if not isinstance(manifest[field], str):
+            print(f"FAIL: manifest.{field}: erwartet string, gefunden {type(manifest[field]).__name__}")
+            sys.exit(1)
+
+    for field in ["templates", "executables", "symlinks", "local_only"]:
+        if not isinstance(manifest[field], list):
+            print(f"FAIL: manifest.{field}: erwartet list, gefunden {type(manifest[field]).__name__}")
+            sys.exit(1)
 
     if manifest["schema"] != "cabinet.local-runtime.v1":
         print(f"FAIL: manifest.schema: gefunden={manifest['schema']}, erwartet=cabinet.local-runtime.v1")
@@ -124,37 +135,52 @@ def check_manifest(tree: dict, tree_ish: str, repo_root: Path):
             print(f"FAIL: manifest: source is not a regular file: {src}")
             sys.exit(1)
 
+    def validate_list_entries(field_name, entries, expected_fields):
+        sources = []
+        for i, entry in enumerate(entries):
+            if not isinstance(entry, dict):
+                print(f"FAIL: manifest.{field_name}[{i}]: erwartet object, gefunden {type(entry).__name__}")
+                sys.exit(1)
+            actual_fields = set(entry.keys())
+            if actual_fields != set(expected_fields):
+                missing = sorted(set(expected_fields) - actual_fields)
+                unexpected = sorted(actual_fields - set(expected_fields))
+                if unexpected:
+                    print(f"FAIL: manifest.{field_name}[{i}].fields: gefunden={sorted(actual_fields)}, erwartet={sorted(expected_fields)}")
+                    sys.exit(1)
+                else:
+                    print(f"FAIL: manifest.{field_name}[{i}].fields: fehlend={missing}, unerwartet={unexpected}")
+                    sys.exit(1)
+            sources.append(entry.get("source"))
+
+        dup_sources = [s for s in set(sources) if sources.count(s) > 1]
+        if dup_sources:
+            print(f"FAIL: manifest.{field_name}: duplicate source: {dup_sources[0]}")
+            sys.exit(1)
+        return sources
+
     expected_templates = {
-        "ops/systemd/cabinet.service.tmpl": {
-            "destination": "~/.config/systemd/user/cabinet.service",
-            "mode": "0644",
-            "git_mode": "100644"
-        },
-        "ops/systemd/cabinet.service.d/10-loopback-gate.conf.tmpl": {
-            "destination": "~/.config/systemd/user/cabinet.service.d/10-loopback-gate.conf",
-            "mode": "0644",
-            "git_mode": "100644"
-        }
+        "ops/systemd/cabinet.service.tmpl": {"destination": "~/.config/systemd/user/cabinet.service", "mode": "0644", "git_mode": "100644"},
+        "ops/systemd/cabinet.service.d/10-loopback-gate.conf.tmpl": {"destination": "~/.config/systemd/user/cabinet.service.d/10-loopback-gate.conf", "mode": "0644", "git_mode": "100644"}
     }
     actual_templates = manifest["templates"]
-    if len(actual_templates) != len(expected_templates):
-        print(f"FAIL: manifest.templates: count mismatch: {len(actual_templates)} != {len(expected_templates)}")
+    actual_sources = validate_list_entries("templates", actual_templates, ["source", "destination", "mode"])
+
+    if set(actual_sources) != set(expected_templates.keys()):
+        missing = sorted(set(expected_templates.keys()) - set(actual_sources))
+        unexpected = sorted(set(actual_sources) - set(expected_templates.keys()))
+        print(f"FAIL: manifest.templates.sources: fehlend={missing}, unerwartet={unexpected}")
         sys.exit(1)
 
     for t in actual_templates:
-        src = t.get("source")
+        src = t["source"]
         validate_source(src)
-        if src not in expected_templates:
-            print(f"FAIL: manifest.templates: unexpected source: {src}")
-            sys.exit(1)
         exp = expected_templates[src]
-        dest = t.get("destination")
-        if dest != exp["destination"]:
-            print(f"FAIL: manifest.templates[{src}].destination: gefunden={dest}, erwartet={exp['destination']}")
+        if t["destination"] != exp["destination"]:
+            print(f"FAIL: manifest.templates[{src}].destination: gefunden={t['destination']}, erwartet={exp['destination']}")
             sys.exit(1)
-        mode = t.get("mode")
-        if mode != exp["mode"]:
-            print(f"FAIL: manifest.templates[{src}].mode: gefunden={mode}, erwartet={exp['mode']}")
+        if t["mode"] != exp["mode"]:
+            print(f"FAIL: manifest.templates[{src}].mode: gefunden={t['mode']}, erwartet={exp['mode']}")
             sys.exit(1)
         git_mode = tree[src]["mode"]
         if git_mode != exp["git_mode"]:
@@ -162,46 +188,29 @@ def check_manifest(tree: dict, tree_ish: str, repo_root: Path):
             sys.exit(1)
 
     expected_executables = {
-        "ops/bin/cabinet": {
-            "destination": "~/.local/bin/cabinet",
-            "mode": "0755",
-            "git_mode": "100755"
-        },
-        "ops/bin/cabinet-session": {
-            "destination": "~/.local/bin/cabinet-session",
-            "mode": "0755",
-            "git_mode": "100755"
-        },
-        "ops/bin/cabinetctl": {
-            "destination": "~/.local/bin/cabinetctl",
-            "mode": "0755",
-            "git_mode": "100755"
-        },
-        "ops/bin/cabinet-security-gate": {
-            "destination": "~/.local/bin/cabinet-security-gate",
-            "mode": "0755",
-            "git_mode": "100755"
-        }
+        "ops/bin/cabinet": {"destination": "~/.local/bin/cabinet", "mode": "0755", "git_mode": "100755"},
+        "ops/bin/cabinet-session": {"destination": "~/.local/bin/cabinet-session", "mode": "0755", "git_mode": "100755"},
+        "ops/bin/cabinetctl": {"destination": "~/.local/bin/cabinetctl", "mode": "0755", "git_mode": "100755"},
+        "ops/bin/cabinet-security-gate": {"destination": "~/.local/bin/cabinet-security-gate", "mode": "0755", "git_mode": "100755"}
     }
     actual_executables = manifest["executables"]
-    if len(actual_executables) != len(expected_executables):
-        print(f"FAIL: manifest.executables: count mismatch: {len(actual_executables)} != {len(expected_executables)}")
+    actual_sources = validate_list_entries("executables", actual_executables, ["source", "destination", "mode"])
+
+    if set(actual_sources) != set(expected_executables.keys()):
+        missing = sorted(set(expected_executables.keys()) - set(actual_sources))
+        unexpected = sorted(set(actual_sources) - set(expected_executables.keys()))
+        print(f"FAIL: manifest.executables.sources: fehlend={missing}, unerwartet={unexpected}")
         sys.exit(1)
 
     for e in actual_executables:
-        src = e.get("source")
+        src = e["source"]
         validate_source(src)
-        if src not in expected_executables:
-            print(f"FAIL: manifest.executables: unexpected source: {src}")
-            sys.exit(1)
         exp = expected_executables[src]
-        dest = e.get("destination")
-        if dest != exp["destination"]:
-            print(f"FAIL: manifest.executables[{src}].destination: gefunden={dest}, erwartet={exp['destination']}")
+        if e["destination"] != exp["destination"]:
+            print(f"FAIL: manifest.executables[{src}].destination: gefunden={e['destination']}, erwartet={exp['destination']}")
             sys.exit(1)
-        mode = e.get("mode")
-        if mode != exp["mode"]:
-            print(f"FAIL: manifest.executables[{src}].mode: gefunden={mode}, erwartet={exp['mode']}")
+        if e["mode"] != exp["mode"]:
+            print(f"FAIL: manifest.executables[{src}].mode: gefunden={e['mode']}, erwartet={exp['mode']}")
             sys.exit(1)
         git_mode = tree[src]["mode"]
         if git_mode != exp["git_mode"]:
@@ -209,25 +218,27 @@ def check_manifest(tree: dict, tree_ish: str, repo_root: Path):
             sys.exit(1)
 
     expected_symlinks = {
-        "scripts/cabinet-safe-export.sh": {
-            "destination": "~/.local/bin/cabinet-safe-export"
-        }
+        "scripts/cabinet-safe-export.sh": {"destination": "~/.local/bin/cabinet-safe-export", "git_mode": "100755"}
     }
     actual_symlinks = manifest["symlinks"]
-    if len(actual_symlinks) != len(expected_symlinks):
-        print(f"FAIL: manifest.symlinks: count mismatch: {len(actual_symlinks)} != {len(expected_symlinks)}")
+    actual_sources = validate_list_entries("symlinks", actual_symlinks, ["source", "destination"])
+
+    if set(actual_sources) != set(expected_symlinks.keys()):
+        missing = sorted(set(expected_symlinks.keys()) - set(actual_sources))
+        unexpected = sorted(set(actual_sources) - set(expected_symlinks.keys()))
+        print(f"FAIL: manifest.symlinks.sources: fehlend={missing}, unerwartet={unexpected}")
         sys.exit(1)
 
     for s in actual_symlinks:
-        src = s.get("source")
+        src = s["source"]
         validate_source(src)
-        if src not in expected_symlinks:
-            print(f"FAIL: manifest.symlinks: unexpected source: {src}")
-            sys.exit(1)
         exp = expected_symlinks[src]
-        dest = s.get("destination")
-        if dest != exp["destination"]:
-            print(f"FAIL: manifest.symlinks[{src}].destination: gefunden={dest}, erwartet={exp['destination']}")
+        if s["destination"] != exp["destination"]:
+            print(f"FAIL: manifest.symlinks[{src}].destination: gefunden={s['destination']}, erwartet={exp['destination']}")
+            sys.exit(1)
+        git_mode = tree[src]["mode"]
+        if git_mode != exp["git_mode"]:
+            print(f"FAIL: manifest.symlinks[{src}].git_mode: gefunden={git_mode}, erwartet={exp['git_mode']}")
             sys.exit(1)
 
     expected_local = [
@@ -237,6 +248,11 @@ def check_manifest(tree: dict, tree_ish: str, repo_root: Path):
         ".cabinet-state/"
     ]
     actual_local = manifest["local_only"]
+    for i, e in enumerate(actual_local):
+        if not isinstance(e, str):
+            print(f"FAIL: manifest.local_only[{i}]: erwartet string, gefunden {type(e).__name__}")
+            sys.exit(1)
+
     if set(actual_local) != set(expected_local) or len(actual_local) != len(expected_local):
         print(f"FAIL: manifest.local_only: gefunden={sorted(actual_local)}, erwartet={sorted(expected_local)}")
         sys.exit(1)
@@ -251,7 +267,7 @@ def main():
     check_forbidden_paths(tree)
     check_manifest(tree, args.tree_ish, args.repo_root)
 
-    print("TARGET-PROOF: CABINET REPOSITORY CONTRACT VALID")
+    print("MANIFEST-AND-PATH-CONTRACT: PASS")
 
 if __name__ == "__main__":
     main()
