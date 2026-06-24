@@ -2,6 +2,18 @@
   "schemaVersion": 1,
   "defaultRoom": "vorzimmer",
   "rooms": {
+    "bestand": {
+      "id": "bestand-room",
+      "name": "Bestand"
+    },
+    "pruefung": {
+      "id": "pruefung-room",
+      "name": "Prüfung"
+    },
+    "steuerung": {
+      "id": "steuerung-room",
+      "name": "Steuerung"
+    },
     "betrieb": {
       "id": "betrieb-room",
       "name": "Betrieb"

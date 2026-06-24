@@ -1,0 +1,10 @@
+schemaVersion: 1
+id: "steuerung-room"
+name: "Steuerung"
+kind: room
+version: "0.1.0"
+description: "Lage, Entscheidungen, Aufgaben, Blocker und Uebergaben."
+entry: index.md
+room:
+  icon: compass
+  color: "rgb(5, 150, 105)"

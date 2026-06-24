@@ -1,0 +1,10 @@
+schemaVersion: 1
+id: "bestand-room"
+name: "Bestand"
+kind: room
+version: "0.1.0"
+description: "Repository-, Projekt- und Quellenbestand mit datierter Provenienz."
+entry: index.md
+room:
+  icon: database
+  color: "rgb(37, 99, 235)"

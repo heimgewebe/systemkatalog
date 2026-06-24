@@ -1,20 +1,15 @@
 # Cabinet Home
 
-Home ist der neutrale Eingang in sechs Arbeitsräume.
+Cabinet ordnet Repositories, Projekte, Prüfungen und nächste Schritte.
 
-## Vermittlung
+## Zielräume
 
-- **Vorzimmer** – aufnehmen, klären und verteilen
+- **Bestand** – Repositories, Projekte, Quellen und Beziehungen
+- **Prüfung** – Läufe, Belege, Befunde, Widersprüche und Risiken
+- **Steuerung** – Lage, Entscheidungen, Aufgaben, Blocker und Übergaben
 
-## Bedeutungsräume
+## Parallelphase
 
-- **Heimgewebe** – Contracts, Fleet und Kohärenz
-- **Weltgewebe** – Produkt, Architektur und Roadmap
+Die bisherigen sechs Räume bleiben vorerst lesbar. Sie sind Migrationsquellen und keine dauerhafte Zielstruktur. Der technische Default bleibt bis zum lokalen Cutover `vorzimmer`.
 
-## Arbeitsregime
-
-- **Werkstatt** – bauen, testen und abnehmen
-- **Labor** – vermuten, messen und replizieren
-- **Betrieb** – laufen lassen, ändern und wiederherstellen
-
-Das externe Cockpit bleibt die Remote-Steuerungsfläche.
+Die Zielarchitektur und die Migrationsregeln stehen in `docs/blueprints/repository-oversight-layout-v1.md`.
