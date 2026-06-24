@@ -1,3 +1,3 @@
 # Quellen
 
-Hier werden freigegebene Quellen, Pfade, Remotes, Dumps, CI-Laeufe und Frischeangaben erfasst.
+Freigegebene Quellen, Remotes, Dumps, CI-Läufe und Frischeangaben.

@@ -1,3 +1,3 @@
 # Belege
 
-Quellstaende, Hashes und Frischeangaben fuer Pruefungen.
+Evidence Packs, Quellstände, Hashes und Frischeangaben für Prüfungen.

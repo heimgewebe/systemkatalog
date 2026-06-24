@@ -1,11 +1,11 @@
-# Pruefung
+# Prüfung
 
-Pruefung sammelt Laeufe, Evidence, Befunde, Widersprueche und Risiken.
+Prüfung sammelt Läufe, Evidence, Befunde, Widersprüche und Risiken.
 
 ## Bereiche
 
-- Laeufe
-- Evidence
-- Befunde
+- [Läufe](10%20Laeufe/index.md)
+- [Belege](20%20Belege/index.md)
+- [Befunde](30%20Befunde/index.md)
 
-Ein Befund ohne konkreten Beleg bleibt ein Hinweis. Entscheidungen gehoeren in Steuerung.
+Ein Befund ohne konkreten Beleg bleibt ein Hinweis. Entscheidungen gehören in Steuerung.

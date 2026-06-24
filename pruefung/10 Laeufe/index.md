@@ -1,3 +1,3 @@
-# Laeufe
+# Läufe
 
-Datierte Prueflaeufe mit Quellen, Commits und Ergebnis.
+Datierte Prüfläufe mit Quellen, Commits, Profil, Modellprovenienz und Ergebnis.
