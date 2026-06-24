@@ -91,7 +91,7 @@ def main():
         "0644",
         args.repo_root / "ops/systemd/cabinet.service.tmpl",
         args.home,
-        args.app_root
+        args.repo_root
     )
 
     check_template(
@@ -99,7 +99,7 @@ def main():
         "0644",
         args.repo_root / "ops/systemd/cabinet.service.d/10-loopback-gate.conf.tmpl",
         args.home,
-        args.app_root
+        args.repo_root
     )
 
     check_symlink(
