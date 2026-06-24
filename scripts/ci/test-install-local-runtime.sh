@@ -214,14 +214,12 @@ expect_install_contract_failure() {
 
 echo "=== Negative Checker Tests ==="
 
-# T-N1: Kein systemctl-Aufruf
-neg_fixture="$TEMP_ROOT/neg-home-n1"
-cp -a "$TEMP_HOME" "$neg_fixture"
+# T-N1: Kein systemctl-Aufruf — empty log, but home intact
 neg_log="$TEMP_ROOT/neg-systemctl-empty.log"
 touch "$neg_log"
 out=""
 if out=$(python3 "$REAL_REPO/scripts/ci/check-installed-runtime.py" \
-    --home "$neg_fixture" \
+    --home "$TEMP_HOME" \
     --repo-root "$TEMP_REPO" \
     --app-root "$APP_ROOT" \
     --systemctl-log "$neg_log" \
@@ -234,39 +232,38 @@ if ! echo "$out" | grep -qF "systemctl call count: gefunden=0, erwartet=1"; then
     echo "FAIL [T-N1]: expected systemctl count marker, got: $out"
     exit 1
 fi
-rm -rf "$neg_fixture"
 echo "PASS [T-N1: kein systemctl-Aufruf]"
 
-# T-N2: Falscher Binary-Inhalt
-neg_fixture="$TEMP_ROOT/neg-home-n2"
-cp -a "$TEMP_HOME" "$neg_fixture"
-echo "CABINET_CI_DUMMY_CONTENT" > "$neg_fixture/.local/bin/cabinet"
-chmod 0755 "$neg_fixture/.local/bin/cabinet"
+# T-N2: Falscher Binary-Inhalt — mutate in place, restore after
+ORIG_CABINET="$(cat "$TEMP_HOME/.local/bin/cabinet")"
+echo "CABINET_CI_DUMMY_CONTENT" > "$TEMP_HOME/.local/bin/cabinet"
+chmod 0755 "$TEMP_HOME/.local/bin/cabinet"
 out=""
 if out=$(python3 "$REAL_REPO/scripts/ci/check-installed-runtime.py" \
-    --home "$neg_fixture" \
+    --home "$TEMP_HOME" \
     --repo-root "$TEMP_REPO" \
     --app-root "$APP_ROOT" \
     --systemctl-log "$SYSTEMCTL_LOG" \
     --expected-systemctl-calls 2 \
     --runtime-env-sha256 "$RUNTIME_HASH" 2>&1); then
+    printf '%s' "$ORIG_CABINET" > "$TEMP_HOME/.local/bin/cabinet"
+    chmod 0755 "$TEMP_HOME/.local/bin/cabinet"
     echo "FAIL [T-N2]: expected failure but checker passed"
     exit 1
 fi
+cp "$TEMP_REPO/ops/bin/cabinet" "$TEMP_HOME/.local/bin/cabinet"
+chmod 0755 "$TEMP_HOME/.local/bin/cabinet"
 if ! echo "$out" | grep -qF "content mismatch"; then
     echo "FAIL [T-N2]: expected content mismatch marker, got: $out"
     exit 1
 fi
-rm -rf "$neg_fixture"
 echo "PASS [T-N2: falscher Binary-Inhalt]"
 
-# T-N3: Falsche Unit-Zeile
-neg_fixture="$TEMP_ROOT/neg-home-n3"
-cp -a "$TEMP_HOME" "$neg_fixture"
-echo "CABINET_CI_DUMMY_UNIT=1" >> "$neg_fixture/.config/systemd/user/cabinet.service"
+# T-N3: Falsche Unit-Zeile — append to service, restore after
+echo "CABINET_CI_DUMMY_UNIT=1" >> "$TEMP_HOME/.config/systemd/user/cabinet.service"
 out=""
 if out=$(python3 "$REAL_REPO/scripts/ci/check-installed-runtime.py" \
-    --home "$neg_fixture" \
+    --home "$TEMP_HOME" \
     --repo-root "$TEMP_REPO" \
     --app-root "$APP_ROOT" \
     --systemctl-log "$SYSTEMCTL_LOG" \
@@ -275,21 +272,27 @@ if out=$(python3 "$REAL_REPO/scripts/ci/check-installed-runtime.py" \
     echo "FAIL [T-N3]: expected failure but checker passed"
     exit 1
 fi
+# Restore service file by reinstalling
+python3 - <<PYEOF
+from pathlib import Path
+import sys
+src = Path("$TEMP_REPO/ops/systemd/cabinet.service.tmpl")
+dst = Path("$TEMP_HOME/.config/systemd/user/cabinet.service")
+content = src.read_text().replace("@HOME@","$TEMP_HOME").replace("@CABINET_ROOT@","$TEMP_REPO")
+dst.write_text(content)
+PYEOF
 if ! echo "$out" | grep -qF "content mismatch"; then
     echo "FAIL [T-N3]: expected content mismatch marker, got: $out"
     exit 1
 fi
-rm -rf "$neg_fixture"
 echo "PASS [T-N3: falsche Unit-Zeile]"
 
-# T-N4: Falsches Symlink-Ziel
-neg_fixture="$TEMP_ROOT/neg-home-n4"
-cp -a "$TEMP_HOME" "$neg_fixture"
-rm -f "$neg_fixture/.local/bin/cabinet-safe-export"
-ln -s "/tmp/cabinet-ci-dummy-target" "$neg_fixture/.local/bin/cabinet-safe-export"
+# T-N4: Falsches Symlink-Ziel — replace symlink, restore after
+rm -f "$TEMP_HOME/.local/bin/cabinet-safe-export"
+ln -s "/tmp/cabinet-ci-dummy-target" "$TEMP_HOME/.local/bin/cabinet-safe-export"
 out=""
 if out=$(python3 "$REAL_REPO/scripts/ci/check-installed-runtime.py" \
-    --home "$neg_fixture" \
+    --home "$TEMP_HOME" \
     --repo-root "$TEMP_REPO" \
     --app-root "$APP_ROOT" \
     --systemctl-log "$SYSTEMCTL_LOG" \
@@ -298,34 +301,35 @@ if out=$(python3 "$REAL_REPO/scripts/ci/check-installed-runtime.py" \
     echo "FAIL [T-N4]: expected failure but checker passed"
     exit 1
 fi
+rm -f "$TEMP_HOME/.local/bin/cabinet-safe-export"
+ln -s "$TEMP_REPO/scripts/cabinet-safe-export.sh" "$TEMP_HOME/.local/bin/cabinet-safe-export"
 if ! echo "$out" | grep -qF "symlink raw target mismatch"; then
     echo "FAIL [T-N4]: expected symlink mismatch marker, got: $out"
     exit 1
 fi
-rm -rf "$neg_fixture"
 echo "PASS [T-N4: falsches Symlink-Ziel]"
 
-# T-N5: Veränderte runtime.env
-neg_fixture="$TEMP_ROOT/neg-home-n5"
-cp -a "$TEMP_HOME" "$neg_fixture"
-echo "CABINET_TEST_PLACEHOLDER=2" > "$neg_fixture/.config/cabinet/runtime.env"
-chmod 0600 "$neg_fixture/.config/cabinet/runtime.env"
+# T-N5: Veränderte runtime.env — mutate in place, restore after
+ORIG_HASH="$RUNTIME_HASH"
+echo "CABINET_TEST_PLACEHOLDER=2" > "$TEMP_HOME/.config/cabinet/runtime.env"
+chmod 0600 "$TEMP_HOME/.config/cabinet/runtime.env"
 out=""
 if out=$(python3 "$REAL_REPO/scripts/ci/check-installed-runtime.py" \
-    --home "$neg_fixture" \
+    --home "$TEMP_HOME" \
     --repo-root "$TEMP_REPO" \
     --app-root "$APP_ROOT" \
     --systemctl-log "$SYSTEMCTL_LOG" \
     --expected-systemctl-calls 2 \
-    --runtime-env-sha256 "$RUNTIME_HASH" 2>&1); then
+    --runtime-env-sha256 "$ORIG_HASH" 2>&1); then
     echo "FAIL [T-N5]: expected failure but checker passed"
     exit 1
 fi
+echo "CABINET_TEST_PLACEHOLDER=1" > "$TEMP_HOME/.config/cabinet/runtime.env"
+chmod 0600 "$TEMP_HOME/.config/cabinet/runtime.env"
 if ! echo "$out" | grep -qF "hash mismatch"; then
     echo "FAIL [T-N5]: expected hash mismatch marker, got: $out"
     exit 1
 fi
-rm -rf "$neg_fixture"
 echo "PASS [T-N5: veränderte runtime.env]"
 
 echo "TARGET-PROOF: INSTALL CONTRACT NEGATIVE TESTS PASS"
