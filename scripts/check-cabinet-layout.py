@@ -154,11 +154,18 @@ def main() -> int:
             home = json.loads(
                 home_path.read_text(encoding="utf-8")
             )
-            if home.get("defaultRoom") != policy["defaultRoom"]:
+            expected_default = policy["defaultRoom"]
+            if home.get("defaultRoom") != expected_default:
                 errors.append(
                     "defaultRoom="
                     f"{home.get('defaultRoom')!r}, "
-                    f"erwartet {policy['defaultRoom']!r}"
+                    f"erwartet {expected_default!r}"
+                )
+            if home.get("lastActiveRoom") != expected_default:
+                errors.append(
+                    "lastActiveRoom="
+                    f"{home.get('lastActiveRoom')!r}, "
+                    f"erwartet {expected_default!r}"
                 )
 
     expected_rooms = policy["rooms"]

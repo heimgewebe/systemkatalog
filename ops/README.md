@@ -88,6 +88,13 @@ einem vollständigen Tree- und History-Scan zulässig.
 
 Dieses Repository trennt strikt zwischen dem versionierten Repository-Vertrag und dem lokalen Laufzeitzustand. Die CI prüft ausschließlich den sauberen Repository-Zustand.
 
+- **Pfadguard:** Erkennt verbotene versionierte Dateipfade im Repository-Vertrag.
+- **Gitleaks:** Die CI prüft den aktuellen Git-Baum und die Git-Historie mit Gitleaks auf bekannte Secretmuster. Ein erfolgreicher Scan beweist keine vollständige Secret-Abwesenheit.
+- **Installer-Shadow-Test:** Beweist die isolierte Dateisysteminstallation in einem temporären Verzeichnis und deren Idempotenz.
+- **audit-local-runtime.sh:** Prüft die echte lokale Runtime und den echten systemd-Dienst. Dies wird bewusst nicht in der CI ausgeführt.
+
+**Sicherheitsgrenze:** GitHub CI beweist keinen laufenden Cabinet-Dienst. Sie garantiert lediglich die strukturelle und syntaktische Unversehrtheit des Repositories sowie das Nichtvorhandensein bekannter Dateinamen und Secretmuster.
+
 Lokale Validierung:
 ```bash
 cd ~/repos/cabinet
@@ -108,5 +115,3 @@ GitHub Actions Jobs (siehe `.github/workflows/validate.yml`):
 - `repository-contract`
 - `installer-shadow`
 - `secret-scan`
-
-**Hinweis:** `ops/install/audit-local-runtime.sh` ist bewusst kein GitHub-CI-Test, da dieses Skript die reale installierte App und den echten systemd-Userdienst prüft. GitHub CI beweist nicht die reale Laufzeitfunktion, sondern garantiert lediglich die strukturelle und syntaktische Unversehrtheit des Repositories sowie das Fehlen von Secrets.

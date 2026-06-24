@@ -4,73 +4,212 @@ set -Eeuo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REAL_REPO="$(cd "$SCRIPT_DIR/../.." && pwd)"
 
-TEMP_DIR="$(mktemp -d)"
-trap 'rm -rf "$TEMP_DIR"' EXIT
+TEMP_REPO="$(mktemp -d)"
+trap 'rm -rf "$TEMP_REPO"' EXIT
 
-echo "Copying repository to temp directory..."
-cp -r "$REAL_REPO"/. "$TEMP_DIR/"
-cd "$TEMP_DIR"
-git config user.email "test@example.com"
-git config user.name "Test User"
+echo "Cloning repository to temp directory..."
+git clone --no-hardlinks --quiet "$REAL_REPO" "$TEMP_REPO"
+cd "$TEMP_REPO"
+git config user.name "Cabinet CI Test"
+git config user.email "cabinet-ci-test@example.invalid"
 
-# Ensure we have a clean git state in the temp repo
-git add -A
-git commit -m "temp test commit" --allow-empty >/dev/null
+BASE_COMMIT="$(git rev-parse HEAD)"
 
-echo "=== Test 1: Sauberer Tree besteht ==="
-if ! ./scripts/ci/validate-repository.sh >/dev/null; then
-    echo "FAIL: Clean tree failed validation."
+reset_state() {
+    git reset --hard "$BASE_COMMIT" >/dev/null
+    git clean -ffdx >/dev/null
+}
+
+expect_success() {
+    local desc="$1"
+    echo "=== $desc ==="
+    if ! ./scripts/ci/validate-repository.sh >/dev/null; then
+        echo "FAIL: Expected success but failed."
+        exit 1
+    fi
+    echo "PASS"
+}
+
+expect_failure() {
+    local desc="$1"
+    local expected_msg="$2"
+    echo "=== $desc ==="
+
+    local out
+    # Capture output. validate-repository.sh should fail.
+    if out=$(./scripts/ci/validate-repository.sh 2>&1); then
+        echo "FAIL: Expected failure but succeeded."
+        exit 1
+    fi
+
+    if ! echo "$out" | grep -qF "$expected_msg"; then
+        echo "FAIL: Expected error message not found."
+        echo "Expected: $expected_msg"
+        echo "Actual output:"
+        echo "$out"
+        exit 1
+    fi
+    echo "PASS"
+}
+
+# Positive Cases
+reset_state
+expect_success "Test 1: Unveränderter aktueller Commit besteht"
+
+reset_state
+echo "=== Test 2: Repository-Modus besteht im HEAD-Snapshot ohne lokale Workspace- und Editor-Dateien ==="
+# Dies ist bereits der Normalzustand im Clone
+if ! python3 scripts/check-cabinet-layout.py --mode repository . >/dev/null; then
+    echo "FAIL: Repository-Modus scheiterte im Fresh Clone"
     exit 1
 fi
 echo "PASS"
 
-echo "=== Test 2: Versionierte .agents/.runtime/daemon-token wird erkannt ==="
+reset_state
+echo "=== Test 3: Ignorierte unversionierte Datei beeinflusst Repository-Validierung nicht ==="
+mkdir -p vorzimmer/.agents/.runtime
+echo "ignored" > vorzimmer/.agents/.runtime/ignored-state
+if ! ./scripts/ci/validate-repository.sh >/dev/null; then
+    echo "FAIL: Untracked file influenced validation."
+    exit 1
+fi
+echo "PASS"
+
+echo "=== Test 4: Echter lokaler Modus besteht auf /home/alex/repos/cabinet ==="
+if ! python3 "$REAL_REPO/scripts/check-cabinet-layout.py" --mode local "$REAL_REPO" >/dev/null; then
+    echo "FAIL: local mode failed on real repo."
+    exit 1
+fi
+echo "PASS"
+
+# Verbotene Pfade
+reset_state
 mkdir -p .agents/.runtime
 echo "token" > .agents/.runtime/daemon-token
 git add -f .agents/.runtime/daemon-token
-git commit -m "add bad file" >/dev/null
-if ./scripts/ci/validate-repository.sh >/dev/null 2>&1; then
-    echo "FAIL: Did not catch forbidden versioned file."
-    exit 1
-fi
-git reset --hard HEAD~1 >/dev/null
-echo "PASS"
+git commit -m "add forbidden path" >/dev/null
+expect_failure "Test 5: .agents/.runtime/daemon-token" "agent runtime/config: .agents/.runtime/daemon-token"
 
-echo "=== Test 3: Ungültiges ops/manifest.json wird erkannt ==="
-sed -i 's/"cabinet.local-runtime.v1"/"cabinet.wrong"/g' ops/manifest.json
-git commit -am "break manifest" >/dev/null
-if ./scripts/ci/validate-repository.sh >/dev/null 2>&1; then
-    echo "FAIL: Did not catch invalid manifest schema."
-    exit 1
-fi
-git reset --hard HEAD~1 >/dev/null
-echo "PASS"
+reset_state
+mkdir -p .agents
+echo "{}" > .agents/.config.json
+git add -f .agents/.config.json
+git commit -m "add forbidden path" >/dev/null
+expect_failure "Test 6: .agents/.config.json" "local agent config: .agents/.config.json"
 
-echo "=== Test 4: Ausführbares ops/bin-Artefakt mit Git-Modus 100644 wird erkannt ==="
+reset_state
+mkdir -p vorzimmer/.agents/.config
+echo "{}" > vorzimmer/.agents/.config/provider.json
+git add -f vorzimmer/.agents/.config/provider.json
+git commit -m "add forbidden path" >/dev/null
+expect_failure "Test 7: vorzimmer/.agents/.config/provider.json" "agent runtime/config: vorzimmer/.agents/.config/provider.json"
+
+reset_state
+mkdir -p secrets
+echo "SECRET=1" > secrets/runtime.env
+git add -f secrets/runtime.env
+git commit -m "add forbidden path" >/dev/null
+expect_failure "Test 8: secrets/runtime.env" "env file: secrets/runtime.env"
+
+reset_state
+echo "PROD=1" > .env.production
+git add -f .env.production
+git commit -m "add forbidden path" >/dev/null
+expect_failure "Test 9: .env.production" "env file: .env.production"
+
+reset_state
+echo "DB" > .cabinet.db-wal
+git add -f .cabinet.db-wal
+git commit -m "add forbidden path" >/dev/null
+expect_failure "Test 10: .cabinet.db-wal" "database file: .cabinet.db-wal"
+
+# Manifest
+reset_state
+python3 -c 'import json; m=json.load(open("ops/manifest.json")); m["schema"]="wrong"; json.dump(m, open("ops/manifest.json","w"))'
+git commit -am "break schema" >/dev/null
+expect_failure "Test 11: falsches schema" "erwartet=cabinet.local-runtime.v1"
+
+reset_state
+python3 -c 'import json; m=json.load(open("ops/manifest.json")); m["cabinet_version"]="wrong"; json.dump(m, open("ops/manifest.json","w"))'
+git commit -am "break version" >/dev/null
+expect_failure "Test 12: falsche cabinet_version" "erwartet=0.4.4"
+
+reset_state
+python3 -c 'import json; m=json.load(open("ops/manifest.json")); m["executables"].pop(); json.dump(m, open("ops/manifest.json","w"))'
+git commit -am "remove executable" >/dev/null
+expect_failure "Test 13: fehlendes Executable" "FAIL: manifest.executables: count mismatch: 3 != 4"
+
+reset_state
+python3 -c 'import json; m=json.load(open("ops/manifest.json")); m["executables"].append({"source": "ops/bin/cabinet", "destination": "~/.local/bin/cabinet-extra", "mode": "0755"}); json.dump(m, open("ops/manifest.json","w"))'
+git commit -am "add executable" >/dev/null
+expect_failure "Test 14: zusätzliches Executable" "FAIL: manifest.executables: count mismatch: 5 != 4"
+
+reset_state
+python3 -c 'import json; m=json.load(open("ops/manifest.json")); m["executables"][0]["destination"]="wrong"; json.dump(m, open("ops/manifest.json","w"))'
+git commit -am "wrong destination" >/dev/null
+expect_failure "Test 15: falsche destination" "FAIL: manifest.executables[ops/bin/cabinet].destination:"
+
+reset_state
+python3 -c 'import json; m=json.load(open("ops/manifest.json")); m["executables"][0]["destination"]="/tmp/abs"; json.dump(m, open("ops/manifest.json","w"))'
+git commit -am "absolute destination" >/dev/null
+expect_failure "Test 16: absolute destination" "FAIL: manifest.executables[ops/bin/cabinet].destination:"
+
+reset_state
+python3 -c 'import json; m=json.load(open("ops/manifest.json")); m["executables"][0]["mode"]="0644"; json.dump(m, open("ops/manifest.json","w"))'
+git commit -am "wrong manifest mode" >/dev/null
+expect_failure "Test 17: falscher Manifestmodus 0644 für Executable" "FAIL: manifest.executables[ops/bin/cabinet].mode: gefunden=0644, erwartet=0755"
+
+reset_state
 git update-index --chmod=-x ops/bin/cabinet
-git commit -m "break executable permission" >/dev/null
-if ./scripts/ci/validate-repository.sh >/dev/null 2>&1; then
-    echo "FAIL: Did not catch bad git mode 100644 for executable."
-    exit 1
-fi
-git reset --hard HEAD~1 >/dev/null
-echo "PASS"
+git commit -m "wrong git mode" >/dev/null
+git reset --hard HEAD >/dev/null
+expect_failure "Test 18: falscher Git-Modus 100644 für Executable" "FAIL: manifest.executables[ops/bin/cabinet].git_mode: gefunden=100644, erwartet=100755"
 
-echo "=== Test 5: --mode repository besteht ohne lokale .agents/.config und .global-agents ==="
-rm -rf .agents/.config .global-agents
-# These are unversioned, so removing them doesn't affect git.
-# Wait, the current temp repo has them because `cp -r` copied them over.
-if ! python3 scripts/check-cabinet-layout.py --mode repository "$TEMP_DIR" >/dev/null; then
-    echo "FAIL: --mode repository failed without local files."
-    exit 1
-fi
-echo "PASS"
+reset_state
+python3 -c 'import json; m=json.load(open("ops/manifest.json")); m["symlinks"][0]["source"]="missing.sh"; json.dump(m, open("ops/manifest.json","w"))'
+git commit -am "missing symlink src" >/dev/null
+expect_failure "Test 19: fehlende Symlinkquelle" "FAIL: manifest: source not in git tree: missing.sh"
 
-echo "=== Test 6: --mode local verlangt lokale Dateien ==="
-if python3 scripts/check-cabinet-layout.py --mode local "$TEMP_DIR" >/dev/null 2>&1; then
-    echo "FAIL: --mode local succeeded despite missing local files."
+reset_state
+python3 -c 'import json; m=json.load(open("ops/manifest.json")); m["local_only"].append("extra"); json.dump(m, open("ops/manifest.json","w"))'
+git commit -am "extra local_only" >/dev/null
+expect_failure "Test 20: zusätzliches local_only" "FAIL: manifest.local_only:"
+
+reset_state
+python3 -c 'import json; m=json.load(open("ops/manifest.json")); m["local_only"].pop(); json.dump(m, open("ops/manifest.json","w"))'
+git commit -am "missing local_only" >/dev/null
+expect_failure "Test 21: fehlendes local_only" "FAIL: manifest.local_only:"
+
+# Layout
+reset_state
+python3 -c 'import json; m=json.load(open(".home/home.json")); m["defaultRoom"]="wrong"; json.dump(m, open(".home/home.json","w"))'
+git commit -am "wrong default room" >/dev/null
+expect_failure "Test 22: falsches defaultRoom" "defaultRoom="
+
+reset_state
+python3 -c 'import json; m=json.load(open(".home/home.json")); m["lastActiveRoom"]="wrong"; json.dump(m, open(".home/home.json","w"))'
+git commit -am "wrong last active room" >/dev/null
+expect_failure "Test 23: falsches lastActiveRoom" "lastActiveRoom="
+
+reset_state
+git rm -r vorzimmer >/dev/null
+git commit -m "remove room" >/dev/null
+expect_failure "Test 24: fehlender Room" "Room-Menge weicht ab"
+
+reset_state
+mkdir -p vorzimmer/.agents
+echo "tracked" > vorzimmer/.agents/unexpected.txt
+git add -f vorzimmer/.agents/unexpected.txt
+git commit -m "unexpected tracked agent file" >/dev/null
+expect_failure "Test 25: unerwartete versionierte Datei in Room-.agents" "unerwartete Agentendatei: unexpected.txt"
+
+reset_state
+echo "=== Test 26: lokaler Modus scheitert im Fresh Clone ohne Workspace und Editor ==="
+if python3 scripts/check-cabinet-layout.py --mode local . >/dev/null 2>&1; then
+    echo "FAIL: local mode unexpectedly succeeded in fresh clone."
     exit 1
 fi
 echo "PASS"
 
 echo "TARGET-PROOF: CABINET REPOSITORY VALIDATOR TESTS PASS"
+echo "TARGET-PROOF: REPOSITORY MODE IGNORES UNTRACKED LOCAL STATE"

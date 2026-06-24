@@ -16,14 +16,19 @@ concurrency:
 permissions:
   contents: read
 
+env:
+  PYTHONDONTWRITEBYTECODE: "1"
+
 jobs:
   repository-contract:
     name: Repository Contract
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - name: Checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
+          persist-credentials: false
           fetch-depth: 0
 
       - name: Setup Python
@@ -40,9 +45,12 @@ jobs:
   installer-shadow:
     name: Installer Shadow Test
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - name: Checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
 
       - name: Setup Python
         uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5.3.0
@@ -55,20 +63,54 @@ jobs:
   secret-scan:
     name: Secret Scan
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - name: Checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
+          persist-credentials: false
           fetch-depth: 0
+
+      - name: Ensure no custom ignore files
+        run: |
+          if [[ -f .gitleaks.toml ]] || [[ -f .gitleaksignore ]]; then
+            echo "FAIL: Custom gitleaks configuration found, which might hide secrets."
+            exit 1
+          fi
+
+      - name: Setup Output Directory
+        run: mkdir -p "${RUNNER_TEMP}/cabinet-gitleaks"
 
       - name: Gitleaks History Scan
         run: |
-          docker run --rm -v "${{ github.workspace }}:/code" \
+          docker run --rm \
+            -v "${{ github.workspace }}:/code:ro" \
+            -v "${RUNNER_TEMP}/cabinet-gitleaks:/out:rw" \
+            --network none \
+            --user "$(id -u):$(id -g)" \
             ghcr.io/gitleaks/gitleaks@sha256:c00b6bd0aeb3071cbcb79009cb16a60dd9e0a7c60e2be9ab65d25e6bc8abbb7f \
-            detect --source /code --redact=100 -v -f json -r /code/gitleaks-history.json
+            git --source /code --redact=100 --ignore-gitleaks-allow --max-decode-depth=2 --max-archive-depth=2 --report-format=json --report-path /out/history.json -v
+
+          findings="$(jq 'length' ${RUNNER_TEMP}/cabinet-gitleaks/history.json)"
+          if [[ "$findings" != "0" ]]; then
+              echo "FAIL: History scan expected 0 findings, got $findings"
+              exit 1
+          fi
+          echo "TARGET-PROOF: GITLEAKS HISTORY SCAN PASS"
 
       - name: Gitleaks Tree Scan
         run: |
-          docker run --rm -v "${{ github.workspace }}:/code" \
+          docker run --rm \
+            -v "${{ github.workspace }}:/code:ro" \
+            -v "${RUNNER_TEMP}/cabinet-gitleaks:/out:rw" \
+            --network none \
+            --user "$(id -u):$(id -g)" \
             ghcr.io/gitleaks/gitleaks@sha256:c00b6bd0aeb3071cbcb79009cb16a60dd9e0a7c60e2be9ab65d25e6bc8abbb7f \
-            detect --no-git --source /code --redact=100 -v -f json -r /code/gitleaks-tree.json
+            dir --source /code --redact=100 --ignore-gitleaks-allow --max-decode-depth=2 --max-archive-depth=2 --report-format=json --report-path /out/tree.json -v
+
+          findings="$(jq 'length' ${RUNNER_TEMP}/cabinet-gitleaks/tree.json)"
+          if [[ "$findings" != "0" ]]; then
+              echo "FAIL: Tree scan expected 0 findings, got $findings"
+              exit 1
+          fi
+          echo "TARGET-PROOF: GITLEAKS CURRENT TREE SCAN PASS"
