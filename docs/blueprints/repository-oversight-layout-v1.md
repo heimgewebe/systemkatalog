@@ -1,129 +1,92 @@
-# Repository-Oversight-Layout v1
+# Repository Oversight Layout v1
 
 ## Ziel
 
-Cabinet wird zur lokalen, repoübergreifenden Arbeits- und Entscheidungsfläche.
-Es hält datierte Beobachtungen, Repository- und Projektkarten, Befunde,
-Entscheidungen und Übergaben zusammen. Git, Contracts, CI und überprüfbare
-Runtime-Ausgaben bleiben die fachlichen Sources of Truth.
+Cabinet wird zur lokalen, repo-uebergreifenden Arbeitsflaeche. Git, Contracts, CI und pruefbare Runtime-Ausgaben bleiben die primaeren Quellen. Cabinet haelt datierte Karten, Hinweise, Entscheidungen und Uebergaben zusammen.
 
-## Aktive Räume
+## Zielraeume
 
 ### Bestand
 
-Frage: **Was existiert, wie hängt es zusammen und auf welchem belegten Stand?**
+Beantwortet: Was existiert, wie haengt es zusammen und auf welchem Stand?
 
-Enthält:
+Enthaelt Repositorykarten, Projektkarten, Quellen und Beziehungen.
 
-- Repositorykarten
-- Projektkarten
-- Quellenregister
-- Beziehungen zwischen Repositories und Vorhaben
-- Frische- und Provenienzangaben
+### Pruefung
 
-### Prüfung
+Beantwortet: Was ist belegt, widerspruechlich, veraltet oder fehlerhaft?
 
-Frage: **Was ist belegt, widersprüchlich, veraltet oder fehlerhaft?**
-
-Enthält:
-
-- Prüfläufe
-- Evidence Packs
-- Befunde
-- Widersprüche
-- Risiken und epistemische Leerstellen
+Enthaelt Laeufe, Belege, Hinweise, Risiken und offene Fragen.
 
 ### Steuerung
 
-Frage: **Was wird entschieden und was geschieht als Nächstes?**
+Beantwortet: Was wird als Naechstes bearbeitet?
 
-Enthält:
+Enthaelt Lage, Aufgaben, Blocker und Uebergaben.
 
-- Lageübersicht
-- Entscheidungen
-- priorisierte Aufgaben
-- Blocker
-- Übergaben an Coding- und Diagnoseagenten
+`steuerung` ist der Ziel-Default. Im Parallelbetrieb bleibt `vorzimmer` der technische Default, bis die lokale Workspace-Konfiguration gesichert und kontrolliert umgestellt wurde.
 
-`steuerung` ist der Default-Room.
+## Grenzen
 
-## Eigentumsgrenzen
-
-- Maschinen dürfen Bestand und Prüfung vorbereiten.
-- Befunde ohne Evidence bleiben Hinweise.
-- Nur der Mensch bestätigt Entscheidungen und Aufträge.
-- Cabinet-Agenten verändern keine Quell-Repositories automatisch.
-- Externe Modelle erhalten nur freigegebene, redigierte Inputs.
-- Private Repositoryinhalte bleiben lokal, solange keine ausdrückliche
-  Freigabe vorliegt.
+- Maschinen duerfen Bestand und Pruefung vorbereiten.
+- Hinweise ohne Beleg bleiben Hinweise.
+- Nur der Mensch bestaetigt Entscheidungen und Auftraege.
+- Cabinet veraendert keine Quell-Repositories automatisch.
+- Externe Modelle erhalten nur freigegebene und redigierte Inputs.
+- Private Repositoryinhalte bleiben lokal, solange keine Freigabe vorliegt.
 
 ## Minimale Artefakte
 
-1. **Repositorykarte** – Identität, Rolle, Quellen, Beziehungen, Commit und Frische.
-2. **Projektkarte** – Ziel, beteiligte Repositories, Stand, Blocker und nächste Aktion.
-3. **Befund** – Beobachtung, Erwartung, Evidence, Schweregrad, Vertrauen und Status.
-4. **Laufprotokoll** – Quellen, Commits, Modellprofil, tatsächliches Modell,
-   Zeitpunkt und Ergebnis.
-5. **Entscheidung/Auftrag** – zunächst strukturiertes Markdown; ein Schema folgt
-   erst bei nachgewiesenem maschinellem Consumer.
+1. Repositorykarte: Identitaet, Rolle, Quellen, Beziehungen, Commit und Frische.
+2. Projektkarte: Ziel, Repositories, Stand, Blocker und naechste Aktion.
+3. Befund: Beobachtung, Erwartung, Beleg, Schweregrad, Vertrauen und Status.
+4. Laufprotokoll: Quellen, Commits, Modellprofil, tatsaechliches Modell, Zeit und Ergebnis.
+5. Entscheidung oder Auftrag: zunaechst strukturiertes Markdown.
 
 ## Arbeitsfluss
 
 ```text
 Quellen sammeln
-→ Bestand aktualisieren
-→ deterministisch prüfen
-→ semantisch anreichern
-→ Befunde deduplizieren
-→ Mensch entscheidet
-→ Auftrag mit Target-Proof übergeben
-→ Ergebnis verifizieren
+-> Bestand aktualisieren
+-> deterministisch pruefen
+-> semantisch anreichern
+-> Hinweise deduplizieren
+-> Mensch entscheidet
+-> Auftrag mit Target-Proof uebergeben
+-> Ergebnis verifizieren
 ```
 
-## Modellstrategie
+## Modellprofile
 
-- `free-default`: Extraktion, Klassifikation, Zusammenfassung und begrenzter
-  Claim-Code-Vergleich.
+- `free-default`: Extraktion, Klassifikation, Zusammenfassung und begrenzter Claim-Code-Vergleich.
 - `manual-deep-review`: nur nach menschlicher Freigabe.
 - Keine automatische kostenpflichtige Eskalation.
-- Jeder Lauf protokolliert angefordertes Profil, angefordertes und tatsächliches
-  Modell, Provider, Fallback, Quellen und Zeitpunkte.
+- Jeder Lauf protokolliert Profil, Modell, Provider, Fallback, Quellen und Zeitpunkte.
 
-## Legacy-Räume
+## Legacy-Raeume
 
-Die bisherigen sechs Räume bleiben während der Übergangsphase erhalten, sind
-aber keine Zielorte für neue Arbeit. Ihre primären Nachfolger sind:
-
-| Legacy-Raum | Primärer Nachfolger |
+| Bisher | Primaerer Nachfolger |
 |---|---|
 | Vorzimmer | Steuerung |
 | Heimgewebe | Bestand |
 | Weltgewebe | Bestand |
 | Werkstatt | Steuerung |
-| Labor | Prüfung |
-| Betrieb | Prüfung |
+| Labor | Pruefung |
+| Betrieb | Pruefung |
 
-Bestehende Inhalte werden später einzeln als `keep`, `move`, `split`, `archive`
-oder `delete` klassifiziert. Es gibt keine automatische Massenverschiebung.
+Bestehende Inhalte werden einzeln als `keep`, `move`, `split`, `archive` oder `delete` klassifiziert. Es gibt keine automatische Massenverschiebung.
 
-## Migrationsphasen
+## Phasen
 
-1. **Parallelstruktur:** drei neue aktive Räume anlegen; Legacy-Räume bleiben lesbar.
-2. **Lokaler Cutover:** Workspace-Konfiguration auf `steuerung` umstellen und
-   lokalen Layout-Guard ausführen.
-3. **Repository- und Projektkarten:** bestehende Repository References als
-   Ausgangspunkt verwenden; keine zweite Wahrheit erzeugen.
-4. **Deterministischer Sammler:** zunächst nur freigegebene Repositories und
-   Delta-Analysen.
-5. **Prüfung:** Evidence-Pflicht, stabile Fingerprints und Hinweis/Bestätigt-Trennung.
-6. **Steuerung:** Lage, Entscheidungen und Aufträge aus validierten Artefakten.
-7. **Legacy-Räumung:** erst nach belegter Inhaltsmigration und Rückrollprobe.
-8. **Automatisierung:** erst nach wiederholbaren manuellen Läufen ohne Secret-Leak
-   oder unkontrollierten Schreibzugriff.
+1. Drei Zielraeume parallel anlegen; alte Raeume bleiben lesbar.
+2. Lokale Workspace-Konfiguration sichern und kontrolliert auf `steuerung` umstellen.
+3. Bestehende Repository References als Ausgangspunkt fuer Repositorykarten nutzen.
+4. Deterministischen Sammler fuer freigegebene Repositories bauen.
+5. Belegpflicht, stabile Fingerprints und Hinweis-Bestaetigt-Trennung einfuehren.
+6. Lage und Auftraege aus validierten Artefakten erzeugen.
+7. Alte Raeume erst nach belegter Inhaltsmigration entfernen.
+8. Automatisierung erst nach wiederholbaren manuellen Laeufen aktivieren.
 
 ## Neubewertung
 
-Die Dreiraumarchitektur wird neu bewertet, wenn mindestens eine echte Grenze
-entsteht, die sie nicht abbildet: getrennte Benutzer, getrennte
-Vertraulichkeitsstufen, technisch erzwungene Agenten-Sandboxes oder stark
-abweichende Providerregeln.
+Die Dreiraumstruktur wird neu bewertet, wenn getrennte Benutzer, Vertraulichkeitsstufen, technisch erzwungene Agenten-Sandboxes oder stark abweichende Providerregeln entstehen.
