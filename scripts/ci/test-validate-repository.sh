@@ -141,12 +141,12 @@ expect_failure "Test 12: falsche cabinet_version" "erwartet=0.4.4"
 reset_state
 python3 -c 'import json; m=json.load(open("ops/manifest.json")); m["executables"].pop(); json.dump(m, open("ops/manifest.json","w"))'
 git commit -am "remove executable" >/dev/null
-expect_failure "Test 13: fehlendes Executable" "FAIL: manifest.executables: count mismatch: 3 != 4"
+expect_failure "Test 13: fehlendes Executable" "FAIL: manifest.executables.sources: fehlend="
 
 reset_state
 python3 -c 'import json; m=json.load(open("ops/manifest.json")); m["executables"].append({"source": "ops/bin/cabinet", "destination": "~/.local/bin/cabinet-extra", "mode": "0755"}); json.dump(m, open("ops/manifest.json","w"))'
 git commit -am "add executable" >/dev/null
-expect_failure "Test 14: zusätzliches Executable" "FAIL: manifest.executables: count mismatch: 5 != 4"
+expect_failure "Test 14: zusätzliches Executable" "FAIL: manifest.executables: duplicate source: ops/bin/cabinet"
 
 reset_state
 python3 -c 'import json; m=json.load(open("ops/manifest.json")); m["executables"][0]["destination"]="wrong"; json.dump(m, open("ops/manifest.json","w"))'
@@ -172,7 +172,7 @@ expect_failure "Test 18: falscher Git-Modus 100644 für Executable" "FAIL: manif
 reset_state
 python3 -c 'import json; m=json.load(open("ops/manifest.json")); m["symlinks"][0]["source"]="missing.sh"; json.dump(m, open("ops/manifest.json","w"))'
 git commit -am "missing symlink src" >/dev/null
-expect_failure "Test 19: fehlende Symlinkquelle" "FAIL: manifest: source not in git tree: missing.sh"
+expect_failure "Test 19: fehlende Symlinkquelle" "FAIL: manifest.symlinks.sources: fehlend="
 
 reset_state
 python3 -c 'import json; m=json.load(open("ops/manifest.json")); m["local_only"].append("extra"); json.dump(m, open("ops/manifest.json","w"))'
@@ -233,12 +233,12 @@ expect_failure "Test 29: Erlaubte Quelle ersetzt erwartete Quelle" "duplicate so
 reset_state
 python3 -c 'import json; m=json.load(open("ops/manifest.json")); m["executables"][0]["unexpected"]="value"; json.dump(m, open("ops/manifest.json","w"))'
 git commit -am "unexpected field" >/dev/null
-expect_failure "Test 30: Unerwartetes Feld" "unerwartet=['unexpected']"
+expect_failure "Test 30: Unerwartetes Feld" "manifest.executables[0].fields: gefunden="
 
 reset_state
 python3 -c 'import json; m=json.load(open("ops/manifest.json")); m["executables"][0].pop("mode"); json.dump(m, open("ops/manifest.json","w"))'
 git commit -am "missing mode" >/dev/null
-expect_failure "Test 31: Fehlendes mode-Feld" "fehlend=['mode']"
+expect_failure "Test 31: Fehlendes mode-Feld" "manifest.executables[0].fields: fehlend="
 
 reset_state
 python3 -c 'import json; m=json.load(open("ops/manifest.json")); m["executables"]={}; json.dump(m, open("ops/manifest.json","w"))'
@@ -265,7 +265,10 @@ expect_failure "Test 35: Safe-Export als Git-Symlink" "git_mode: gefunden=120000
 
 reset_state
 echo "=== Test 36: Zu früher Target-Proof ==="
-echo "syntax error" > scripts/cabinet-safe-export.sh
+# Erzeuge echten Bash-Syntaxfehler in einem Bash-Skript:
+# validate-repository.sh prüft alle *.sh-Dateien mit bash -n;
+# ein unkorrekt geschlossenes if-Statement schlägt fehl
+printf '#!/usr/bin/env bash\nif true\n# missing then/fi\n' > scripts/cabinet-safe-export.sh
 git commit -am "bash syntax error" >/dev/null
 out=$(./scripts/ci/validate-repository.sh 2>&1 || true)
 if ./scripts/ci/validate-repository.sh >/dev/null 2>&1; then
