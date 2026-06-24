@@ -1,3 +1,3 @@
-# Uebergaben
+# Übergaben
 
-Vorbereitete Auftraege fuer Diagnose- und Coding-Agenten. Keine automatische Ausfuehrung.
+Vorbereitete Aufträge für Diagnose- und Coding-Agenten. Keine automatische Ausführung.
