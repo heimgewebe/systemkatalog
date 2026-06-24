@@ -1,7 +1,5 @@
-# Vorzimmer
+# Vorzimmer — Migration
 
-Aufnahme, Klärung und Verteilung neuer Arbeit.
+Das Vorzimmer bleibt während der Parallelphase lesbar. Neue offene Arbeit wird künftig in Steuerung aufgenommen.
 
-## Einstieg
-
-Öffne zuerst **Start Here**.
+Bestehende Inhalte werden einzeln geprüft und nicht automatisch verschoben.
