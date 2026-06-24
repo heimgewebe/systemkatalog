@@ -1,0 +1,10 @@
+schemaVersion: 1
+id: "pruefung-room"
+name: "Pruefung"
+kind: room
+version: "0.1.0"
+description: "Prueflaeufe, Evidence, Befunde, Widersprueche und Risiken."
+entry: index.md
+room:
+  icon: search
+  color: "rgb(202, 138, 4)"
