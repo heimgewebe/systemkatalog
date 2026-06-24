@@ -76,7 +76,7 @@ fi
 echo "PASS"
 
 echo "=== Test 4: Echter lokaler Modus besteht auf /home/alex/repos/cabinet ==="
-if [[ -f "$REAL_REPO/.home/home.json" ]]; then
+if [[ -f "$REAL_REPO/.agents/.config/workspace.json" ]]; then
     if ! python3 "$REAL_REPO/scripts/check-cabinet-layout.py" --mode local "$REAL_REPO" >/dev/null; then
         echo "FAIL: local mode failed on real repo."
         exit 1
