@@ -1,11 +1,15 @@
 # Cabinet Home
 
-Cabinet ordnet Repositories, Projekte, Pruefungen und naechste Schritte.
+Cabinet ordnet Repositories, Projekte, Prüfungen und nächste Schritte.
 
-## Zielraeume
+## Zielräume
 
-- Bestand: Repositories, Projekte und Quellen
-- Pruefung: Laeufe, Belege und Risiken
-- Steuerung: Lage, Aufgaben und Uebergaben
+- **Bestand** – Repositories, Projekte, Quellen und Beziehungen
+- **Prüfung** – Läufe, Belege, Befunde, Widersprüche und Risiken
+- **Steuerung** – Lage, Entscheidungen, Aufgaben, Blocker und Übergaben
 
-Die bisherigen Raeume bleiben waehrend der Parallelphase lesbar. Siehe docs/blueprints/repository-oversight-layout-v1.md.
+## Parallelphase
+
+Die bisherigen sechs Räume bleiben vorerst lesbar. Sie sind Migrationsquellen und keine dauerhafte Zielstruktur. Der technische Default bleibt bis zum lokalen Cutover `vorzimmer`.
+
+Die Zielarchitektur und die Migrationsregeln stehen in `docs/blueprints/repository-oversight-layout-v1.md`.
