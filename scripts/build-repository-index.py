@@ -22,14 +22,12 @@ REQUIRED_HEADINGS = (
     "Geprüfter Review-Snapshot",
     "Live-Snapshot beim Import",
     "Identität",
-    "Kanonische Systemrolle",
-    "Belegter Zweck",
-    "Abgrenzung",
-    "Import-Gate",
-    "Pflegevertrag",
 )
+OPTIONAL_ROLE_HEADING = "Kanonische Systemrolle"
 COMMIT_RE = re.compile(r"^[0-9a-f]{40}$")
 WORKTREE_RE = re.compile(r"^(?:clean|dirty):[0-9]+$")
+VISIBLE_HASH_LENGTH = 12
+VISIBLE_ROLE_LENGTH = 50
 
 
 class InventoryError(RuntimeError):
@@ -39,6 +37,7 @@ class InventoryError(RuntimeError):
 @dataclass(frozen=True)
 class RepositoryRecord:
     repository: str
+    role: str | None
     origin: str
     default_branch: str | None
     review_head: str
@@ -105,7 +104,9 @@ def _split_sections(text: str, source_path: str) -> dict[str, list[str]]:
     return sections
 
 
-def _parse_field_table(lines: list[str], source_path: str, section: str) -> dict[str, str]:
+def _parse_field_table(
+    lines: list[str], source_path: str, section: str
+) -> dict[str, str]:
     rows: dict[str, str] = {}
     header_seen = False
     separator_seen = False
@@ -151,6 +152,19 @@ def _parse_field_table(lines: list[str], source_path: str, section: str) -> dict
     return rows
 
 
+def _parse_role(lines: list[str]) -> str | None:
+    quote_lines: list[str] = []
+    for raw_line in lines:
+        line = raw_line.strip()
+        if line.startswith(">"):
+            value = _strip_wrapper(line[1:].strip())
+            if value:
+                quote_lines.append(value)
+        elif quote_lines:
+            break
+    return " ".join(quote_lines) or None
+
+
 def _require(table: dict[str, str], key: str, source_path: str, section: str) -> str:
     value = table.get(key, "").strip()
     if not value or value == "<fehlt>":
@@ -193,6 +207,7 @@ def parse_reference(repo_root: Path, source_path: str) -> RepositoryRecord:
         "Live-Snapshot beim Import",
     )
     identity = _parse_field_table(sections["Identität"], source_path, "Identität")
+    role = _parse_role(sections.get(OPTIONAL_ROLE_HEADING, []))
 
     repository = _require(review, "Repository", source_path, "Geprüfter Review-Snapshot")
     review_origin = _require(review, "Origin", source_path, "Geprüfter Review-Snapshot")
@@ -234,6 +249,7 @@ def parse_reference(repo_root: Path, source_path: str) -> RepositoryRecord:
 
     return RepositoryRecord(
         repository=repository,
+        role=role,
         origin=review_origin,
         default_branch=default_branch,
         review_head=review_head,
@@ -245,12 +261,17 @@ def parse_reference(repo_root: Path, source_path: str) -> RepositoryRecord:
     )
 
 
-def load_records(repo_root: Path) -> list[RepositoryRecord]:
+def load_records(repo_root: Path) -> tuple[list[RepositoryRecord], list[str]]:
     paths = tracked_reference_paths(repo_root)
     if not paths:
         raise InventoryError("no tracked Repository Reference.md files found")
 
     records = [parse_reference(repo_root, path) for path in paths]
+    warnings = [
+        f"{record.source_path}: optional role missing"
+        for record in records
+        if record.role is None
+    ]
     seen: dict[str, str] = {}
     for record in records:
         key = record.repository.casefold()
@@ -261,13 +282,16 @@ def load_records(repo_root: Path) -> list[RepositoryRecord]:
                 f"{record.repository!r}: {previous} and {record.source_path}"
             )
         seen[key] = record.source_path
-    return sorted(
-        records,
-        key=lambda record: (
-            record.repository.casefold(),
-            record.repository,
-            record.source_path,
+    return (
+        sorted(
+            records,
+            key=lambda record: (
+                record.repository.casefold(),
+                record.repository,
+                record.source_path,
+            ),
         ),
+        warnings,
     )
 
 
@@ -279,6 +303,22 @@ def _code(value: str | None) -> str:
     if not value:
         return "—"
     return f"`{_escape_cell(value)}`"
+
+
+def _short_hash(value: str) -> str:
+    return value[:VISIBLE_HASH_LENGTH]
+
+
+def _compact_role(value: str | None) -> str:
+    if not value:
+        return "—"
+    if len(value) <= VISIBLE_ROLE_LENGTH:
+        return _escape_cell(value)
+    return _escape_cell(value[: VISIBLE_ROLE_LENGTH - 3] + "...")
+
+
+def _compact_timestamp(value: str) -> str:
+    return value[:10]
 
 
 def _reference_link(source_path: str, output_path: Path) -> str:
@@ -296,8 +336,8 @@ def render_index(records: list[RepositoryRecord], output_path: Path) -> str:
         "> Source: tracked `Repository Reference.md` files.",
         "> `Repository Reference.md` is the versioned detail and evidence source; this index is only a generated overview.",
         "",
-        "| Repository | Origin | Default-Branch | Review-HEAD | Live-HEAD | Beziehung | Live-Status | Importiert | Referenz |",
-        "|---|---|---|---|---|---|---|---|---|",
+        "| Repository | Rolle | Review | Live | Beziehung | Status | Importiert | Referenz |",
+        "|---|---|---|---|---|---|---|---|",
     ]
     for record in records:
         lines.append(
@@ -305,13 +345,12 @@ def render_index(records: list[RepositoryRecord], output_path: Path) -> str:
             + " | ".join(
                 (
                     _code(record.repository),
-                    _code(record.origin),
-                    _code(record.default_branch),
-                    _code(record.review_head),
-                    _code(record.live_head),
+                    _compact_role(record.role),
+                    _code(_short_hash(record.review_head)),
+                    _code(_short_hash(record.live_head)),
                     _escape_cell(record.relationship),
                     _code(record.working_tree),
-                    _code(record.imported_at),
+                    _code(_compact_timestamp(record.imported_at)),
                     _reference_link(record.source_path, output_path),
                 )
             )
@@ -375,29 +414,42 @@ def main(argv: list[str] | None = None) -> int:
     if not output_path.is_absolute():
         output_path = repo_root / output_path
     try:
-        records = load_records(repo_root)
-        expected = render_index(records, output_path.relative_to(repo_root))
-    except (InventoryError, UnicodeError, OSError) as exc:
+        relative_output = output_path.relative_to(repo_root)
+        records, warnings = load_records(repo_root)
+        expected = render_index(records, relative_output)
+    except (InventoryError, UnicodeError, OSError, ValueError) as exc:
         print(f"ERROR: {exc}", file=sys.stderr)
         return 2
+
+    for warning in warnings:
+        print(f"WARNING: {warning}", file=sys.stderr)
 
     current = output_path.read_text(encoding="utf-8") if output_path.is_file() else ""
     if args.check:
         if current != expected:
             print(
-                f"ERROR: repository inventory is stale: {output_path.relative_to(repo_root)}",
+                f"ERROR: repository inventory is stale: {relative_output}",
                 file=sys.stderr,
             )
             print(_limited_diff(current, expected, output_path), file=sys.stderr)
             return 1
-        print(f"Repository inventory: PASS ({len(records)} tracked references)")
+        print(
+            "Repository inventory: PASS "
+            f"({len(records)} tracked references, {len(warnings)} warnings)"
+        )
         return 0
 
     if current == expected:
-        print(f"Repository inventory unchanged ({len(records)} tracked references)")
+        print(
+            "Repository inventory unchanged "
+            f"({len(records)} tracked references, {len(warnings)} warnings)"
+        )
         return 0
     _atomic_write(output_path, expected)
-    print(f"Repository inventory written ({len(records)} tracked references)")
+    print(
+        "Repository inventory written "
+        f"({len(records)} tracked references, {len(warnings)} warnings)"
+    )
     return 0
 
 
