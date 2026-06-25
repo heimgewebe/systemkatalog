@@ -27,6 +27,7 @@ OPTIONAL_ROLE_HEADING = "Kanonische Systemrolle"
 COMMIT_RE = re.compile(r"^[0-9a-f]{40}$")
 WORKTREE_RE = re.compile(r"^(?:clean|dirty):[0-9]+$")
 VISIBLE_HASH_LENGTH = 12
+VISIBLE_ROLE_WORDS = 5
 
 
 class InventoryError(RuntimeError):
@@ -310,8 +311,15 @@ def _short_hash(value: str) -> str:
     return value[:VISIBLE_HASH_LENGTH]
 
 
-def _role(value: str | None) -> str:
-    return "—" if not value else _escape_cell(value)
+def _role_excerpt(value: str | None) -> str:
+    if not value:
+        return "—"
+    plain = value.replace("`", "").replace("**", "").replace("__", "")
+    words = plain.split()
+    excerpt = " ".join(words[:VISIBLE_ROLE_WORDS])
+    if len(words) > VISIBLE_ROLE_WORDS:
+        excerpt += " ..."
+    return _escape_cell(excerpt)
 
 
 def _reference_link(source_path: str, output_path: Path) -> str:
@@ -329,7 +337,7 @@ def render_index(records: list[RepositoryRecord], output_path: Path) -> str:
         "> Source: tracked `Repository Reference.md` files.",
         "> `Repository Reference.md` is the versioned detail and evidence source; this index is only a generated overview.",
         "",
-        "| Repository | Rolle | Review | Live | Beziehung | Status | Referenz |",
+        "| Repository | Rollen-Auszug | Review | Live | Beziehung | Status | Referenz |",
         "|---|---|---|---|---|---|---|",
     ]
     for record in records:
@@ -338,7 +346,7 @@ def render_index(records: list[RepositoryRecord], output_path: Path) -> str:
             + " | ".join(
                 (
                     _code(record.repository),
-                    _role(record.role),
+                    _role_excerpt(record.role),
                     _code(_short_hash(record.review_head)),
                     _code(_short_hash(record.live_head)),
                     _escape_cell(record.relationship),
