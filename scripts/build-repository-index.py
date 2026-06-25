@@ -3,7 +3,9 @@
 
 The Git index discovers and authorizes tracked references. Local write mode
 reads current regular working-tree files; check mode rejects reference drift
-between the working tree and the indexed blob before rendering.
+between the working tree and the indexed blob before rendering. Working-tree
+reference paths are opened component by component from the repository root
+without following symlinks.
 """
 
 from __future__ import annotations
@@ -17,6 +19,7 @@ import stat
 import subprocess
 import sys
 import tempfile
+from contextlib import ExitStack
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
@@ -113,36 +116,103 @@ def read_index_blob(repo_root: Path, object_id: str) -> bytes:
     return _run_git(repo_root, "cat-file", "blob", object_id)
 
 
-def read_worktree_reference(repo_root: Path, source_path: str) -> bytes:
-    path = repo_root / source_path
+def _required_os_flag(name: str) -> int:
+    value = getattr(os, name, None)
+    if value is None:
+        raise InventoryError(
+            f"platform lacks required {name} support for safe reference path traversal"
+        )
+    return value
+
+
+def _reference_path_components(source_path: str) -> list[str]:
+    if not source_path or os.path.isabs(source_path):
+        raise InventoryError(f"{source_path}: invalid tracked reference path")
+
+    components = source_path.split("/")
+    for component in components:
+        if component in ("", ".", ".."):
+            raise InventoryError(
+                f"{source_path}: invalid tracked reference path component: "
+                f"{component!r}"
+            )
+    return components
+
+
+def _open_root_directory(repo_root: Path) -> int:
+    flags = (
+        os.O_RDONLY
+        | _required_os_flag("O_DIRECTORY")
+        | _required_os_flag("O_CLOEXEC")
+    )
     try:
-        metadata = os.lstat(path)
+        return os.open(repo_root, flags)
+    except FileNotFoundError as exc:
+        raise InventoryError(f"repository root missing: {repo_root}") from exc
+    except NotADirectoryError as exc:
+        raise InventoryError(f"repository root is not a directory: {repo_root}") from exc
+
+
+def _open_parent_directory(source_path: str, component: str, directory_fd: int) -> int:
+    flags = (
+        os.O_RDONLY
+        | _required_os_flag("O_DIRECTORY")
+        | _required_os_flag("O_NOFOLLOW")
+        | _required_os_flag("O_CLOEXEC")
+    )
+    try:
+        descriptor = os.open(component, flags, dir_fd=directory_fd)
     except FileNotFoundError as exc:
         raise InventoryError(
-            f"{source_path}: tracked reference missing from working tree"
+            f"{source_path}: parent path component {component!r} missing from "
+            "working tree"
         ) from exc
-
-    if stat.S_ISLNK(metadata.st_mode):
+    except NotADirectoryError as exc:
         raise InventoryError(
-            f"{source_path}: tracked reference working tree path must be a "
-            "regular file, not a symlink"
-        )
-    if not stat.S_ISREG(metadata.st_mode):
-        raise InventoryError(
-            f"{source_path}: tracked reference working tree path must be a "
-            "regular file"
-        )
-
-    flags = os.O_RDONLY
-    if hasattr(os, "O_CLOEXEC"):
-        flags |= os.O_CLOEXEC
-    if hasattr(os, "O_NONBLOCK"):
-        flags |= os.O_NONBLOCK
-    if hasattr(os, "O_NOFOLLOW"):
-        flags |= os.O_NOFOLLOW
+            f"{source_path}: unsafe or non-directory parent path component "
+            f"{component!r}"
+        ) from exc
+    except OSError as exc:
+        if exc.errno == errno.ELOOP:
+            raise InventoryError(
+                f"{source_path}: parent path component {component!r} must be a "
+                "real directory, not a symlink"
+            ) from exc
+        if exc.errno == errno.ENOENT:
+            raise InventoryError(
+                f"{source_path}: parent path component {component!r} missing "
+                "from working tree"
+            ) from exc
+        if exc.errno == errno.ENOTDIR:
+            raise InventoryError(
+                f"{source_path}: unsafe or non-directory parent path component "
+                f"{component!r}"
+            ) from exc
+        raise
 
     try:
-        descriptor = os.open(path, flags)
+        metadata = os.fstat(descriptor)
+    except Exception:
+        os.close(descriptor)
+        raise
+    if not stat.S_ISDIR(metadata.st_mode):
+        os.close(descriptor)
+        raise InventoryError(
+            f"{source_path}: unsafe or non-directory parent path component "
+            f"{component!r}"
+        )
+    return descriptor
+
+
+def _open_reference_file(source_path: str, filename: str, directory_fd: int) -> int:
+    flags = (
+        os.O_RDONLY
+        | _required_os_flag("O_NOFOLLOW")
+        | _required_os_flag("O_CLOEXEC")
+        | _required_os_flag("O_NONBLOCK")
+    )
+    try:
+        descriptor = os.open(filename, flags, dir_fd=directory_fd)
     except FileNotFoundError as exc:
         raise InventoryError(
             f"{source_path}: tracked reference missing from working tree"
@@ -153,16 +223,53 @@ def read_worktree_reference(repo_root: Path, source_path: str) -> bytes:
                 f"{source_path}: tracked reference working tree path must be a "
                 "regular file, not a symlink"
             ) from exc
-        raise
-
-    with os.fdopen(descriptor, "rb") as handle:
-        opened_metadata = os.fstat(handle.fileno())
-        if not stat.S_ISREG(opened_metadata.st_mode):
+        if exc.errno == errno.ENOENT:
             raise InventoryError(
-                f"{source_path}: tracked reference working tree path must be a "
-                "regular file"
+                f"{source_path}: tracked reference missing from working tree"
+            ) from exc
+        if exc.errno == errno.ENOTDIR:
+            raise InventoryError(
+                f"{source_path}: unsafe or non-directory parent path component"
+            ) from exc
+        raise
+    return descriptor
+
+
+def read_worktree_reference(repo_root: Path, source_path: str) -> bytes:
+    if os.open not in os.supports_dir_fd:
+        raise InventoryError(
+            "platform lacks dir_fd support for safe reference path traversal"
+        )
+
+    components = _reference_path_components(source_path)
+
+    with ExitStack() as stack:
+        current_directory_fd = _open_root_directory(repo_root)
+        stack.callback(os.close, current_directory_fd)
+
+        for component in components[:-1]:
+            current_directory_fd = _open_parent_directory(
+                source_path, component, current_directory_fd
             )
-        return handle.read()
+            stack.callback(os.close, current_directory_fd)
+
+        descriptor = _open_reference_file(
+            source_path, components[-1], current_directory_fd
+        )
+        try:
+            metadata = os.fstat(descriptor)
+            if not stat.S_ISREG(metadata.st_mode):
+                raise InventoryError(
+                    f"{source_path}: tracked reference working tree path must "
+                    "be a regular file"
+                )
+
+            with os.fdopen(descriptor, "rb") as handle:
+                descriptor = -1
+                return handle.read()
+        finally:
+            if descriptor != -1:
+                os.close(descriptor)
 
 
 def _strip_wrapper(value: str) -> str:

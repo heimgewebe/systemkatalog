@@ -3,6 +3,7 @@ from __future__ import annotations
 import importlib.util
 import os
 import re
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -119,6 +120,34 @@ class RepositoryInventoryCliTests(unittest.TestCase):
         result = self.run_cli("--check")
         self.assertEqual(result.returncode, 2, result.stderr)
         self.assertIn(expected, result.stderr)
+
+    def make_external_dir(self) -> Path:
+        directory = tempfile.TemporaryDirectory(dir=self.root.parent)
+        self.addCleanup(directory.cleanup)
+        return Path(directory.name)
+
+    def assert_outside_repository(self, path: Path) -> None:
+        root = self.root.resolve()
+        resolved = path.resolve()
+        self.assertNotEqual(resolved, root)
+        self.assertNotIn(root, resolved.parents)
+
+    def write_sentinel_index(self) -> tuple[Path, bytes]:
+        output = self.root / "bestand/10 Repositories/index.md"
+        output.parent.mkdir(parents=True, exist_ok=True)
+        output.write_bytes(b"sentinel index\n")
+        return output, output.read_bytes()
+
+    def assert_inventory_output_unchanged(self, output: Path, before: bytes) -> None:
+        self.assertEqual(before, output.read_bytes())
+        self.assertEqual([], list(output.parent.glob(f".{output.name}.*.tmp")))
+
+    def assert_parent_path_error(
+        self, result: subprocess.CompletedProcess[str], component: str
+    ) -> None:
+        self.assertEqual(result.returncode, 2, result.stderr)
+        self.assertIn("parent path component", result.stderr)
+        self.assertIn(repr(component), result.stderr)
 
     def test_role_excerpt_hashes_and_snapshot_time_are_deterministic(self) -> None:
         long_role = "A deliberately long repository role that remains fully visible"
@@ -321,6 +350,149 @@ class RepositoryInventoryCliTests(unittest.TestCase):
             self.assertNotIn("symlinked", result.stdout)
             self.assertNotIn("symlinked", result.stderr)
         self.assertFalse((self.root / "bestand/10 Repositories/index.md").exists())
+
+    def test_parent_directory_symlink_with_different_content_is_rejected(
+        self,
+    ) -> None:
+        self.write_reference("room/Repository Reference.md", reference_text("alpha"))
+        output, before = self.write_sentinel_index()
+        external = self.make_external_dir()
+        external_reference = external / "Repository Reference.md"
+        external_reference.write_text(reference_text("beta"), encoding="utf-8")
+        self.assert_outside_repository(external_reference)
+
+        shutil.rmtree(self.root / "room")
+        (self.root / "room").symlink_to(external, target_is_directory=True)
+
+        written = self.run_cli()
+        checked = self.run_cli("--check")
+
+        for result in (written, checked):
+            self.assert_parent_path_error(result, "room")
+            self.assertNotIn("beta", result.stdout)
+            self.assertNotIn("beta", result.stderr)
+        self.assert_inventory_output_unchanged(output, before)
+
+    def test_parent_directory_symlink_with_index_identical_content_is_rejected(
+        self,
+    ) -> None:
+        source_path = "room/Repository Reference.md"
+        self.write_reference(source_path, reference_text("alpha"))
+        raw_entry = subprocess.check_output(
+            ["git", "-C", str(self.root), "ls-files", "-s", "--", source_path],
+            text=True,
+        )
+        object_id = raw_entry.split()[1]
+        indexed_content = subprocess.check_output(
+            ["git", "-C", str(self.root), "cat-file", "blob", object_id]
+        )
+        external = self.make_external_dir()
+        external_reference = external / "Repository Reference.md"
+        external_reference.write_bytes(indexed_content)
+        self.assert_outside_repository(external_reference)
+
+        shutil.rmtree(self.root / "room")
+        (self.root / "room").symlink_to(external, target_is_directory=True)
+
+        written = self.run_cli()
+        checked = self.run_cli("--check")
+
+        for result in (written, checked):
+            self.assert_parent_path_error(result, "room")
+            self.assertNotIn("Repository inventory: PASS", result.stdout)
+        self.assertFalse((self.root / "bestand/10 Repositories/index.md").exists())
+
+    def test_nested_parent_directory_symlink_is_rejected(self) -> None:
+        source_path = "one/two/three/Repository Reference.md"
+        self.write_reference(source_path, reference_text("alpha"))
+        output, before = self.write_sentinel_index()
+        external = self.make_external_dir()
+        external_reference = external / "three/Repository Reference.md"
+        external_reference.parent.mkdir(parents=True)
+        external_reference.write_text(reference_text("beta"), encoding="utf-8")
+        self.assert_outside_repository(external_reference)
+
+        shutil.rmtree(self.root / "one/two")
+        (self.root / "one/two").symlink_to(external, target_is_directory=True)
+
+        written = self.run_cli()
+        checked = self.run_cli("--check")
+
+        for result in (written, checked):
+            self.assert_parent_path_error(result, "two")
+            self.assertNotIn("beta", result.stdout)
+            self.assertNotIn("beta", result.stderr)
+        self.assert_inventory_output_unchanged(output, before)
+
+    def test_nested_regular_reference_path_still_builds_and_checks(self) -> None:
+        source_path = "one/two/three/Repository Reference.md"
+        self.write_reference(source_path, reference_text("alpha"))
+
+        written = self.run_cli()
+        checked = self.run_cli("--check")
+
+        self.assertEqual(written.returncode, 0, written.stderr)
+        self.assertEqual(checked.returncode, 0, checked.stderr)
+        text = (self.root / "bestand/10 Repositories/index.md").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn("`alpha`", text)
+        self.assertIn(f"`{source_path}`", text)
+
+    def test_parent_path_component_regular_file_is_rejected(self) -> None:
+        source_path = "one/two/three/Repository Reference.md"
+        self.write_reference(source_path, reference_text("alpha"))
+        output, before = self.write_sentinel_index()
+        shutil.rmtree(self.root / "one/two")
+        (self.root / "one/two").write_text("not a directory\n", encoding="utf-8")
+
+        written = self.run_cli()
+        checked = self.run_cli("--check")
+
+        for result in (written, checked):
+            self.assert_parent_path_error(result, "two")
+        self.assert_inventory_output_unchanged(output, before)
+
+    def test_parent_path_failure_closes_directory_descriptors(self) -> None:
+        proc_fds = Path("/proc/self/fd")
+        if not proc_fds.is_dir():
+            self.skipTest("/proc/self/fd is required for descriptor counting")
+
+        source_path = "one/two/three/Repository Reference.md"
+        self.write_reference(source_path, reference_text("alpha"))
+        external = self.make_external_dir()
+        (external / "three").mkdir()
+        (external / "three/Repository Reference.md").write_text(
+            reference_text("beta"), encoding="utf-8"
+        )
+        shutil.rmtree(self.root / "one/two")
+        (self.root / "one/two").symlink_to(external, target_is_directory=True)
+        generator = load_generator_module()
+
+        before = len(list(proc_fds.iterdir()))
+        for _ in range(5):
+            with self.assertRaises(generator.InventoryError):
+                generator.read_worktree_reference(self.root, source_path)
+        after = len(list(proc_fds.iterdir()))
+
+        self.assertEqual(before, after)
+
+    def test_reference_path_components_reject_unsafe_paths(self) -> None:
+        generator = load_generator_module()
+
+        for source_path in (
+            "",
+            "/absolute/Repository Reference.md",
+            ".",
+            "..",
+            "room//Repository Reference.md",
+            "room/./Repository Reference.md",
+            "room/../Repository Reference.md",
+            "room/",
+        ):
+            with self.subTest(source_path=source_path):
+                with self.assertRaises(generator.InventoryError):
+                    generator._reference_path_components(source_path)
 
     def test_missing_worktree_reference_is_rejected(self) -> None:
         self.write_reference("room/Repository Reference.md", reference_text("alpha"))

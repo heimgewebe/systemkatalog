@@ -49,7 +49,8 @@ Enthält Lageübersicht, Entscheidungen, priorisierte Aufgaben, Blocker und Übe
 - `bestand/10 Repositories/index.md` ist ein deterministisch erzeugter Repository-Snapshotkatalog.
 - Pfadermittlung und Zulässigkeit der References kommen aus dem Git-Index: akzeptiert werden nur reguläre Blobs im Modus `100644` auf Stage `0`.
 - Der lokale Schreibmodus liest aktuelle reguläre Working-Tree-Dateien, damit Reference-Änderung und erzeugter Index anschließend gemeinsam gestaged werden können.
-- Der Checkmodus verarbeitet keinen stillen Drift zwischen Working Tree und Index-Blob; abweichende, fehlende oder symlinked Working-Tree-References scheitern fail-closed.
+- Working-Tree-References werden vom geöffneten Repositoryroot komponentenweise und ohne Symlink-Following geöffnet; kein Bestandteil eines Reference-Pfades darf ein Symlink sein.
+- Der Checkmodus verarbeitet keinen stillen Drift zwischen Working Tree und Index-Blob; abweichende, fehlende oder unsicher aufgelöste Working-Tree-References scheitern fail-closed.
 - CI validiert auf sauberem Checkout; dort bilden Git-Index, Working Tree und Commit-Snapshot dieselben Reference-Bytes ab.
 - Der Index darf explizite Werte zusammenfassen, sortieren und verlinken.
 - Import-HEAD, Import-Worktree und Commitbeziehung werden ausdrücklich als zeitgebundene Importwerte samt Erfassungszeitpunkt dargestellt; sie behaupten keinen aktuellen Zustand des Quellrepositories.
