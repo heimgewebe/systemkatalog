@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build the deterministic Cabinet repository inventory from tracked references."""
+"""Build the deterministic Cabinet repository snapshot catalogue."""
 
 from __future__ import annotations
 
@@ -13,7 +13,6 @@ import tempfile
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
-from urllib.parse import quote
 
 DEFAULT_OUTPUT = Path("bestand/10 Repositories/index.md")
 REFERENCE_PATHSPEC = ":(glob)**/Repository Reference.md"
@@ -25,7 +24,8 @@ REQUIRED_HEADINGS = (
 )
 OPTIONAL_ROLE_HEADING = "Kanonische Systemrolle"
 COMMIT_RE = re.compile(r"^[0-9a-f]{40}$")
-WORKTREE_RE = re.compile(r"^(?:clean|dirty):[0-9]+$")
+WORKTREE_RE = re.compile(r"^(clean|dirty):([0-9]+)$")
+TABLE_SEPARATOR_RE = re.compile(r"^:?-{3,}:?$")
 VISIBLE_HASH_LENGTH = 12
 VISIBLE_ROLE_WORDS = 5
 
@@ -41,9 +41,9 @@ class RepositoryRecord:
     origin: str
     default_branch: str | None
     review_head: str
-    live_head: str
+    import_head: str
     relationship: str
-    working_tree: str
+    import_worktree: str
     imported_at: str
     source_path: str
 
@@ -130,7 +130,7 @@ def _parse_field_table(
             header_seen = True
             continue
         if not separator_seen:
-            if set(left) <= {"-", ":"} and set(right) <= {"-", ":"}:
+            if TABLE_SEPARATOR_RE.fullmatch(left) and TABLE_SEPARATOR_RE.fullmatch(right):
                 separator_seen = True
                 continue
             raise InventoryError(
@@ -181,11 +181,49 @@ def _validate_commit(value: str, source_path: str, label: str) -> None:
 
 def _validate_timestamp(value: str, source_path: str) -> None:
     try:
-        datetime.fromisoformat(value.replace("Z", "+00:00"))
+        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
     except ValueError as exc:
         raise InventoryError(
             f"{source_path}: invalid import timestamp: {value!r}"
         ) from exc
+    if parsed.tzinfo is None or parsed.utcoffset() is None:
+        raise InventoryError(
+            f"{source_path}: import timestamp must include a timezone: {value!r}"
+        )
+
+
+def _validate_worktree(value: str, source_path: str) -> None:
+    match = WORKTREE_RE.fullmatch(value)
+    if match is None:
+        raise InventoryError(
+            f"{source_path}: invalid import Working Tree value: {value!r}"
+        )
+    state, raw_count = match.groups()
+    count = int(raw_count)
+    if state == "clean" and count != 0:
+        raise InventoryError(
+            f"{source_path}: contradictory import Working Tree value: {value!r}"
+        )
+    if state == "dirty" and count == 0:
+        raise InventoryError(
+            f"{source_path}: contradictory import Working Tree value: {value!r}"
+        )
+
+
+def _validate_relationship(
+    relationship: str, review_head: str, import_head: str, source_path: str
+) -> None:
+    normalized = relationship.casefold()
+    if normalized == "identisch" and review_head != import_head:
+        raise InventoryError(
+            f"{source_path}: relationship 'identisch' contradicts differing HEADs"
+        )
+    if review_head == import_head and (
+        "divergent" in normalized or "rewritten" in normalized or "amended" in normalized
+    ):
+        raise InventoryError(
+            f"{source_path}: divergent relationship contradicts identical HEADs"
+        )
 
 
 def parse_reference(repo_root: Path, source_path: str) -> RepositoryRecord:
@@ -203,7 +241,7 @@ def parse_reference(repo_root: Path, source_path: str) -> RepositoryRecord:
         source_path,
         "Geprüfter Review-Snapshot",
     )
-    live = _parse_field_table(
+    imported = _parse_field_table(
         sections["Live-Snapshot beim Import"],
         source_path,
         "Live-Snapshot beim Import",
@@ -215,39 +253,37 @@ def parse_reference(repo_root: Path, source_path: str) -> RepositoryRecord:
     review_origin = _require(review, "Origin", source_path, "Geprüfter Review-Snapshot")
     review_path = _require(review, "Pfad", source_path, "Geprüfter Review-Snapshot")
     review_head = _require(review, "HEAD", source_path, "Geprüfter Review-Snapshot")
-    live_origin = _require(live, "Origin", source_path, "Live-Snapshot beim Import")
-    live_path = _require(live, "Pfad", source_path, "Live-Snapshot beim Import")
-    live_head = _require(live, "HEAD", source_path, "Live-Snapshot beim Import")
-    working_tree = _require(
-        live, "Working Tree", source_path, "Live-Snapshot beim Import"
+    import_origin = _require(imported, "Origin", source_path, "Live-Snapshot beim Import")
+    import_path = _require(imported, "Pfad", source_path, "Live-Snapshot beim Import")
+    import_head = _require(imported, "HEAD", source_path, "Live-Snapshot beim Import")
+    import_worktree = _require(
+        imported, "Working Tree", source_path, "Live-Snapshot beim Import"
     )
     relationship = _require(
-        live, "Beziehung zum Review", source_path, "Live-Snapshot beim Import"
+        imported, "Beziehung zum Review", source_path, "Live-Snapshot beim Import"
     )
     imported_at = _require(
         provenance, "Import-Snapshot erfasst", source_path, "Provenienz"
     )
     live_captured_at = _require(
-        live, "Erfasst", source_path, "Live-Snapshot beim Import"
+        imported, "Erfasst", source_path, "Live-Snapshot beim Import"
     )
     canonical_path = _require(identity, "Kanonischer Pfad", source_path, "Identität")
     canonical_remote = _require(identity, "Remote", source_path, "Identität")
     default_branch = identity.get("Default-Branch") or None
 
-    if len({review_origin, live_origin, canonical_remote}) != 1:
+    if len({review_origin, import_origin, canonical_remote}) != 1:
         raise InventoryError(f"{source_path}: contradictory repository origin values")
-    if len({review_path, live_path, canonical_path}) != 1:
+    if len({review_path, import_path, canonical_path}) != 1:
         raise InventoryError(f"{source_path}: contradictory repository path values")
     if imported_at != live_captured_at:
         raise InventoryError(f"{source_path}: contradictory import timestamps")
 
     _validate_commit(review_head, source_path, "review HEAD")
-    _validate_commit(live_head, source_path, "live HEAD")
+    _validate_commit(import_head, source_path, "import HEAD")
     _validate_timestamp(imported_at, source_path)
-    if not WORKTREE_RE.fullmatch(working_tree):
-        raise InventoryError(
-            f"{source_path}: invalid live Working Tree value: {working_tree!r}"
-        )
+    _validate_worktree(import_worktree, source_path)
+    _validate_relationship(relationship, review_head, import_head, source_path)
 
     return RepositoryRecord(
         repository=repository,
@@ -255,9 +291,9 @@ def parse_reference(repo_root: Path, source_path: str) -> RepositoryRecord:
         origin=review_origin,
         default_branch=default_branch,
         review_head=review_head,
-        live_head=live_head,
+        import_head=import_head,
         relationship=relationship,
-        working_tree=working_tree,
+        import_worktree=import_worktree,
         imported_at=imported_at,
         source_path=source_path,
     )
@@ -284,17 +320,15 @@ def load_records(repo_root: Path) -> tuple[list[RepositoryRecord], list[str]]:
                 f"{record.repository!r}: {previous} and {record.source_path}"
             )
         seen[key] = record.source_path
-    return (
-        sorted(
-            records,
-            key=lambda record: (
-                record.repository.casefold(),
-                record.repository,
-                record.source_path,
-            ),
-        ),
-        warnings,
+
+    records.sort(
+        key=lambda record: (
+            record.repository.casefold(),
+            record.repository,
+            record.source_path,
+        )
     )
+    return records, warnings
 
 
 def _escape_cell(value: str) -> str:
@@ -322,23 +356,18 @@ def _role_excerpt(value: str | None) -> str:
     return _escape_cell(excerpt)
 
 
-def _reference_link(source_path: str, output_path: Path) -> str:
-    relative = os.path.relpath(source_path, start=output_path.parent.as_posix())
-    encoded = quote(Path(relative).as_posix(), safe="/.-_~")
-    return f"[Referenz]({encoded})"
-
-
 def render_index(records: list[RepositoryRecord], output_path: Path) -> str:
     lines = [
         "# Repositories",
         "",
         "<!-- GENERATED: scripts/build-repository-index.py -->",
-        "> **Generated file. Do not edit manually.**",
-        "> Source: tracked `Repository Reference.md` files.",
-        "> `Repository Reference.md` is the versioned detail and evidence source; this index is only a generated overview.",
+        "> **Generierte Datei. Nicht manuell bearbeiten.**",
+        "> Quelle: versionierte `Repository Reference.md`-Dateien.",
+        "> **Zeitgrenze:** Die Werte sind datierte Import-Snapshots und keine Aussage über den aktuellen Zustand der Quell-Repositories.",
+        "> `Repository Reference.md` bleibt die versionierte Detail- und Evidenzquelle; dieser Index ist nur eine Übersicht.",
         "",
-        "| Repository | Rollen-Auszug | Review | Live | Beziehung | Status | Referenz |",
-        "|---|---|---|---|---|---|---|",
+        "| Repository | Rollen-Auszug | Review-HEAD | Import-HEAD | Beziehung beim Import | Import-Worktree | Erfasst | Referenzpfad |",
+        "|---|---|---|---|---|---|---|---|",
     ]
     for record in records:
         lines.append(
@@ -348,10 +377,11 @@ def render_index(records: list[RepositoryRecord], output_path: Path) -> str:
                     _code(record.repository),
                     _role_excerpt(record.role),
                     _code(_short_hash(record.review_head)),
-                    _code(_short_hash(record.live_head)),
+                    _code(_short_hash(record.import_head)),
                     _escape_cell(record.relationship),
-                    _code(record.working_tree),
-                    _reference_link(record.source_path, output_path),
+                    _code(record.import_worktree),
+                    _code(record.imported_at),
+                    _code(record.source_path),
                 )
             )
             + " |"
@@ -410,47 +440,57 @@ def build_parser() -> argparse.ArgumentParser:
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     repo_root = Path(args.repo_root).resolve()
-    output_path = Path(args.output)
-    if not output_path.is_absolute():
-        output_path = repo_root / output_path
+    raw_output = Path(args.output)
+    output_path = (
+        raw_output.resolve()
+        if raw_output.is_absolute()
+        else (repo_root / raw_output).resolve()
+    )
+
     try:
-        relative_output = output_path.relative_to(repo_root)
+        try:
+            relative_output = output_path.relative_to(repo_root)
+        except ValueError as exc:
+            raise InventoryError(
+                f"output path escapes repository: {output_path}"
+            ) from exc
         records, warnings = load_records(repo_root)
         expected = render_index(records, relative_output)
+        current = output_path.read_text(encoding="utf-8") if output_path.is_file() else ""
+
+        for warning in warnings:
+            print(f"WARNING: {warning}", file=sys.stderr)
+
+        if args.check:
+            if current != expected:
+                print(
+                    f"ERROR: repository inventory is stale: {relative_output}",
+                    file=sys.stderr,
+                )
+                print(_limited_diff(current, expected, output_path), file=sys.stderr)
+                return 1
+            print(
+                "Repository inventory: PASS "
+                f"({len(records)} tracked references, {len(warnings)} warnings)"
+            )
+            return 0
+
+        if current == expected:
+            print(
+                "Repository inventory unchanged "
+                f"({len(records)} tracked references, {len(warnings)} warnings)"
+            )
+            return 0
+
+        _atomic_write(output_path, expected)
+        print(
+            "Repository inventory written "
+            f"({len(records)} tracked references, {len(warnings)} warnings)"
+        )
+        return 0
     except (InventoryError, UnicodeError, OSError, ValueError) as exc:
         print(f"ERROR: {exc}", file=sys.stderr)
         return 2
-
-    for warning in warnings:
-        print(f"WARNING: {warning}", file=sys.stderr)
-
-    current = output_path.read_text(encoding="utf-8") if output_path.is_file() else ""
-    if args.check:
-        if current != expected:
-            print(
-                f"ERROR: repository inventory is stale: {relative_output}",
-                file=sys.stderr,
-            )
-            print(_limited_diff(current, expected, output_path), file=sys.stderr)
-            return 1
-        print(
-            "Repository inventory: PASS "
-            f"({len(records)} tracked references, {len(warnings)} warnings)"
-        )
-        return 0
-
-    if current == expected:
-        print(
-            "Repository inventory unchanged "
-            f"({len(records)} tracked references, {len(warnings)} warnings)"
-        )
-        return 0
-    _atomic_write(output_path, expected)
-    print(
-        "Repository inventory written "
-        f"({len(records)} tracked references, {len(warnings)} warnings)"
-    )
-    return 0
 
 
 if __name__ == "__main__":
