@@ -24,7 +24,7 @@ Beantwortet: **Was wird entschieden und was geschieht als Nächstes?**
 
 Enthält Lageübersicht, Entscheidungen, priorisierte Aufgaben, Blocker und Übergaben.
 
-`steuerung` ist der Ziel-Default. Im Parallelbetrieb bleibt `vorzimmer` der technische Default, bis die lokale Workspace-Konfiguration gesichert und kontrolliert umgestellt wurde.
+`steuerung` ist der Ziel-Default. Im Parallelbetrieb bleibt `vorzimmer` der technische Default, bis Bestand und Prüfung belastbare Inhalte liefern und die lokale Workspace-Konfiguration gesichert sowie kontrolliert umgestellt wurde.
 
 ## Grenzen
 
@@ -42,6 +42,15 @@ Enthält Lageübersicht, Entscheidungen, priorisierte Aufgaben, Blocker und Übe
 3. **Befund** – Beobachtung, Erwartung, Evidence, Schweregrad, Vertrauen und Status.
 4. **Laufprotokoll** – Quellen, Commits, Modellprofil, tatsächliches Modell, Zeitpunkt und Ergebnis.
 5. **Entscheidung oder Auftrag** – zunächst strukturiertes Markdown.
+
+## Authority-Grenze des Repositorybestands
+
+- `Repository Reference.md` ist die versionierte Detail- und Evidenzquelle.
+- `bestand/10 Repositories/index.md` ist eine deterministisch erzeugte Übersicht.
+- Der Index darf explizite Werte zusammenfassen, sortieren und verlinken.
+- Der Index darf keine Rollen, Zustände oder Commitbeziehungen ergänzen oder umdeuten.
+- Drift zwischen Referenzen und Index ist ein CI-Fehler; CI regeneriert oder committet nicht automatisch.
+- Ein maschinenlesbarer Sidecar entsteht erst bei einem belegten Consumer.
 
 ## Arbeitsfluss
 
@@ -79,13 +88,15 @@ Bestehende Inhalte werden einzeln als `keep`, `move`, `split`, `archive` oder `d
 ## Phasen
 
 1. Drei Zielräume parallel anlegen; alte Räume bleiben lesbar.
-2. Lokale Workspace-Konfiguration sichern und kontrolliert auf `steuerung` umstellen.
-3. Bestehende Repository References als Ausgangspunkt für Repositorykarten nutzen.
-4. Deterministischen Sammler für freigegebene Repositories bauen.
-5. Evidence-Pflicht, stabile Fingerprints und Hinweis/Bestätigt-Trennung einführen.
-6. Lage und Aufträge aus validierten Artefakten erzeugen.
-7. Alte Räume erst nach belegter Inhaltsmigration entfernen.
-8. Automatisierung erst nach wiederholbaren manuellen Läufen aktivieren.
+2. Repositorybestand aus versionierten Repository References deterministisch erzeugen und in CI prüfen.
+3. Bestand lokal prüfen und eine erste Lageansicht aus belegten Daten ableiten.
+4. Lokale Workspace-Konfiguration sichern und kontrolliert auf `steuerung` umstellen.
+5. Projektkarten aus bestätigten Repositorybeziehungen und Vorhaben aufbauen.
+6. Deterministischen Sammler für freigegebene Repositories bauen.
+7. Evidence-Pflicht, stabile Fingerprints und Hinweis/Bestätigt-Trennung einführen.
+8. Lage und Aufträge aus validierten Artefakten erzeugen.
+9. Alte Räume erst nach belegter Inhaltsmigration entfernen.
+10. Automatisierung erst nach wiederholbaren manuellen Läufen aktivieren.
 
 ## Neubewertung
 
