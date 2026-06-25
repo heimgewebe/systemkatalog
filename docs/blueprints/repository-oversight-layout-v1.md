@@ -46,8 +46,11 @@ Enthält Lageübersicht, Entscheidungen, priorisierte Aufgaben, Blocker und Übe
 ## Authority-Grenze des Repositorybestands
 
 - `Repository Reference.md` ist die versionierte Detail- und Evidenzquelle.
-- `bestand/10 Repositories/index.md` ist eine deterministisch erzeugte Übersicht.
+- `bestand/10 Repositories/index.md` ist ein deterministisch erzeugter Repository-Snapshotkatalog.
 - Der Index darf explizite Werte zusammenfassen, sortieren und verlinken.
+- Import-HEAD, Import-Worktree und Commitbeziehung werden ausdrücklich als zeitgebundene Importwerte samt Erfassungszeitpunkt dargestellt; sie behaupten keinen aktuellen Zustand des Quellrepositories.
+- Direkt aus einer Reference beweisbare Widersprüche werden fail-closed abgewiesen: insbesondere `identisch` bei verschiedenen HEADs sowie widersprüchliche `clean`-/`dirty`-Zähler.
+- Andere Commitbeziehungen werden als Claims der Reference übernommen, nicht durch den Indexgenerator gegen das Quellrepository verifiziert.
 - Der Index darf keine Rollen, Zustände oder Commitbeziehungen ergänzen oder umdeuten.
 - Drift zwischen Referenzen und Index ist ein CI-Fehler; CI regeneriert oder committet nicht automatisch.
 - Ein maschinenlesbarer Sidecar entsteht erst bei einem belegten Consumer.
@@ -88,11 +91,11 @@ Bestehende Inhalte werden einzeln als `keep`, `move`, `split`, `archive` oder `d
 ## Phasen
 
 1. Drei Zielräume parallel anlegen; alte Räume bleiben lesbar.
-2. Repositorybestand aus versionierten Repository References deterministisch erzeugen und in CI prüfen.
-3. Bestand lokal prüfen und eine erste Lageansicht aus belegten Daten ableiten.
+2. Repository-Snapshotkatalog aus versionierten Repository References deterministisch erzeugen und in CI prüfen.
+3. Datierte Snapshots lokal prüfen und eine erste Lageansicht ableiten, ohne Aktualität zu unterstellen.
 4. Lokale Workspace-Konfiguration sichern und kontrolliert auf `steuerung` umstellen.
 5. Projektkarten aus bestätigten Repositorybeziehungen und Vorhaben aufbauen.
-6. Deterministischen Sammler für freigegebene Repositories bauen.
+6. Deterministischen Sammler für freigegebene Repositories bauen; erst dieser erzeugt neu erhobene Zustandsdaten.
 7. Evidence-Pflicht, stabile Fingerprints und Hinweis/Bestätigt-Trennung einführen.
 8. Lage und Aufträge aus validierten Artefakten erzeugen.
 9. Alte Räume erst nach belegter Inhaltsmigration entfernen.
