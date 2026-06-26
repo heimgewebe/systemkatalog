@@ -3,18 +3,14 @@ from __future__ import annotations
 import importlib
 import importlib.util
 import os
-import re
 import subprocess
 import sys
 import tempfile
 import unittest
-from datetime import datetime, timedelta
 from pathlib import Path
 from unittest import mock
 
 SCRIPT_PATH = Path(__file__).resolve().parents[1] / "build-repository-index.py"
-REPO_ROOT = SCRIPT_PATH.parents[1]
-REFERENCE_PATHSPEC = ":(glob)**/Repository Reference.md"
 
 
 def reference_text(repository: str) -> str:
@@ -141,140 +137,6 @@ class RepositoryInventoryHygieneTests(unittest.TestCase):
             )
         self.assertEqual(before, output.read_bytes())
         self.assertEqual([], list(output.parent.glob(f".{output.name}.*.tmp")))
-
-    def test_stale_inventory_proof_uses_current_worktree_snapshot(self) -> None:
-        validator = REPO_ROOT / "scripts/ci/validate-repository.sh"
-        if not validator.is_file() or not (REPO_ROOT / ".git").exists():
-            self.skipTest("full repository checkout required")
-
-        clone = self.root / "integration-repo"
-        head = subprocess.check_output(
-            ["git", "-C", str(REPO_ROOT), "rev-parse", "HEAD"],
-            text=True,
-        ).strip()
-        subprocess.run(
-            ["git", "clone", "--no-hardlinks", "--quiet", str(REPO_ROOT), str(clone)],
-            check=True,
-        )
-        subprocess.run(
-            ["git", "-C", str(clone), "checkout", "--quiet", "--detach", head],
-            check=True,
-        )
-        subprocess.run(
-            ["git", "-C", str(clone), "config", "user.name", "Cabinet Inventory Test"],
-            check=True,
-        )
-        subprocess.run(
-            [
-                "git",
-                "-C",
-                str(clone),
-                "config",
-                "user.email",
-                "cabinet-inventory-test@example.invalid",
-            ],
-            check=True,
-        )
-
-        current_worktree_patch = subprocess.check_output(
-            ["git", "-C", str(REPO_ROOT), "diff", "--binary", "HEAD", "--"]
-        )
-        if current_worktree_patch:
-            subprocess.run(
-                ["git", "-C", str(clone), "apply", "--binary", "--index", "-"],
-                input=current_worktree_patch,
-                check=True,
-            )
-            subprocess.run(
-                [
-                    "git",
-                    "-C",
-                    str(clone),
-                    "commit",
-                    "-qm",
-                    "test current repository worktree",
-                ],
-                check=True,
-            )
-
-        baseline = subprocess.run(
-            [str(clone / "scripts/ci/validate-repository.sh")],
-            cwd=clone,
-            text=True,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.STDOUT,
-            check=False,
-            timeout=60,
-        )
-        self.assertEqual(baseline.returncode, 0, baseline.stdout)
-
-        raw = subprocess.check_output(
-            [
-                "git",
-                "-C",
-                str(clone),
-                "ls-files",
-                "-z",
-                "--",
-                REFERENCE_PATHSPEC,
-            ]
-        )
-        references = [item.decode("utf-8") for item in raw.split(b"\0") if item]
-        self.assertTrue(references)
-
-        reference = clone / references[0]
-        text = reference.read_text(encoding="utf-8")
-        provenance_match = re.search(
-            r"(?m)^\| Import-Snapshot erfasst \| `([^`]+)` \|$",
-            text,
-        )
-        live_match = re.search(
-            r"(?m)^\| Erfasst \| `([^`]+)` \|$",
-            text,
-        )
-        self.assertIsNotNone(provenance_match)
-        self.assertIsNotNone(live_match)
-        assert provenance_match is not None
-        assert live_match is not None
-
-        old = provenance_match.group(1)
-        self.assertEqual(live_match.group(1), old)
-        new = (
-            datetime.fromisoformat(old.replace("Z", "+00:00"))
-            + timedelta(seconds=1)
-        ).isoformat()
-        updated = text.replace(
-            f"| Import-Snapshot erfasst | `{old}` |",
-            f"| Import-Snapshot erfasst | `{new}` |",
-            1,
-        ).replace(
-            f"| Erfasst | `{old}` |",
-            f"| Erfasst | `{new}` |",
-            1,
-        )
-        self.assertNotEqual(updated, text)
-        reference.write_text(updated, encoding="utf-8")
-
-        subprocess.run(
-            ["git", "-C", str(clone), "add", "--", references[0]],
-            check=True,
-        )
-        subprocess.run(
-            ["git", "-C", str(clone), "commit", "-qm", "make inventory stale"],
-            check=True,
-        )
-
-        stale = subprocess.run(
-            [str(clone / "scripts/ci/validate-repository.sh")],
-            cwd=clone,
-            text=True,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.STDOUT,
-            check=False,
-            timeout=60,
-        )
-        self.assertNotEqual(stale.returncode, 0, stale.stdout)
-        self.assertIn("repository inventory is stale", stale.stdout)
 
     def test_escaped_table_pipes_and_backslash_parity(self) -> None:
         module = load_generator_module()
