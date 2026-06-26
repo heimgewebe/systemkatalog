@@ -34,3 +34,6 @@ jobs:
 
       - name: Test snapshot review generator
         run: python3 -m unittest discover -s scripts/tests -p 'test_build_repository_snapshot_review.py'
+
+      - name: Check snapshot review artifacts
+        run: python3 scripts/build-repository-snapshot-review.py --repo-root . --check
