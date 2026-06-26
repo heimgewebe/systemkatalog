@@ -27,6 +27,7 @@ Betriebsvertrag von Cabinet.
 - SQLite-Indizes
 - Logs
 - Laufzeitstatus
+- lokale Workspace-Konfiguration unter `.agents/.config/workspace.json`
 - Cabinet-App-Installation
 - Browserpräferenzen
 
@@ -58,6 +59,63 @@ Erwarteter Abschluss:
 ```text
 TARGET-PROOF: CABINET LOCAL RUNTIME MATCHES REPOSITORY
 ```
+
+## Workspace-Default-Cutover
+
+Der lokale Workspace ist unversionierter Benutzerzustand. Eine Änderung des
+versionierten Defaults darf ihn deshalb nicht still überschreiben. Der
+Cutover wird auf dem PR-Branch vor dem Merge ausgeführt.
+
+Prüfen, ohne zu schreiben:
+
+```bash
+cd ~/repos/cabinet
+python3 scripts/workspace_default_cutover.py check
+```
+
+Sichern, auf `steuerung` umstellen und lokal validieren:
+
+```bash
+python3 scripts/workspace_default_cutover.py apply
+```
+
+Erwarteter Abschluss:
+
+```text
+TARGET-PROOF: CABINET WORKSPACE DEFAULT IS STEUERUNG
+```
+
+Das Werkzeug legt pro Änderung ein Verzeichnis unter
+`~/.local/state/cabinet/workspace-cutovers/` an. Es enthält die exakten
+Originalbytes und ein Manifest mit SHA-256, ursprünglichem Dateimodus,
+Quellraum, Zielraum und Status.
+
+Explizit zurückrollen:
+
+```bash
+python3 scripts/workspace_default_cutover.py rollback BACKUP-ID
+```
+
+Die installierte Bedienoberfläche bietet dieselben Operationen:
+
+```bash
+cabinetctl workspace-check
+cabinetctl workspace-apply
+cabinetctl workspace-rollback BACKUP-ID
+```
+
+Verbindliche Reihenfolge:
+
+1. PR-Branch lokal auschecken.
+2. `workspace-apply` erfolgreich ausführen.
+3. Den ausgegebenen Target-Proof sichern.
+4. Erst danach den PR mergen.
+5. `main` aktualisieren und `workspace-check` erneut ausführen.
+
+Scheitert die Validierung nach dem Schreiben, stellt das Werkzeug automatisch
+die gesicherten Originalbytes und den ursprünglichen Dateimodus wieder her.
+Ein expliziter Rollback kann absichtlich Drift zum versionierten Default
+erzeugen; dieser Zustand ist kein erfolgreicher Phase-4-Abschluss.
 
 ## Dark-Default
 
