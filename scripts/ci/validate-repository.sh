@@ -19,6 +19,10 @@ fi
 echo "=== Repository Contract Checker ==="
 python3 scripts/ci/check-repository-contract.py --repo-root "$REPO_ROOT" --tree-ish HEAD
 
+echo "=== Repository Inventory ==="
+python3 scripts/build-repository-index.py --check --repo-root "$REPO_ROOT"
+echo "Repository Inventory: PASS"
+
 echo "=== Materialize HEAD Snapshot ==="
 SNAPSHOT_ROOT="$(mktemp -d)"
 trap 'rm -rf -- "$SNAPSHOT_ROOT"' EXIT

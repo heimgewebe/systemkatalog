@@ -42,6 +42,15 @@ jobs:
       - name: Test Validator
         run: ./scripts/ci/test-validate-repository.sh
 
+      - name: Test Repository Inventory Generator
+        run: timeout --signal=TERM --kill-after=10s 60s python3 -m unittest discover -s scripts/tests -p 'test_build_repository_index.py'
+
+      - name: Test Repository Inventory Entrypoint
+        run: python3 -m unittest discover -s scripts/tests -p 'test_repository_inventory_entrypoint.py'
+
+      - name: Test Repository Inventory Hygiene
+        run: python3 -m unittest discover -s scripts/tests -p 'test_repository_inventory_hygiene.py'
+
   installer-shadow:
     name: Installer Shadow Test
     runs-on: ubuntu-latest
