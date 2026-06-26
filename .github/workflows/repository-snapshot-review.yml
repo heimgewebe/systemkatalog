@@ -1,0 +1,64 @@
+name: Repository Snapshot Review
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/repository-snapshot-review.yml"
+      - "scripts/build-repository-snapshot-review.py"
+      - "scripts/repository_snapshot_review.py"
+      - "scripts/repository_inventory.py"
+      - "scripts/snapshot_review_constants.py"
+      - "scripts/snapshot_review_model.py"
+      - "scripts/tests/**"
+      - "**/Repository Reference.md"
+      - "pruefung/10 Laeufe/repository-snapshot-review-v1.md"
+      - "steuerung/10 Lage/repository-snapshots-v1.md"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/repository-snapshot-review.yml"
+      - "scripts/build-repository-snapshot-review.py"
+      - "scripts/repository_snapshot_review.py"
+      - "scripts/repository_inventory.py"
+      - "scripts/snapshot_review_constants.py"
+      - "scripts/snapshot_review_model.py"
+      - "scripts/tests/**"
+      - "**/Repository Reference.md"
+      - "pruefung/10 Laeufe/repository-snapshot-review-v1.md"
+      - "steuerung/10 Lage/repository-snapshots-v1.md"
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  PYTHONDONTWRITEBYTECODE: "1"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
+        with:
+          python-version: "3.12"
+
+      - name: Test snapshot review generator
+        run: timeout --signal=TERM --kill-after=10s 60s python3 -m unittest discover -s scripts/tests -p 'test_build_repository_snapshot_review.py'
+
+      - name: Check snapshot review artifacts
+        run: timeout --signal=TERM --kill-after=10s 60s python3 scripts/build-repository-snapshot-review.py --repo-root . --check

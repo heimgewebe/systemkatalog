@@ -1,0 +1,31 @@
+# Repository-Snapshots v1
+
+<!-- GENERATED: scripts/build-repository-snapshot-review.py -->
+> **Generierte Lageansicht. Nicht manuell bearbeiten.**
+> Sie verdichtet datierte Cabinet-Snapshots und ist keine Live-Anzeige der Quell-Repositories.
+
+## Kurzlage
+
+- Geprüfte Repository-Snapshots: **5**
+- Snapshot-Zeitpunkt(e): `2026-06-23T18:38:45.731368+00:00`
+- Identische gespeicherte HEADs: **3**
+- Claim „Reviewstand enthalten“: **1**
+- Divergenz-/Rewrite-Claims: **1**
+- Beim Import dirty: **1**
+- Aktueller Zustand der Quell-Repositories: **unbekannt**
+
+## Reihenfolge späterer Live-Prüfungen
+
+| Rang | Repository | Historischer Anlass |
+|---:|---|---|
+| 1 | `steuerboard` | Divergenz- oder Rewrite-Claim später in Git prüfen |
+| 2 | `lenskit` | damals 6 Working-Tree-Änderungen; später neu erheben |
+| 3 | `infra` | nicht-identische Commitbeziehung später prüfen |
+| 4 | `vibe-lab` | keine besondere Priorität aus dem Snapshot ableitbar |
+| 4 | `weltgewebe` | keine besondere Priorität aus dem Snapshot ableitbar |
+
+## Grenze
+
+Diese Ansicht priorisiert nur spätere Prüfungen. Sie verändert keine Quell-Repositories und trifft keine Aussage über deren heutigen Zustand.
+
+Ausführlicher Prüflauf: [`repository-snapshot-review-v1.md`](../../pruefung/10%20Laeufe/repository-snapshot-review-v1.md)
