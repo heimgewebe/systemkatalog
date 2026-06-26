@@ -12,7 +12,7 @@
 - Claim „Reviewstand enthalten“: **1**
 - Divergenz-/Rewrite-Claims: **1**
 - Beim Import dirty: **1**
-- Heutiger Zustand der Quell-Repositories: **unbekannt**
+- Aktueller Zustand der Quell-Repositories: **unbekannt**
 
 ## Reihenfolge späterer Live-Prüfungen
 
