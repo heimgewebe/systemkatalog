@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import importlib
 import importlib.util
 import os
 import re
@@ -310,7 +311,7 @@ class RepositoryInventoryHygieneTests(unittest.TestCase):
 
     def test_deep_path_closes_superseded_parent_descriptors(self) -> None:
         module = load_generator_module()
-        implementation = module._implementation
+        implementation = importlib.import_module("scripts.repository_inventory")
         relative = "one/two/three/four/Repository Reference.md"
         target = self.root / relative
         target.parent.mkdir(parents=True)
@@ -344,6 +345,7 @@ class RepositoryInventoryHygieneTests(unittest.TestCase):
         ):
             self.assertEqual(module.read_worktree_reference(self.root, relative), expected)
 
+        self.assertGreater(len(opened), 2)
         for descriptor in opened:
             with self.assertRaises(OSError):
                 os.fstat(descriptor)
