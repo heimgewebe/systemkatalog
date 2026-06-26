@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - "scripts/build-repository-snapshot-review.py"
+      - "scripts/snapshot_review_constants.py"
       - "scripts/snapshot_review_model.py"
       - "scripts/tests/test_build_repository_snapshot_review.py"
       - "pruefung/10 Laeufe/repository-snapshot-review-v1.md"
