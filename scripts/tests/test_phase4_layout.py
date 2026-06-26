@@ -4,6 +4,7 @@ import hashlib
 import json
 import os
 import stat
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -238,6 +239,53 @@ class PhaseFourLayoutTests(unittest.TestCase):
             encoding="utf-8",
         )
         run_layout_validator(self.root)
+
+    def test_cabinetctl_applies_and_checks_workspace(self) -> None:
+        workspace = self._write_workspace()
+        scripts = self.root / "scripts"
+        scripts.mkdir()
+        (scripts / "workspace_default_cutover.py").write_bytes(
+            (SCRIPT_DIR / "workspace_default_cutover.py").read_bytes()
+        )
+        (scripts / "check-cabinet-layout.py").write_text(
+            "import sys\nprint('CABINET-LAYOUT-GUARD: PASS')\nraise SystemExit(0)\n",
+            encoding="utf-8",
+        )
+        environment = os.environ.copy()
+        environment.update(
+            {
+                "HOME": str(Path(self.temporary.name) / "home"),
+                "CABINET_REPO_ROOT": str(self.root),
+                "CABINET_WORKSPACE_CUTOVER_STATE_ROOT": str(self.state),
+            }
+        )
+        control = REPO_ROOT / "ops/bin/cabinetctl"
+        applied = subprocess.run(
+            [str(control), "workspace-apply"],
+            env=environment,
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            check=False,
+        )
+        self.assertEqual(applied.returncode, 0, applied.stdout)
+        self.assertIn(
+            "TARGET-PROOF: CABINET WORKSPACE DEFAULT IS STEUERUNG",
+            applied.stdout,
+        )
+        self.assertEqual(
+            json.loads(workspace.read_text(encoding="utf-8"))["room"]["slug"],
+            "steuerung",
+        )
+        checked = subprocess.run(
+            [str(control), "workspace-check"],
+            env=environment,
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            check=False,
+        )
+        self.assertEqual(checked.returncode, 0, checked.stdout)
 
     def test_tampered_backup_is_rejected(self) -> None:
         self._write_workspace()
