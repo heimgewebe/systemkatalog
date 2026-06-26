@@ -1,12 +1,15 @@
 from __future__ import annotations
 
+import importlib.util
 import os
 import re
 import subprocess
+import sys
 import tempfile
 import unittest
 from datetime import datetime, timedelta
 from pathlib import Path
+from unittest import mock
 
 SCRIPT_PATH = Path(__file__).resolve().parents[1] / "build-repository-index.py"
 REPO_ROOT = SCRIPT_PATH.parents[1]
@@ -58,6 +61,21 @@ def reference_text(repository: str) -> str:
 
 > Testrolle
 """
+
+
+def load_generator_module():
+    spec = importlib.util.spec_from_file_location(
+        "repository_inventory_followup_under_test", SCRIPT_PATH
+    )
+    if spec is None or spec.loader is None:
+        raise RuntimeError("unable to load repository inventory generator")
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = module
+    try:
+        spec.loader.exec_module(module)
+    finally:
+        sys.modules.pop(spec.name, None)
+    return module
 
 
 class RepositoryInventoryHygieneTests(unittest.TestCase):
@@ -256,6 +274,79 @@ class RepositoryInventoryHygieneTests(unittest.TestCase):
         )
         self.assertNotEqual(stale.returncode, 0, stale.stdout)
         self.assertIn("repository inventory is stale", stale.stdout)
+
+    def test_escaped_table_pipes_and_backslash_parity(self) -> None:
+        module = load_generator_module()
+        source = "room/Repository Reference.md"
+
+        self.assertEqual(
+            module._split_table_cells(
+                r"| Feld | enthält A\|B |", source, "Test", "row"
+            ),
+            ["Feld", "enthält A|B"],
+        )
+        self.assertEqual(
+            module._split_table_cells(
+                r"| Feld | a\\\|b |", source, "Test", "row"
+            ),
+            ["Feld", r"a\\|b"],
+        )
+        for raw in ("| Feld | enthält A | B |", r"| Feld | a\\|b |"):
+            with self.assertRaisesRegex(module.InventoryError, "malformed table row"):
+                module._split_table_cells(raw, source, "Test", "row")
+
+    def test_parse_reference_accepts_escaped_pipe_and_inline_code(self) -> None:
+        module = load_generator_module()
+        text = reference_text("alpha")
+        text = text.replace(
+            "| Beziehung zum Review | **identisch** |",
+            r"| Beziehung zum Review | **enthält A\|B** |",
+        ).replace("`fixtures/alpha`", r"`fixtures/a\|b`")
+
+        record = module.parse_reference(
+            "room/Repository Reference.md", text.encode("utf-8")
+        )
+        self.assertEqual(record.relationship, "enthält A|B")
+
+    def test_deep_path_closes_superseded_parent_descriptors(self) -> None:
+        module = load_generator_module()
+        implementation = module._implementation
+        relative = "one/two/three/four/Repository Reference.md"
+        target = self.root / relative
+        target.parent.mkdir(parents=True)
+        expected = reference_text("alpha").encode("utf-8")
+        target.write_bytes(expected)
+
+        opened: list[int] = []
+        original_root = implementation._open_root_directory
+        original_parent = implementation._open_parent_directory
+
+        def tracked_root(repo_root: Path) -> int:
+            descriptor = original_root(repo_root)
+            opened.append(descriptor)
+            return descriptor
+
+        def tracked_parent(
+            source_path: str, component: str, directory_fd: int
+        ) -> int:
+            for superseded in opened[:-1]:
+                with self.assertRaises(OSError):
+                    os.fstat(superseded)
+            os.fstat(directory_fd)
+            descriptor = original_parent(source_path, component, directory_fd)
+            opened.append(descriptor)
+            return descriptor
+
+        with mock.patch.object(
+            implementation, "_open_root_directory", side_effect=tracked_root
+        ), mock.patch.object(
+            implementation, "_open_parent_directory", side_effect=tracked_parent
+        ):
+            self.assertEqual(module.read_worktree_reference(self.root, relative), expected)
+
+        for descriptor in opened:
+            with self.assertRaises(OSError):
+                os.fstat(descriptor)
 
 
 if __name__ == "__main__":
