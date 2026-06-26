@@ -7,7 +7,7 @@ import importlib.util
 import sys
 from pathlib import Path
 
-MODULE_NAME = "_cabinet_repository_inventory"
+MODULE_NAME = "scripts.repository_inventory"
 IMPLEMENTATION_PATH = Path(__file__).resolve().with_name("repository_inventory.py")
 
 implementation = sys.modules.get(MODULE_NAME)
