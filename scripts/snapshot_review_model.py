@@ -7,7 +7,7 @@ class SnapshotAssessment:
     repository: str
     relationship_class: str
     worktree_class: str
-    evidence_class: str
+    evidence_status: str
     priority: int
     reason_code: str
     review_head: str
@@ -45,7 +45,7 @@ def assess_record(record: Any) -> SnapshotAssessment:
         repository=record.repository,
         relationship_class=relation,
         worktree_class=f"snapshot-{state}-at-import",
-        evidence_class=evidence,
+        evidence_status=evidence,
         priority=priority,
         reason_code=reason,
         review_head=record.review_head,
