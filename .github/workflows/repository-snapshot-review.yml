@@ -1,20 +1,45 @@
 name: Repository Snapshot Review
 
 on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/repository-snapshot-review.yml"
+      - "scripts/build-repository-snapshot-review.py"
+      - "scripts/repository_snapshot_review.py"
+      - "scripts/repository_inventory.py"
+      - "scripts/snapshot_review_constants.py"
+      - "scripts/snapshot_review_model.py"
+      - "scripts/tests/test_build_repository_snapshot_review.py"
+      - "**/Repository Reference.md"
+      - "pruefung/10 Laeufe/repository-snapshot-review-v1.md"
+      - "steuerung/10 Lage/repository-snapshots-v1.md"
   pull_request:
     branches:
       - main
     paths:
+      - ".github/workflows/repository-snapshot-review.yml"
       - "scripts/build-repository-snapshot-review.py"
+      - "scripts/repository_snapshot_review.py"
+      - "scripts/repository_inventory.py"
       - "scripts/snapshot_review_constants.py"
       - "scripts/snapshot_review_model.py"
       - "scripts/tests/test_build_repository_snapshot_review.py"
+      - "**/Repository Reference.md"
       - "pruefung/10 Laeufe/repository-snapshot-review-v1.md"
       - "steuerung/10 Lage/repository-snapshots-v1.md"
   workflow_dispatch:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
+
+env:
+  PYTHONDONTWRITEBYTECODE: "1"
 
 jobs:
   test:
@@ -33,7 +58,7 @@ jobs:
           python-version: "3.12"
 
       - name: Test snapshot review generator
-        run: python3 -m unittest discover -s scripts/tests -p 'test_build_repository_snapshot_review.py'
+        run: timeout --signal=TERM --kill-after=10s 60s python3 -m unittest discover -s scripts/tests -p 'test_build_repository_snapshot_review.py'
 
       - name: Check snapshot review artifacts
-        run: python3 scripts/build-repository-snapshot-review.py --repo-root . --check
+        run: timeout --signal=TERM --kill-after=10s 60s python3 scripts/build-repository-snapshot-review.py --repo-root . --check
