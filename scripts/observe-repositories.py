@@ -56,12 +56,19 @@ def collect_verified(
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     try:
+        observer_guard.install_safe_git_environment()
         if args.command == "validate-policy":
             policy = observer_guard.load_verified_policy(args.repo_root, args.policy)
             print("REPOSITORY-OBSERVER-POLICY: PASS")
             print(f"Approved repositories: {len(policy.entries)}")
             return 0
 
+        if args.output is not None:
+            observer_guard.require_external_output_path(
+                args.output,
+                args.repo_root,
+                args.source_root,
+            )
         value = collect_verified(
             args.repo_root,
             args.policy,
