@@ -10,6 +10,7 @@ from pathlib import Path
 from typing import Any
 
 import observer_guard
+import observer_origin
 import repository_observer as observer
 
 DEFAULT_POLICY = Path("policy/repository-observation.json")
@@ -39,13 +40,15 @@ def collect_verified(
     observed_at: str,
 ) -> dict[str, Any]:
     policy = observer_guard.load_verified_policy(repo_root, policy_relative)
+    repositories: list[dict[str, Any]] = []
+    for entry in policy.entries:
+        observer_origin.require_expected_origin(source_root, entry)
+        repositories.append(observer.collect_entry(source_root, entry))
     body: dict[str, Any] = {
         "observed_at": observer.normalize_observed_at(observed_at),
         "path_scope": "source-root-relative",
         "policy_sha256": policy.sha256,
-        "repositories": [
-            observer.collect_entry(source_root, entry) for entry in policy.entries
-        ],
+        "repositories": repositories,
         "schema": observer.OUTPUT_SCHEMA,
     }
     digest = hashlib.sha256(observer.canonical_json(body)).hexdigest()
