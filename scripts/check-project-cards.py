@@ -30,7 +30,7 @@ REQUIRED_HEADINGS = (
     "## Nächste Aktion",
     "## Quellen",
 )
-ALLOWED_EVIDENCE_STATUS = {"partial", "bounded", "current"}
+ALLOWED_EVIDENCE_STATUS = {"partial", "bounded"}
 REQUIRED_METADATA_KEYS = {
     "schema",
     "id",
@@ -46,6 +46,7 @@ ALLOWED_REPOSITORY_KEYS = REQUIRED_REPOSITORY_KEYS | {"reference"}
 
 class ProjectCardError(RuntimeError):
     """Raised when a Project Card v1 contract is violated."""
+
 
 
 def _absolute(path: Path) -> Path:
@@ -154,8 +155,10 @@ def _validate_metadata(
     if h1 is None or h1.group(1) != title:
         raise ProjectCardError(f"{label} H1 must equal metadata title")
 
-    if metadata["evidence_status"] not in ALLOWED_EVIDENCE_STATUS:
+    evidence_status = metadata["evidence_status"]
+    if evidence_status not in ALLOWED_EVIDENCE_STATUS:
         raise ProjectCardError(f"{label} has invalid evidence_status")
+
     reviewed_at = metadata["reviewed_at"]
     if not isinstance(reviewed_at, str):
         raise ProjectCardError(f"{label} reviewed_at must be an ISO date string")
@@ -226,8 +229,13 @@ def _validate_metadata(
     if len(set(names)) != len(names):
         raise ProjectCardError(f"{label} repositories contain duplicate names")
 
-    for heading in REQUIRED_HEADINGS:
-        _section_body(text, heading)
+    section_bodies = {heading: _section_body(text, heading) for heading in REQUIRED_HEADINGS}
+    visible_sources = section_bodies["## Quellen"]
+    for raw_source in sources:
+        if raw_source not in visible_sources:
+            raise ProjectCardError(
+                f"{label} source is absent from visible Quellen section: {raw_source}"
+            )
 
 
 def validate_project_cards(repo_root: Path) -> list[dict[str, Any]]:
@@ -245,7 +253,8 @@ def validate_project_cards(repo_root: Path) -> list[dict[str, Any]]:
                 f"unexpected non-card entry in project directory: {entry.name}"
             )
         _reject_symlink_components(entry, "project card")
-        if not stat.S_ISREG(os.lstat(entry).st_mode):
+        metadata = os.lstat(entry)
+        if not stat.S_ISREG(metadata.st_mode):
             raise ProjectCardError(f"project card is not a regular file: {entry.name}")
         card_paths.append(entry)
     if not card_paths:
@@ -261,7 +270,8 @@ def validate_project_cards(repo_root: Path) -> list[dict[str, Any]]:
         if card_id in ids:
             raise ProjectCardError(f"duplicate project card id: {card_id}")
         ids.add(card_id)
-        if index_text.count(f"]({card_path.name})") != 1:
+        link = f"]({card_path.name})"
+        if index_text.count(link) != 1:
             raise ProjectCardError(
                 f"project card index must link {card_path.name} exactly once"
             )
@@ -277,10 +287,14 @@ def validate_project_cards(repo_root: Path) -> list[dict[str, Any]]:
     return cards
 
 
-def main(argv: list[str] | None = None) -> int:
+def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("repo_root", nargs="?", type=Path, default=Path.cwd())
-    args = parser.parse_args(argv)
+    return parser
+
+
+def main(argv: list[str] | None = None) -> int:
+    args = build_parser().parse_args(argv)
     try:
         cards = validate_project_cards(args.repo_root)
     except (ProjectCardError, OSError, UnicodeError) as exc:
