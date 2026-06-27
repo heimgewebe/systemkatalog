@@ -26,6 +26,7 @@ _GIT_ROUTING_VARIABLES = {
     "GIT_ALTERNATE_OBJECT_DIRECTORIES",
     "GIT_CEILING_DIRECTORIES",
     "GIT_COMMON_DIR",
+    "GIT_CONFIG_PARAMETERS",
     "GIT_DIR",
     "GIT_DISCOVERY_ACROSS_FILESYSTEM",
     "GIT_EXEC_PATH",
@@ -45,7 +46,7 @@ _SAFE_GIT_CONFIG = (
 def install_safe_git_environment() -> None:
     """Remove ambient Git routing and install deterministic local overrides."""
     for key in list(os.environ):
-        if key in _GIT_ROUTING_VARIABLES:
+        if key in _GIT_ROUTING_VARIABLES or key.startswith("GIT_TRACE"):
             os.environ.pop(key, None)
         elif key == "GIT_CONFIG_COUNT":
             os.environ.pop(key, None)
