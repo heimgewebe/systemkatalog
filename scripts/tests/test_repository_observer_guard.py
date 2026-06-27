@@ -4,6 +4,7 @@ import os
 import sys
 import unittest
 from pathlib import Path
+from unittest import mock
 
 SCRIPTS = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(SCRIPTS))
@@ -85,6 +86,42 @@ class RepositoryObserverGuardTests(ObserverFixture, unittest.TestCase):
             observer_guard.require_strict_remote(
                 "github.com:../repo.git", "expected remote"
             )
+
+    def test_git_environment_isolated_from_ambient_routing(self) -> None:
+        ambient = {
+            "GIT_DIR": "/tmp/other.git",
+            "GIT_CONFIG_COUNT": "1",
+            "GIT_CONFIG_KEY_0": "core.fsmonitor",
+            "GIT_CONFIG_VALUE_0": "dangerous-command",
+        }
+        with mock.patch.dict(os.environ, ambient, clear=True):
+            observer_guard.install_safe_git_environment()
+            self.assertNotIn("GIT_DIR", os.environ)
+            self.assertEqual(os.environ["GIT_CONFIG_NOSYSTEM"], "1")
+            self.assertEqual(os.environ["GIT_CONFIG_GLOBAL"], os.devnull)
+            self.assertEqual(
+                os.environ["GIT_CONFIG_COUNT"],
+                str(len(observer_guard._SAFE_GIT_CONFIG)),
+            )
+            self.assertNotIn("dangerous-command", set(os.environ.values()))
+
+    def test_output_must_be_outside_managed_trees(self) -> None:
+        for output in (
+            self.cabinet / "observation.json",
+            self.sources / "alpha" / "observation.json",
+        ):
+            with self.subTest(output=output):
+                with self.assertRaisesRegex(
+                    observer_guard.ObserverGuardError, "must be outside"
+                ):
+                    observer_guard.require_external_output_path(
+                        output, self.cabinet, self.sources
+                    )
+        observer_guard.require_external_output_path(
+            self.root / "state/observation.json",
+            self.cabinet,
+            self.sources,
+        )
 
 
 if __name__ == "__main__":
