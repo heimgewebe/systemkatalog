@@ -47,9 +47,9 @@ Der Evidenzstatus beschreibt ausschließlich die Beleglage der Karte, nicht den 
 
 - `partial`: Beziehungen oder Repository References fehlen noch.
 - `bounded`: Alle aufgelisteten Beziehungen sind belegt; Aktualität und Runtime bleiben ausdrücklich begrenzt.
-- `current`: Nur zulässig, wenn ein späterer freigegebener Sammler die aktuellen Zustände erhoben und die Karte auf diesen Lauf verweist.
+- `current`: Für eine spätere Vertragsfassung reserviert. Project Card v1 weist diesen Wert ab, weil noch kein Feld für einen freigegebenen Sammlerlauf existiert.
 
-Project Card v1 erzeugt selbst keinen aktuellen Zustand. Die ersten Karten verwenden deshalb nur `partial` oder `bounded`.
+Project Card v1 erzeugt selbst keinen aktuellen Zustand. Zulässig sind deshalb nur `partial` und `bounded`.
 
 ## Pflichtabschnitte
 
@@ -65,6 +65,7 @@ Jede Karte enthält genau einmal und mit Inhalt:
 ## Aussagegrenze
 
 - Jede Repositorybeziehung verweist auf eine versionierte Quelle.
+- Jede Quelle aus dem Maschinenkopf erscheint auch im sichtbaren Abschnitt `## Quellen`.
 - Ein Name in einer Legacy-Quelle beweist keine aktuelle Existenz, Erreichbarkeit oder Aktivität des Repositories.
 - Eine Repository Reference beweist nur den in ihr datierten Snapshot und die darin belegte Rolle.
 - Fehlende Repository References werden als Blocker genannt, nicht still ergänzt.
@@ -75,11 +76,13 @@ Jede Karte enthält genau einmal und mit Inhalt:
 
 ```bash
 python3 scripts/check-project-cards.py .
-python3 -m unittest discover -s scripts/tests -p 'test_project_cards.py'
+python3 scripts/check-project-card-provenance.py .
+python3 -m unittest discover -s scripts/tests -p 'test_project_card*.py'
 ```
 
-Erwarteter Abschluss:
+Erwartete Abschlüsse:
 
 ```text
 PROJECT-CARD-GUARD: PASS
+PROJECT-CARD-PROVENANCE: PASS
 ```
