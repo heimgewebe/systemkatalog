@@ -24,7 +24,20 @@ Beantwortet: **Was wird entschieden und was geschieht als Nächstes?**
 
 Enthält Lageübersicht, Entscheidungen, priorisierte Aufgaben, Blocker und Übergaben.
 
-`steuerung` ist der Ziel-Default. Im Parallelbetrieb bleibt `vorzimmer` der technische Default, bis Bestand und Prüfung belastbare Inhalte liefern und die lokale Workspace-Konfiguration gesichert sowie kontrolliert umgestellt wurde.
+`steuerung` ist der versionierte Ziel-Default. Zum technischen Default eines Hosts wird der Raum erst, nachdem dessen lokale Workspace-Konfiguration erfolgreich abgeglichen und im lokalen Prüfmodus bestätigt wurde. `vorzimmer` bleibt während der Parallelphase lesbar und wird erst nach belegter Inhaltsmigration entfernt.
+
+## Workspace-Cutover-Vertrag
+
+- `.home/home.json` und `policy/cabinet-layout.json` erklären `steuerung` zum verbindlichen versionierten Default.
+- Die lokale `.agents/.config/workspace.json` bleibt unversioniert und darf nicht durch CI oder einen Repository-Checkout überschrieben werden.
+- Der ausführbare Vertrag liegt in `scripts/workspace_default_cutover.py`; `cabinetctl workspace-check`, `cabinetctl workspace-apply` und `cabinetctl workspace-rollback BACKUP-ID` sind die Bedienoberfläche.
+- Backups liegen außerhalb des Repositories unter `~/.local/state/cabinet/workspace-cutovers/<BACKUP-ID>/` und enthalten die Originalbytes sowie ein Manifest mit Dateimodus, SHA-256, Quell- und Zielraum.
+- Beim Abgleich wird inhaltlich ausschließlich `room.slug` auf `steuerung` gesetzt; unbekannte JSON-Felder bleiben erhalten. Die JSON-Formatierung darf dabei normalisiert werden.
+- Das Schreiben erfolgt atomar. Danach muss `python3 scripts/check-cabinet-layout.py --mode local .` erfolgreich sein.
+- Scheitert die Prüfung, stellt das Werkzeug die gesicherten Originalbytes und den ursprünglichen Dateimodus wieder her.
+- Manipulierte Backups, Symlinks, unsichere Backup-IDs, ungültiges JSON und ein Backup-Pfad innerhalb des Repositories werden fail-closed abgewiesen.
+- Der Host-Cutover wird auf dem PR-Branch vor dem Merge ausgeführt und geprüft. Erst nach erfolgreichem Target-Proof darf der Default-PR gemergt werden.
+- Nach dem Merge wird `main` aktualisiert und `workspace-check` erneut ausgeführt. Ein expliziter Rollback kann absichtlich Drift zum versionierten Default erzeugen und muss deshalb sichtbar dokumentiert werden.
 
 ## Grenzen
 
@@ -99,7 +112,7 @@ Bestehende Inhalte werden einzeln als `keep`, `move`, `split`, `archive` oder `d
 1. Drei Zielräume parallel anlegen; alte Räume bleiben lesbar.
 2. Repository-Snapshotkatalog aus versionierten Repository References deterministisch erzeugen und in CI prüfen.
 3. Datierte Snapshots lokal prüfen und eine erste Lageansicht ableiten, ohne Aktualität zu unterstellen.
-4. Lokale Workspace-Konfiguration sichern und kontrolliert auf `steuerung` umstellen.
+4. Versionierten Default auf `steuerung` umstellen; lokale Workspace-Konfigurationen hostbezogen sichern, auf dem PR-Branch abgleichen und vor sowie nach dem Merge prüfen.
 5. Projektkarten aus bestätigten Repositorybeziehungen und Vorhaben aufbauen.
 6. Deterministischen Sammler für freigegebene Repositories bauen; erst dieser erzeugt neu erhobene Zustandsdaten.
 7. Evidence-Pflicht, stabile Fingerprints und Hinweis/Bestätigt-Trennung einführen.

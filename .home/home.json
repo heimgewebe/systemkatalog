@@ -1,6 +1,6 @@
 {
-  "defaultRoom": "vorzimmer",
+  "defaultRoom": "steuerung",
   "kind": "home",
-  "lastActiveRoom": "vorzimmer",
+  "lastActiveRoom": "steuerung",
   "schemaVersion": 1
 }

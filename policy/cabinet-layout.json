@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "defaultRoom": "vorzimmer",
+  "defaultRoom": "steuerung",
   "rooms": {
     "bestand": {
       "id": "bestand-room",

@@ -2,9 +2,11 @@
 set -euo pipefail
 
 SERVICE="cabinet.service"
-RUNTIME_FILE="$HOME/repos/cabinet/.cabinet-state/runtime-ports.json"
+REPO_ROOT="${CABINET_REPO_ROOT:-$HOME/repos/cabinet}"
+RUNTIME_FILE="$REPO_ROOT/.cabinet-state/runtime-ports.json"
 ENV_FILE="$HOME/.config/cabinet/runtime.env"
 LOG_FILE="$HOME/.local/state/cabinet/cabinet.log"
+WORKSPACE_STATE_ROOT="${CABINET_WORKSPACE_CUTOVER_STATE_ROOT:-$HOME/.local/state/cabinet/workspace-cutovers}"
 FALLBACK_URL="http://127.0.0.1:4001"
 
 get_url() {
@@ -23,6 +25,13 @@ try:
 except Exception:
     print(fallback)
 PY
+}
+
+workspace_tool() {
+  python3 "$REPO_ROOT/scripts/workspace_default_cutover.py" \
+    "$@" \
+    --repo-root "$REPO_ROOT" \
+    --state-root "$WORKSPACE_STATE_ROOT"
 }
 
 case "${1:-status}" in
@@ -99,6 +108,22 @@ case "${1:-status}" in
     printf '%s\n' "$KB_PASSWORD"
     ;;
 
+  workspace-check)
+    workspace_tool check
+    ;;
+
+  workspace-apply)
+    workspace_tool apply
+    ;;
+
+  workspace-rollback)
+    if [[ -z "${2:-}" || -n "${3:-}" ]]; then
+      echo "STOP: workspace-rollback benötigt genau eine Backup-ID." >&2
+      exit 2
+    fi
+    workspace_tool rollback "$2"
+    ;;
+
   *)
     cat <<'USAGE'
 Verwendung:
@@ -114,6 +139,9 @@ Verwendung:
   cabinetctl password
   cabinetctl enable
   cabinetctl disable
+  cabinetctl workspace-check
+  cabinetctl workspace-apply
+  cabinetctl workspace-rollback BACKUP-ID
 USAGE
     exit 1
     ;;
