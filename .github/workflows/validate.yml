@@ -43,7 +43,7 @@ jobs:
         run: ./scripts/ci/test-validate-repository.sh
 
       - name: Test Phase Four Layout
-        run: python3 -m unittest discover -s scripts/tests -p 'test_phase4_layout.py'
+        run: timeout --signal=TERM --kill-after=10s 60s python3 -m unittest discover -s scripts/tests -p 'test_phase4_*.py'
 
       - name: Test Repository Inventory Generator
         run: timeout --signal=TERM --kill-after=10s 60s python3 -m unittest discover -s scripts/tests -p 'test_build_repository_index.py'
