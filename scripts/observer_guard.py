@@ -1,7 +1,8 @@
-"""Git-index guard for local repository observations."""
+"""Git-index and execution guard for local repository observations."""
 
 from __future__ import annotations
 
+import os
 import subprocess
 from dataclasses import dataclass
 from pathlib import Path
@@ -10,7 +11,7 @@ import repository_observer as observer
 
 
 class ObserverGuardError(observer.CollectorError):
-    """Raised when an observation input is not safely versioned."""
+    """Raised when an observation input or execution context is unsafe."""
 
 
 @dataclass(frozen=True)
@@ -19,6 +20,61 @@ class IndexEntry:
     object_id: str
     mode: str
     stage: str
+
+
+_GIT_ROUTING_VARIABLES = {
+    "GIT_ALTERNATE_OBJECT_DIRECTORIES",
+    "GIT_CEILING_DIRECTORIES",
+    "GIT_COMMON_DIR",
+    "GIT_DIR",
+    "GIT_DISCOVERY_ACROSS_FILESYSTEM",
+    "GIT_EXEC_PATH",
+    "GIT_INDEX_FILE",
+    "GIT_NAMESPACE",
+    "GIT_OBJECT_DIRECTORY",
+    "GIT_WORK_TREE",
+}
+_SAFE_GIT_CONFIG = (
+    ("core.fsmonitor", "false"),
+    ("core.untrackedCache", "false"),
+    ("submodule.recurse", "false"),
+    ("diff.ignoreSubmodules", "all"),
+)
+
+
+def install_safe_git_environment() -> None:
+    """Remove ambient Git routing and install deterministic local overrides."""
+    for key in list(os.environ):
+        if key in _GIT_ROUTING_VARIABLES:
+            os.environ.pop(key, None)
+        elif key == "GIT_CONFIG_COUNT":
+            os.environ.pop(key, None)
+        elif key.startswith("GIT_CONFIG_KEY_") or key.startswith("GIT_CONFIG_VALUE_"):
+            os.environ.pop(key, None)
+    os.environ.pop("GIT_CONFIG_SYSTEM", None)
+    os.environ["GIT_CONFIG_NOSYSTEM"] = "1"
+    os.environ["GIT_CONFIG_GLOBAL"] = os.devnull
+    os.environ["GIT_CONFIG_COUNT"] = str(len(_SAFE_GIT_CONFIG))
+    for index, (key, value) in enumerate(_SAFE_GIT_CONFIG):
+        os.environ[f"GIT_CONFIG_KEY_{index}"] = key
+        os.environ[f"GIT_CONFIG_VALUE_{index}"] = value
+
+
+def require_external_output_path(
+    output: Path,
+    repo_root: Path,
+    source_root: Path,
+) -> None:
+    """Prevent observer output from mutating Cabinet or a source repository tree."""
+    output_path = observer.absolute(output)
+    for label, root in (
+        ("Cabinet repository", observer.absolute(repo_root)),
+        ("repository source root", observer.absolute(source_root)),
+    ):
+        if output_path == root or output_path.is_relative_to(root):
+            raise ObserverGuardError(
+                f"output path must be outside {label}: {output_path}"
+            )
 
 
 def run_git(repo_root: Path, *arguments: str) -> bytes:
