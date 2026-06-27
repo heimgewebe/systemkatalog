@@ -22,6 +22,7 @@ CARD_PATTERN = re.compile(
 )
 ID_PATTERN = re.compile(r"^[a-z0-9][a-z0-9-]*$")
 REPOSITORY_PATTERN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._/-]*$")
+LOCAL_CARD_LINK_PATTERN = re.compile(r"\]\(([^/()]+\.md)\)")
 REQUIRED_HEADINGS = (
     "## Ziel",
     "## Repositorybeziehungen",
@@ -46,7 +47,6 @@ ALLOWED_REPOSITORY_KEYS = REQUIRED_REPOSITORY_KEYS | {"reference"}
 
 class ProjectCardError(RuntimeError):
     """Raised when a Project Card v1 contract is violated."""
-
 
 
 def _absolute(path: Path) -> Path:
@@ -78,9 +78,17 @@ def _require_directory(path: Path, label: str) -> Path:
     return path
 
 
-def _require_regular_file(root: Path, relative: Path, label: str) -> Path:
-    if relative.is_absolute() or not relative.parts or ".." in relative.parts:
+def _safe_relative_path(relative: Path, label: str) -> None:
+    if relative.is_absolute() or not relative.parts:
         raise ProjectCardError(f"{label} uses an unsafe relative path: {relative}")
+    if any(part in {"", ".", ".."} for part in relative.parts):
+        raise ProjectCardError(f"{label} uses an unsafe relative path: {relative}")
+    if relative.parts[0] == ".git":
+        raise ProjectCardError(f"{label} may not read Git internals: {relative}")
+
+
+def _require_regular_file(root: Path, relative: Path, label: str) -> Path:
+    _safe_relative_path(relative, label)
     root = _require_directory(root, f"{label} root")
     path = root / relative
     _reject_symlink_components(path, label)
@@ -123,6 +131,103 @@ def _section_body(text: str, heading: str) -> str:
     return body
 
 
+def _validate_metadata_keys(metadata: dict[str, Any], label: str) -> None:
+    keys = set(metadata)
+    if keys == REQUIRED_METADATA_KEYS:
+        return
+    missing = sorted(REQUIRED_METADATA_KEYS - keys)
+    extra = sorted(keys - REQUIRED_METADATA_KEYS)
+    raise ProjectCardError(
+        f"{label} metadata keys mismatch; missing={missing}, extra={extra}"
+    )
+
+
+def _validate_sources(
+    repo_root: Path,
+    label: str,
+    sources: object,
+    visible_sources: str,
+) -> set[str]:
+    if not isinstance(sources, list) or not sources:
+        raise ProjectCardError(f"{label} sources must be a non-empty array")
+    if any(not isinstance(item, str) or not item for item in sources):
+        raise ProjectCardError(f"{label} sources must contain non-empty paths")
+
+    typed_sources = list(sources)
+    if len(set(typed_sources)) != len(typed_sources):
+        raise ProjectCardError(f"{label} sources contain duplicates")
+
+    for raw_source in typed_sources:
+        _require_regular_file(repo_root, Path(raw_source), f"{label} source")
+        marker = f"`{raw_source}`"
+        if marker not in visible_sources:
+            raise ProjectCardError(
+                f"{label} source is absent from visible Quellen section: {raw_source}"
+            )
+    return set(typed_sources)
+
+
+def _validate_repositories(
+    label: str,
+    repositories: object,
+    source_set: set[str],
+) -> None:
+    if not isinstance(repositories, list) or not repositories:
+        raise ProjectCardError(f"{label} repositories must be a non-empty array")
+
+    names: list[str] = []
+    for index, relationship in enumerate(repositories):
+        if not isinstance(relationship, dict):
+            raise ProjectCardError(
+                f"{label} repositories[{index}] must be a JSON object"
+            )
+        relationship_keys = set(relationship)
+        if not REQUIRED_REPOSITORY_KEYS <= relationship_keys:
+            raise ProjectCardError(
+                f"{label} repositories[{index}] misses required keys"
+            )
+        if not relationship_keys <= ALLOWED_REPOSITORY_KEYS:
+            raise ProjectCardError(
+                f"{label} repositories[{index}] has unsupported keys"
+            )
+
+        name = relationship["name"]
+        role = relationship["role"]
+        evidence = relationship["evidence"]
+        if not isinstance(name, str) or not REPOSITORY_PATTERN.fullmatch(name):
+            raise ProjectCardError(
+                f"{label} repositories[{index}] has invalid name"
+            )
+        if not isinstance(role, str) or not role.strip():
+            raise ProjectCardError(
+                f"{label} repositories[{index}] has invalid role"
+            )
+        if not isinstance(evidence, str) or evidence not in source_set:
+            raise ProjectCardError(
+                f"{label} repositories[{index}] evidence is not listed in sources"
+            )
+        names.append(name)
+
+        reference = relationship.get("reference")
+        if reference is None:
+            continue
+        if not isinstance(reference, str) or not reference:
+            raise ProjectCardError(
+                f"{label} repositories[{index}] has invalid reference"
+            )
+        if reference not in source_set:
+            raise ProjectCardError(
+                f"{label} repositories[{index}] reference is not listed in sources"
+            )
+        if not reference.endswith("Repository Reference.md"):
+            raise ProjectCardError(
+                f"{label} repositories[{index}] reference has unexpected path"
+            )
+
+    if len(set(names)) != len(names):
+        raise ProjectCardError(f"{label} repositories contain duplicate names")
+
+
 def _validate_metadata(
     repo_root: Path,
     card_path: Path,
@@ -130,13 +235,7 @@ def _validate_metadata(
     metadata: dict[str, Any],
 ) -> None:
     label = card_path.relative_to(repo_root).as_posix()
-    keys = set(metadata)
-    if keys != REQUIRED_METADATA_KEYS:
-        missing = sorted(REQUIRED_METADATA_KEYS - keys)
-        extra = sorted(keys - REQUIRED_METADATA_KEYS)
-        raise ProjectCardError(
-            f"{label} metadata keys mismatch; missing={missing}, extra={extra}"
-        )
+    _validate_metadata_keys(metadata, label)
     if metadata["schema"] != SCHEMA:
         raise ProjectCardError(f"{label} has unsupported schema")
 
@@ -155,8 +254,7 @@ def _validate_metadata(
     if h1 is None or h1.group(1) != title:
         raise ProjectCardError(f"{label} H1 must equal metadata title")
 
-    evidence_status = metadata["evidence_status"]
-    if evidence_status not in ALLOWED_EVIDENCE_STATUS:
+    if metadata["evidence_status"] not in ALLOWED_EVIDENCE_STATUS:
         raise ProjectCardError(f"{label} has invalid evidence_status")
 
     reviewed_at = metadata["reviewed_at"]
@@ -167,75 +265,16 @@ def _validate_metadata(
     except ValueError as exc:
         raise ProjectCardError(f"{label} has invalid reviewed_at date") from exc
 
-    sources = metadata["sources"]
-    if not isinstance(sources, list) or not sources:
-        raise ProjectCardError(f"{label} sources must be a non-empty array")
-    if any(not isinstance(item, str) or not item for item in sources):
-        raise ProjectCardError(f"{label} sources must contain non-empty paths")
-    if len(set(sources)) != len(sources):
-        raise ProjectCardError(f"{label} sources contain duplicates")
-    source_set = set(sources)
-    for raw_source in sources:
-        _require_regular_file(repo_root, Path(raw_source), f"{label} source")
-
-    repositories = metadata["repositories"]
-    if not isinstance(repositories, list) or not repositories:
-        raise ProjectCardError(f"{label} repositories must be a non-empty array")
-    names: list[str] = []
-    for index, relationship in enumerate(repositories):
-        if not isinstance(relationship, dict):
-            raise ProjectCardError(
-                f"{label} repositories[{index}] must be a JSON object"
-            )
-        relationship_keys = set(relationship)
-        if not REQUIRED_REPOSITORY_KEYS <= relationship_keys:
-            raise ProjectCardError(
-                f"{label} repositories[{index}] misses required keys"
-            )
-        if not relationship_keys <= ALLOWED_REPOSITORY_KEYS:
-            raise ProjectCardError(
-                f"{label} repositories[{index}] has unsupported keys"
-            )
-        name = relationship["name"]
-        role = relationship["role"]
-        evidence = relationship["evidence"]
-        if not isinstance(name, str) or not REPOSITORY_PATTERN.fullmatch(name):
-            raise ProjectCardError(
-                f"{label} repositories[{index}] has invalid name"
-            )
-        if not isinstance(role, str) or not role.strip():
-            raise ProjectCardError(
-                f"{label} repositories[{index}] has invalid role"
-            )
-        if not isinstance(evidence, str) or evidence not in source_set:
-            raise ProjectCardError(
-                f"{label} repositories[{index}] evidence is not listed in sources"
-            )
-        names.append(name)
-        reference = relationship.get("reference")
-        if reference is not None:
-            if not isinstance(reference, str) or not reference:
-                raise ProjectCardError(
-                    f"{label} repositories[{index}] has invalid reference"
-                )
-            if reference not in source_set:
-                raise ProjectCardError(
-                    f"{label} repositories[{index}] reference is not listed in sources"
-                )
-            if not reference.endswith("Repository Reference.md"):
-                raise ProjectCardError(
-                    f"{label} repositories[{index}] reference has unexpected path"
-                )
-    if len(set(names)) != len(names):
-        raise ProjectCardError(f"{label} repositories contain duplicate names")
-
-    section_bodies = {heading: _section_body(text, heading) for heading in REQUIRED_HEADINGS}
-    visible_sources = section_bodies["## Quellen"]
-    for raw_source in sources:
-        if raw_source not in visible_sources:
-            raise ProjectCardError(
-                f"{label} source is absent from visible Quellen section: {raw_source}"
-            )
+    section_bodies = {
+        heading: _section_body(text, heading) for heading in REQUIRED_HEADINGS
+    }
+    source_set = _validate_sources(
+        repo_root,
+        label,
+        metadata["sources"],
+        section_bodies["## Quellen"],
+    )
+    _validate_repositories(label, metadata["repositories"], source_set)
 
 
 def validate_project_cards(repo_root: Path) -> list[dict[str, Any]]:
@@ -253,8 +292,7 @@ def validate_project_cards(repo_root: Path) -> list[dict[str, Any]]:
                 f"unexpected non-card entry in project directory: {entry.name}"
             )
         _reject_symlink_components(entry, "project card")
-        metadata = os.lstat(entry)
-        if not stat.S_ISREG(metadata.st_mode):
+        if not stat.S_ISREG(os.lstat(entry).st_mode):
             raise ProjectCardError(f"project card is not a regular file: {entry.name}")
         card_paths.append(entry)
     if not card_paths:
@@ -277,7 +315,7 @@ def validate_project_cards(repo_root: Path) -> list[dict[str, Any]]:
             )
         cards.append(metadata)
 
-    linked_cards = set(re.findall(r"\]\(([^/()]+\.md)\)", index_text))
+    linked_cards = set(LOCAL_CARD_LINK_PATTERN.findall(index_text))
     expected_cards = {path.name for path in card_paths}
     unexpected = sorted(linked_cards - expected_cards)
     if unexpected:
