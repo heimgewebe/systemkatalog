@@ -112,12 +112,12 @@ def load_verified_policy(
     policy_relative: Path,
 ) -> observer.Policy:
     repo_root = observer.require_directory(repo_root, "repository root")
+    policy = observer.load_policy(repo_root, policy_relative)
     require_index_identical(
         repo_root,
         policy_relative,
         "versioned observation policy",
     )
-    policy = observer.load_policy(repo_root, policy_relative)
     for entry in policy.entries:
         require_strict_remote(
             entry.expected_remote,
