@@ -38,14 +38,18 @@ class RepositoryPhaseFourContractTests(unittest.TestCase):
         self.assertEqual(home["defaultRoom"], "steuerung")
         self.assertEqual(home["lastActiveRoom"], "steuerung")
 
-    def test_vorzimmer_remains_a_real_room(self) -> None:
+    def test_vorzimmer_is_a_retained_legacy_collection(self) -> None:
         policy = json.loads(
             (REPO_ROOT / "policy/cabinet-layout.json").read_text(encoding="utf-8")
         )
-        manifest = REPO_ROOT / "vorzimmer/.cabinet"
-        self.assertIn("vorzimmer", policy["rooms"])
-        self.assertTrue(manifest.is_file())
-        self.assertFalse(manifest.is_symlink())
+        navigation = json.loads(
+            (REPO_ROOT / "policy/cabinet-navigation.json").read_text(encoding="utf-8")
+        )
+        manifest = (REPO_ROOT / "vorzimmer/.cabinet").read_text(encoding="utf-8")
+        self.assertEqual(set(policy["rooms"]), {"bestand", "pruefung", "steuerung"})
+        self.assertIn("vorzimmer", navigation["legacyCollections"])
+        self.assertIn("kind: legacy-collection", manifest)
+        self.assertNotIn("kind: room", manifest)
 
     def test_blueprint_names_executable_cutover_contract(self) -> None:
         blueprint = (

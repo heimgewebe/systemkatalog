@@ -1,10 +1,12 @@
 schemaVersion: 1
 id: "heimgewebe-room"
 name: "Heimgewebe"
-kind: room
-version: "0.1.0"
-description: "Contracts, Artefaktflüsse, Fleet und systemische Kohärenz."
+kind: legacy-collection
+version: "0.2.0"
+description: "Historische Fachsammlung Heimgewebe; Inhalte bleiben lesbar."
 entry: index.md
-room:
-  icon: sparkles
-  color: "rgb(168, 85, 247)"
+visibility: hidden
+successor: bestand
+axis: domain
+contentState: retained
+registry: docs/migrations/legacy-room-cutover-v1.json

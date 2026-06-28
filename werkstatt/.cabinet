@@ -1,10 +1,12 @@
 schemaVersion: 1
 id: "werkstatt-room"
 name: "Werkstatt"
-kind: room
-version: "0.1.0"
-description: "Reproduzierbare Umsetzung ausreichend geklärter Aufgaben."
+kind: legacy-collection
+version: "0.2.0"
+description: "Historische Werkstatt-Sammlung; Inhalte bleiben lesbar."
 entry: index.md
-room:
-  icon: sparkles
-  color: "rgb(234, 88, 12)"
+visibility: hidden
+successor: steuerung
+axis: work-regime
+contentState: retained
+registry: docs/migrations/legacy-room-cutover-v1.json

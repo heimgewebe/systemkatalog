@@ -1,10 +1,12 @@
 schemaVersion: 1
 id: "vorzimmer-room"
 name: "Vorzimmer"
-kind: room
-version: "0.1.0"
-description: "Aufnahme, Klärung und Verteilung neuer Arbeit."
+kind: legacy-collection
+version: "0.2.0"
+description: "Historische Aufnahme- und Verteilungsfläche; Inhalte bleiben lesbar."
 entry: index.md
-room:
-  icon: sparkles
-  color: "rgb(99, 102, 241)"
+visibility: hidden
+successor: steuerung
+axis: intake-workflow
+contentState: retained
+registry: docs/migrations/legacy-room-cutover-v1.json

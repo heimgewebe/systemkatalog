@@ -24,7 +24,7 @@ Beantwortet: **Was wird entschieden und was geschieht als Nächstes?**
 
 Enthält Lageübersicht, Entscheidungen, priorisierte Aufgaben, Blocker und Übergaben.
 
-`steuerung` ist der versionierte Ziel-Default. Zum technischen Default eines Hosts wird der Raum erst, nachdem dessen lokale Workspace-Konfiguration erfolgreich abgeglichen und im lokalen Prüfmodus bestätigt wurde. `vorzimmer` bleibt während der Parallelphase lesbar und wird erst nach belegter Inhaltsmigration entfernt.
+`steuerung` ist der versionierte und lokale Ziel-Default. Die bisherigen sechs Pfade bleiben als lesbare Legacy-Sammlungen erhalten, besitzen aber keine aktive Top-Level-Raumrolle mehr.
 
 ## Workspace-Cutover-Vertrag
 
@@ -109,7 +109,7 @@ Bestehende Inhalte werden einzeln als `keep`, `move`, `split`, `archive` oder `d
 
 ## Phasen
 
-1. Drei Zielräume parallel anlegen; alte Räume bleiben lesbar.
+1. Drei Zielräume als einzige aktive Räume führen; alte Pfade bleiben als Legacy-Sammlungen lesbar.
 2. Repository-Snapshotkatalog aus versionierten Repository References deterministisch erzeugen und in CI prüfen.
 3. Datierte Snapshots lokal prüfen und eine erste Lageansicht ableiten, ohne Aktualität zu unterstellen.
 4. Versionierten Default auf `steuerung` umstellen; lokale Workspace-Konfigurationen hostbezogen sichern, auf dem PR-Branch abgleichen und vor sowie nach dem Merge prüfen.
@@ -117,7 +117,7 @@ Bestehende Inhalte werden einzeln als `keep`, `move`, `split`, `archive` oder `d
 6. Deterministischen Sammler für freigegebene Repositories bauen; erst dieser erzeugt neu erhobene Zustandsdaten.
 7. Evidence-Pflicht, stabile Fingerprints und Hinweis/Bestätigt-Trennung einführen.
 8. Lage und Aufträge aus validierten Artefakten erzeugen.
-9. Alte Räume erst nach belegter Inhaltsmigration entfernen.
+9. Alte aktive Raumrollen stilllegen; Fachinhalte bis zur dateiweisen Klassifikation in lesbaren Legacy-Sammlungen erhalten.
 10. Automatisierung erst nach wiederholbaren manuellen Läufen aktivieren.
 
 ## Neubewertung

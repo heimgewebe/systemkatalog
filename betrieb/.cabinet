@@ -1,10 +1,12 @@
 schemaVersion: 1
 id: "betrieb-room"
 name: "Betrieb"
-kind: room
-version: "0.1.0"
-description: "Hosts, Dienste, Runtime, Changes, Incidents und Runbooks."
+kind: legacy-collection
+version: "0.2.0"
+description: "Historische Sammlung; Inhalte bleiben lesbar."
 entry: index.md
-room:
-  icon: sparkles
-  color: "rgb(34, 197, 94)"
+visibility: hidden
+successor: pruefung
+axis: work-regime
+contentState: retained
+registry: docs/migrations/legacy-room-cutover-v1.json

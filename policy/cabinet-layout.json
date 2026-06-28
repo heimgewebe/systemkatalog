@@ -1,6 +1,14 @@
 {
   "schemaVersion": 1,
+  "layoutMode": "three-active-rooms",
   "defaultRoom": "steuerung",
+  "navigationPolicy": "policy/cabinet-navigation.json",
+  "legacyRegistry": "docs/migrations/legacy-room-cutover-v1.json",
+  "activeRooms": [
+    "bestand",
+    "pruefung",
+    "steuerung"
+  ],
   "rooms": {
     "bestand": {
       "id": "bestand-room",
@@ -13,30 +21,6 @@
     "steuerung": {
       "id": "steuerung-room",
       "name": "Steuerung"
-    },
-    "betrieb": {
-      "id": "betrieb-room",
-      "name": "Betrieb"
-    },
-    "heimgewebe": {
-      "id": "heimgewebe-room",
-      "name": "Heimgewebe"
-    },
-    "labor": {
-      "id": "labor-room",
-      "name": "Labor"
-    },
-    "vorzimmer": {
-      "id": "vorzimmer-room",
-      "name": "Vorzimmer"
-    },
-    "weltgewebe": {
-      "id": "weltgewebe-room",
-      "name": "Weltgewebe"
-    },
-    "werkstatt": {
-      "id": "werkstatt-room",
-      "name": "Werkstatt"
     }
   },
   "systemAgents": {
