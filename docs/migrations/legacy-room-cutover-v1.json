@@ -1,6 +1,7 @@
 {
   "schema": "cabinet.legacy-room-cutover.v1",
-  "status": "planned",
+  "status": "active-manifests-retired",
+  "runtimeVerification": "pending-local-smoke",
   "activeRooms": ["bestand", "pruefung", "steuerung"],
   "legacyCollections": {
     "vorzimmer": {"successor": "steuerung", "axis": "intake-workflow"},

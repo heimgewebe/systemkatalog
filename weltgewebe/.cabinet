@@ -1,10 +1,12 @@
 schemaVersion: 1
 id: "weltgewebe-room"
 name: "Weltgewebe"
-kind: room
-version: "0.1.0"
-description: "Produktbedeutung, Architektur, Interaktion, Daten und Roadmap."
+kind: legacy-collection
+version: "0.2.0"
+description: "Historische Fachsammlung Weltgewebe; Inhalte bleiben lesbar."
 entry: index.md
-room:
-  icon: sparkles
-  color: "rgb(14, 165, 233)"
+visibility: hidden
+successor: bestand
+axis: domain
+contentState: retained
+registry: docs/migrations/legacy-room-cutover-v1.json

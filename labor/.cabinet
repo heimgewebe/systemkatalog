@@ -1,10 +1,12 @@
 schemaVersion: 1
 id: "labor-room"
 name: "Labor"
-kind: room
-version: "0.1.0"
-description: "Hypothesen, Experimente, Prototypen und Messreihen."
+kind: legacy-collection
+version: "0.2.0"
+description: "Historische Labor-Sammlung; Inhalte bleiben lesbar."
 entry: index.md
-room:
-  icon: sparkles
-  color: "rgb(6, 182, 212)"
+visibility: hidden
+successor: pruefung
+axis: work-regime
+contentState: retained
+registry: docs/migrations/legacy-room-cutover-v1.json

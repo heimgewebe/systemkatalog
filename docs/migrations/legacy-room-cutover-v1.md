@@ -1,39 +1,30 @@
 # Legacy-Room-Visibility-Cutover v1
 
-## Zweck
+## Versionierter Zustand
 
-Dieser Cutover trennt die aktive Navigation von der historischen Ablage.
+Die Navigation unterscheidet drei aktive Räume von sechs erhaltenen Legacy-Sammlungen.
 
-Ziel sind genau drei aktive Räume: `bestand`, `pruefung` und `steuerung`. Die sechs alten Verzeichnisse bleiben vollständig versioniert und lesbar; erst der kontrollierte Apply-Schritt entfernt ihre Room-Manifeste und ersetzt sie durch Legacy-Marker.
+Aktive Räume:
 
-## Sicherheitsprinzip
+- `bestand`
+- `pruefung`
+- `steuerung`
 
-Der Cutover löscht keine Fachinhalte und verschiebt keine Inhaltsdatei automatisch. Er verändert nur die Raum-Erkennung, den Layoutvertrag und die maschinenlesbaren Migrationsmarker.
+Die Verzeichnisse Vorzimmer, Heimgewebe, Weltgewebe, Werkstatt, Labor und Betrieb bleiben erhalten. Ihre `.cabinet`-Dateien verwenden `kind: legacy-collection`, damit sie nicht mehr als aktive Räume erkannt werden.
 
-Vor jeder Änderung werden die betroffenen Manifestbytes und die Layout-Policy außerhalb des Repositories gesichert. Ein Mischzustand wird abgewiesen. Bei einem Fehler wird automatisch zurückgerollt.
-
-## Bedienung
-
-Quell- oder Zielzustand prüfen:
+## Prüfung
 
 ```bash
-python3 scripts/legacy_room_visibility_cutover.py check
+python3 scripts/check-cabinet-layout.py --mode repository .
+python3 -m unittest discover -s scripts/tests -p 'test_phase4_*.py'
 ```
 
-Cutover transaktional auf den ausgecheckten Branch anwenden:
+Der Validator gleicht Layout, Navigation, Registry und alle neun Manifestpfade ab. Eine fehlende Sammlung, ein widersprüchlicher Nachfolger oder `kind: room` in einer Legacy-Sammlung führt zum Fehler.
 
-```bash
-python3 scripts/legacy_room_visibility_cutover.py apply
-```
+## Lokale Verifikation
 
-Danach werden die erzeugten Änderungen wie ein normaler Patch geprüft und committet. Ein Backup kann explizit zurückgerollt werden:
+Nach dem Aktualisieren des lokalen Repositories sind der lokale Layout-Check, ein Neustart des Cabinet-Dienstes und eine Sichtprüfung der Oberfläche erforderlich. Ein Repositorytest allein belegt nicht, welche Räume eine bereits laufende Instanz anzeigt.
 
-```bash
-python3 scripts/legacy_room_visibility_cutover.py rollback BACKUP-ID
-```
+## Inhaltsmigration
 
-## Folgearbeit
-
-Jede Inhaltsdatei wird später anhand belegter Consumer und Links als `keep`, `move`, `split`, `archive` oder `delete` klassifiziert. Bis dahin bleibt ihr alter Pfad erhalten.
-
-Ein erfolgreicher Repositorytest belegt die Struktur des versionierten Snapshots. Er belegt nicht, dass eine bereits laufende lokale Cabinet-Instanz den neuen Baum ohne Neustart eingelesen hat.
+Dieser Sichtbarkeitsschritt verschiebt und löscht keine Fachinhalte. Einzelne Dateien werden weiterhin anhand belegter Links und Consumer als `keep`, `move`, `split`, `archive` oder `delete` klassifiziert.

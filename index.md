@@ -2,14 +2,14 @@
 
 Cabinet ordnet Repositories, Projekte, Prüfungen und nächste Schritte.
 
-## Zielräume
+## Aktive Räume
 
 - **Bestand** – Repositories, Projekte, Quellen und Beziehungen
 - **Prüfung** – Läufe, Belege, Befunde, Widersprüche und Risiken
 - **Steuerung** – Lage, Entscheidungen, Aufgaben, Blocker und Übergaben
 
-## Parallelphase
+## Legacy-Sammlungen
 
-Die bisherigen sechs Räume bleiben vorerst lesbar. Sie sind Migrationsquellen und keine dauerhafte Zielstruktur. Der versionierte Ziel-Default ist `steuerung`; zum technischen Default eines Hosts wird er erst nach dem gesicherten lokalen Cutover und einem erfolgreichen `workspace-check`.
+Vorzimmer, Heimgewebe, Weltgewebe, Werkstatt, Labor und Betrieb bleiben an ihren bisherigen Pfaden lesbar. Ihre `.cabinet`-Manifeste kennzeichnen sie als `legacy-collection`; sie sind keine aktiven Top-Level-Räume mehr. Inhalte werden weiterhin einzeln als `keep`, `move`, `split`, `archive` oder `delete` klassifiziert.
 
-Die Zielarchitektur und die Migrationsregeln stehen in `docs/blueprints/repository-oversight-layout-v1.md`.
+Der Repository-Cutover ist versioniert. Ob eine bereits laufende lokale Cabinet-Instanz den neuen Baum eingelesen hat, muss nach Pull und Neustart durch einen Runtime-Smoke bestätigt werden.

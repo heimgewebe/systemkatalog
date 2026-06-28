@@ -3,6 +3,7 @@ set -Eeuo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 export REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+export PYTHONDONTWRITEBYTECODE=1
 
 cd "$REPO_ROOT"
 
