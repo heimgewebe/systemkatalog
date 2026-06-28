@@ -193,6 +193,32 @@ def main() -> int:
         errors.append("Registry und Navigation enthalten andere Legacy-Sammlungen.")
         registry_legacy = {}
 
+    for child in root.iterdir():
+        manifest_path = child / ".cabinet"
+        if not manifest_path.exists() and not manifest_path.is_symlink():
+            continue
+        if child.name in known_set:
+            continue
+        if child.is_symlink() or not child.is_dir():
+            errors.append(f"Unerwarteter Top-Level-.cabinet-Pfad: {child.name}")
+            continue
+        if not manifest_path.is_file() or manifest_path.is_symlink():
+            errors.append(f"{child.name}: Top-Level-.cabinet ist keine reguläre Datei.")
+            continue
+        try:
+            manifest = parse_manifest(manifest_path)
+        except (OSError, UnicodeError) as exc:
+            errors.append(f"{child.name}: unbekanntes .cabinet ist nicht lesbar: {exc}")
+            continue
+        kind = manifest.get("kind")
+        if kind == "room":
+            errors.append(f"Unerwarteter aktiver Top-Level-Room: {child.name}")
+        else:
+            errors.append(
+                f"Unerwartetes Top-Level-.cabinet-Manifest: {child.name} "
+                f"(kind={kind!r})"
+            )
+
     found_active: dict[str, dict[str, object]] = {}
     for slug in sorted(known_set):
         directory = root / slug
