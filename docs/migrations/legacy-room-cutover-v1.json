@@ -1,0 +1,84 @@
+{
+  "schema": "cabinet.legacy-room-cutover.v1",
+  "status": "visibility-cutover-complete",
+  "activeRooms": [
+    "bestand",
+    "pruefung",
+    "steuerung"
+  ],
+  "allowedContentDispositions": [
+    "keep",
+    "move",
+    "split",
+    "archive",
+    "delete"
+  ],
+  "legacyCollections": [
+    {
+      "slug": "betrieb",
+      "id": "betrieb-room",
+      "name": "Betrieb",
+      "successor": "pruefung",
+      "axis": "work-regime",
+      "visibility": "hidden",
+      "contentState": "retained",
+      "marker": ".cabinet-legacy.json",
+      "contentDisposition": "classify-per-file"
+    },
+    {
+      "slug": "heimgewebe",
+      "id": "heimgewebe-room",
+      "name": "Heimgewebe",
+      "successor": "bestand",
+      "axis": "domain",
+      "visibility": "hidden",
+      "contentState": "retained",
+      "marker": ".cabinet-legacy.json",
+      "contentDisposition": "classify-per-file"
+    },
+    {
+      "slug": "labor",
+      "id": "labor-room",
+      "name": "Labor",
+      "successor": "pruefung",
+      "axis": "work-regime",
+      "visibility": "hidden",
+      "contentState": "retained",
+      "marker": ".cabinet-legacy.json",
+      "contentDisposition": "classify-per-file"
+    },
+    {
+      "slug": "vorzimmer",
+      "id": "vorzimmer-room",
+      "name": "Vorzimmer",
+      "successor": "steuerung",
+      "axis": "intake-workflow",
+      "visibility": "hidden",
+      "contentState": "retained",
+      "marker": ".cabinet-legacy.json",
+      "contentDisposition": "classify-per-file"
+    },
+    {
+      "slug": "weltgewebe",
+      "id": "weltgewebe-room",
+      "name": "Weltgewebe",
+      "successor": "bestand",
+      "axis": "domain",
+      "visibility": "hidden",
+      "contentState": "retained",
+      "marker": ".cabinet-legacy.json",
+      "contentDisposition": "classify-per-file"
+    },
+    {
+      "slug": "werkstatt",
+      "id": "werkstatt-room",
+      "name": "Werkstatt",
+      "successor": "steuerung",
+      "axis": "work-regime",
+      "visibility": "hidden",
+      "contentState": "retained",
+      "marker": ".cabinet-legacy.json",
+      "contentDisposition": "classify-per-file"
+    }
+  ]
+}
