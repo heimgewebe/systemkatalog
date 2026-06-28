@@ -1,0 +1,75 @@
+{
+  "schema": "cabinet.navigation.v1",
+  "defaultRoom": "steuerung",
+  "legacyRegistry": "docs/migrations/legacy-room-cutover-v1.json",
+  "activeRooms": {
+    "bestand": {
+      "id": "bestand-room",
+      "name": "Bestand"
+    },
+    "pruefung": {
+      "id": "pruefung-room",
+      "name": "Prüfung"
+    },
+    "steuerung": {
+      "id": "steuerung-room",
+      "name": "Steuerung"
+    }
+  },
+  "legacyCollections": {
+    "vorzimmer": {
+      "id": "vorzimmer-room",
+      "name": "Vorzimmer",
+      "successor": "steuerung",
+      "axis": "intake-workflow",
+      "visibility": "hidden",
+      "contentState": "retained",
+      "marker": ".cabinet-legacy.json"
+    },
+    "heimgewebe": {
+      "id": "heimgewebe-room",
+      "name": "Heimgewebe",
+      "successor": "bestand",
+      "axis": "domain",
+      "visibility": "hidden",
+      "contentState": "retained",
+      "marker": ".cabinet-legacy.json"
+    },
+    "weltgewebe": {
+      "id": "weltgewebe-room",
+      "name": "Weltgewebe",
+      "successor": "bestand",
+      "axis": "domain",
+      "visibility": "hidden",
+      "contentState": "retained",
+      "marker": ".cabinet-legacy.json"
+    },
+    "werkstatt": {
+      "id": "werkstatt-room",
+      "name": "Werkstatt",
+      "successor": "steuerung",
+      "axis": "work-regime",
+      "visibility": "hidden",
+      "contentState": "retained",
+      "marker": ".cabinet-legacy.json"
+    },
+    "labor": {
+      "id": "labor-room",
+      "name": "Labor",
+      "successor": "pruefung",
+      "axis": "work-regime",
+      "visibility": "hidden",
+      "contentState": "retained",
+      "marker": ".cabinet-legacy.json"
+    },
+    "betrieb": {
+      "id": "betrieb-room",
+      "name": "Betrieb",
+      "successor": "pruefung",
+      "axis": "work-regime",
+      "visibility": "hidden",
+      "contentState": "retained",
+      "marker": ".cabinet-legacy.json"
+    }
+  }
+}
