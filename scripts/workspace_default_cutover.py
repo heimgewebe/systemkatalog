@@ -110,6 +110,23 @@ def _read_contract(repo_root: Path) -> str:
     return target
 
 
+def _expected_room_identity(repo_root: Path, target: str) -> dict[str, str]:
+    policy = _read_json_file(repo_root, POLICY_RELATIVE, "layout policy")
+    rooms = policy.get("rooms")
+    if not isinstance(rooms, dict):
+        raise CutoverError("layout policy rooms must be an object")
+    room = rooms.get(target)
+    if not isinstance(room, dict):
+        raise CutoverError(f"layout policy does not declare room {target!r}")
+    identity = {"slug": target, "id": room.get("id"), "name": room.get("name")}
+    for key, value in identity.items():
+        if not isinstance(value, str) or not value:
+            raise CutoverError(
+                f"layout policy room {target!r} requires non-empty {key}"
+            )
+    return identity
+
+
 def _read_workspace(
     repo_root: Path,
 ) -> tuple[Path, bytes, int, dict[str, Any], str]:
@@ -276,11 +293,15 @@ def run_layout_validator(repo_root: Path) -> None:
 def check_cutover(repo_root: Path, validator: Validator = run_layout_validator) -> None:
     repo_root = _require_directory(repo_root, "repository root")
     target = _read_contract(repo_root)
-    _, _, _, _, current = _read_workspace(repo_root)
-    if current != target:
-        raise CutoverError(
-            f"local workspace room.slug is {current!r}; expected {target!r}"
-        )
+    expected = _expected_room_identity(repo_root, target)
+    _, _, _, workspace, _ = _read_workspace(repo_root)
+    room = workspace["room"]
+    for key, expected_value in expected.items():
+        if room.get(key) != expected_value:
+            raise CutoverError(
+                f"local workspace room.{key} is {room.get(key)!r}; "
+                f"expected {expected_value!r}"
+            )
     validator(repo_root)
 
 
@@ -292,15 +313,17 @@ def apply_cutover(
 ) -> str | None:
     repo_root = _require_directory(repo_root, "repository root")
     target = _read_contract(repo_root)
+    expected = _expected_room_identity(repo_root, target)
     workspace_path, original, original_mode, workspace, previous = _read_workspace(
         repo_root
     )
-    if previous == target:
+    room = workspace["room"]
+    if all(room.get(key) == value for key, value in expected.items()):
         validator(repo_root)
         return None
 
     updated = copy.deepcopy(workspace)
-    updated["room"]["slug"] = target
+    updated["room"].update(expected)
     replacement = _serialize_json(updated)
     backup_id, backup_dir, manifest = _create_backup(
         state_root,

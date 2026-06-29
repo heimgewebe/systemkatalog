@@ -287,8 +287,23 @@ def main() -> int:
             root / ".agents/.config/workspace.json", "Workspace-Konfiguration", errors
         )
         room = workspace.get("room", {})
-        if not isinstance(room, dict) or room.get("slug") != expected_default:
-            errors.append("Workspace zeigt nicht auf den Default-Room.")
+        expected_room = policy_rooms.get(expected_default, {})
+        if not isinstance(room, dict):
+            errors.append("Workspace room muss ein Objekt sein.")
+        elif not isinstance(expected_room, dict):
+            errors.append("Default-Room fehlt in policy.rooms.")
+        else:
+            expected_identity = {
+                "slug": expected_default,
+                "id": expected_room.get("id"),
+                "name": expected_room.get("name"),
+            }
+            for key, expected_value in expected_identity.items():
+                if room.get(key) != expected_value:
+                    errors.append(
+                        f"Workspace room.{key}={room.get(key)!r}, "
+                        f"erwartet {expected_value!r}"
+                    )
         editor_path = root / ".global-agents/editor/persona.md"
         if not editor_path.is_file():
             errors.append("Globaler Editor fehlt.")

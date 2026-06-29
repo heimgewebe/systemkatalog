@@ -36,7 +36,7 @@ class PhaseFourRollbackGuardTests(unittest.TestCase):
                 {
                     "schemaVersion": 1,
                     "defaultRoom": "steuerung",
-                    "rooms": {"steuerung": {"id": "steuerung-room"}},
+                    "rooms": {"steuerung": {"id": "steuerung-room", "name": "Steuerung"}},
                 }
             ),
             encoding="utf-8",
