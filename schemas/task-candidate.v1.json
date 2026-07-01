@@ -1,0 +1,249 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://heimgewebe.local/cabinet/schemas/task-candidate.v1.json",
+  "title": "Task Candidate v1",
+  "description": "A Cabinet-generated work candidate before or after triage.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "kind",
+    "id",
+    "title",
+    "status",
+    "priority",
+    "risk",
+    "sources",
+    "targetProof",
+    "acceptance"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "kind": {
+      "const": "task_candidate"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Z]{2,10}-[A-Z0-9-]+$"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "summary": {
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "candidate",
+        "triaged",
+        "approved",
+        "delegated",
+        "in_progress",
+        "review_needed",
+        "accepted",
+        "rejected",
+        "archived"
+      ]
+    },
+    "repo": {
+      "type": "string",
+      "minLength": 1
+    },
+    "priority": {
+      "enum": [
+        "P0",
+        "P1",
+        "P2",
+        "P3",
+        "P4"
+      ]
+    },
+    "risk": {
+      "enum": [
+        "low",
+        "medium",
+        "high",
+        "critical",
+        "unknown"
+      ]
+    },
+    "impact": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "urgency": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "unblockFactor": {
+      "type": "number",
+      "minimum": 0
+    },
+    "requiresHumanApproval": {
+      "type": "boolean",
+      "default": true
+    },
+    "claims": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^claim:[A-Za-z0-9._/-]+$"
+      },
+      "uniqueItems": true,
+      "default": []
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/sourceRef"
+      },
+      "minItems": 1
+    },
+    "targetProof": {
+      "$ref": "#/$defs/targetProof"
+    },
+    "acceptance": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "nonGoals": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "default": []
+    },
+    "briefingProfile": {
+      "enum": [
+        "jules",
+        "codex",
+        "claude",
+        "local_agent",
+        "chatgpt",
+        "bureau",
+        "manual"
+      ]
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "$defs": {
+    "sourceRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "ref"
+      ],
+      "properties": {
+        "type": {
+          "enum": [
+            "git",
+            "github",
+            "ci",
+            "runtime",
+            "contract",
+            "cabinet",
+            "manual",
+            "dump"
+          ]
+        },
+        "ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "observedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    },
+    "freshness": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "class"
+      ],
+      "properties": {
+        "class": {
+          "enum": [
+            "live",
+            "recent_snapshot",
+            "dated_snapshot",
+            "stale",
+            "unknown"
+          ]
+        },
+        "observedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "expiresAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "targetProof": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "description"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "test",
+            "ci",
+            "runtime",
+            "document",
+            "review",
+            "manual"
+          ]
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "expectedArtifact": {
+          "type": "string",
+          "minLength": 1
+        },
+        "expectedCommand": {
+          "type": "string",
+          "minLength": 1
+        },
+        "notApplicableReason": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}

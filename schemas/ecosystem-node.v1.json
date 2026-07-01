@@ -1,0 +1,197 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://heimgewebe.local/cabinet/schemas/ecosystem-node.v1.json",
+  "title": "Ecosystem Node v1",
+  "description": "A typed node in Cabinet's ecosystem intelligence graph.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "kind",
+    "id",
+    "nodeType",
+    "name",
+    "status",
+    "sources"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "kind": {
+      "const": "ecosystem_node"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_-]*:[A-Za-z0-9._/-]+$"
+    },
+    "nodeType": {
+      "enum": [
+        "repository",
+        "service",
+        "contract",
+        "workflow",
+        "runtime",
+        "agent",
+        "roadmap",
+        "task",
+        "pull_request",
+        "risk",
+        "decision"
+      ]
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "observed",
+        "candidate",
+        "active",
+        "deprecated",
+        "archived",
+        "unknown"
+      ]
+    },
+    "roles": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true,
+      "default": []
+    },
+    "healthDimensions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true,
+      "default": []
+    },
+    "links": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/link"
+      },
+      "default": []
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/sourceRef"
+      },
+      "minItems": 1
+    },
+    "freshness": {
+      "$ref": "#/$defs/freshness"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "$defs": {
+    "link": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "rel",
+        "target"
+      ],
+      "properties": {
+        "rel": {
+          "enum": [
+            "depends_on",
+            "provides",
+            "validates",
+            "owns",
+            "consumes",
+            "blocks",
+            "supersedes",
+            "contradicts",
+            "delegates_to",
+            "verified_by",
+            "documents"
+          ]
+        },
+        "target": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_-]*:[A-Za-z0-9._/-]+$"
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/sourceRef"
+          },
+          "default": []
+        }
+      }
+    },
+    "sourceRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "ref"
+      ],
+      "properties": {
+        "type": {
+          "enum": [
+            "git",
+            "github",
+            "ci",
+            "runtime",
+            "contract",
+            "cabinet",
+            "manual",
+            "dump"
+          ]
+        },
+        "ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "observedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    },
+    "freshness": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "class"
+      ],
+      "properties": {
+        "class": {
+          "enum": [
+            "live",
+            "recent_snapshot",
+            "dated_snapshot",
+            "stale",
+            "unknown"
+          ]
+        },
+        "observedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "expiresAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    }
+  }
+}
