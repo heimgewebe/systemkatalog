@@ -1,0 +1,199 @@
+{
+  "generatedBy": "scripts/build-ecosystem-graph.py",
+  "kind": "ecosystem_graph",
+  "nodes": [
+    {
+      "description": "Access Layer",
+      "freshness": {
+        "class": "dated_snapshot",
+        "observedAt": "2026-06-23T18:38:45.731368+00:00"
+      },
+      "healthDimensions": [
+        "reference_freshness",
+        "review_import_relationship",
+        "import_worktree_state",
+        "review_import_drift"
+      ],
+      "id": "repo:infra",
+      "kind": "ecosystem_node",
+      "links": [],
+      "name": "infra",
+      "nodeType": "repository",
+      "notes": "origin=github.com:heimgewebe/infra.git; default_branch=main; review_head=5d9b7f840fcd59742b75ce19ba2f90fa396ddee8; import_head=30ab479a3ce79aa5907ab0a21e919dd07c2a5443; relationship=Live-Stand enthält Review-Stand; import_worktree=clean:0",
+      "roles": [
+        "Access Layer"
+      ],
+      "schemaVersion": 1,
+      "sources": [
+        {
+          "observedAt": "2026-06-23T18:38:45.731368+00:00",
+          "ref": "werkstatt/20 Werkzeuge/Infra/Repository Reference.md",
+          "type": "cabinet"
+        },
+        {
+          "observedAt": "2026-06-23T18:38:45.731368+00:00",
+          "ref": "30ab479a3ce79aa5907ab0a21e919dd07c2a5443",
+          "type": "git"
+        }
+      ],
+      "status": "observed"
+    },
+    {
+      "description": "`merger.lenskit.frontends.pythonista.repolens` ist der direkte repoLens Dump-/Bundle-Emitter für lokale Modulaufrufe, insbesondere aus Pythonista/iPad-Kontexten.",
+      "freshness": {
+        "class": "dated_snapshot",
+        "observedAt": "2026-06-23T18:38:45.731368+00:00"
+      },
+      "healthDimensions": [
+        "reference_freshness",
+        "review_import_relationship",
+        "import_worktree_state",
+        "dirty_import_worktree"
+      ],
+      "id": "repo:lenskit",
+      "kind": "ecosystem_node",
+      "links": [],
+      "name": "lenskit",
+      "nodeType": "repository",
+      "notes": "origin=github.com:heimgewebe/lenskit.git; default_branch=main; review_head=c692cfc7c51cdb898e95e7df9ebc762190c0767e; import_head=c692cfc7c51cdb898e95e7df9ebc762190c0767e; relationship=identisch; import_worktree=dirty:6",
+      "roles": [
+        "`merger.lenskit.frontends.pythonista.repolens` ist der direkte repoLens Dump-/Bundle-Emitter für lokale Modulaufrufe, insbesondere aus Pythonista/iPad-Kontexten."
+      ],
+      "schemaVersion": 1,
+      "sources": [
+        {
+          "observedAt": "2026-06-23T18:38:45.731368+00:00",
+          "ref": "werkstatt/20 Werkzeuge/Lenskit/Repository Reference.md",
+          "type": "cabinet"
+        },
+        {
+          "observedAt": "2026-06-23T18:38:45.731368+00:00",
+          "ref": "c692cfc7c51cdb898e95e7df9ebc762190c0767e",
+          "type": "git"
+        }
+      ],
+      "status": "observed"
+    },
+    {
+      "description": "steuerboard is a local diagnostics and planning surface for workstation repository state, source freshness, omnipull reports, evidence snapshots, and gated local actions. It is not a canonical source of truth.",
+      "freshness": {
+        "class": "dated_snapshot",
+        "observedAt": "2026-06-23T18:38:45.731368+00:00"
+      },
+      "healthDimensions": [
+        "reference_freshness",
+        "review_import_relationship",
+        "import_worktree_state",
+        "review_import_drift"
+      ],
+      "id": "repo:steuerboard",
+      "kind": "ecosystem_node",
+      "links": [],
+      "name": "steuerboard",
+      "nodeType": "repository",
+      "notes": "origin=github.com:heimgewebe/steuerboard.git; default_branch=main; review_head=62669eb95800d71aeb0d5d1f488e21524321659d; import_head=5a2a9a4e8a333162196d5cf16cce7d0440de34f7; relationship=divergent oder rewritten/amended; import_worktree=clean:0",
+      "roles": [
+        "steuerboard is a local diagnostics and planning surface for workstation repository state, source freshness, omnipull reports, evidence snapshots, and gated local actions. It is not a canonical source of truth."
+      ],
+      "schemaVersion": 1,
+      "sources": [
+        {
+          "observedAt": "2026-06-23T18:38:45.731368+00:00",
+          "ref": "werkstatt/20 Werkzeuge/Steuerboard/Repository Reference.md",
+          "type": "cabinet"
+        },
+        {
+          "observedAt": "2026-06-23T18:38:45.731368+00:00",
+          "ref": "5a2a9a4e8a333162196d5cf16cce7d0440de34f7",
+          "type": "git"
+        }
+      ],
+      "status": "observed"
+    },
+    {
+      "description": "Exekutierbarer Erkenntnisraum für Vibe-Coding-Praktiken.",
+      "freshness": {
+        "class": "dated_snapshot",
+        "observedAt": "2026-06-23T18:38:45.731368+00:00"
+      },
+      "healthDimensions": [
+        "reference_freshness",
+        "review_import_relationship",
+        "import_worktree_state"
+      ],
+      "id": "repo:vibe-lab",
+      "kind": "ecosystem_node",
+      "links": [],
+      "name": "vibe-lab",
+      "nodeType": "repository",
+      "notes": "origin=github.com:heimgewebe/vibe-lab.git; default_branch=main; review_head=869abfb05b466e3be6529250a34a1fea257d1455; import_head=869abfb05b466e3be6529250a34a1fea257d1455; relationship=identisch; import_worktree=clean:0",
+      "roles": [
+        "Exekutierbarer Erkenntnisraum für Vibe-Coding-Praktiken."
+      ],
+      "schemaVersion": 1,
+      "sources": [
+        {
+          "observedAt": "2026-06-23T18:38:45.731368+00:00",
+          "ref": "labor/30 Versuchsstände/Vibe-Lab/Repository Reference.md",
+          "type": "cabinet"
+        },
+        {
+          "observedAt": "2026-06-23T18:38:45.731368+00:00",
+          "ref": "869abfb05b466e3be6529250a34a1fea257d1455",
+          "type": "git"
+        }
+      ],
+      "status": "observed"
+    },
+    {
+      "description": "Weltgewebe ist ein **eigenständiges Projekt**. Repositories wie `heimgewebe/contracts`, `wgx` oder `hauski` sind optionale Quellen und Werkzeuge, keine monolithische Codebasis.",
+      "freshness": {
+        "class": "dated_snapshot",
+        "observedAt": "2026-06-23T18:38:45.731368+00:00"
+      },
+      "healthDimensions": [
+        "reference_freshness",
+        "review_import_relationship",
+        "import_worktree_state"
+      ],
+      "id": "repo:weltgewebe",
+      "kind": "ecosystem_node",
+      "links": [],
+      "name": "weltgewebe",
+      "nodeType": "repository",
+      "notes": "origin=github.com:heimgewebe/weltgewebe.git; default_branch=main; review_head=bac3c4f7879f9e86b098b081b72bf6c133b44462; import_head=bac3c4f7879f9e86b098b081b72bf6c133b44462; relationship=identisch; import_worktree=clean:0",
+      "roles": [
+        "Weltgewebe ist ein **eigenständiges Projekt**. Repositories wie `heimgewebe/contracts`, `wgx` oder `hauski` sind optionale Quellen und Werkzeuge, keine monolithische Codebasis."
+      ],
+      "schemaVersion": 1,
+      "sources": [
+        {
+          "observedAt": "2026-06-23T18:38:45.731368+00:00",
+          "ref": "weltgewebe/Repository Reference.md",
+          "type": "cabinet"
+        },
+        {
+          "observedAt": "2026-06-23T18:38:45.731368+00:00",
+          "ref": "bac3c4f7879f9e86b098b081b72bf6c133b44462",
+          "type": "git"
+        }
+      ],
+      "status": "observed"
+    }
+  ],
+  "schemaVersion": 1,
+  "source": {
+    "contract": "ecosystem-graph.v1",
+    "doesNotClaim": [
+      "live_source_repository_state",
+      "runtime_correctness",
+      "ci_status",
+      "merge_readiness",
+      "absence_of_drift"
+    ],
+    "freshnessClass": "dated_snapshot",
+    "trackedReferences": 5,
+    "type": "cabinet_repository_references"
+  },
+  "warnings": []
+}
