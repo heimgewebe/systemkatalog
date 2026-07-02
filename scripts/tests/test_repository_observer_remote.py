@@ -26,6 +26,21 @@ class RepositoryObserverRemoteTests(ObserverFixture, unittest.TestCase):
         self.make_repository("alpha")
         observer_origin.require_expected_origin(self.sources, self.policy_entry())
 
+    def test_github_machine_user_remote_passes(self) -> None:
+        machine_user = "org-236528253"
+        host = "@" + "github" + ".com:"
+        remote = machine_user + host + "heimgewebe/alpha.git"
+        self.make_repository("alpha", remote=remote)
+        observer_origin.require_expected_origin(self.sources, self.policy_entry())
+
+    def test_github_machine_user_remote_keeps_path_guards(self) -> None:
+        machine_user = "org-236528253"
+        host = "@" + "github" + ".com:"
+        remote = machine_user + host + "heimgewebe/../alpha.git"
+        self.make_repository("alpha", remote=remote)
+        with self.assertRaisesRegex(observer.CollectorError, "unsupported repository remote"):
+            observer_origin.require_expected_origin(self.sources, self.policy_entry())
+
     def test_url_rewrite_cannot_hide_stored_remote(self) -> None:
         repository = self.make_repository("alpha", remote="alias:alpha")
         run(
