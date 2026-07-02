@@ -3,6 +3,112 @@
   "kind": "ecosystem_graph",
   "nodes": [
     {
+      "description": "Bureau koordiniert Pläne, Aufgaben, Reihenfolge, Claims und Belege zwischen Entscheidung und Arbeit.",
+      "freshness": {
+        "class": "dated_snapshot",
+        "observedAt": "2026-07-02T12:54:24Z"
+      },
+      "healthDimensions": [
+        "reference_freshness",
+        "review_import_relationship",
+        "import_worktree_state",
+        "dirty_import_worktree"
+      ],
+      "id": "repo:bureau",
+      "kind": "ecosystem_node",
+      "links": [],
+      "name": "bureau",
+      "nodeType": "repository",
+      "notes": "origin=github.com:heimgewebe/bureau.git; default_branch=main; review_head=cf0fef56e194dcbe0c5e9c9674a814beed157a7a; import_head=cf0fef56e194dcbe0c5e9c9674a814beed157a7a; relationship=identisch; import_worktree=dirty:1",
+      "roles": [
+        "Bureau koordiniert Pläne, Aufgaben, Reihenfolge, Claims und Belege zwischen Entscheidung und Arbeit."
+      ],
+      "schemaVersion": 1,
+      "sources": [
+        {
+          "observedAt": "2026-07-02T12:54:24Z",
+          "ref": "steuerung/40 Organe/Bureau/Repository Reference.md",
+          "type": "cabinet"
+        },
+        {
+          "observedAt": "2026-07-02T12:54:24Z",
+          "ref": "cf0fef56e194dcbe0c5e9c9674a814beed157a7a",
+          "type": "git"
+        }
+      ],
+      "status": "observed"
+    },
+    {
+      "description": "Cabinet soll sich vom lokalen Ordnungsraum zu einer Ecosystem-Intelligence-Schicht entwickeln.",
+      "freshness": {
+        "class": "dated_snapshot",
+        "observedAt": "2026-07-02T12:54:24Z"
+      },
+      "healthDimensions": [
+        "reference_freshness",
+        "review_import_relationship",
+        "import_worktree_state"
+      ],
+      "id": "repo:cabinet",
+      "kind": "ecosystem_node",
+      "links": [],
+      "name": "cabinet",
+      "nodeType": "repository",
+      "notes": "origin=github.com:heimgewebe/cabinet.git; default_branch=main; review_head=3ce791b34b1c095afd3ea1c76f7c1461759e26b0; import_head=3ce791b34b1c095afd3ea1c76f7c1461759e26b0; relationship=identisch; import_worktree=clean:0",
+      "roles": [
+        "Cabinet soll sich vom lokalen Ordnungsraum zu einer Ecosystem-Intelligence-Schicht entwickeln."
+      ],
+      "schemaVersion": 1,
+      "sources": [
+        {
+          "observedAt": "2026-07-02T12:54:24Z",
+          "ref": "steuerung/40 Organe/Cabinet/Repository Reference.md",
+          "type": "cabinet"
+        },
+        {
+          "observedAt": "2026-07-02T12:54:24Z",
+          "ref": "3ce791b34b1c095afd3ea1c76f7c1461759e26b0",
+          "type": "git"
+        }
+      ],
+      "status": "observed"
+    },
+    {
+      "description": "Lokaler Operator für den Heim-PC.",
+      "freshness": {
+        "class": "dated_snapshot",
+        "observedAt": "2026-07-02T12:54:24Z"
+      },
+      "healthDimensions": [
+        "reference_freshness",
+        "review_import_relationship",
+        "import_worktree_state"
+      ],
+      "id": "repo:grabowski",
+      "kind": "ecosystem_node",
+      "links": [],
+      "name": "grabowski",
+      "nodeType": "repository",
+      "notes": "origin=github.com:heimgewebe/grabowski.git; default_branch=main; review_head=abc3ad470615ffb5fd6c18ae27d0e992be6ac73e; import_head=abc3ad470615ffb5fd6c18ae27d0e992be6ac73e; relationship=identisch; import_worktree=clean:0",
+      "roles": [
+        "Lokaler Operator für den Heim-PC."
+      ],
+      "schemaVersion": 1,
+      "sources": [
+        {
+          "observedAt": "2026-07-02T12:54:24Z",
+          "ref": "steuerung/40 Organe/grabowski/Repository Reference.md",
+          "type": "cabinet"
+        },
+        {
+          "observedAt": "2026-07-02T12:54:24Z",
+          "ref": "abc3ad470615ffb5fd6c18ae27d0e992be6ac73e",
+          "type": "git"
+        }
+      ],
+      "status": "observed"
+    },
+    {
       "description": "Access Layer",
       "freshness": {
         "class": "dated_snapshot",
@@ -192,7 +298,7 @@
       "absence_of_drift"
     ],
     "freshnessClass": "dated_snapshot",
-    "trackedReferences": 5,
+    "trackedReferences": 8,
     "type": "cabinet_repository_references"
   },
   "warnings": []

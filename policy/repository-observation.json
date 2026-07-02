@@ -2,6 +2,24 @@
   "schema": "cabinet.repository-collector-policy.v1",
   "repositories": [
     {
+      "id": "bureau",
+      "directory": "bureau",
+      "expected_remote": "github.com:heimgewebe/bureau.git",
+      "reference": "steuerung/40 Organe/Bureau/Repository Reference.md"
+    },
+    {
+      "id": "cabinet",
+      "directory": "cabinet",
+      "expected_remote": "github.com:heimgewebe/cabinet.git",
+      "reference": "steuerung/40 Organe/Cabinet/Repository Reference.md"
+    },
+    {
+      "id": "grabowski",
+      "directory": "grabowski",
+      "expected_remote": "github.com:heimgewebe/grabowski.git",
+      "reference": "steuerung/40 Organe/grabowski/Repository Reference.md"
+    },
+    {
       "id": "infra",
       "directory": "infra",
       "expected_remote": "github.com:heimgewebe/infra.git",

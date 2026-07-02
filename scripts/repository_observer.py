@@ -98,6 +98,8 @@ def require_file(root: Path, relative: Path, label: str) -> Path:
 def normalize_observed_at(value: str) -> str:
     if not isinstance(value, str) or not value:
         raise CollectorError("observed_at must be a non-empty RFC3339 timestamp")
+    if re.search(r"T\d{2}:\d{2}:\d{2}\.", value):
+        raise CollectorError("observed_at must use whole seconds")
     candidate = value[:-1] + "+00:00" if value.endswith("Z") else value
     try:
         parsed = datetime.fromisoformat(candidate)
@@ -116,13 +118,22 @@ def canonicalize_remote(value: str) -> str:
     if not isinstance(value, str) or not value.strip():
         raise CollectorError("repository remote must be a non-empty string")
     remote = value.strip()
-    prefixes = (
-        "git@github.com:",
-        "ssh://git@github.com/",
-        "https://github.com/",
-        "github.com:",
+    github_scp_user = re.fullmatch(
+        r"[A-Za-z0-9_.-]+@" + "github" + r"\.com:(.+)", remote
     )
-    path = next((remote[len(prefix) :] for prefix in prefixes if remote.startswith(prefix)), None)
+    if github_scp_user is not None:
+        path = github_scp_user.group(1)
+    else:
+        prefixes = (
+            "git@github.com:",
+            "ssh://git@github.com/",
+            "https://github.com/",
+            "github.com:",
+        )
+        path = next(
+            (remote[len(prefix) :] for prefix in prefixes if remote.startswith(prefix)),
+            None,
+        )
     if path is None or any(token in path for token in ("?", "#", "\\")):
         raise CollectorError(f"unsupported repository remote: {remote}")
     path = path.rstrip("/")

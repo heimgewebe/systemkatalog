@@ -9,14 +9,17 @@
 
 - Schema-Version: `1`
 - Kind: `ecosystem_graph`
-- Tracked references: `5`
-- Nodes: `5`
+- Tracked references: `8`
+- Nodes: `8`
 - Warnings: `0`
 
 ## Nodes
 
 | Node | Name | Type | Freshness | Source |
 |---|---|---|---|---|
+| `repo:bureau` | bureau | `repository` | `dated_snapshot` | `steuerung/40 Organe/Bureau/Repository Reference.md` |
+| `repo:cabinet` | cabinet | `repository` | `dated_snapshot` | `steuerung/40 Organe/Cabinet/Repository Reference.md` |
+| `repo:grabowski` | grabowski | `repository` | `dated_snapshot` | `steuerung/40 Organe/grabowski/Repository Reference.md` |
 | `repo:infra` | infra | `repository` | `dated_snapshot` | `werkstatt/20 Werkzeuge/Infra/Repository Reference.md` |
 | `repo:lenskit` | lenskit | `repository` | `dated_snapshot` | `werkstatt/20 Werkzeuge/Lenskit/Repository Reference.md` |
 | `repo:steuerboard` | steuerboard | `repository` | `dated_snapshot` | `werkstatt/20 Werkzeuge/Steuerboard/Repository Reference.md` |
