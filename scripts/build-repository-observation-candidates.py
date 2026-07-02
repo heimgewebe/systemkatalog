@@ -193,6 +193,31 @@ def _resolve_output(repo_root: Path, raw: str) -> Path:
     return lexical
 
 
+def _is_tracked(repo_root: Path, path: Path) -> bool:
+    relative = path.relative_to(repo_root).as_posix()
+    return bool(inventory._run_git(repo_root, "ls-files", "-z", "--", relative))
+
+
+def _canonical_outputs(repo_root: Path) -> set[Path]:
+    return {(repo_root / DEFAULT_OUTPUT).resolve()}
+
+
+def _preflight_output(repo_root: Path, output: Path, source_paths: set[Path], *, check_mode: bool) -> None:
+    relative = output.relative_to(repo_root)
+    canonical = _canonical_outputs(repo_root)
+    if output in source_paths:
+        raise InventoryError(f"candidate output collides with a source reference: {relative}")
+    tracked = _is_tracked(repo_root, output)
+    if tracked and output not in canonical:
+        raise InventoryError(f"candidate output is not an approved generated target: {relative}")
+    if output.exists() and not output.is_file():
+        raise InventoryError(f"candidate output is not a regular file: {relative}")
+    if not check_mode and output.exists() and not tracked and output not in canonical:
+        current = output.read_text(encoding="utf-8")
+        if GENERATED_MARKER not in current:
+            raise InventoryError(f"candidate output is not a generated file: {relative}")
+
+
 def _read_current(path: Path) -> str | None:
     return path.read_text(encoding="utf-8") if path.is_file() else None
 
@@ -223,6 +248,8 @@ def main(argv: list[str] | None = None) -> int:
     try:
         output = _resolve_output(repo_root, args.output)
         records, warnings = inventory.load_records(repo_root, verify_index_match=True)
+        source_paths = {(repo_root / record.source_path).resolve() for record in records}
+        _preflight_output(repo_root, output, source_paths, check_mode=args.check)
         items = model.build_assessments(records)
         expected = render_candidates(items)
         for warning in warnings:

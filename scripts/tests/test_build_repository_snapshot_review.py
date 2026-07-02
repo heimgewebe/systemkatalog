@@ -8,6 +8,7 @@ import unittest
 from pathlib import Path
 
 SCRIPT_PATH = Path(__file__).resolve().parents[1] / "build-repository-snapshot-review.py"
+CANDIDATE_SCRIPT_PATH = Path(__file__).resolve().parents[1] / "build-repository-observation-candidates.py"
 
 
 def load_review_module():
@@ -219,6 +220,27 @@ class RepositorySnapshotReviewTests(unittest.TestCase):
         )
         self.assertEqual(assessment.priority, 3)
         self.assertIn("reference-claim", assessment.evidence_status)
+
+    def run_candidate_cli(self, *args: str) -> subprocess.CompletedProcess[str]:
+        return subprocess.run(
+            ["python3", str(CANDIDATE_SCRIPT_PATH), "--repo-root", str(self.root), *args],
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            check=False,
+            timeout=30,
+        )
+
+    def test_candidate_output_rejects_reference_path(self) -> None:
+        relative = "refs/alpha/" + "Repository" + " Reference.md"
+        self.write_reference(relative, reference_text("alpha"))
+        before = (self.root / relative).read_bytes()
+
+        result = self.run_candidate_cli("--output", relative)
+
+        self.assertEqual(result.returncode, 2, result.stderr)
+        self.assertIn("source reference", result.stderr)
+        self.assertEqual(before, (self.root / relative).read_bytes())
 
     def test_output_paths_must_remain_inside_repository(self) -> None:
         self.write_reference(
