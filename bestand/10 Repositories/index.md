@@ -8,7 +8,7 @@
 
 | Repository | Rollen-Auszug | Review-HEAD | Import-HEAD | Beziehung beim Import | Import-Worktree | Erfasst | Referenzpfad |
 |---|---|---|---|---|---|---|---|
-| `bureau` | Bureau koordiniert Pläne, Aufgaben, Reihenfolge, ... | `cf0fef56e194` | `cf0fef56e194` | identisch | `dirty:1` | `2026-07-02T12:54:24Z` | `steuerung/40 Organe/Bureau/Repository Reference.md` |
+| `bureau` | Bureau koordiniert Pläne, Aufgaben, Reihenfolge, ... | `cf0fef56e194` | `cf0fef56e194` | identisch | `clean:0` | `2026-07-03T12:54:24Z` | `steuerung/40 Organe/Bureau/Repository Reference.md` |
 | `cabinet` | Cabinet soll sich vom lokalen ... | `3ce791b34b1c` | `3ce791b34b1c` | identisch | `clean:0` | `2026-07-02T12:54:24Z` | `steuerung/40 Organe/Cabinet/Repository Reference.md` |
 | `grabowski` | Lokaler Operator für den Heim-PC. | `abc3ad470615` | `abc3ad470615` | identisch | `clean:0` | `2026-07-02T12:54:24Z` | `steuerung/40 Organe/grabowski/Repository Reference.md` |
 | `infra` | Access Layer | `5d9b7f840fcd` | `30ab479a3ce7` | Live-Stand enthält Review-Stand | `clean:0` | `2026-06-23T18:38:45.731368+00:00` | `werkstatt/20 Werkzeuge/Infra/Repository Reference.md` |

@@ -7,11 +7,11 @@
 ## Kurzlage
 
 - Geprüfte Repository-Snapshots: **8**
-- Snapshot-Zeitpunkt(e): `2026-06-23T18:38:45.731368+00:00`, `2026-07-02T12:54:24Z`
+- Snapshot-Zeitpunkt(e): `2026-06-23T18:38:45.731368+00:00`, `2026-07-02T12:54:24Z`, `2026-07-03T12:54:24Z`
 - Identische gespeicherte HEADs: **6**
 - Claim „Reviewstand enthalten“: **1**
 - Divergenz-/Rewrite-Claims: **1**
-- Beim Import dirty: **2**
+- Beim Import dirty: **1**
 - Aktueller Zustand der Quell-Repositories: **unbekannt**
 
 ## Reihenfolge späterer Live-Prüfungen
@@ -19,9 +19,9 @@
 | Rang | Repository | Historischer Anlass |
 |---:|---|---|
 | 1 | `steuerboard` | Divergenz- oder Rewrite-Claim später in Git prüfen |
-| 2 | `bureau` | damals 1 Working-Tree-Änderungen; später neu erheben |
 | 2 | `lenskit` | damals 6 Working-Tree-Änderungen; später neu erheben |
 | 3 | `infra` | nicht-identische Commitbeziehung später prüfen |
+| 4 | `bureau` | keine besondere Priorität aus dem Snapshot ableitbar |
 | 4 | `cabinet` | keine besondere Priorität aus dem Snapshot ableitbar |
 | 4 | `grabowski` | keine besondere Priorität aus dem Snapshot ableitbar |
 | 4 | `vibe-lab` | keine besondere Priorität aus dem Snapshot ableitbar |

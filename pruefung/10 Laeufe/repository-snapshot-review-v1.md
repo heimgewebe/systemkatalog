@@ -9,7 +9,7 @@
 
 - Live-Zugriff auf Quell-Repositories: **nein**
 - Netzwerkzugriff: **nein**
-- Snapshot-Zeitpunkt(e): `2026-06-23T18:38:45.731368+00:00`, `2026-07-02T12:54:24Z`
+- Snapshot-Zeitpunkt(e): `2026-06-23T18:38:45.731368+00:00`, `2026-07-02T12:54:24Z`, `2026-07-03T12:54:24Z`
 - Geprüfte Repository References: **8**
 - Authority: Git-Index und versionierte, indexidentische Reference-Bytes im Cabinet-Repository
 
@@ -21,14 +21,14 @@
 | `snapshot-review-contained` | 1 |
 | `snapshot-divergence-claimed` | 1 |
 | `snapshot-relationship-claimed` | 0 |
-| `snapshot-clean-at-import` | 6 |
-| `snapshot-dirty-at-import` | 2 |
+| `snapshot-clean-at-import` | 7 |
+| `snapshot-dirty-at-import` | 1 |
 
 ## Repositorybewertungen
 
 | Repository | Commit-Klassifikation | Worktree-Klassifikation | Evidenzstatus | Review-HEAD | Import-HEAD | Beziehung beim Import | Import-Worktree | Erfasst | Quelle |
 |---|---|---|---|---|---|---|---|---|---|
-| `bureau` | `snapshot-identical` | `snapshot-dirty-at-import` | direkt-belegt: gespeicherte Review- und Import-HEADs sind identisch | `cf0fef56e194dcbe0c5e9c9674a814beed157a7a` | `cf0fef56e194dcbe0c5e9c9674a814beed157a7a` | identisch | `dirty:1` | `2026-07-02T12:54:24Z` | `steuerung/40 Organe/Bureau/Repository Reference.md` |
+| `bureau` | `snapshot-identical` | `snapshot-clean-at-import` | direkt-belegt: gespeicherte Review- und Import-HEADs sind identisch | `cf0fef56e194dcbe0c5e9c9674a814beed157a7a` | `cf0fef56e194dcbe0c5e9c9674a814beed157a7a` | identisch | `clean:0` | `2026-07-03T12:54:24Z` | `steuerung/40 Organe/Bureau/Repository Reference.md` |
 | `cabinet` | `snapshot-identical` | `snapshot-clean-at-import` | direkt-belegt: gespeicherte Review- und Import-HEADs sind identisch | `3ce791b34b1c095afd3ea1c76f7c1461759e26b0` | `3ce791b34b1c095afd3ea1c76f7c1461759e26b0` | identisch | `clean:0` | `2026-07-02T12:54:24Z` | `steuerung/40 Organe/Cabinet/Repository Reference.md` |
 | `grabowski` | `snapshot-identical` | `snapshot-clean-at-import` | direkt-belegt: gespeicherte Review- und Import-HEADs sind identisch | `abc3ad470615ffb5fd6c18ae27d0e992be6ac73e` | `abc3ad470615ffb5fd6c18ae27d0e992be6ac73e` | identisch | `clean:0` | `2026-07-02T12:54:24Z` | `steuerung/40 Organe/grabowski/Repository Reference.md` |
 | `infra` | `snapshot-review-contained` | `snapshot-clean-at-import` | reference-claim: der Importstand soll den Reviewstand enthalten | `5d9b7f840fcd59742b75ce19ba2f90fa396ddee8` | `30ab479a3ce79aa5907ab0a21e919dd07c2a5443` | Live-Stand enthält Review-Stand | `clean:0` | `2026-06-23T18:38:45.731368+00:00` | `werkstatt/20 Werkzeuge/Infra/Repository Reference.md` |
@@ -42,9 +42,9 @@
 | Rang | Repository | Begründung | Snapshotgrenze |
 |---:|---|---|---|
 | 1 | `steuerboard` | Divergenz- oder Rewrite-Claim später in Git verifizieren | nur Snapshot `2026-06-23T18:38:45.731368+00:00` |
-| 2 | `bureau` | damals 1 Working-Tree-Änderungen; später neu erheben | nur Snapshot `2026-07-02T12:54:24Z` |
 | 2 | `lenskit` | damals 6 Working-Tree-Änderungen; später neu erheben | nur Snapshot `2026-06-23T18:38:45.731368+00:00` |
 | 3 | `infra` | nicht-identische Commitbeziehung später live prüfen | nur Snapshot `2026-06-23T18:38:45.731368+00:00` |
+| 4 | `bureau` | keine besondere Priorität aus dem Snapshot ableitbar | nur Snapshot `2026-07-03T12:54:24Z` |
 | 4 | `cabinet` | keine besondere Priorität aus dem Snapshot ableitbar | nur Snapshot `2026-07-02T12:54:24Z` |
 | 4 | `grabowski` | keine besondere Priorität aus dem Snapshot ableitbar | nur Snapshot `2026-07-02T12:54:24Z` |
 | 4 | `vibe-lab` | keine besondere Priorität aus dem Snapshot ableitbar | nur Snapshot `2026-06-23T18:38:45.731368+00:00` |

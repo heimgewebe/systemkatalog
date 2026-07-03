@@ -6,32 +6,31 @@
       "description": "Bureau koordiniert Pläne, Aufgaben, Reihenfolge, Claims und Belege zwischen Entscheidung und Arbeit.",
       "freshness": {
         "class": "dated_snapshot",
-        "observedAt": "2026-07-02T12:54:24Z"
+        "observedAt": "2026-07-03T12:54:24Z"
       },
       "healthDimensions": [
         "reference_freshness",
         "review_import_relationship",
-        "import_worktree_state",
-        "dirty_import_worktree"
+        "import_worktree_state"
       ],
       "id": "repo:bureau",
       "kind": "ecosystem_node",
       "links": [],
       "name": "bureau",
       "nodeType": "repository",
-      "notes": "origin=github.com:heimgewebe/bureau.git; default_branch=main; review_head=cf0fef56e194dcbe0c5e9c9674a814beed157a7a; import_head=cf0fef56e194dcbe0c5e9c9674a814beed157a7a; relationship=identisch; import_worktree=dirty:1",
+      "notes": "origin=github.com:heimgewebe/bureau.git; default_branch=main; review_head=cf0fef56e194dcbe0c5e9c9674a814beed157a7a; import_head=cf0fef56e194dcbe0c5e9c9674a814beed157a7a; relationship=identisch; import_worktree=clean:0",
       "roles": [
         "Bureau koordiniert Pläne, Aufgaben, Reihenfolge, Claims und Belege zwischen Entscheidung und Arbeit."
       ],
       "schemaVersion": 1,
       "sources": [
         {
-          "observedAt": "2026-07-02T12:54:24Z",
+          "observedAt": "2026-07-03T12:54:24Z",
           "ref": "steuerung/40 Organe/Bureau/Repository Reference.md",
           "type": "cabinet"
         },
         {
-          "observedAt": "2026-07-02T12:54:24Z",
+          "observedAt": "2026-07-03T12:54:24Z",
           "ref": "cf0fef56e194dcbe0c5e9c9674a814beed157a7a",
           "type": "git"
         }
