@@ -42,3 +42,4 @@ Quelle: lokaler main-Checkout und GitHub-PR-Liste, erhoben 2026-07-02T06:36:05+0
 ## Nächste Aktion
 
 CAB-STE-001 zuerst: PR #15 prüfen, weil Evidence-Policy die Grundlage für belastbare Project Cards und spätere Taskableitung ist.
+- [Reference Refresh Contract 2026-07-03](reference-refresh-contract-2026-07-03.md)
