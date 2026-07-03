@@ -7,7 +7,7 @@ The repository was checked live again before any reference refresh.
 ## Live check
 
 ```text
-repository: access-layer
+repository: infra
 branch: main
 head: 627923f09b2b3b5e0d25aa8a61af8a2b79cdd711
 origin_main: 627923f09b2b
@@ -26,3 +26,7 @@ historical_pr: #53 MERGED
 - No runtime claim.
 - No source repository change.
 - No task handoff.
+
+Observed: 2026-07-03
+
+Source: local infra checkout after fetch.
