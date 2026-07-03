@@ -10,7 +10,7 @@
 - Geprüfte Repository-Snapshots: **8**
 - Kandidaten: **3**
 - Routine-/Nicht-Kandidaten: **5**
-- Snapshot-Zeitpunkt(e): `2026-06-23T18:38:45.731368+00:00`, `2026-07-02T12:54:24Z`, `2026-07-03T12:54:24Z`
+- Snapshot-Zeitpunkt(e): `2026-06-23T18:38:45.731368+00:00`, `2026-07-02T12:54:24Z`, `2026-07-03T12:54:24Z`, `2026-07-03T20:24:19Z`
 - Aktueller Zustand der Quell-Repositories: **unbekannt**
 
 ## Kandidaten

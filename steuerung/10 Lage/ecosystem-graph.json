@@ -111,7 +111,7 @@
       "description": "Access Layer",
       "freshness": {
         "class": "dated_snapshot",
-        "observedAt": "2026-06-23T18:38:45.731368+00:00"
+        "observedAt": "2026-07-03T20:24:19Z"
       },
       "healthDimensions": [
         "reference_freshness",
@@ -124,20 +124,20 @@
       "links": [],
       "name": "infra",
       "nodeType": "repository",
-      "notes": "origin=github.com:heimgewebe/infra.git; default_branch=main; review_head=5d9b7f840fcd59742b75ce19ba2f90fa396ddee8; import_head=30ab479a3ce79aa5907ab0a21e919dd07c2a5443; relationship=Live-Stand enthält Review-Stand; import_worktree=clean:0",
+      "notes": "origin=github.com:heimgewebe/infra.git; default_branch=main; review_head=5d9b7f840fcd59742b75ce19ba2f90fa396ddee8; import_head=627923f09b2b3b5e0d25aa8a61af8a2b79cdd711; relationship=Live-Stand enthält Review-Stand; import_worktree=clean:0",
       "roles": [
         "Access Layer"
       ],
       "schemaVersion": 1,
       "sources": [
         {
-          "observedAt": "2026-06-23T18:38:45.731368+00:00",
+          "observedAt": "2026-07-03T20:24:19Z",
           "ref": "werkstatt/20 Werkzeuge/Infra/Repository Reference.md",
           "type": "cabinet"
         },
         {
-          "observedAt": "2026-06-23T18:38:45.731368+00:00",
-          "ref": "30ab479a3ce79aa5907ab0a21e919dd07c2a5443",
+          "observedAt": "2026-07-03T20:24:19Z",
+          "ref": "627923f09b2b3b5e0d25aa8a61af8a2b79cdd711",
           "type": "git"
         }
       ],

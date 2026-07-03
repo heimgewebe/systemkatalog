@@ -11,7 +11,7 @@
 | `bureau` | Bureau koordiniert Pläne, Aufgaben, Reihenfolge, ... | `cf0fef56e194` | `cf0fef56e194` | identisch | `clean:0` | `2026-07-03T12:54:24Z` | `steuerung/40 Organe/Bureau/Repository Reference.md` |
 | `cabinet` | Cabinet soll sich vom lokalen ... | `3ce791b34b1c` | `3ce791b34b1c` | identisch | `clean:0` | `2026-07-02T12:54:24Z` | `steuerung/40 Organe/Cabinet/Repository Reference.md` |
 | `grabowski` | Lokaler Operator für den Heim-PC. | `abc3ad470615` | `abc3ad470615` | identisch | `clean:0` | `2026-07-02T12:54:24Z` | `steuerung/40 Organe/grabowski/Repository Reference.md` |
-| `infra` | Access Layer | `5d9b7f840fcd` | `30ab479a3ce7` | Live-Stand enthält Review-Stand | `clean:0` | `2026-06-23T18:38:45.731368+00:00` | `werkstatt/20 Werkzeuge/Infra/Repository Reference.md` |
+| `infra` | Access Layer | `5d9b7f840fcd` | `627923f09b2b` | Live-Stand enthält Review-Stand | `clean:0` | `2026-07-03T20:24:19Z` | `werkstatt/20 Werkzeuge/Infra/Repository Reference.md` |
 | `lenskit` | merger.lenskit.frontends.pythonista.repolens ist der direkte repoLens ... | `c692cfc7c51c` | `c692cfc7c51c` | identisch | `dirty:6` | `2026-06-23T18:38:45.731368+00:00` | `werkstatt/20 Werkzeuge/Lenskit/Repository Reference.md` |
 | `steuerboard` | steuerboard is a local diagnostics ... | `62669eb95800` | `5a2a9a4e8a33` | divergent oder rewritten/amended | `clean:0` | `2026-06-23T18:38:45.731368+00:00` | `werkstatt/20 Werkzeuge/Steuerboard/Repository Reference.md` |
 | `vibe-lab` | Exekutierbarer Erkenntnisraum für Vibe-Coding-Praktiken. | `869abfb05b46` | `869abfb05b46` | identisch | `clean:0` | `2026-06-23T18:38:45.731368+00:00` | `labor/30 Versuchsstände/Vibe-Lab/Repository Reference.md` |

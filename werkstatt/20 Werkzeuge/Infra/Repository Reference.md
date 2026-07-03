@@ -15,7 +15,7 @@
 | Review-ID | `cabinet-source-cards-reviewed-20260623-192948` |
 | Review-Hash | `52f380ddecdf37df22de9db78a3a1c1f38e64583352c8d2a3b9819c7959bd811` |
 | Review erzeugt | `2026-06-23T17:29:51.347286+00:00` |
-| Import-Snapshot erfasst | `2026-06-23T18:38:45.731368+00:00` |
+| Import-Snapshot erfasst | `2026-07-03T20:24:19Z` |
 | Reviewkarten-SHA-256 | `0d2c99280a0772bc19e37f107fdd0be6dede2929964458a1d2c19ded99f75aea` |
 
 ## Geprüfter Review-Snapshot
@@ -33,15 +33,15 @@
 
 | Feld | Wert |
 |---|---|
-| Erfasst | `2026-06-23T18:38:45.731368+00:00` |
+| Erfasst | `2026-07-03T20:24:19Z` |
 | Pfad | `/home/alex/repos/infra` |
 | Origin | `github.com:heimgewebe/infra.git` |
 | Branch | `main` |
-| HEAD | `30ab479a3ce79aa5907ab0a21e919dd07c2a5443` |
+| HEAD | `627923f09b2b3b5e0d25aa8a61af8a2b79cdd711` |
 | Working Tree | `clean:0` |
 | Status-SHA-256 | `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855` |
 | Upstream | `origin/main` |
-| Upstream-HEAD | `30ab479a3ce79aa5907ab0a21e919dd07c2a5443` |
+| Upstream-HEAD | `627923f09b2b3b5e0d25aa8a61af8a2b79cdd711` |
 | Beziehung zum Review | **Live-Stand enthält Review-Stand** |
 
 ## Identität
@@ -51,8 +51,8 @@
 | Kanonischer Pfad | `/home/alex/repos/infra` |
 | Remote | `github.com:heimgewebe/infra.git` |
 | Default-Branch | `main` |
-| Aktueller Branch | `feat/ssh-cockpit-shell-handover` |
-| HEAD | `5d9b7f840fcd59742b75ce19ba2f90fa396ddee8` |
+| Aktueller Branch | `main` |
+| HEAD | `627923f09b2b3b5e0d25aa8a61af8a2b79cdd711` |
 | Live-Status | `clean:0` |
 | Quellenbasis | `Git HEAD` |
 
@@ -101,3 +101,9 @@ Beleg:
 - Der Import-Snapshot ist ebenfalls nur auf seinen Erfassungszeitpunkt bezogen.
 - Eine spätere Aktualisierung erfolgt als neuer, datierter Snapshot.
 - Repository-, Runtime- oder Contract-Aussagen benötigen weiterhin eigene Belege.
+
+## Refresh-Beleg 2026-07-03
+
+Der Import-Snapshot wurde aus dem Live-Befund `pruefung/30 Befunde/access-refresh-readiness-2026-07-03.md` aktualisiert. Der geprüfte Review-Snapshot bleibt historisch.
+
+Grenze: Diese Aktualisierung behauptet keine Runtime-Prüfung und erzeugt keinen Bureau-Task.
