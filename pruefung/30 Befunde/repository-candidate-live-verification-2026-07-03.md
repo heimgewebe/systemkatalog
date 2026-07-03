@@ -29,9 +29,9 @@ Die Live-Prüfung bestätigt die epistemische Grenze: Der Kandidat bleibt ein hi
 
 ## Live-Prüfung am 2026-07-03
 
-Geprüft wurde das lokale Quellrepository `/home/alex/repos/steuerboard` nach `git fetch origin --prune`.
+Geprüft wurde das lokale Quellrepository nach `git fetch origin --prune`.
 
-Belege:
+Zuerst wurde der aktuelle Default-Zustand geprüft:
 
 ```text
 branch: main
@@ -44,11 +44,24 @@ review head ancestor of current HEAD: no
 import head ancestor of current HEAD: no
 ```
 
+Danach wurde der in der Reference benannte historische Feature-Branch geprüft:
+
+```text
+reference branch: origin/feat/heimserver-service-gate-producer
+reference branch HEAD: 5a2a9a4e8a333162196d5cf16cce7d0440de34f7
+review head exists locally: yes
+import head exists locally: yes
+review head ancestor of reference branch: no
+import head ancestor of reference branch: yes
+import head ancestor of review head: no
+review head ancestor of import head: no
+```
+
 ## Bewertung
 
-- Der historische Divergenz-/Rewrite-Claim bleibt als Snapshot-Claim nachvollziehbar.
-- Der heutige `main`-Stand enthält weder den historischen Review-HEAD noch den historischen Import-HEAD als Vorfahren.
-- Daraus folgt kein aktueller Reparaturauftrag für das Quellrepository.
+- Der historische Divergenz-/Rewrite-Claim ist branchbezogen verifiziert: der relevante Remote-Branch steht auf dem Import-HEAD, während der Review-HEAD weder Vorfahre noch Nachfahre dieses Import-HEADs ist.
+- `main` enthält weder den historischen Review-HEAD noch den historischen Import-HEAD als Vorfahren; das ist Zusatzkontext, aber nicht der eigentliche Beleg für den Snapshot-Claim.
+- Daraus folgt kein aktueller Reparaturauftrag für das Quellrepository. Allenfalls kann später separat entschieden werden, ob der alte Feature-Branch noch benötigt wird.
 - Der Kandidat kann als live geprüft markiert werden, sofern eine spätere Steuerungsansicht solche Stati führt.
 
 ## Grenze
