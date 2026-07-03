@@ -34,3 +34,11 @@ Definiere einen kleinen Contract, wie ein geprüfter Live-Befund später in eine
 ## Nachweis
 
 Beispielplan mit Grenze liegt vor.
+
+## Risiko
+
+Mittel: Der Contract kann alte Snapshots zu stark aufwerten, wenn er Live-Belege und Grenzen nicht ausdrücklich verlangt.
+
+## Target-Proof
+
+Ein Beispiel-Befund wird in einen Refresh-Plan überführt. Der Plan nennt Quelle, Live-Beleg, Grenze, Stop-Kriterium und betroffene Reference.
