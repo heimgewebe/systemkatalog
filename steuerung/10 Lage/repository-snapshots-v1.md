@@ -7,7 +7,7 @@
 ## Kurzlage
 
 - Geprüfte Repository-Snapshots: **8**
-- Snapshot-Zeitpunkt(e): `2026-06-23T18:38:45.731368+00:00`, `2026-07-02T12:54:24Z`, `2026-07-03T12:54:24Z`
+- Snapshot-Zeitpunkt(e): `2026-06-23T18:38:45.731368+00:00`, `2026-07-02T12:54:24Z`, `2026-07-03T12:54:24Z`, `2026-07-03T20:24:19Z`
 - Identische gespeicherte HEADs: **6**
 - Claim „Reviewstand enthalten“: **1**
 - Divergenz-/Rewrite-Claims: **1**
