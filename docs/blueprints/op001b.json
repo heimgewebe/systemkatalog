@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "artifact": "op001b",
+  "status": "draft",
+  "generated_at": "2026-07-03",
+  "classes": {
+    "active": "ongoing work",
+    "preserve": "keep for current purpose",
+    "unknown": "needs owner purpose check",
+    "candidate": "preview only"
+  }
+}
