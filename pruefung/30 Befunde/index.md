@@ -12,3 +12,4 @@ Vorläufige Auswertungen.
 - [Infra Candidate Live Verification 2026-07-03](repo-relation-check-2026-07-03.md)
 - [Meta 2026-07-03](meta-2026-07-03.md)
 - [Bureau Reference Refresh Apply 2026-07-03](bureau-reference-refresh-apply-2026-07-03.md)
+- [Lenskit Reference Refresh Stop 2026-07-03](lenskit-reference-refresh-stop-2026-07-03.md)
