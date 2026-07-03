@@ -24,6 +24,10 @@ echo "=== Repository Inventory ==="
 python3 scripts/build-repository-index.py --check --repo-root "$REPO_ROOT"
 echo "Repository Inventory: PASS"
 
+echo "=== Reference Refresh Proposal Guard ==="
+python3 scripts/check-reference-refresh-proposals.py --repo-root "$REPO_ROOT"
+echo "Reference Refresh Proposal Guard: PASS"
+
 echo "=== Materialize HEAD Snapshot ==="
 SNAPSHOT_ROOT="$(mktemp -d)"
 trap 'rm -rf -- "$SNAPSHOT_ROOT"' EXIT
