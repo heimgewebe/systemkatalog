@@ -1,0 +1,52 @@
+name: Cabinet Bridge Probe
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - registry/ecosystem/**
+      - .github/workflows/cabinet-bridge-probe.yml
+  pull_request:
+    branches:
+      - main
+    paths:
+      - registry/ecosystem/**
+      - .github/workflows/cabinet-bridge-probe.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  PYTHONDONTWRITEBYTECODE: "1"
+  BUREAU_PROBE_REF: "712e52327659218bb9d16a6cbbfe9581c00a826c"
+
+jobs:
+  probe:
+    name: Run Cabinet-Bureau bridge probe
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout Cabinet
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+
+      - name: Setup Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
+        with:
+          python-version: "3.12"
+
+      - name: Install Bureau probe
+        run: python -m pip install "git+https://github.com/heimgewebe/bureau.git@${BUREAU_PROBE_REF}"
+
+      - name: Run bridge probe
+        run: |
+          bureau --json cabinet-bridge-probe \
+            --bridge-policy registry/ecosystem/bureau-bridge.json \
+            | tee bridge-probe-report.json
+
+      - name: Check read-only report
+        run: |
+          python3 -c 'import json; r=json.load(open("bridge-probe-report.json", encoding="utf-8")); assert r["kind"] == "cabinet_bureau_bridge_probe"; assert r["dispatchAllowed"] is False; assert r["queueMutationAllowed"] is False; assert r["taskCreationAllowed"] is False; print("candidateCount=%s admissibleCount=%s blockedCount=%s" % (r["candidateCount"], r["admissibleCount"], r["blockedCount"]))'
