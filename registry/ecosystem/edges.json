@@ -1,0 +1,197 @@
+{
+  "schema_version": 1,
+  "status": "draft",
+  "updated_at": "2026-07-04",
+  "edge_types": [
+    "owns",
+    "steers",
+    "exports_candidate_to",
+    "delegates_to",
+    "reports_to",
+    "operates_on",
+    "validated_by",
+    "provides",
+    "observes",
+    "renders",
+    "hosts",
+    "scope_boundary",
+    "implements"
+  ],
+  "edges": [
+    {
+      "from": "actor:alexander",
+      "to": "repo:cabinet",
+      "type": "steers",
+      "status": "active",
+      "note": "Human sense, priority, approval and abort authority stay outside automation."
+    },
+    {
+      "from": "repo:cabinet",
+      "to": "artifact:ecosystem-map",
+      "type": "owns",
+      "status": "draft",
+      "note": "Cabinet owns the map semantics during v0."
+    },
+    {
+      "from": "repo:cabinet",
+      "to": "repo:bureau",
+      "type": "exports_candidate_to",
+      "status": "planned",
+      "note": "Only approved Cabinet candidates should become Bureau-operational."
+    },
+    {
+      "from": "repo:bureau",
+      "to": "repo:grabowski",
+      "type": "delegates_to",
+      "status": "active",
+      "note": "Bureau can hand scoped work to the operator layer."
+    },
+    {
+      "from": "repo:grabowski",
+      "to": "agent:codex",
+      "type": "delegates_to",
+      "status": "active",
+      "note": "Codex is suited for review, logic bugs and invariants."
+    },
+    {
+      "from": "repo:grabowski",
+      "to": "agent:claude",
+      "type": "delegates_to",
+      "status": "active",
+      "note": "Claude is suited for architecture and heavy conceptual review."
+    },
+    {
+      "from": "repo:grabowski",
+      "to": "agent:jules",
+      "type": "delegates_to",
+      "status": "active",
+      "note": "Jules is suited for small clear patches."
+    },
+    {
+      "from": "repo:grabowski",
+      "to": "agent:local",
+      "type": "delegates_to",
+      "status": "active",
+      "note": "Local agents are suited for cheap scans and repetitive checks."
+    },
+    {
+      "from": "agent:codex",
+      "to": "repo:grabowski",
+      "type": "reports_to",
+      "status": "active",
+      "note": "Agent output is a proposal until evidence and review pass."
+    },
+    {
+      "from": "agent:claude",
+      "to": "repo:grabowski",
+      "type": "reports_to",
+      "status": "active",
+      "note": "Agent output is a proposal until evidence and review pass."
+    },
+    {
+      "from": "agent:jules",
+      "to": "repo:grabowski",
+      "type": "reports_to",
+      "status": "active",
+      "note": "Agent output is a proposal until evidence and review pass."
+    },
+    {
+      "from": "agent:local",
+      "to": "repo:grabowski",
+      "type": "reports_to",
+      "status": "active",
+      "note": "Agent output is a proposal until evidence and review pass."
+    },
+    {
+      "from": "repo:grabowski",
+      "to": "service:github",
+      "type": "operates_on",
+      "status": "active",
+      "note": "PRs, branches, issues and reviews remain GitHub-owned state."
+    },
+    {
+      "from": "service:github",
+      "to": "service:ci",
+      "type": "validated_by",
+      "status": "active",
+      "note": "Checks and review gates provide hard technical feedback."
+    },
+    {
+      "from": "repo:lenskit",
+      "to": "concept:repobrief",
+      "type": "implements",
+      "status": "active",
+      "note": "RepoBrief is the public context-view name; Lenskit remains an implementation namespace for now."
+    },
+    {
+      "from": "concept:repobrief",
+      "to": "repo:cabinet",
+      "type": "provides",
+      "status": "active",
+      "note": "RepoBrief gives Cabinet citable repository context."
+    },
+    {
+      "from": "repo:steuerboard",
+      "to": "repo:cabinet",
+      "type": "observes",
+      "status": "active",
+      "note": "Steuerboard can provide read-only repo-state signals, not decisions."
+    },
+    {
+      "from": "repo:vibe-lab",
+      "to": "repo:cabinet",
+      "type": "provides",
+      "status": "active",
+      "note": "Vibe-Lab provides method experiments and evidence patterns."
+    },
+    {
+      "from": "repo:chronik",
+      "to": "repo:cabinet",
+      "type": "provides",
+      "status": "active",
+      "note": "Chronik provides event trace and historical continuity."
+    },
+    {
+      "from": "repo:schauwerk",
+      "to": "artifact:ecosystem-map",
+      "type": "renders",
+      "status": "planned",
+      "note": "Schauwerk may render map views without owning the map canon."
+    },
+    {
+      "from": "runtime:heim-pc",
+      "to": "repo:cabinet",
+      "type": "hosts",
+      "status": "intended",
+      "note": "heim-pc is the intended local worktree and operator surface for maintaining v0."
+    },
+    {
+      "from": "repo:infra",
+      "to": "runtime:heim-pc",
+      "type": "provides",
+      "status": "active",
+      "note": "Infra owns cockpit and host runbook concerns."
+    },
+    {
+      "from": "repo:infra",
+      "to": "runtime:heimserver",
+      "type": "provides",
+      "status": "active",
+      "note": "Infra owns server operation knowledge."
+    },
+    {
+      "from": "repo:weltgewebe",
+      "to": "service:github",
+      "type": "operates_on",
+      "status": "active",
+      "note": "Weltgewebe product work is still validated through repo, PR and CI state."
+    },
+    {
+      "from": "repo:device-graph",
+      "to": "artifact:ecosystem-map",
+      "type": "scope_boundary",
+      "status": "related",
+      "note": "Device Graph may describe infrastructure devices; it is not the ecosystem-governance map canon."
+    }
+  ]
+}
