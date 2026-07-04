@@ -8,8 +8,8 @@
 ## Kurzlage
 
 - Geprüfte Repository-Snapshots: **8**
-- Kandidaten: **3**
-- Routine-/Nicht-Kandidaten: **5**
+- Kandidaten: **2**
+- Routine-/Nicht-Kandidaten: **6**
 - Snapshot-Zeitpunkt(e): `2026-06-23T18:38:45.731368+00:00`, `2026-07-02T12:54:24Z`, `2026-07-03T12:54:24Z`, `2026-07-03T20:24:19Z`
 - Aktueller Zustand der Quell-Repositories: **unbekannt**
 
@@ -19,7 +19,6 @@
 |---:|---|---|---|---|---|
 | 1 | `steuerboard` | `live-history-verification` | Divergenz- oder Rewrite-Claim gegen Git-Historie prüfen, bevor Reparaturarbeit geplant wird. | Nur Reference-Claim; kein Live-Historienbeweis in diesem Lauf. | `werkstatt/20 Werkzeuge/Steuerboard/Repository Reference.md` |
 | 2 | `lenskit` | `live-snapshot-refresh` | Repository-Beobachtung aktualisieren, nachdem geprüft wurde, ob der Dirty-Import noch relevant ist. | Nur historischer Dirty-Import; heutiger Worktree unbekannt. | `werkstatt/20 Werkzeuge/Lenskit/Repository Reference.md` |
-| 3 | `infra` | `live-relationship-verification` | Nicht-identische Commitbeziehung gegen Live-Git prüfen, bevor Folgearbeit vorgeschlagen wird. | Nur gespeicherter Beziehungs-Claim; heutiger Repozustand unbekannt. | `werkstatt/20 Werkzeuge/Infra/Repository Reference.md` |
 
 ## Routine- oder Nicht-Kandidaten
 
@@ -28,6 +27,7 @@
 | `bureau` | Keine besondere Priorität aus dem gespeicherten Snapshot ableitbar. | `steuerung/40 Organe/Bureau/Repository Reference.md` |
 | `cabinet` | Keine besondere Priorität aus dem gespeicherten Snapshot ableitbar. | `steuerung/40 Organe/Cabinet/Repository Reference.md` |
 | `grabowski` | Keine besondere Priorität aus dem gespeicherten Snapshot ableitbar. | `steuerung/40 Organe/grabowski/Repository Reference.md` |
+| `infra` | Keine besondere Priorität aus dem gespeicherten Snapshot ableitbar. | `werkstatt/20 Werkzeuge/Infra/Repository Reference.md` |
 | `vibe-lab` | Keine besondere Priorität aus dem gespeicherten Snapshot ableitbar. | `labor/30 Versuchsstände/Vibe-Lab/Repository Reference.md` |
 | `weltgewebe` | Keine besondere Priorität aus dem gespeicherten Snapshot ableitbar. | `weltgewebe/Repository Reference.md` |
 

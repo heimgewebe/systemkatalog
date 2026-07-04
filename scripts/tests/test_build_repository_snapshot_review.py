@@ -162,8 +162,8 @@ class RepositorySnapshotReviewTests(unittest.TestCase):
         gamma = lage.index("`gamma`")
         alpha = lage.index("`alpha`")
         self.assertLess(delta, beta)
-        self.assertLess(beta, gamma)
-        self.assertLess(gamma, alpha)
+        self.assertLess(beta, alpha)
+        self.assertLess(alpha, gamma)
 
         second = self.run_cli()
         self.assertEqual(second.returncode, 0, second.stderr)

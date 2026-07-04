@@ -89,10 +89,7 @@ def assess_record(record: SnapshotRecord) -> SnapshotAssessment:
     elif state == "dirty":
         priority = 2
         reason = "refresh-dirty"
-    elif relation in {
-        "snapshot-review-contained",
-        "snapshot-relationship-claimed",
-    }:
+    elif relation == "snapshot-relationship-claimed":
         priority = 3
         reason = "verify-nonidentical"
     else:
