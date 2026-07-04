@@ -1,15 +1,32 @@
 {
   "schema_version": 1,
   "status": "draft",
+  "updated_at": "2026-07-04",
+  "owner": {
+    "canonical_repo": "heimgewebe/cabinet",
+    "local_worktree_intent": "/home/alex/repos/cabinet"
+  },
+  "ecosystem_map_v0": {
+    "decision": "Cabinet owns the v0 map semantics; no separate ecosystem-map repository yet.",
+    "truth_boundary": "GitHub, CI, runtime state, contracts, tests, and explicit human decisions remain primary truth sources in their domains.",
+    "registry": {
+      "nodes": "registry/ecosystem/nodes.json",
+      "edges": "registry/ecosystem/edges.json",
+      "claims": "registry/ecosystem/claims.jsonl"
+    },
+    "rendered": "rendered/ecosystem-map.mmd",
+    "validator": "scripts/validate_ecosystem_map.py"
+  },
   "organs": [
-    {"id": "cabinet", "role": "sense_decision"},
-    {"id": "bureau", "role": "tasks_receipts"},
-    {"id": "operator", "role": "execution_audit"},
-    {"id": "steuerboard", "role": "state_monitor"},
-    {"id": "repobrief", "role": "context_view"},
-    {"id": "vibe_lab", "role": "method_lab"},
-    {"id": "chronik", "role": "event_trace"},
-    {"id": "github_ci", "role": "technical_gate"},
-    {"id": "external_agents", "role": "draft_review"}
+    {"id": "cabinet", "role": "sense_evidence_prioritization_map_semantics"},
+    {"id": "bureau", "role": "task_cadence_delegation_receipts"},
+    {"id": "grabowski_operator", "role": "execution_repo_work_review_gates"},
+    {"id": "repobrief", "role": "context_view_citable_repo_briefs"},
+    {"id": "steuerboard", "role": "read_only_repo_state_signal"},
+    {"id": "vibe_lab", "role": "method_lab_evidence_experiments"},
+    {"id": "chronik", "role": "event_trace_historical_continuity"},
+    {"id": "schauwerk", "role": "renderer_not_canon_owner"},
+    {"id": "github_ci", "role": "hard_technical_reality_check"},
+    {"id": "external_agents", "role": "draft_review_patch_proposals"}
   ]
 }
