@@ -14,3 +14,4 @@ Vorläufige Auswertungen.
 - [Bureau Reference Refresh Apply 2026-07-03](bureau-reference-refresh-apply-2026-07-03.md)
 - [Lenskit Reference Refresh Stop 2026-07-03](lenskit-reference-refresh-stop-2026-07-03.md)
 - [Infra Reference Refresh Apply 2026-07-03](infra-reference-refresh-apply-2026-07-03.md)
+- [Lenskit Conflict Stop 2026-07-04](lenskit-conflict-stop-2026-07-04.md)
