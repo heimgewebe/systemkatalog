@@ -62,6 +62,7 @@ class RepositoryRecord:
     import_worktree: str
     imported_at: str
     source_path: str
+    relationship_verification: str | None = None
 
 
 def _run_git(repo_root: Path, *args: str) -> bytes:
@@ -485,6 +486,12 @@ def parse_reference(source_path: str, content: bytes) -> RepositoryRecord:
     )
     identity = _parse_field_table(sections["Identität"], source_path, "Identität")
     role = _parse_role(sections.get(OPTIONAL_ROLE_HEADING, []))
+    verification_table = (
+        _parse_field_table(sections["Live-Verifikation"], source_path, "Live-Verifikation")
+        if "Live-Verifikation" in sections
+        else {}
+    )
+    relationship_verification = verification_table.get("Beziehung zum Review") or None
 
     repository = _require(review, "Repository", source_path, "Geprüfter Review-Snapshot")
     review_origin = _require(review, "Origin", source_path, "Geprüfter Review-Snapshot")
@@ -533,6 +540,7 @@ def parse_reference(source_path: str, content: bytes) -> RepositoryRecord:
         import_worktree=import_worktree,
         imported_at=imported_at,
         source_path=source_path,
+        relationship_verification=relationship_verification,
     )
 
 

@@ -41,6 +41,7 @@ class SnapshotRecord(Protocol):
     import_worktree: str
     imported_at: str
     source_path: str
+    relationship_verification: str | None
 
 
 @dataclass(frozen=True)
@@ -76,6 +77,12 @@ def relationship_kind(record: SnapshotRecord) -> tuple[RelationshipClass, Eviden
     return "snapshot-relationship-claimed", "reference-claim"
 
 
+
+def _relationship_verification(record: SnapshotRecord) -> str | None:
+    value = getattr(record, "relationship_verification", None)
+    return " ".join(value.casefold().split()) if value else None
+
+
 def assess_record(record: SnapshotRecord) -> SnapshotAssessment:
     relation, evidence = relationship_kind(record)
     state, raw_count = record.import_worktree.split(":", 1)
@@ -83,7 +90,7 @@ def assess_record(record: SnapshotRecord) -> SnapshotAssessment:
     if state not in {"clean", "dirty"}:
         raise ValueError(f"unsupported snapshot worktree state: {state!r}")
 
-    if relation == "snapshot-divergence-claimed":
+    if relation == "snapshot-divergence-claimed" and _relationship_verification(record) != "live-verified":
         priority: int = 1
         reason: ReasonCode = "verify-divergence"
     elif state == "dirty":

@@ -24,7 +24,7 @@ def load_generator():
     return module
 
 
-def record(module, relationship: str, *, imported_at: str = "2026-06-23T18:38:45+00:00"):
+def record(module, relationship: str, *, imported_at: str = "2026-06-23T18:38:45+00:00", relationship_verification: str | None = None):
     return module.RepositoryRecord(
         repository="alpha",
         role="Testrolle",
@@ -36,6 +36,7 @@ def record(module, relationship: str, *, imported_at: str = "2026-06-23T18:38:45
         import_worktree="clean:0",
         imported_at=imported_at,
         source_path="refs/alpha/Repository Reference.md",
+        relationship_verification=relationship_verification,
     )
 
 
@@ -55,6 +56,14 @@ class SnapshotReviewModelHardeningTests(unittest.TestCase):
                 )
                 self.assertEqual(assessment.evidence_status, "reference-claim")
                 self.assertEqual(assessment.priority, 3)
+
+    def test_live_verified_divergence_becomes_routine(self) -> None:
+        module = load_generator()
+        assessment = module.assess_record(
+            record(module, "divergent oder rewritten/amended", relationship_verification="live-verified")
+        )
+        self.assertEqual(assessment.priority, 4)
+        self.assertEqual(assessment.reason_code, "routine")
 
     def test_exact_relationship_value_is_whitespace_normalized(self) -> None:
         module = load_generator()

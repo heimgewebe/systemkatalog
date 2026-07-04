@@ -101,3 +101,11 @@ Beleg:
 - Der Import-Snapshot ist ebenfalls nur auf seinen Erfassungszeitpunkt bezogen.
 - Eine spätere Aktualisierung erfolgt als neuer, datierter Snapshot.
 - Repository-, Runtime- oder Contract-Aussagen benötigen weiterhin eigene Belege.
+
+## Live-Verifikation
+
+| Feld | Wert |
+|---|---|
+| Beziehung zum Review | `live-verified` |
+| Befund | `pruefung/30 Befunde/repository-candidate-live-verification-2026-07-03.md` |
+| Geprüft am | `2026-07-03` |

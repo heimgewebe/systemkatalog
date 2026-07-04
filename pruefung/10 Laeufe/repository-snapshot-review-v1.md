@@ -41,12 +41,12 @@
 
 | Rang | Repository | Begründung | Snapshotgrenze |
 |---:|---|---|---|
-| 1 | `steuerboard` | Divergenz- oder Rewrite-Claim später in Git verifizieren | nur Snapshot `2026-06-23T18:38:45.731368+00:00` |
 | 2 | `lenskit` | damals 6 Working-Tree-Änderungen; später neu erheben | nur Snapshot `2026-06-23T18:38:45.731368+00:00` |
 | 4 | `bureau` | keine besondere Priorität aus dem Snapshot ableitbar | nur Snapshot `2026-07-03T12:54:24Z` |
 | 4 | `cabinet` | keine besondere Priorität aus dem Snapshot ableitbar | nur Snapshot `2026-07-02T12:54:24Z` |
 | 4 | `grabowski` | keine besondere Priorität aus dem Snapshot ableitbar | nur Snapshot `2026-07-02T12:54:24Z` |
 | 4 | `infra` | keine besondere Priorität aus dem Snapshot ableitbar | nur Snapshot `2026-07-03T20:24:19Z` |
+| 4 | `steuerboard` | keine besondere Priorität aus dem Snapshot ableitbar | nur Snapshot `2026-06-23T18:38:45.731368+00:00` |
 | 4 | `vibe-lab` | keine besondere Priorität aus dem Snapshot ableitbar | nur Snapshot `2026-06-23T18:38:45.731368+00:00` |
 | 4 | `weltgewebe` | keine besondere Priorität aus dem Snapshot ableitbar | nur Snapshot `2026-06-23T18:38:45.731368+00:00` |
 
