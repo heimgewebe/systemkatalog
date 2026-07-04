@@ -20,7 +20,7 @@ permissions:
 
 env:
   PYTHONDONTWRITEBYTECODE: "1"
-  BUREAU_PROBE_REF: "392037a91aa2e2ac84e7cf51f09be1ed51591cf5"
+  BUREAU_PROBE_REF: "d7edf37e5165a9c6bbff04670b478efaa605882b"
 
 jobs:
   probe:
@@ -169,6 +169,7 @@ jobs:
           assert receipt["reviewer"] == "cabinet-ci-review-gate"
           assert receipt["decision"] == "ready-for-design"
           assert receipt["importAllowed"] is False
+          assert receipt["importReviewRequired"] is True
           assert receipt["dispatchAllowed"] is False
           assert receipt["queueMutationAllowed"] is False
           assert receipt["taskCreationAllowed"] is False
