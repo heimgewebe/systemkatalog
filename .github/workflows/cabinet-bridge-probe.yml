@@ -20,7 +20,7 @@ permissions:
 
 env:
   PYTHONDONTWRITEBYTECODE: "1"
-  BUREAU_PROBE_REF: "712e52327659218bb9d16a6cbbfe9581c00a826c"
+  BUREAU_PROBE_REF: "a4725ce62a8ff6a476feaaf2a366a1fbeede5169"
 
 jobs:
   probe:
@@ -86,6 +86,42 @@ jobs:
           ))
           PY
 
+      - name: Run bridge preview
+        run: |
+          bureau-cabinet-bridge-preview \
+            --json \
+            --probe-report bridge-probe-report.json \
+            --candidate-id claim:bureau-consumes-approved-candidates-v0 \
+            --task-id BUR-CAB-BRIDGE-001 \
+            --initiative BUR-CAB \
+            --target-proof "Cabinet bridge probe has an admissible candidate and preview remains proposal-only." \
+            --approve \
+            | tee bridge-preview.json
+
+      - name: Check preview proposal
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          preview = json.loads(Path("bridge-preview.json").read_text(encoding="utf-8"))
+          assert preview["kind"] == "cabinet_bridge_promotion_preview"
+          assert preview["mode"] == "proposal_only"
+          assert preview["dispatchAllowed"] is False
+          assert preview["queueMutationAllowed"] is False
+          assert preview["taskCreationAllowed"] is False
+          task = preview["task"]
+          assert task["execution"]["mode"] == "manual"
+          assert task["execution"]["policy"] == "review-before-effect"
+          assert task["metadata"]["dispatch_allowed"] is False
+          assert task["metadata"]["queue_mutation_allowed"] is False
+          assert task["metadata"]["task_creation_allowed"] is False
+          print("previewTask=%s candidate=%s" % (
+              task["id"],
+              task["metadata"]["source_candidate_id"],
+          ))
+          PY
+
       - name: Upload bridge probe report
         uses: actions/upload-artifact@v4
         with:
@@ -93,3 +129,4 @@ jobs:
           path: |
             bridge-probe-report.json
             bridge-probe-summary.md
+            bridge-preview.json
