@@ -2,13 +2,13 @@
 
 Cabinet ordnet Repositories, Projekte, Prüfungen und nächste Schritte.
 
-## Entree
+## Entrée
 
-- [README](README.md) — kanonischer Schnellstart fuer Menschen und GitHub.
-- [Agent Entry](AGENTS.md) — Lesereihenfolge, Wahrheitsgrenzen und Stop-Kriterien fuer LLMs und Agenten.
+- [README](README.md) — GitHub-Fassade und Schnellstart.
+- [Agent Entry](AGENTS.md) — Lesereihenfolge, Wahrheitsgrenzen und Stop-Kriterien für LLMs und Agenten.
 - [Ecosystem Map v0](docs/blueprints/ecosystem-map-v0.md) — Systemkarte, Dateien, Pflegeprinzipien und Reifekriterien.
 - [Mermaidkarte](rendered/ecosystem-map.mmd) — gerenderte Graphansicht.
-- [Heim-PC Operatorium Index v0](docs/blueprints/heim-pc-operatorium-index-v0.md) — heim-pc als lokale Operatorium-Schicht.
+- [Heim-PC Operatorium Index v0](docs/blueprints/heim-pc-operatorium-index-v0.md) — lokale Operatorium-Schicht.
 
 ## Aktive Räume
 
@@ -18,6 +18,4 @@ Cabinet ordnet Repositories, Projekte, Prüfungen und nächste Schritte.
 
 ## Legacy-Sammlungen
 
-Vorzimmer, Heimgewebe, Weltgewebe, Werkstatt, Labor und Betrieb bleiben an ihren bisherigen Pfaden lesbar. Ihre `.cabinet`-Manifeste kennzeichnen sie als `legacy-collection`; sie sind keine aktiven Top-Level-Räume mehr. Inhalte werden weiterhin einzeln als `keep`, `move`, `split`, `archive` oder `delete` klassifiziert.
-
-Der Repository-Cutover ist versioniert. Ob eine bereits laufende lokale Cabinet-Instanz den neuen Baum eingelesen hat, muss nach Pull und Neustart durch einen Runtime-Smoke bestätigt werden.
+Vorzimmer, Heimgewebe, Weltgewebe, Werkstatt, Labor und Betrieb bleiben an ihren bisherigen Pfaden lesbar.
