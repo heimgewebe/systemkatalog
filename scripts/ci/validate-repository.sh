@@ -28,6 +28,10 @@ echo "=== Reference Refresh Proposal Guard ==="
 python3 scripts/check-reference-refresh-proposals.py --repo-root "$REPO_ROOT"
 echo "Reference Refresh Proposal Guard: PASS"
 
+echo "=== Agent Routing Policy ==="
+python3 scripts/check-agent-routing-policy.py
+echo "Agent Routing Policy: PASS"
+
 echo "=== Materialize HEAD Snapshot ==="
 SNAPSHOT_ROOT="$(mktemp -d)"
 trap 'rm -rf -- "$SNAPSHOT_ROOT"' EXIT
