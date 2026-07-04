@@ -47,6 +47,49 @@ jobs:
             --bridge-policy registry/ecosystem/bureau-bridge.json \
             | tee bridge-probe-report.json
 
-      - name: Check read-only report
+      - name: Check and summarize report
         run: |
-          python3 -c 'import json; r=json.load(open("bridge-probe-report.json", encoding="utf-8")); assert r["kind"] == "cabinet_bureau_bridge_probe"; assert r["dispatchAllowed"] is False; assert r["queueMutationAllowed"] is False; assert r["taskCreationAllowed"] is False; print("candidateCount=%s admissibleCount=%s blockedCount=%s" % (r["candidateCount"], r["admissibleCount"], r["blockedCount"]))'
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          report = json.loads(Path("bridge-probe-report.json").read_text(encoding="utf-8"))
+          assert report["kind"] == "cabinet_bureau_bridge_probe"
+          assert report["dispatchAllowed"] is False
+          assert report["queueMutationAllowed"] is False
+          assert report["taskCreationAllowed"] is False
+          assert report["admissibleCount"] >= 1
+          assert report["blockedCount"] >= 1
+
+          summary = Path("bridge-probe-summary.md")
+          rows = [
+              "# Cabinet Bridge Probe",
+              "",
+              f"- candidateCount: {report['candidateCount']}",
+              f"- admissibleCount: {report['admissibleCount']}",
+              f"- blockedCount: {report['blockedCount']}",
+              "",
+              "| id | decision | reasons |",
+              "|---|---|---|",
+          ]
+          for candidate in report["candidates"]:
+              reasons = ", ".join(candidate.get("reasons") or [])
+              rows.append(f"| {candidate['id']} | {candidate['decision']} | {reasons} |")
+          summary.write_text("\n".join(rows) + "\n", encoding="utf-8")
+
+          github_step_summary = Path(__import__("os").environ["GITHUB_STEP_SUMMARY"])
+          github_step_summary.write_text(summary.read_text(encoding="utf-8"), encoding="utf-8")
+          print("candidateCount=%s admissibleCount=%s blockedCount=%s" % (
+              report["candidateCount"],
+              report["admissibleCount"],
+              report["blockedCount"],
+          ))
+          PY
+
+      - name: Upload bridge probe report
+        uses: actions/upload-artifact@7b0c40020db72c7351936b879749aa9b41d7ca11 # v4.6.2
+        with:
+          name: cabinet-bridge-probe-report
+          path: |
+            bridge-probe-report.json
+            bridge-probe-summary.md
