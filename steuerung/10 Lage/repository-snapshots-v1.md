@@ -20,10 +20,10 @@
 |---:|---|---|
 | 1 | `steuerboard` | Divergenz- oder Rewrite-Claim später in Git prüfen |
 | 2 | `lenskit` | damals 6 Working-Tree-Änderungen; später neu erheben |
-| 3 | `infra` | nicht-identische Commitbeziehung später prüfen |
 | 4 | `bureau` | keine besondere Priorität aus dem Snapshot ableitbar |
 | 4 | `cabinet` | keine besondere Priorität aus dem Snapshot ableitbar |
 | 4 | `grabowski` | keine besondere Priorität aus dem Snapshot ableitbar |
+| 4 | `infra` | keine besondere Priorität aus dem Snapshot ableitbar |
 | 4 | `vibe-lab` | keine besondere Priorität aus dem Snapshot ableitbar |
 | 4 | `weltgewebe` | keine besondere Priorität aus dem Snapshot ableitbar |
 

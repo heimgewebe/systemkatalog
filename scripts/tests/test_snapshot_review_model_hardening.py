@@ -65,6 +65,17 @@ class SnapshotReviewModelHardeningTests(unittest.TestCase):
             assessment.relationship_class,
             "snapshot-review-contained",
         )
+        self.assertEqual(assessment.priority, 4)
+        self.assertEqual(assessment.reason_code, "routine")
+
+
+    def test_generic_nonidentical_relationship_remains_candidate(self) -> None:
+        module = load_generator()
+        assessment = module.assess_record(
+            record(module, "anderer gespeicherter Stand")
+        )
+        self.assertEqual(assessment.priority, 3)
+        self.assertEqual(assessment.reason_code, "verify-nonidentical")
 
     def test_detailed_review_keeps_full_commit_ids(self) -> None:
         module = load_generator()
