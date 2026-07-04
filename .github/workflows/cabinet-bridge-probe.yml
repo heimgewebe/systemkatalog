@@ -20,7 +20,7 @@ permissions:
 
 env:
   PYTHONDONTWRITEBYTECODE: "1"
-  BUREAU_PROBE_REF: "a4725ce62a8ff6a476feaaf2a366a1fbeede5169"
+  BUREAU_PROBE_REF: "e154b734184c344c7b722e31069891cb847f57eb"
 
 jobs:
   probe:
@@ -122,6 +122,30 @@ jobs:
           ))
           PY
 
+      - name: Run bridge review gate
+        run: |
+          bureau-cabinet-bridge-review \
+            --json \
+            --preview bridge-preview.json \
+            | tee bridge-review.json
+
+      - name: Check review gate
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          gate = json.loads(Path("bridge-review.json").read_text(encoding="utf-8"))
+          assert gate["kind"] == "cabinet_bridge_preview_review_gate"
+          assert gate["status"] == "requires_human_review"
+          assert gate["reviewRequired"] is True
+          assert gate["importAllowed"] is False
+          assert gate["dispatchAllowed"] is False
+          assert gate["queueMutationAllowed"] is False
+          assert gate["taskCreationAllowed"] is False
+          print("reviewGate=%s task=%s" % (gate["status"], gate["taskId"]))
+          PY
+
       - name: Upload bridge probe report
         uses: actions/upload-artifact@v4
         with:
@@ -130,3 +154,4 @@ jobs:
             bridge-probe-report.json
             bridge-probe-summary.md
             bridge-preview.json
+            bridge-review.json
