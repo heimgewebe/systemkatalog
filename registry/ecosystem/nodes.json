@@ -1,0 +1,166 @@
+{
+  "schema_version": 1,
+  "status": "draft",
+  "updated_at": "2026-07-04",
+  "owner": {
+    "canonical_repo": "heimgewebe/cabinet",
+    "local_worktree_intent": "/home/alex/repos/cabinet",
+    "separation": "Cabinet owns the map semantics; GitHub, CI, runtime, contracts, and explicit human decisions remain primary truth sources in their domains."
+  },
+  "nodes": [
+    {
+      "id": "actor:alexander",
+      "kind": "human",
+      "label": "Alexander",
+      "role": "sensemaking, priority, approval, abort authority",
+      "status": "active"
+    },
+    {
+      "id": "artifact:ecosystem-map",
+      "kind": "artifact",
+      "label": "Ecosystem Map v0",
+      "role": "machine-readable overview graph and rendered orientation map",
+      "status": "draft"
+    },
+    {
+      "id": "repo:cabinet",
+      "kind": "repository",
+      "label": "Cabinet",
+      "role": "sense, evidence, prioritization, learning, map ownership",
+      "status": "active"
+    },
+    {
+      "id": "repo:bureau",
+      "kind": "repository",
+      "label": "Bureau",
+      "role": "task cadence, delegation, run reporting",
+      "status": "active"
+    },
+    {
+      "id": "repo:grabowski",
+      "kind": "repository",
+      "label": "Grabowski",
+      "role": "operator execution, repo work, review gates",
+      "status": "active"
+    },
+    {
+      "id": "repo:weltgewebe",
+      "kind": "repository",
+      "label": "Weltgewebe",
+      "role": "product and domain core",
+      "status": "active"
+    },
+    {
+      "id": "repo:lenskit",
+      "kind": "repository",
+      "label": "Lenskit / RepoBrief implementation",
+      "role": "context view and citable repository briefs",
+      "status": "legacy_name_active"
+    },
+    {
+      "id": "concept:repobrief",
+      "kind": "concept",
+      "label": "RepoBrief",
+      "role": "public name for context-view layer",
+      "status": "active"
+    },
+    {
+      "id": "repo:steuerboard",
+      "kind": "repository",
+      "label": "Steuerboard",
+      "role": "read-only repo-state signal",
+      "status": "active"
+    },
+    {
+      "id": "repo:vibe-lab",
+      "kind": "repository",
+      "label": "Vibe-Lab",
+      "role": "method lab and evidence experiments",
+      "status": "active"
+    },
+    {
+      "id": "repo:chronik",
+      "kind": "repository",
+      "label": "Chronik",
+      "role": "event trace and historical memory",
+      "status": "active"
+    },
+    {
+      "id": "repo:schauwerk",
+      "kind": "repository",
+      "label": "Schauwerk",
+      "role": "visual surface and projection layer",
+      "status": "active"
+    },
+    {
+      "id": "repo:infra",
+      "kind": "repository",
+      "label": "Infra",
+      "role": "host, network, cockpit and operational runbooks",
+      "status": "active"
+    },
+    {
+      "id": "repo:device-graph",
+      "kind": "repository",
+      "label": "Device Graph",
+      "role": "infrastructure device graph; adjacent but not ecosystem-governance canon",
+      "status": "related"
+    },
+    {
+      "id": "service:github",
+      "kind": "service",
+      "label": "GitHub",
+      "role": "repository, PR, issue and review state",
+      "status": "primary_truth_for_git_state"
+    },
+    {
+      "id": "service:ci",
+      "kind": "service",
+      "label": "CI / Checks",
+      "role": "automated tests, lint, gates and review signals",
+      "status": "primary_truth_for_check_state"
+    },
+    {
+      "id": "runtime:heim-pc",
+      "kind": "runtime",
+      "label": "heim-pc",
+      "role": "local worktrees, operator cockpit and execution surface",
+      "status": "active"
+    },
+    {
+      "id": "runtime:heimserver",
+      "kind": "runtime",
+      "label": "heimserver",
+      "role": "home server runtime surface",
+      "status": "active"
+    },
+    {
+      "id": "agent:codex",
+      "kind": "agent",
+      "label": "Codex",
+      "role": "code review, logic bugs, invariant checks",
+      "status": "available"
+    },
+    {
+      "id": "agent:claude",
+      "kind": "agent",
+      "label": "Claude",
+      "role": "architecture, large refactors, deep concept review",
+      "status": "available_with_quota_limits"
+    },
+    {
+      "id": "agent:jules",
+      "kind": "agent",
+      "label": "Jules",
+      "role": "small clear patches",
+      "status": "available"
+    },
+    {
+      "id": "agent:local",
+      "kind": "agent",
+      "label": "Local agents",
+      "role": "cheap prechecks and repetitive scans",
+      "status": "available"
+    }
+  ]
+}
