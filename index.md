@@ -18,4 +18,6 @@ Cabinet ordnet Repositories, Projekte, Prüfungen und nächste Schritte.
 
 ## Legacy-Sammlungen
 
-Vorzimmer, Heimgewebe, Weltgewebe, Werkstatt, Labor und Betrieb bleiben an ihren bisherigen Pfaden lesbar.
+Vorzimmer, Heimgewebe, Weltgewebe, Werkstatt, Labor und Betrieb bleiben an ihren bisherigen Pfaden lesbar. Ihre Manifeste kennzeichnen sie als Legacy-Sammlungen; sie sind keine aktiven Top-Level-Räume mehr.
+
+Der Repository-Cutover ist versioniert. Ob eine bereits laufende lokale Cabinet-Instanz den neuen Baum eingelesen hat, muss separat geprüft werden.
