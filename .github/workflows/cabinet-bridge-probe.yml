@@ -20,7 +20,7 @@ permissions:
 
 env:
   PYTHONDONTWRITEBYTECODE: "1"
-  BUREAU_PROBE_REF: "e154b734184c344c7b722e31069891cb847f57eb"
+  BUREAU_PROBE_REF: "392037a91aa2e2ac84e7cf51f09be1ed51591cf5"
 
 jobs:
   probe:
@@ -146,6 +146,38 @@ jobs:
           print("reviewGate=%s task=%s" % (gate["status"], gate["taskId"]))
           PY
 
+      - name: Run bridge receipt
+        run: |
+          bureau-cabinet-bridge-receipt \
+            --json \
+            --review-gate bridge-review.json \
+            --reviewer cabinet-ci-review-gate \
+            --decision ready-for-design \
+            --evidence "Cabinet CI produced a requires_human_review gate with all effect flags disabled." \
+            --note "Technical receipt only; this is not an import approval." \
+            | tee bridge-receipt.json
+
+      - name: Check receipt
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          receipt = json.loads(Path("bridge-receipt.json").read_text(encoding="utf-8"))
+          assert receipt["kind"] == "cabinet_bridge_review_receipt"
+          assert receipt["status"] == "review_recorded"
+          assert receipt["reviewer"] == "cabinet-ci-review-gate"
+          assert receipt["decision"] == "ready-for-design"
+          assert receipt["importAllowed"] is False
+          assert receipt["dispatchAllowed"] is False
+          assert receipt["queueMutationAllowed"] is False
+          assert receipt["taskCreationAllowed"] is False
+          print("receipt=%s task=%s" % (
+              receipt["status"],
+              receipt["sourceGate"]["taskId"],
+          ))
+          PY
+
       - name: Upload bridge probe report
         uses: actions/upload-artifact@v4
         with:
@@ -155,3 +187,4 @@ jobs:
             bridge-probe-summary.md
             bridge-preview.json
             bridge-review.json
+            bridge-receipt.json
