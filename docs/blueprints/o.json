@@ -6,7 +6,7 @@
     {"id": "bureau", "role": "tasks_receipts"},
     {"id": "operator", "role": "execution_audit"},
     {"id": "steuerboard", "role": "state_monitor"},
-    {"id": "lenskit", "role": "context_view"},
+    {"id": "repobrief", "role": "context_view"},
     {"id": "vibe_lab", "role": "method_lab"},
     {"id": "chronik", "role": "event_trace"},
     {"id": "github_ci", "role": "technical_gate"},
