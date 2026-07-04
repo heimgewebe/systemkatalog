@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "status": "draft",
+  "updated_at": "2026-07-04",
+  "id": "cabinet_bureau_bridge_v0",
+  "direction": "cabinet_to_bureau_read_only_candidate_signal",
+  "source_owner": "repo:cabinet",
+  "target_consumer": "repo:bureau",
+  "canonical_doc": "docs/blueprints/cabinet-bureau-bridge-v0.md",
+  "allowed_sources": [
+    "registry/ecosystem/claims.jsonl",
+    "registry/ecosystem/nodes.json",
+    "registry/ecosystem/edges.json",
+    "docs/blueprints/o.json"
+  ],
+  "admissible_candidate_statuses": [
+    "evidenced",
+    "approved",
+    "draft_decision_with_explicit_human_release"
+  ],
+  "required_candidate_fields": [
+    "id",
+    "status",
+    "evidence",
+    "expires_at_or_refresh_hint",
+    "next_action",
+    "responsible_organ"
+  ],
+  "blocked_statuses": [
+    "plausible",
+    "speculative",
+    "expired",
+    "contradicted",
+    "unverified"
+  ],
+  "prohibited_effects": [
+    "automatic_bureau_task_creation",
+    "automatic_grabowski_delegation",
+    "merge_or_push_action",
+    "runtime_mutation",
+    "cleanup_action",
+    "authority_inference_from_map"
+  ],
+  "organ_roles": {
+    "cabinet": "semantic_owner_and_candidate_prioritizer",
+    "bureau": "read_only_consumer_and_later_task_cadence_owner",
+    "grabowski_operator": "execution_after_task_or_operator_release",
+    "repobrief": "citable_context_and_snapshot_boundary",
+    "steuerboard": "read_only_repo_state_signal_not_gate",
+    "chronik": "event_continuity",
+    "github_ci": "primary_truth_for_pr_branch_check_state",
+    "schauwerk": "renderer_not_canon_owner",
+    "external_agents": "proposal_and_review_not_authority"
+  },
+  "does_not_establish": [
+    "task_approval",
+    "merge_readiness",
+    "runtime_correctness",
+    "claim_truth",
+    "bureau_import_implemented",
+    "autonomous_dispatch"
+  ]
+}
