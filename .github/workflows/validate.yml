@@ -63,6 +63,12 @@ jobs:
       - name: Test Cabinet Maintenance Report
         run: python3 -m unittest discover -s scripts/tests -p 'test_cabinet_maintenance_report.py'
 
+      - name: Test External Artifact Registry
+        run: python3 -m unittest discover -s scripts/tests -p 'test_external*.py'
+
+      - name: Validate External Artifact Registry
+        run: python3 scripts/validate_external_dump_sources.py
+
   installer-shadow:
     name: Installer Shadow Test
     runs-on: ubuntu-latest

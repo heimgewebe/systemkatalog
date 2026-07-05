@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 1,
+  "kind": "cabinet_external_dump_sources",
+  "contractVersion": "1",
+  "contractPath": "docs/contracts/cabinet-external-dump-sources-v1.md",
+  "schemaPath": "docs/contracts/cabinet-external-dump-sources-v1.schema.json",
+  "mode": "external_dump_source_contract_registry",
+  "updatedAt": "2026-07-05",
+  "cabinetGeneratesDumps": false,
+  "sourceCount": 2,
+  "sources": [
+    {
+      "id": "external-dump:repobrief",
+      "artifactFamily": "repobrief",
+      "producerOrgan": "repobrief_lenskit",
+      "cadence": "on_repository_change_or_daily",
+      "maxAgeHours": 48,
+      "manifestPattern": "external/repobrief/{repository}/{ref}/manifest.json",
+      "requiredManifestKind": "repobrief_bundle_manifest",
+      "requiredArtifactSuffixes": [
+        "_merge.agent_reading_pack.md",
+        "_merge.md",
+        "_merge.json",
+        "_merge.citation_map.jsonl",
+        "_merge.output_health.json",
+        "_merge.bundle_health.post.json"
+      ],
+      "hashAlgorithm": "sha256",
+      "freshnessBasis": "manifest_generated_at",
+      "cabinetStorage": "external_reference_only",
+      "observation": {
+        "status": "unobserved",
+        "latestManifestPath": "",
+        "latestManifestGeneratedAt": ""
+      },
+      "doesNotEstablish": [
+        "dump_freshness_truth",
+        "claim_truth",
+        "runtime_correctness",
+        "semantic_correctness",
+        "task_approval",
+        "dump_generation_permission"
+      ]
+    },
+    {
+      "id": "external-dump:lenskit",
+      "artifactFamily": "lenskit",
+      "producerOrgan": "repobrief_lenskit",
+      "cadence": "on_repository_change_or_daily",
+      "maxAgeHours": 48,
+      "manifestPattern": "external/lenskit/{repository}/{ref}/manifest.json",
+      "requiredManifestKind": "lenskit_bundle_manifest",
+      "requiredArtifactSuffixes": [
+        "_merge.agent_reading_pack.md",
+        "_merge.md",
+        "_merge.json",
+        "_merge.chunk_index.jsonl",
+        "_merge.citation_map.jsonl",
+        "_merge.claim_evidence_map.json",
+        "_merge.output_health.json",
+        "_merge.bundle_health.post.json",
+        "_merge.retrieval_eval.json"
+      ],
+      "hashAlgorithm": "sha256",
+      "freshnessBasis": "manifest_generated_at",
+      "cabinetStorage": "external_reference_only",
+      "observation": {
+        "status": "unobserved",
+        "latestManifestPath": "",
+        "latestManifestGeneratedAt": ""
+      },
+      "doesNotEstablish": [
+        "dump_freshness_truth",
+        "claim_truth",
+        "runtime_correctness",
+        "semantic_correctness",
+        "task_approval",
+        "dump_generation_permission"
+      ]
+    }
+  ],
+  "doesNotEstablish": [
+    "dump_freshness_truth",
+    "claim_truth",
+    "runtime_correctness",
+    "merge_readiness",
+    "task_approval",
+    "autonomous_dispatch",
+    "dump_generation_permission"
+  ]
+}
