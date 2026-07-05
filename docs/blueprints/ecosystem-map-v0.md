@@ -43,9 +43,19 @@ Die Karte darf diese Quellen verknuepfen. Sie darf sie nicht ersetzen.
 registry/ecosystem/nodes.json       # Organe, Repos, Services, Agenten, Artefakte
 registry/ecosystem/edges.json       # Beziehungen zwischen Knoten
 registry/ecosystem/claims.jsonl     # Aussagen mit Status, Konfidenz und Ablaufdatum
-rendered/ecosystem-map.mmd          # gerenderte Mermaid-Ansicht
-scripts/validate_ecosystem_map.py   # minimaler Konsistenzcheck
+rendered/ecosystem-map.mmd                # lesbare Uebersichtskarte; Einstieg, kein Canon
+rendered/ecosystem-registry-map.mmd       # generierte Registry-Projektion aus Knoten und Kanten
+scripts/validate_ecosystem_map.py         # minimaler Konsistenzcheck
+scripts/render_ecosystem_registry_map.py  # Generator und Drift-Check der Registry-Projektion
 ```
+
+## Ansichten
+
+`rendered/ecosystem-map.mmd` ist die menschlich kuratierte Uebersicht. Sie darf Knoten buendeln und Beziehungen vereinfachen, aber daraus folgt keine Beweiskraft.
+
+`rendered/ecosystem-registry-map.mmd` ist die deterministische Projektion aus `nodes.json` und `edges.json`. Sie ist fuer Driftpruefung nuetzlicher, aber nicht automatisch besser lesbar.
+
+Wahrheit liegt weder in der Uebersicht noch in der Projektion. Die Registry ist der versionierte Karteninput; primaere Quellen bleiben GitHub, CI, Runtime, Contracts und menschliche Entscheidungen.
 
 ## Pflegeprinzipien
 
@@ -55,7 +65,9 @@ scripts/validate_ecosystem_map.py   # minimaler Konsistenzcheck
 4. Widersprueche duerfen sichtbar bleiben.
 5. Bureau darf nur freigegebene oder validierte Kandidaten operativ nutzen.
 6. Schauwerk darf rendern, aber nicht die Karte kanonisieren.
-7. Ein eigenes Repo wird erst nach expliziter Reifeentscheidung eroeffnet.
+7. Die Uebersichtskarte darf vereinfachen, muss aber als Uebersicht erkennbar bleiben.
+8. Die Registry-Projektion muss per `scripts/render_ecosystem_registry_map.py --check` aktuell bleiben.
+9. Ein eigenes Repo wird erst nach expliziter Reifeentscheidung eroeffnet.
 
 ## Reifekriterien fuer ein eigenes Repo
 
@@ -76,4 +88,5 @@ v0 bleibt klein:
 - Kanten erfassen.
 - Claims mit Verfallsdatum erfassen.
 - Konsistenz pruefen.
+- Registry-Projektion pruefbar halten.
 - Keine Autonomie daraus ableiten.

@@ -11,8 +11,9 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[2]
 SCRIPTS = ROOT / "scripts"
-if str(SCRIPTS) not in sys.path:
-    sys.path.insert(0, str(SCRIPTS))
+if str(SCRIPTS) in sys.path:
+    sys.path.remove(str(SCRIPTS))
+sys.path.insert(0, str(SCRIPTS))
 
 from ecosystem_graph import (  # noqa: E402
     build_graph,
