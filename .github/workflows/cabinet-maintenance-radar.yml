@@ -10,14 +10,18 @@ on:
       - "docs/blueprints/cabinet-qa-radar-v1.md"
       - "docs/contracts/cabinet-maintenance-report-v1.md"
       - "docs/contracts/cabinet-maintenance-report-v1.schema.json"
+      - "docs/contracts/cabinet-external-dump-sources-v1.md"
+      - "docs/contracts/cabinet-external-dump-sources-v1.schema.json"
       - "policy/cabinet-maintenance-radar.json"
       - "registry/ecosystem/claims.jsonl"
       - "registry/ecosystem/bureau-bridge.json"
       - "registry/ecosystem/external-dump-sources.json"
       - "scripts/validate_cabinet_maintenance_radar.py"
       - "scripts/write_cabinet_maintenance_report.py"
+      - "scripts/validate_external_dump_sources.py"
       - "scripts/tests/test_cabinet_maintenance_radar.py"
       - "scripts/tests/test_cabinet_maintenance_report.py"
+      - "scripts/tests/test_external_dump_sources.py"
       - "steuerung/20 Aufgaben/cab-qa-001-cabinet-coherence-radar.md"
       - "steuerung/20 Aufgaben/cab-qa-002-maintenance-report-ci.md"
   pull_request:
@@ -29,14 +33,18 @@ on:
       - "docs/blueprints/cabinet-qa-radar-v1.md"
       - "docs/contracts/cabinet-maintenance-report-v1.md"
       - "docs/contracts/cabinet-maintenance-report-v1.schema.json"
+      - "docs/contracts/cabinet-external-dump-sources-v1.md"
+      - "docs/contracts/cabinet-external-dump-sources-v1.schema.json"
       - "policy/cabinet-maintenance-radar.json"
       - "registry/ecosystem/claims.jsonl"
       - "registry/ecosystem/bureau-bridge.json"
       - "registry/ecosystem/external-dump-sources.json"
       - "scripts/validate_cabinet_maintenance_radar.py"
       - "scripts/write_cabinet_maintenance_report.py"
+      - "scripts/validate_external_dump_sources.py"
       - "scripts/tests/test_cabinet_maintenance_radar.py"
       - "scripts/tests/test_cabinet_maintenance_report.py"
+      - "scripts/tests/test_external_dump_sources.py"
       - "steuerung/20 Aufgaben/cab-qa-001-cabinet-coherence-radar.md"
       - "steuerung/20 Aufgaben/cab-qa-002-maintenance-report-ci.md"
   workflow_dispatch:
@@ -67,6 +75,12 @@ jobs:
         uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
         with:
           python-version: "3.12"
+
+      - name: Test External Artifact Registry
+        run: python3 -m unittest discover -s scripts/tests -p 'test_external*.py'
+
+      - name: Validate External Artifact Registry
+        run: python3 scripts/validate_external_dump_sources.py
 
       - name: Test Cabinet Maintenance Radar Policy
         run: python3 -m unittest discover -s scripts/tests -p 'test_cabinet_maintenance_radar.py'

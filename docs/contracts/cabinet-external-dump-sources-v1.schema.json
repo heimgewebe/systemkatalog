@@ -1,0 +1,192 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://heimgewebe.local/cabinet/contracts/cabinet-external-dump-sources-v1.schema.json",
+  "title": "Cabinet External Dump Sources v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "kind",
+    "contractVersion",
+    "contractPath",
+    "schemaPath",
+    "mode",
+    "updatedAt",
+    "cabinetGeneratesDumps",
+    "sourceCount",
+    "sources",
+    "doesNotEstablish"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "kind": {
+      "const": "cabinet_external_dump_sources"
+    },
+    "contractVersion": {
+      "const": "1"
+    },
+    "contractPath": {
+      "const": "docs/contracts/cabinet-external-dump-sources-v1.md"
+    },
+    "schemaPath": {
+      "const": "docs/contracts/cabinet-external-dump-sources-v1.schema.json"
+    },
+    "mode": {
+      "const": "external_dump_source_contract_registry"
+    },
+    "updatedAt": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "cabinetGeneratesDumps": {
+      "const": false
+    },
+    "sourceCount": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/source"
+      }
+    },
+    "doesNotEstablish": {
+      "type": "array",
+      "minItems": 7,
+      "maxItems": 7,
+      "items": {
+        "enum": [
+          "dump_freshness_truth",
+          "claim_truth",
+          "runtime_correctness",
+          "merge_readiness",
+          "task_approval",
+          "autonomous_dispatch",
+          "dump_generation_permission"
+        ]
+      },
+      "uniqueItems": true
+    }
+  },
+  "$defs": {
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "artifactFamily",
+        "producerOrgan",
+        "cadence",
+        "maxAgeHours",
+        "manifestPattern",
+        "requiredManifestKind",
+        "requiredArtifactSuffixes",
+        "hashAlgorithm",
+        "freshnessBasis",
+        "cabinetStorage",
+        "observation",
+        "doesNotEstablish"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^external-dump:[a-z0-9_.-]+$"
+        },
+        "artifactFamily": {
+          "enum": [
+            "repobrief",
+            "lenskit"
+          ]
+        },
+        "producerOrgan": {
+          "const": "repobrief_lenskit"
+        },
+        "cadence": {
+          "enum": [
+            "on_repository_change_or_daily",
+            "on_repository_change_or_manual_refresh"
+          ]
+        },
+        "maxAgeHours": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "manifestPattern": {
+          "type": "string",
+          "minLength": 1
+        },
+        "requiredManifestKind": {
+          "type": "string",
+          "minLength": 1
+        },
+        "requiredArtifactSuffixes": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "hashAlgorithm": {
+          "const": "sha256"
+        },
+        "freshnessBasis": {
+          "const": "manifest_generated_at"
+        },
+        "cabinetStorage": {
+          "enum": [
+            "external_reference_only",
+            "manifest_reference_only"
+          ]
+        },
+        "observation": {
+          "$ref": "#/$defs/observation"
+        },
+        "doesNotEstablish": {
+          "type": "array",
+          "minItems": 4,
+          "items": {
+            "enum": [
+              "dump_freshness_truth",
+              "claim_truth",
+              "runtime_correctness",
+              "semantic_correctness",
+              "task_approval",
+              "dump_generation_permission"
+            ]
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "observation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "latestManifestPath",
+        "latestManifestGeneratedAt"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "unobserved",
+            "observed",
+            "disabled"
+          ]
+        },
+        "latestManifestPath": {
+          "type": "string"
+        },
+        "latestManifestGeneratedAt": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
