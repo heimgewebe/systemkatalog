@@ -1,0 +1,183 @@
+{
+  "$id": "https://heimgewebe.example/contracts/cabinet-ecosystem-signal-v1.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "confidence": {
+      "maximum": 1,
+      "minimum": 0,
+      "type": "number"
+    },
+    "contractPath": {
+      "const": "docs/contracts/cabinet-ecosystem-signal-v1.md"
+    },
+    "contractVersion": {
+      "const": "1"
+    },
+    "doesNotEstablish": {
+      "contains": {
+        "enum": [
+          "task_approval",
+          "merge_readiness",
+          "runtime_correctness",
+          "claim_truth",
+          "autonomous_dispatch",
+          "bureau_import_implemented"
+        ]
+      },
+      "items": {
+        "enum": [
+          "task_approval",
+          "merge_readiness",
+          "runtime_correctness",
+          "claim_truth",
+          "autonomous_dispatch",
+          "bureau_import_implemented"
+        ]
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "effectFlags": {
+      "additionalProperties": false,
+      "properties": {
+        "authorityInferenceAllowed": {
+          "const": false
+        },
+        "dispatchAllowed": {
+          "const": false
+        },
+        "dumpGenerationAllowed": {
+          "const": false
+        },
+        "mergeOrPushAllowed": {
+          "const": false
+        },
+        "queueMutationAllowed": {
+          "const": false
+        },
+        "runtimeMutationAllowed": {
+          "const": false
+        },
+        "taskCreationAllowed": {
+          "const": false
+        }
+      },
+      "required": [
+        "taskCreationAllowed",
+        "queueMutationAllowed",
+        "dispatchAllowed",
+        "mergeOrPushAllowed",
+        "runtimeMutationAllowed",
+        "dumpGenerationAllowed",
+        "authorityInferenceAllowed"
+      ],
+      "type": "object"
+    },
+    "evidence": {
+      "items": {
+        "additionalProperties": true,
+        "properties": {
+          "observedHeadSha": {
+            "pattern": "^[0-9a-f]{40}$",
+            "type": "string"
+          },
+          "ref": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "url": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "ref"
+        ],
+        "type": "object"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "freshness": {
+      "additionalProperties": false,
+      "properties": {
+        "basis": {
+          "const": "observedAt"
+        },
+        "maxAgeHours": {
+          "minimum": 1,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "basis",
+        "maxAgeHours"
+      ],
+      "type": "object"
+    },
+    "id": {
+      "pattern": "^signal:",
+      "type": "string"
+    },
+    "kind": {
+      "const": "cabinet_ecosystem_signal"
+    },
+    "object": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "observedAt": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "predicate": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "schemaPath": {
+      "const": "docs/contracts/cabinet-ecosystem-signal-v1.schema.json"
+    },
+    "schemaVersion": {
+      "const": 1
+    },
+    "sourceSystem": {
+      "enum": [
+        "github",
+        "ci",
+        "local_git",
+        "worktree",
+        "fixture"
+      ]
+    },
+    "subject": {
+      "minLength": 1,
+      "type": "string"
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "kind",
+    "contractVersion",
+    "contractPath",
+    "schemaPath",
+    "id",
+    "observedAt",
+    "sourceSystem",
+    "subject",
+    "predicate",
+    "object",
+    "evidence",
+    "freshness",
+    "confidence",
+    "effectFlags",
+    "doesNotEstablish"
+  ],
+  "title": "Cabinet Ecosystem Signal v1",
+  "type": "object"
+}
