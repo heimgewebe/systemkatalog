@@ -46,8 +46,10 @@ registry/ecosystem/claims.jsonl           # Aussagen mit Status, Konfidenz und A
 docs/blueprints/o.json                    # kompakter Seed und View-Konfiguration der Projektion
 rendered/ecosystem-map.mmd                # lesbare Uebersichtskarte; Einstieg, kein Canon
 rendered/ecosystem-registry-map.mmd       # generierte Registry-Projektion aus Knoten und Kanten
+docs/contracts/cabinet-ecosystem-map-artifact-manifest-v1.md  # Manifest-Contract fuer Viewer
 scripts/validate_ecosystem_map.py         # minimaler Konsistenzcheck
 scripts/render_ecosystem_registry_map.py  # Generator, Drift-Check und JSON-Report der Registry-Projektion
+scripts/write_ecosystem_map_artifact_manifest.py  # generiert/validiert Map-Artefaktmanifest fuer read-only Consumer
 ```
 
 ## Ansichten
@@ -59,6 +61,8 @@ scripts/render_ecosystem_registry_map.py  # Generator, Drift-Check und JSON-Repo
 `docs/blueprints/o.json` darf die View-Reihenfolge, Gruppentitel und visuellen Anker der Registry-Projektion konfigurieren. Diese View-Konfiguration ist Darstellung, keine zusaetzliche Wahrheitsquelle.
 
 `scripts/render_ecosystem_registry_map.py --check --json` liefert einen maschinenlesbaren Report fuer CI und Agenten. Der Report beweist Aktualitaet der Projektion gegen die versionierte Registry, aber keine Claim-Wahrheit, Runtime-Korrektheit oder Merge-Readiness.
+
+`scripts/write_ecosystem_map_artifact_manifest.py --check` prueft, ob ein read-only Map-Artefaktmanifest erzeugbar waere. Ein Consumer- oder Release-Job kann mit `--output rendered/ecosystem-map-artifact-manifest.json` ein konkretes Manifest schreiben. Dieses Manifest enthaelt Commit, Generierungszeit, Pfade, Bytes, SHA-256 und explizite Nicht-Claims; es ist Quelle-/Provenienzvertrag, nicht Kartenwahrheit.
 
 Wahrheit liegt weder in der Uebersicht noch in der Projektion. Die Registry ist der versionierte Karteninput; primaere Quellen bleiben GitHub, CI, Runtime, Contracts und menschliche Entscheidungen.
 
@@ -72,7 +76,8 @@ Wahrheit liegt weder in der Uebersicht noch in der Projektion. Die Registry ist 
 6. Schauwerk darf rendern, aber nicht die Karte kanonisieren.
 7. Die Uebersichtskarte darf vereinfachen, muss aber als Uebersicht erkennbar bleiben.
 8. Die Registry-Projektion muss per `scripts/render_ecosystem_registry_map.py --check` aktuell bleiben.
-9. Ein eigenes Repo wird erst nach expliziter Reifeentscheidung eroeffnet.
+9. Das Artefaktmanifest muss per `scripts/write_ecosystem_map_artifact_manifest.py --check` erzeugbar bleiben.
+10. Ein eigenes Repo wird erst nach expliziter Reifeentscheidung eroeffnet.
 
 ## Reifekriterien fuer ein eigenes Repo
 
@@ -94,4 +99,5 @@ v0 bleibt klein:
 - Claims mit Verfallsdatum erfassen.
 - Konsistenz pruefen.
 - Registry-Projektion pruefbar halten.
+- Artefaktmanifest fuer read-only Consumer erzeugbar halten.
 - Keine Autonomie daraus ableiten.

@@ -1,0 +1,139 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://heimgewebe.local/cabinet/contracts/cabinet-ecosystem-map-artifact-manifest-v1.schema.json",
+  "title": "Cabinet Ecosystem Map Artifact Manifest v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "kind",
+    "contractVersion",
+    "contractPath",
+    "schemaPath",
+    "mode",
+    "source",
+    "artifactCount",
+    "artifacts",
+    "doesNotEstablish"
+  ],
+  "properties": {
+    "schemaVersion": {"const": 1},
+    "kind": {"const": "cabinet_ecosystem_map_artifact_manifest"},
+    "contractVersion": {"const": "1"},
+    "contractPath": {"const": "docs/contracts/cabinet-ecosystem-map-artifact-manifest-v1.md"},
+    "schemaPath": {"const": "docs/contracts/cabinet-ecosystem-map-artifact-manifest-v1.schema.json"},
+    "mode": {"const": "read_only_projection_source"},
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["repository", "commit", "generatedAt"],
+      "properties": {
+        "repository": {"const": "heimgewebe/cabinet"},
+        "commit": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "generatedAt": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "artifactCount": {"const": 6},
+    "artifacts": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "prefixItems": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["role", "path", "contentType", "bytes", "sha256"],
+          "properties": {
+            "role": {"const": "readable_overview_mermaid"},
+            "path": {"const": "rendered/ecosystem-map.mmd"},
+            "contentType": {"const": "text/mermaid"},
+            "bytes": {"type": "integer", "minimum": 1},
+            "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["role", "path", "contentType", "bytes", "sha256"],
+          "properties": {
+            "role": {"const": "generated_registry_projection_mermaid"},
+            "path": {"const": "rendered/ecosystem-registry-map.mmd"},
+            "contentType": {"const": "text/mermaid"},
+            "bytes": {"type": "integer", "minimum": 1},
+            "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["role", "path", "contentType", "bytes", "sha256"],
+          "properties": {
+            "role": {"const": "map_blueprint"},
+            "path": {"const": "docs/blueprints/ecosystem-map-v0.md"},
+            "contentType": {"const": "text/markdown"},
+            "bytes": {"type": "integer", "minimum": 1},
+            "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["role", "path", "contentType", "bytes", "sha256"],
+          "properties": {
+            "role": {"const": "registry_nodes"},
+            "path": {"const": "registry/ecosystem/nodes.json"},
+            "contentType": {"const": "application/json"},
+            "bytes": {"type": "integer", "minimum": 1},
+            "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["role", "path", "contentType", "bytes", "sha256"],
+          "properties": {
+            "role": {"const": "registry_edges"},
+            "path": {"const": "registry/ecosystem/edges.json"},
+            "contentType": {"const": "application/json"},
+            "bytes": {"type": "integer", "minimum": 1},
+            "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["role", "path", "contentType", "bytes", "sha256"],
+          "properties": {
+            "role": {"const": "registry_claims"},
+            "path": {"const": "registry/ecosystem/claims.jsonl"},
+            "contentType": {"const": "application/x-ndjson"},
+            "bytes": {"type": "integer", "minimum": 1},
+            "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+          }
+        }
+      ]
+    },
+    "doesNotEstablish": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "items": {
+        "enum": [
+          "claim_truth",
+          "runtime_correctness",
+          "merge_readiness",
+          "cabinet_registry_correctness",
+          "leitstand_view_correctness",
+          "render_success_validates_map"
+        ]
+      },
+      "uniqueItems": true
+    }
+  }
+}
