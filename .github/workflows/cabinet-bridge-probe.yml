@@ -20,7 +20,7 @@ permissions:
 
 env:
   PYTHONDONTWRITEBYTECODE: "1"
-  BUREAU_PROBE_REF: "d7edf37e5165a9c6bbff04670b478efaa605882b"
+  BUREAU_PROBE_REF: "a265385fcc2365ee9c85e6a04b0ac1d2813cc60a"
 
 jobs:
   probe:
@@ -33,6 +33,14 @@ jobs:
         with:
           persist-credentials: false
 
+      - name: Checkout Bureau policy
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          repository: heimgewebe/bureau
+          ref: ${{ env.BUREAU_PROBE_REF }}
+          path: bureau-policy
+          persist-credentials: false
+
       - name: Setup Python
         uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
         with:
@@ -40,6 +48,31 @@ jobs:
 
       - name: Install Bureau probe
         run: python -m pip install "git+https://github.com/heimgewebe/bureau.git@${BUREAU_PROBE_REF}"
+
+      - name: Run Bureau import policy gate
+        working-directory: bureau-policy
+        run: |
+          bureau-cabinet-bridge-import-policy \
+            --json \
+            --policy docs/cabinet-bridge-import-review-contract-v0.policy.json \
+            | tee ../bridge-import-policy-review.json
+
+      - name: Check Bureau import policy gate
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          policy = json.loads(Path("bridge-import-policy-review.json").read_text(encoding="utf-8"))
+          assert policy["kind"] == "bureau.cabinet_bridge_import_review_contract_policy_review"
+          assert policy["status"] == "valid"
+          assert policy["importAllowed"] is False
+          assert policy["importReviewRequired"] is True
+          print("policy=%s importReviewRequired=%s" % (
+              policy["status"],
+              policy["importReviewRequired"],
+          ))
+          PY
 
       - name: Run bridge probe
         run: |
@@ -55,6 +88,7 @@ jobs:
 
           report = json.loads(Path("bridge-probe-report.json").read_text(encoding="utf-8"))
           assert report["kind"] == "cabinet_bureau_bridge_probe"
+          assert report["importAllowed"] is False
           assert report["dispatchAllowed"] is False
           assert report["queueMutationAllowed"] is False
           assert report["taskCreationAllowed"] is False
@@ -107,12 +141,14 @@ jobs:
           preview = json.loads(Path("bridge-preview.json").read_text(encoding="utf-8"))
           assert preview["kind"] == "cabinet_bridge_promotion_preview"
           assert preview["mode"] == "proposal_only"
+          assert preview["importAllowed"] is False
           assert preview["dispatchAllowed"] is False
           assert preview["queueMutationAllowed"] is False
           assert preview["taskCreationAllowed"] is False
           task = preview["task"]
           assert task["execution"]["mode"] == "manual"
           assert task["execution"]["policy"] == "review-before-effect"
+          assert task["metadata"]["import_allowed"] is False
           assert task["metadata"]["dispatch_allowed"] is False
           assert task["metadata"]["queue_mutation_allowed"] is False
           assert task["metadata"]["task_creation_allowed"] is False
@@ -184,6 +220,7 @@ jobs:
         with:
           name: cabinet-bridge-probe-report
           path: |
+            bridge-import-policy-review.json
             bridge-probe-report.json
             bridge-probe-summary.md
             bridge-preview.json
