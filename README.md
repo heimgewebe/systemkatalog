@@ -9,6 +9,14 @@ Dieser Einstieg ist eine GitHub-Fassade. Das kanonische Inhaltsverzeichnis liegt
 1. **Cabinet Home öffnen:** [index.md](index.md)
 2. **Agentenregeln lesen:** [AGENTS.md](AGENTS.md)
 3. **Systemkarte finden:** [Ecosystem Map v0](docs/blueprints/ecosystem-map-v0.md)
+4. **Mermaidkarten direkt öffnen:** [lesbare Übersicht](rendered/ecosystem-map.mmd) und [generierte Registry-Projektion](rendered/ecosystem-registry-map.mmd)
+
+## Karte ansehen
+
+- **Lesbare Mermaid-Übersicht:** [rendered/ecosystem-map.mmd](rendered/ecosystem-map.mmd)
+- **Generierte Registry-Projektion:** [rendered/ecosystem-registry-map.mmd](rendered/ecosystem-registry-map.mmd)
+
+Diese Dateien sind Mermaid-Quellen. Für eine gerenderte Ansicht nutze derzeit einen Editor mit Mermaid-Preview oder einen Mermaid-Renderer. Eine spätere Leitstand-Ansicht ist der richtige Dashboard-Ort; Cabinet bleibt der kanonische Kartenort.
 
 ## Nicht verwechseln
 
