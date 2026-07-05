@@ -57,6 +57,12 @@ jobs:
       - name: Test Bridge Artifact Manifest
         run: python3 -m unittest discover -s scripts/tests -p 'test_bridge_artifact_manifest.py'
 
+      - name: Check Cabinet Maintenance Report
+        run: python3 scripts/write_cabinet_maintenance_report.py --check
+
+      - name: Test Cabinet Maintenance Report
+        run: python3 -m unittest discover -s scripts/tests -p 'test_cabinet_maintenance_report.py'
+
   installer-shadow:
     name: Installer Shadow Test
     runs-on: ubuntu-latest
