@@ -35,6 +35,9 @@ The manifest JSON object must contain:
 
 - `schemaVersion: 1`
 - `kind: cabinet_bridge_artifact_manifest`
+- `contractVersion: "1"`
+- `contractPath: docs/contracts/cabinet-bridge-artifact-manifest-v1.md`
+- `schemaPath: docs/contracts/cabinet-bridge-artifact-manifest-v1.schema.json`
 - `mode: evidence_only`
 - `bureauRef`: the pinned Bureau commit SHA used by the workflow
 - `artifactCount: 6`
