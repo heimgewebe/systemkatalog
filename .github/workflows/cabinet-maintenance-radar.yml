@@ -19,6 +19,7 @@ on:
       - "scripts/tests/test_cabinet_maintenance_radar.py"
       - "scripts/tests/test_cabinet_maintenance_report.py"
       - "steuerung/20 Aufgaben/cab-qa-001-cabinet-coherence-radar.md"
+      - "steuerung/20 Aufgaben/cab-qa-002-maintenance-report-ci.md"
   pull_request:
     branches:
       - main
@@ -37,6 +38,7 @@ on:
       - "scripts/tests/test_cabinet_maintenance_radar.py"
       - "scripts/tests/test_cabinet_maintenance_report.py"
       - "steuerung/20 Aufgaben/cab-qa-001-cabinet-coherence-radar.md"
+      - "steuerung/20 Aufgaben/cab-qa-002-maintenance-report-ci.md"
   workflow_dispatch:
 
 concurrency:
@@ -76,15 +78,18 @@ jobs:
         run: python3 -m unittest discover -s scripts/tests -p 'test_cabinet_maintenance_report.py'
 
       - name: Check Cabinet Maintenance Report
-        run: python3 scripts/write_cabinet_maintenance_report.py --check --json | tee "${RUNNER_TEMP}/cabinet-maintenance-report-check.json"
+        run: |
+          mkdir -p .tmp
+          python3 scripts/write_cabinet_maintenance_report.py --check --json | tee .tmp/cabinet-maintenance-report-check.json
 
       - name: Build Cabinet Maintenance Report Artifact
         run: |
+          mkdir -p .tmp
           python3 scripts/write_cabinet_maintenance_report.py \
-            --output "${RUNNER_TEMP}/cabinet-maintenance-report.json" \
+            --output .tmp/cabinet-maintenance-report.json \
             --json \
-            | tee "${RUNNER_TEMP}/cabinet-maintenance-report-status.json"
-          python3 -m json.tool "${RUNNER_TEMP}/cabinet-maintenance-report.json" > /dev/null
+            | tee .tmp/cabinet-maintenance-report-status.json
+          python3 -m json.tool .tmp/cabinet-maintenance-report.json > /dev/null
 
       - name: Summarize Cabinet Maintenance Report
         run: |
@@ -93,7 +98,7 @@ jobs:
           import os
           from pathlib import Path
 
-          report = json.loads(Path(os.environ["RUNNER_TEMP"]) .joinpath("cabinet-maintenance-report.json").read_text(encoding="utf-8"))
+          report = json.loads(Path(".tmp/cabinet-maintenance-report.json").read_text(encoding="utf-8"))
           summary = report["summary"]
           lines = [
               "# Cabinet Maintenance Report",
@@ -116,6 +121,6 @@ jobs:
         with:
           name: cabinet-maintenance-report
           path: |
-            ${{ runner.temp }}/cabinet-maintenance-report.json
-            ${{ runner.temp }}/cabinet-maintenance-report-status.json
-            ${{ runner.temp }}/cabinet-maintenance-report-check.json
+            .tmp/cabinet-maintenance-report.json
+            .tmp/cabinet-maintenance-report-status.json
+            .tmp/cabinet-maintenance-report-check.json
