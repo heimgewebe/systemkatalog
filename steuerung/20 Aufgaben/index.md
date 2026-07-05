@@ -11,13 +11,15 @@ Cabinet hält Aufgaben als Steuerungsobjekte. Eine Aufgabe ist noch keine Ausfü
 - Steuerung priorisiert, entscheidet und übergibt Aufgaben.
 - Bureau erhält nur freigegebene, eng begrenzte Ausführungskandidaten.
 
-## Lage vom 2026-07-02
+## Lage vom 2026-07-05
 
-Quelle: lokaler main-Checkout und GitHub-PR-Liste, erhoben 2026-07-02T06:36:05+02:00.
+Quelle: GitHub-PR-Liste und `origin/main` nach Merge `2ccd62b83a69ffc311efa8132741a83c1b994542`, erhoben 2026-07-05T16:45+02:00.
 
-- Offene GitHub-Issues: 0.
-- Offene Draft-PRs: #14 Cards3, #15 fix: harden card evidence policy.
-- Diese Aufgabentafel war vor diesem Slice nur ein Platzhalter.
+- Offene GitHub-PRs: 0.
+- Letzte CAB-QA-Merges: #70 Cabinet Maintenance Radar, #71 Maintenance Report Contract, #73 Maintenance Report CI, #72 External-Dump-Quellenvertrag.
+- Main-Checks fuer `2ccd62b83a69ffc311efa8132741a83c1b994542`: gruen.
+- CAB-STE-001 und CAB-STE-002 verweisen auf alte Draft-PRs und sind nicht mehr die aktuelle naechste Aktion.
+- Der aktuelle offene CAB-QA-Punkt ist nicht Code-Ausbau, sondern die Beobachtung externer RepoBrief-/Lenskit-Manifestreferenzen.
 
 ## Priorisierte Cabinet-Verbesserungstasks
 
@@ -33,6 +35,7 @@ Quelle: lokaler main-Checkout und GitHub-PR-Liste, erhoben 2026-07-02T06:36:05+0
 | CAB-QA-001 | Cabinet-Kohaerenzradar v1 | Cabinet -> Bureau | Cabinet soll externe Dumps konsumieren und pruefen, nicht erzeugen. | Maintenance-Report-Contract, deterministischen read-only Scan und Bureau-Kandidat registrieren. | Mittel: Report kann als Freigabe missverstanden werden. | Report erzeugt Task-, Dispatch-, Runtime-, Cleanup- oder Dump-Wirkung. | `python3 scripts/write_cabinet_maintenance_report.py --check` und Unit-Test PASS. |
 | CAB-QA-002 | Cabinet Maintenance Report CI | Cabinet | CAB-QA-001 erzeugt einen Report, aber ohne CI-Artefakt bleibt er manuell. | Radar-Workflow fuehrt Report-Tests, Check, JSON-Build, Summary und Artefakt-Upload aus. | Mittel: Report-Artefakt kann als Freigabe missverstanden werden. | Report-CI erzeugt Task-, Dispatch-, Runtime-, Cleanup- oder Dump-Wirkung. | Cabinet-Maintenance-Radar-Workflow PASS und Report-Artefakt ist JSON-validiert. |
 | CAB-QA-003 | External-Dump-Quellenvertrag v1 | Cabinet -> RepoBrief/Lenskit -> Bureau | CAB-QA-001 meldete fehlende externe Dump-Spezifikation. | Registry, Contract, Validator und Report-Anbindung fuer externe RepoBrief-/Lenskit-Manifeste. | Mittel: ein fehlendes Manifest darf nicht als Runtime-Fehler gelten. | Cabinet erzeugt Dumps oder leitet Autoritaet aus Dump-Freshness ab. | External-Dump-Validator PASS und Maintenance-Report zeigt keine Spezifikationsluecke mehr. |
+| CAB-QA-004 | Externe Manifestreferenzen beobachten | Cabinet -> RepoBrief/Lenskit | Der Maintenance Report meldet keine Spezifikationsluecke mehr, aber zwei unobserved Manifestquellen. | Externe Manifestorte pruefen und Registry nur mit belegten relativen Manifestpfaden aktualisieren; sonst Leerstelle dokumentieren. | Mittel: Freshness kann mit Wahrheit verwechselt werden. | Kein aktuelles Manifest belegbar oder Pfad passt nicht zum Contract. | External-Dump-Validator PASS und Maintenance-Report reduziert manifest-unobserved-Findings oder dokumentiert die Leerstelle. |
 
 ## Nicht tun
 
@@ -44,10 +47,11 @@ Quelle: lokaler main-Checkout und GitHub-PR-Liste, erhoben 2026-07-02T06:36:05+0
 
 ## Nächste Aktion
 
-CAB-STE-001 zuerst: PR #15 prüfen, weil Evidence-Policy die Grundlage für belastbare Project Cards und spätere Taskableitung ist.
+CAB-QA-004 zuerst: externe RepoBrief-/Lenskit-Manifestreferenzen beobachten oder die weiterhin fehlenden Manifestorte als Leerstelle dokumentieren.
 - [Reference Refresh Contract 2026-07-03](reference-refresh-contract-2026-07-03.md)
 - [Bureau Reference Refresh Plan 2026-07-03](bureau-reference-refresh-plan-2026-07-03.md)
 - [Bureau Reference Refresh Proposal 2026-07-03](bureau-reference-refresh-proposal-2026-07-03.md)
 - [CAB-QA-001 — Cabinet-Kohaerenzradar v1](cab-qa-001-cabinet-coherence-radar.md)
 - [CAB-QA-002 — Cabinet Maintenance Report CI](cab-qa-002-maintenance-report-ci.md)
 - [CAB-QA-003 — External-Dump-Quellenvertrag v1](cab-qa-003-external-dump-sources-contract.md)
+- [CAB-QA-004 — Externe Manifestreferenzen beobachten](cab-qa-004-external-manifest-observation.md)
