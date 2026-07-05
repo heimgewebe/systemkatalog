@@ -112,6 +112,105 @@ class EcosystemRegistryMapRenderTests(unittest.TestCase):
                 2,
             )
 
+    def test_render_mermaid_includes_registry_ids_in_node_labels(self) -> None:
+        nodes = [
+            {
+                "id": "repo:cabinet",
+                "kind": "repository",
+                "label": "Cabinet",
+                "status": "active",
+            },
+            {
+                "id": "artifact:ecosystem-map",
+                "kind": "artifact",
+                "label": "Ecosystem Map v0",
+                "status": "draft",
+            },
+        ]
+        rendered = render_mermaid(nodes, [])
+        self.assertIn("Cabinet<br/>id: repo:cabinet<br/>repository<br/>status: active", rendered)
+        self.assertIn("Ecosystem Map v0<br/>id: artifact:ecosystem-map<br/>artifact<br/>status: draft", rendered)
+
+    def test_render_mermaid_uses_visual_anchor_not_canon_class(self) -> None:
+        nodes = [
+            {
+                "id": "repo:cabinet",
+                "kind": "repository",
+                "label": "Cabinet",
+                "status": "active",
+            },
+            {
+                "id": "artifact:ecosystem-map",
+                "kind": "artifact",
+                "label": "Ecosystem Map v0",
+                "status": "draft",
+            },
+        ]
+        rendered = render_mermaid(nodes, [])
+        self.assertIn("Visual anchor only; does not establish canonical truth.", rendered)
+        self.assertIn("classDef mapAnchor", rendered)
+        self.assertNotIn("classDef canon", rendered)
+
+    def test_render_mermaid_rejects_non_object_nodes(self) -> None:
+        with self.assertRaisesRegex(RegistryMapError, "node 1 must be an object"):
+            render_mermaid(["repo:cabinet"], [])
+
+    def test_render_mermaid_rejects_nodes_with_missing_required_fields(self) -> None:
+        nodes = [
+            {
+                "id": "repo:cabinet",
+                "kind": "repository",
+                "label": "Cabinet",
+            }
+        ]
+        with self.assertRaisesRegex(RegistryMapError, "node 1 missing required string field: status"):
+            render_mermaid(nodes, [])
+
+    def test_render_mermaid_rejects_edges_with_missing_required_fields(self) -> None:
+        nodes = [
+            {
+                "id": "repo:cabinet",
+                "kind": "repository",
+                "label": "Cabinet",
+                "status": "active",
+            }
+        ]
+        edges = [
+            {
+                "to": "repo:cabinet",
+                "type": "owns",
+                "status": "active",
+            }
+        ]
+        with self.assertRaisesRegex(RegistryMapError, "edge 1 missing required string field: from"):
+            render_mermaid(nodes, edges)
+
+    def test_missing_visual_anchor_nodes_do_not_raise_key_error(self) -> None:
+        nodes = [
+            {
+                "id": "repo:other",
+                "kind": "repository",
+                "label": "Other",
+                "status": "active",
+            }
+        ]
+        rendered = render_mermaid(nodes, [])
+        self.assertNotIn("mapAnchor", rendered)
+        self.assertIn("repo_other", rendered)
+
+    def test_generated_comment_marks_manual_edit_boundary(self) -> None:
+        nodes = [
+            {
+                "id": "repo:other",
+                "kind": "repository",
+                "label": "Other",
+                "status": "active",
+            }
+        ]
+        rendered = render_mermaid(nodes, [])
+        self.assertIn("GENERATED FILE. Do not edit manually.", rendered)
+        self.assertIn("Run: python3 scripts/render_ecosystem_registry_map.py", rendered)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -11,6 +11,7 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[2]
 SCRIPTS = ROOT / "scripts"
+# Ensure imports resolve to real scripts before local helpers.
 if str(SCRIPTS) in sys.path:
     sys.path.remove(str(SCRIPTS))
 sys.path.insert(0, str(SCRIPTS))

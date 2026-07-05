@@ -9,6 +9,7 @@ release decisions remain primary truth sources in their own domains.
 from __future__ import annotations
 
 import argparse
+from collections import defaultdict
 import difflib
 import html
 import json
@@ -23,6 +24,9 @@ DEFAULT_OUTPUT = Path("rendered/ecosystem-registry-map.mmd")
 GENERATOR = "scripts/render_ecosystem_registry_map.py"
 GENERATED_FILE_MODE = 0o644
 MERMAID_ID_RE = re.compile(r"[^A-Za-z0-9_]+")
+NODE_REQUIRED_FIELDS = ("id", "kind", "label", "status")
+EDGE_REQUIRED_FIELDS = ("from", "to", "type", "status")
+VISUAL_ANCHOR_NODE_IDS = ("repo:cabinet", "artifact:ecosystem-map")
 
 KIND_ORDER = [
     "human",
@@ -54,22 +58,49 @@ def load_json(path: Path) -> dict[str, Any]:
     except FileNotFoundError:
         raise RegistryMapError(f"missing file: {path}") from None
     except json.JSONDecodeError as exc:
-        raise RegistryMapError(f"invalid JSON in {path}: {exc}") from None
+        raise RegistryMapError(f"invalid JSON in {path}: {exc}") from exc
     if not isinstance(value, dict):
         raise RegistryMapError(f"{path} must contain a JSON object")
     return value
+
+
+def require_text_field(item: dict[str, Any], field: str, label: str) -> str:
+    value = item.get(field)
+    if not isinstance(value, str) or not value:
+        raise RegistryMapError(f"{label} missing required string field: {field}")
+    return value
+
+
+def validate_node(raw_node: Any, index: int) -> dict[str, Any]:
+    label = f"node {index}"
+    if not isinstance(raw_node, dict):
+        raise RegistryMapError(f"{label} must be an object")
+    for field in NODE_REQUIRED_FIELDS:
+        require_text_field(raw_node, field, label)
+    return raw_node
+
+
+def validate_edge(raw_edge: Any, index: int) -> dict[str, Any]:
+    label = f"edge {index}"
+    if not isinstance(raw_edge, dict):
+        raise RegistryMapError(f"{label} must be an object")
+    for field in EDGE_REQUIRED_FIELDS:
+        require_text_field(raw_edge, field, label)
+    return raw_edge
 
 
 def load_registry(repo_root: Path) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
     registry = repo_root / "registry" / "ecosystem"
     nodes_doc = load_json(registry / "nodes.json")
     edges_doc = load_json(registry / "edges.json")
-    nodes = nodes_doc.get("nodes")
-    edges = edges_doc.get("edges")
-    if not isinstance(nodes, list):
+    raw_nodes = nodes_doc.get("nodes")
+    raw_edges = edges_doc.get("edges")
+    if not isinstance(raw_nodes, list):
         raise RegistryMapError("nodes.json field nodes must be a list")
-    if not isinstance(edges, list):
+    if not isinstance(raw_edges, list):
         raise RegistryMapError("edges.json field edges must be a list")
+    nodes = [validate_node(node, index) for index, node in enumerate(raw_nodes, start=1)]
+    edges = [validate_edge(edge, index) for index, edge in enumerate(raw_edges, start=1)]
     return nodes, edges
 
 
@@ -88,10 +119,11 @@ def escape_label(value: object) -> str:
 
 
 def node_label(node: dict[str, Any]) -> str:
-    label = escape_label(node.get("label", node.get("id", "unknown")))
-    kind = escape_label(node.get("kind", "unknown"))
-    status = escape_label(node.get("status", "unknown"))
-    return f"{label}<br/>{kind}<br/>status: {status}"
+    label = escape_label(node["label"])
+    node_id = escape_label(node["id"])
+    kind = escape_label(node["kind"])
+    status = escape_label(node["status"])
+    return f"{label}<br/>id: {node_id}<br/>{kind}<br/>status: {status}"
 
 
 def ordered_kinds(nodes: list[dict[str, Any]]) -> list[str]:
@@ -103,10 +135,9 @@ def ordered_kinds(nodes: list[dict[str, Any]]) -> list[str]:
 
 def render_mermaid(nodes: list[dict[str, Any]], edges: list[dict[str, Any]]) -> str:
     node_ids: dict[str, str] = {}
-    for node in nodes:
-        raw_id = node.get("id")
-        if not isinstance(raw_id, str) or not raw_id:
-            raise RegistryMapError("all nodes need a non-empty string id")
+    for index, raw_node in enumerate(nodes, start=1):
+        node = validate_node(raw_node, index)
+        raw_id = node["id"]
         rendered_id = mermaid_id(raw_id)
         if rendered_id in node_ids.values():
             raise RegistryMapError(f"node id collision after Mermaid normalization: {raw_id}")
@@ -114,44 +145,53 @@ def render_mermaid(nodes: list[dict[str, Any]], edges: list[dict[str, Any]]) -> 
 
     lines = [
         "flowchart TD",
+        "    %% GENERATED FILE. Do not edit manually.",
         f"    %% GENERATED: {GENERATOR}",
+        f"    %% Run: python3 {GENERATOR}",
         "    %% Source: registry/ecosystem/nodes.json + registry/ecosystem/edges.json",
         "    %% Boundary: this projection does not establish claim truth, runtime correctness or merge readiness.",
         "",
     ]
 
-    nodes_by_kind: dict[str, list[dict[str, Any]]] = {}
+    nodes_by_kind: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for node in sorted(nodes, key=lambda item: (str(item.get("kind", "")), str(item.get("id", "")))):
-        nodes_by_kind.setdefault(str(node.get("kind", "unknown")), []).append(node)
+        nodes_by_kind[str(node.get("kind", "unknown"))].append(node)
 
     for kind in ordered_kinds(nodes):
         title = KIND_TITLES.get(kind, kind)
         group_id = mermaid_id(f"kind:{kind}")
         lines.append(f"    subgraph {group_id}[{escape_label(title)}]")
         for node in nodes_by_kind.get(kind, []):
-            lines.append(f"        {node_ids[str(node['id'])]}[\"{node_label(node)}\"]")
+            lines.append(f"        {node_ids[node['id']]}[\"{node_label(node)}\"]")
         lines.append("    end")
         lines.append("")
 
-    for edge in sorted(edges, key=lambda item: (str(item.get("from", "")), str(item.get("to", "")), str(item.get("type", "")))):
-        source = edge.get("from")
-        target = edge.get("to")
+    for index, raw_edge in enumerate(
+        sorted(edges, key=lambda item: (str(item.get("from", "")), str(item.get("to", "")), str(item.get("type", "")))),
+        start=1,
+    ):
+        edge = validate_edge(raw_edge, index)
+        source = edge["from"]
+        target = edge["to"]
         if source not in node_ids:
-            raise RegistryMapError(f"edge references unknown from node: {source}")
+            raise RegistryMapError(f"edge {index} references unknown from node: {source}")
         if target not in node_ids:
-            raise RegistryMapError(f"edge references unknown to node: {target}")
-        edge_type = escape_label(edge.get("type", "edge"))
-        status = escape_label(edge.get("status", "unknown"))
-        lines.append(f"    {node_ids[str(source)]} -->|{edge_type} / {status}| {node_ids[str(target)]}")
+            raise RegistryMapError(f"edge {index} references unknown to node: {target}")
+        edge_type = escape_label(edge["type"])
+        status = escape_label(edge["status"])
+        lines.append(f"    {node_ids[source]} -->|{edge_type} / {status}| {node_ids[target]}")
 
-    lines.extend(
-        [
-            "",
-            "    classDef canon stroke-width:2px;",
-            f"    class {node_ids['repo:cabinet']},{node_ids['artifact:ecosystem-map']} canon;",
-            "",
-        ]
-    )
+    visual_anchor_nodes = [node_ids[node_id] for node_id in VISUAL_ANCHOR_NODE_IDS if node_id in node_ids]
+    if visual_anchor_nodes:
+        lines.extend(
+            [
+                "",
+                "    %% Visual anchor only; does not establish canonical truth.",
+                "    classDef mapAnchor stroke-width:2px;",
+                f"    class {','.join(visual_anchor_nodes)} mapAnchor;",
+            ]
+        )
+    lines.append("")
     return "\n".join(lines)
 
 

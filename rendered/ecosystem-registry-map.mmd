@@ -1,49 +1,51 @@
 flowchart TD
+    %% GENERATED FILE. Do not edit manually.
     %% GENERATED: scripts/render_ecosystem_registry_map.py
+    %% Run: python3 scripts/render_ecosystem_registry_map.py
     %% Source: registry/ecosystem/nodes.json + registry/ecosystem/edges.json
     %% Boundary: this projection does not establish claim truth, runtime correctness or merge readiness.
 
     subgraph kind_human[Menschen und Entscheidung]
-        actor_alexander["Alexander<br/>human<br/>status: active"]
+        actor_alexander["Alexander<br/>id: actor:alexander<br/>human<br/>status: active"]
     end
 
     subgraph kind_repository[Repos und Organe]
-        repo_bureau["Bureau<br/>repository<br/>status: active"]
-        repo_cabinet["Cabinet<br/>repository<br/>status: active"]
-        repo_chronik["Chronik<br/>repository<br/>status: active"]
-        repo_device_graph["Device Graph<br/>repository<br/>status: related"]
-        repo_grabowski["Grabowski<br/>repository<br/>status: active"]
-        repo_infra["Infra<br/>repository<br/>status: active"]
-        repo_lenskit["Lenskit / RepoBrief implementation<br/>repository<br/>status: legacy_name_active"]
-        repo_schauwerk["Schauwerk<br/>repository<br/>status: active"]
-        repo_steuerboard["Steuerboard<br/>repository<br/>status: active"]
-        repo_vibe_lab["Vibe-Lab<br/>repository<br/>status: active"]
-        repo_weltgewebe["Weltgewebe<br/>repository<br/>status: active"]
+        repo_bureau["Bureau<br/>id: repo:bureau<br/>repository<br/>status: active"]
+        repo_cabinet["Cabinet<br/>id: repo:cabinet<br/>repository<br/>status: active"]
+        repo_chronik["Chronik<br/>id: repo:chronik<br/>repository<br/>status: active"]
+        repo_device_graph["Device Graph<br/>id: repo:device-graph<br/>repository<br/>status: related"]
+        repo_grabowski["Grabowski<br/>id: repo:grabowski<br/>repository<br/>status: active"]
+        repo_infra["Infra<br/>id: repo:infra<br/>repository<br/>status: active"]
+        repo_lenskit["Lenskit / RepoBrief implementation<br/>id: repo:lenskit<br/>repository<br/>status: legacy_name_active"]
+        repo_schauwerk["Schauwerk<br/>id: repo:schauwerk<br/>repository<br/>status: active"]
+        repo_steuerboard["Steuerboard<br/>id: repo:steuerboard<br/>repository<br/>status: active"]
+        repo_vibe_lab["Vibe-Lab<br/>id: repo:vibe-lab<br/>repository<br/>status: active"]
+        repo_weltgewebe["Weltgewebe<br/>id: repo:weltgewebe<br/>repository<br/>status: active"]
     end
 
     subgraph kind_concept[Konzepte]
-        concept_repobrief["RepoBrief<br/>concept<br/>status: active"]
+        concept_repobrief["RepoBrief<br/>id: concept:repobrief<br/>concept<br/>status: active"]
     end
 
     subgraph kind_artifact[Artefakte]
-        artifact_ecosystem_map["Ecosystem Map v0<br/>artifact<br/>status: draft"]
+        artifact_ecosystem_map["Ecosystem Map v0<br/>id: artifact:ecosystem-map<br/>artifact<br/>status: draft"]
     end
 
     subgraph kind_service[Primaere Dienste]
-        service_ci["CI / Checks<br/>service<br/>status: primary_truth_for_check_state"]
-        service_github["GitHub<br/>service<br/>status: primary_truth_for_git_state"]
+        service_ci["CI / Checks<br/>id: service:ci<br/>service<br/>status: primary_truth_for_check_state"]
+        service_github["GitHub<br/>id: service:github<br/>service<br/>status: primary_truth_for_git_state"]
     end
 
     subgraph kind_runtime[Runtime]
-        runtime_heim_pc["heim-pc<br/>runtime<br/>status: active"]
-        runtime_heimserver["heimserver<br/>runtime<br/>status: active"]
+        runtime_heim_pc["heim-pc<br/>id: runtime:heim-pc<br/>runtime<br/>status: active"]
+        runtime_heimserver["heimserver<br/>id: runtime:heimserver<br/>runtime<br/>status: active"]
     end
 
     subgraph kind_agent[Agenten]
-        agent_claude["Claude<br/>agent<br/>status: available_with_quota_limits"]
-        agent_codex["Codex<br/>agent<br/>status: available"]
-        agent_jules["Jules<br/>agent<br/>status: available"]
-        agent_local["Local agents<br/>agent<br/>status: available"]
+        agent_claude["Claude<br/>id: agent:claude<br/>agent<br/>status: available_with_quota_limits"]
+        agent_codex["Codex<br/>id: agent:codex<br/>agent<br/>status: available"]
+        agent_jules["Jules<br/>id: agent:jules<br/>agent<br/>status: available"]
+        agent_local["Local agents<br/>id: agent:local<br/>agent<br/>status: available"]
     end
 
     actor_alexander -->|steers / active| repo_cabinet
@@ -72,5 +74,6 @@ flowchart TD
     runtime_heim_pc -->|hosts / intended| repo_cabinet
     service_github -->|validated_by / active| service_ci
 
-    classDef canon stroke-width:2px;
-    class repo_cabinet,artifact_ecosystem_map canon;
+    %% Visual anchor only; does not establish canonical truth.
+    classDef mapAnchor stroke-width:2px;
+    class repo_cabinet,artifact_ecosystem_map mapAnchor;
