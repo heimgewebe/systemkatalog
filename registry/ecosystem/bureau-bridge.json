@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "status": "draft",
-  "updated_at": "2026-07-04",
+  "updated_at": "2026-07-05",
   "id": "cabinet_bureau_bridge_v0",
   "direction": "cabinet_to_bureau_read_only_candidate_signal",
   "source_owner": "repo:cabinet",
@@ -11,7 +11,12 @@
     "registry/ecosystem/claims.jsonl",
     "registry/ecosystem/nodes.json",
     "registry/ecosystem/edges.json",
-    "docs/blueprints/o.json"
+    "docs/blueprints/o.json",
+    "docs/blueprints/cabinet-qa-radar-v1.md",
+    "docs/contracts/cabinet-maintenance-report-v1.md",
+    "docs/contracts/cabinet-maintenance-report-v1.schema.json",
+    "scripts/write_cabinet_maintenance_report.py",
+    "steuerung/20 Aufgaben/cab-qa-001-cabinet-coherence-radar.md"
   ],
   "admissible_candidate_statuses": [
     "evidenced",

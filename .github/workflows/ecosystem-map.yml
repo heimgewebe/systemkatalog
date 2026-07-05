@@ -40,8 +40,14 @@ jobs:
       - name: Check ecosystem map artifact manifest
         run: python3 scripts/write_ecosystem_map_artifact_manifest.py --check
 
+      - name: Check Cabinet maintenance report
+        run: python3 scripts/write_cabinet_maintenance_report.py --check
+
       - name: Test registry Mermaid projection
         run: python3 -m unittest discover -s scripts/tests -p 'test_ecosystem_registry_map_render.py'
 
       - name: Test ecosystem map artifact manifest
         run: python3 -m unittest discover -s scripts/tests -p 'test_ecosystem_map_artifact_manifest.py'
+
+      - name: Test Cabinet maintenance report
+        run: python3 -m unittest discover -s scripts/tests -p 'test_cabinet_maintenance_report.py'

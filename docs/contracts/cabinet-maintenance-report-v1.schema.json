@@ -1,0 +1,177 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://heimgewebe.local/cabinet/contracts/cabinet-maintenance-report-v1.schema.json",
+  "title": "Cabinet Maintenance Report v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "kind",
+    "contractVersion",
+    "contractPath",
+    "schemaPath",
+    "mode",
+    "source",
+    "effectFlags",
+    "summary",
+    "findings",
+    "bureauCandidates",
+    "epistemicGaps",
+    "doesNotEstablish"
+  ],
+  "properties": {
+    "schemaVersion": {"const": 1},
+    "kind": {"const": "cabinet_maintenance_report"},
+    "contractVersion": {"const": "1"},
+    "contractPath": {"const": "docs/contracts/cabinet-maintenance-report-v1.md"},
+    "schemaPath": {"const": "docs/contracts/cabinet-maintenance-report-v1.schema.json"},
+    "mode": {"const": "read_only_coherence_scan"},
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["repository", "commit", "generatedAt", "scanDate"],
+      "properties": {
+        "repository": {"const": "heimgewebe/cabinet"},
+        "commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "generatedAt": {"type": "string", "minLength": 1},
+        "scanDate": {"type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"}
+      }
+    },
+    "effectFlags": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "bureauTaskCreationAllowed",
+        "grabowskiDelegationAllowed",
+        "mergeOrPushAllowed",
+        "runtimeMutationAllowed",
+        "cleanupAllowed",
+        "dumpGenerationAllowed",
+        "authorityInferenceFromMapAllowed"
+      ],
+      "properties": {
+        "bureauTaskCreationAllowed": {"const": false},
+        "grabowskiDelegationAllowed": {"const": false},
+        "mergeOrPushAllowed": {"const": false},
+        "runtimeMutationAllowed": {"const": false},
+        "cleanupAllowed": {"const": false},
+        "dumpGenerationAllowed": {"const": false},
+        "authorityInferenceFromMapAllowed": {"const": false}
+      }
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "findingCount",
+        "epistemicGapCount",
+        "bureauCandidateCount",
+        "blockedHandoffCount",
+        "severityCounts"
+      ],
+      "properties": {
+        "status": {"enum": ["pass", "warn", "fail"]},
+        "findingCount": {"type": "integer", "minimum": 0},
+        "epistemicGapCount": {"type": "integer", "minimum": 0},
+        "bureauCandidateCount": {"type": "integer", "minimum": 0},
+        "blockedHandoffCount": {"type": "integer", "minimum": 0},
+        "severityCounts": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["P0", "P1", "P2", "P3"],
+          "properties": {
+            "P0": {"type": "integer", "minimum": 0},
+            "P1": {"type": "integer", "minimum": 0},
+            "P2": {"type": "integer", "minimum": 0},
+            "P3": {"type": "integer", "minimum": 0}
+          }
+        }
+      }
+    },
+    "findings": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/finding"}
+    },
+    "bureauCandidates": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/bureauCandidate"}
+    },
+    "epistemicGaps": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/epistemicGap"}
+    },
+    "doesNotEstablish": {
+      "type": "array",
+      "minItems": 7,
+      "maxItems": 7,
+      "items": {
+        "enum": [
+          "claim_truth",
+          "runtime_correctness",
+          "merge_readiness",
+          "task_approval",
+          "bureau_import_implemented",
+          "autonomous_dispatch",
+          "external_dump_freshness_completeness"
+        ]
+      },
+      "uniqueItems": true
+    }
+  },
+  "$defs": {
+    "finding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "class",
+        "severity",
+        "status",
+        "subject",
+        "message",
+        "evidence",
+        "responsibleOrgan",
+        "nextAction",
+        "bureauAdmissible"
+      ],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "class": {"enum": ["consistency", "error", "freshness", "handoff", "authority", "risk"]},
+        "severity": {"enum": ["P0", "P1", "P2", "P3"]},
+        "status": {"enum": ["open", "blocked", "candidate"]},
+        "subject": {"type": "string", "minLength": 1},
+        "message": {"type": "string", "minLength": 1},
+        "evidence": {"type": "array", "items": {"type": "string", "minLength": 1}},
+        "responsibleOrgan": {"type": "string", "minLength": 1},
+        "nextAction": {"type": "string", "minLength": 1},
+        "bureauAdmissible": {"type": "boolean"}
+      }
+    },
+    "bureauCandidate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "status", "evidence", "expiresAtOrRefreshHint", "nextAction", "responsibleOrgan"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "status": {"type": "string", "minLength": 1},
+        "evidence": {"type": "array", "items": {"type": "string", "minLength": 1}},
+        "expiresAtOrRefreshHint": {"type": "string", "minLength": 1},
+        "nextAction": {"type": "string", "minLength": 1},
+        "responsibleOrgan": {"type": "string", "minLength": 1}
+      }
+    },
+    "epistemicGap": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "topic", "missing", "neededFor", "severity"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "topic": {"type": "string", "minLength": 1},
+        "missing": {"type": "string", "minLength": 1},
+        "neededFor": {"type": "string", "minLength": 1},
+        "severity": {"enum": ["P0", "P1", "P2", "P3"]}
+      }
+    }
+  }
+}

@@ -30,6 +30,7 @@ Quelle: lokaler main-Checkout und GitHub-PR-Liste, erhoben 2026-07-02T06:36:05+0
 | CAB-STE-005 | Repository-Observer manuell replizieren | Bestand -> Prüfung | Live-Sammler erst nach manueller Reproduzierbarkeit automatisieren. | Observer lokal read-only auf freigegebene Repos anwenden, ohne Dispatch oder Mutation. | Mittel: Freshness-Claims können überschätzt werden. | Netzwerk-, Auth- oder Redaktionsgrenze unklar. | Datierter Lauf in pruefung/10 Laeufe plus Quellenhinweis in bestand/30 Quellen. |
 | CAB-STE-006 | Bureau-Export-Kandidat schneiden | Steuerung -> Bureau | Cabinet soll geprüfte Kandidaten übergeben, nicht selbst ausführen. | Einen validierbaren read-only Cabinet-Task für Bureau formulieren. | Niedrig: falsche Delegation wäre Prozessdrift. | Task erzeugt Queue-, Dispatch- oder Registry-Effekt. | bureau cabinet-validate-task --json PASS oder dokumentierte Leerstelle. |
 | CAB-STE-007 | Alte Raumrollen klassifizieren | Bestand -> Steuerung | Legacy-Räume bleiben lesbar, sollen aber keine aktive Top-Level-Raumrolle tragen. | Inhalte dateiweise als keep, move, split, archive oder delete klassifizieren. | Mittel: Massenverschiebung zerstört Kontext. | Keine Einzelklassifikation oder fehlender Zielraum. | Klassifikationsregister unter docs/migrations mit Prüfung. |
+| CAB-QA-001 | Cabinet-Kohaerenzradar v1 | Cabinet -> Bureau | Cabinet soll externe Dumps konsumieren und pruefen, nicht erzeugen. | Maintenance-Report-Contract, deterministischen read-only Scan und Bureau-Kandidat registrieren. | Mittel: Report kann als Freigabe missverstanden werden. | Report erzeugt Task-, Dispatch-, Runtime-, Cleanup- oder Dump-Wirkung. | `python3 scripts/write_cabinet_maintenance_report.py --check` und Unit-Test PASS. |
 
 ## Nicht tun
 
@@ -45,3 +46,4 @@ CAB-STE-001 zuerst: PR #15 prüfen, weil Evidence-Policy die Grundlage für bela
 - [Reference Refresh Contract 2026-07-03](reference-refresh-contract-2026-07-03.md)
 - [Bureau Reference Refresh Plan 2026-07-03](bureau-reference-refresh-plan-2026-07-03.md)
 - [Bureau Reference Refresh Proposal 2026-07-03](bureau-reference-refresh-proposal-2026-07-03.md)
+- [CAB-QA-001 — Cabinet-Kohaerenzradar v1](cab-qa-001-cabinet-coherence-radar.md)
