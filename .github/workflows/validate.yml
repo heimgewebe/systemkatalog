@@ -54,6 +54,9 @@ jobs:
       - name: Test Repository Inventory Hygiene
         run: python3 -m unittest discover -s scripts/tests -p 'test_repository_inventory_hygiene.py'
 
+      - name: Test Bridge Artifact Manifest
+        run: python3 -m unittest discover -s scripts/tests -p 'test_bridge_artifact_manifest.py'
+
   installer-shadow:
     name: Installer Shadow Test
     runs-on: ubuntu-latest
