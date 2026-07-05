@@ -1,0 +1,54 @@
+name: Cabinet Maintenance Radar
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/cabinet-maintenance-radar.yml"
+      - "docs/blueprints/cabinet-maintenance-radar-v0.md"
+      - "policy/cabinet-maintenance-radar.json"
+      - "scripts/validate_cabinet_maintenance_radar.py"
+      - "scripts/tests/test_cabinet_maintenance_radar.py"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/cabinet-maintenance-radar.yml"
+      - "docs/blueprints/cabinet-maintenance-radar-v0.md"
+      - "policy/cabinet-maintenance-radar.json"
+      - "scripts/validate_cabinet_maintenance_radar.py"
+      - "scripts/tests/test_cabinet_maintenance_radar.py"
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  PYTHONDONTWRITEBYTECODE: "1"
+
+jobs:
+  maintenance-radar:
+    name: Validate Cabinet Maintenance Radar
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+
+      - name: Setup Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
+        with:
+          python-version: "3.12"
+
+      - name: Test Cabinet Maintenance Radar
+        run: python3 -m unittest discover -s scripts/tests -p 'test_cabinet_maintenance_radar.py'
+
+      - name: Validate Cabinet Maintenance Radar
+        run: python3 scripts/validate_cabinet_maintenance_radar.py
