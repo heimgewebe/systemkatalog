@@ -16,6 +16,30 @@
     },
     "rendered": "rendered/ecosystem-map.mmd",
     "registry_projection": "rendered/ecosystem-registry-map.mmd",
+    "registry_projection_view": {
+      "kind_order": [
+        "human",
+        "repository",
+        "concept",
+        "artifact",
+        "service",
+        "runtime",
+        "agent"
+      ],
+      "kind_titles": {
+        "human": "Menschen und Entscheidung",
+        "repository": "Repos und Organe",
+        "concept": "Konzepte",
+        "artifact": "Artefakte",
+        "service": "Primaere Dienste",
+        "runtime": "Runtime",
+        "agent": "Agenten"
+      },
+      "visual_anchor_node_ids": [
+        "repo:cabinet",
+        "artifact:ecosystem-map"
+      ]
+    },
     "validator": "scripts/validate_ecosystem_map.py",
     "registry_projection_generator": "scripts/render_ecosystem_registry_map.py"
   },

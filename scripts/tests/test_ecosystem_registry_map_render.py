@@ -13,6 +13,11 @@ if str(SCRIPTS) not in sys.path:
     sys.path.insert(0, str(SCRIPTS))
 
 from render_ecosystem_registry_map import (  # noqa: E402
+    MermaidRenderer,
+    ProjectionConfigLoader,
+    ProjectionRunReport,
+    ProjectionViewConfig,
+    RegistryData,
     RegistryMapError,
     main as render_main,
     mermaid_id,
@@ -210,6 +215,54 @@ class EcosystemRegistryMapRenderTests(unittest.TestCase):
         rendered = render_mermaid(nodes, [])
         self.assertIn("GENERATED FILE. Do not edit manually.", rendered)
         self.assertIn("Run: python3 scripts/render_ecosystem_registry_map.py", rendered)
+
+    def test_view_config_can_reorder_and_rename_kind_groups(self) -> None:
+        nodes = [
+            {
+                "id": "repo:cabinet",
+                "kind": "repository",
+                "label": "Cabinet",
+                "status": "active",
+            },
+            {
+                "id": "agent:local",
+                "kind": "agent",
+                "label": "Local agents",
+                "status": "available",
+            },
+        ]
+        config = ProjectionViewConfig(
+            kind_order=("agent", "repository"),
+            kind_titles={"agent": "Agent Surface", "repository": "Repo Surface"},
+            visual_anchor_node_ids=(),
+        )
+        rendered = MermaidRenderer(config).render(RegistryData(nodes=nodes, edges=[]))
+        self.assertLess(rendered.index("kind_agent[Agent Surface]"), rendered.index("kind_repository[Repo Surface]"))
+        self.assertNotIn("mapAnchor", rendered)
+
+    def test_projection_config_loader_reads_o_json_view_settings(self) -> None:
+        config = ProjectionConfigLoader(ROOT, Path("docs/blueprints/o.json")).load()
+        self.assertIn("repository", config.kind_order)
+        self.assertEqual(config.title_for("agent"), "Agenten")
+        self.assertIn("repo:cabinet", config.visual_anchor_node_ids)
+
+    def test_json_report_preserves_non_truth_boundary(self) -> None:
+        report = ProjectionRunReport(
+            ok=True,
+            mode="check",
+            output="rendered/ecosystem-registry-map.mmd",
+            node_count=2,
+            edge_count=1,
+            stale=False,
+            message="ok",
+        )
+        text = report.to_json()
+        self.assertIn('"ok": true', text)
+        self.assertIn('"claim_truth"', text)
+        self.assertIn('"merge_readiness"', text)
+
+    def test_json_flag_returns_success_report(self) -> None:
+        self.assertEqual(render_main(["--repo-root", str(ROOT), "--check", "--json"]), 0)
 
 
 if __name__ == "__main__":

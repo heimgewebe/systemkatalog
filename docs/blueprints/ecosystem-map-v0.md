@@ -40,13 +40,14 @@ Die Karte darf diese Quellen verknuepfen. Sie darf sie nicht ersetzen.
 ## Dateien
 
 ```text
-registry/ecosystem/nodes.json       # Organe, Repos, Services, Agenten, Artefakte
-registry/ecosystem/edges.json       # Beziehungen zwischen Knoten
-registry/ecosystem/claims.jsonl     # Aussagen mit Status, Konfidenz und Ablaufdatum
+registry/ecosystem/nodes.json             # Organe, Repos, Services, Agenten, Artefakte
+registry/ecosystem/edges.json             # Beziehungen zwischen Knoten
+registry/ecosystem/claims.jsonl           # Aussagen mit Status, Konfidenz und Ablaufdatum
+docs/blueprints/o.json                    # kompakter Seed und View-Konfiguration der Projektion
 rendered/ecosystem-map.mmd                # lesbare Uebersichtskarte; Einstieg, kein Canon
 rendered/ecosystem-registry-map.mmd       # generierte Registry-Projektion aus Knoten und Kanten
 scripts/validate_ecosystem_map.py         # minimaler Konsistenzcheck
-scripts/render_ecosystem_registry_map.py  # Generator und Drift-Check der Registry-Projektion
+scripts/render_ecosystem_registry_map.py  # Generator, Drift-Check und JSON-Report der Registry-Projektion
 ```
 
 ## Ansichten
@@ -54,6 +55,10 @@ scripts/render_ecosystem_registry_map.py  # Generator und Drift-Check der Regist
 `rendered/ecosystem-map.mmd` ist die menschlich kuratierte Uebersicht. Sie darf Knoten buendeln und Beziehungen vereinfachen, aber daraus folgt keine Beweiskraft.
 
 `rendered/ecosystem-registry-map.mmd` ist die deterministische Projektion aus `nodes.json` und `edges.json`. Sie ist fuer Driftpruefung nuetzlicher, aber nicht automatisch besser lesbar.
+
+`docs/blueprints/o.json` darf die View-Reihenfolge, Gruppentitel und visuellen Anker der Registry-Projektion konfigurieren. Diese View-Konfiguration ist Darstellung, keine zusaetzliche Wahrheitsquelle.
+
+`scripts/render_ecosystem_registry_map.py --check --json` liefert einen maschinenlesbaren Report fuer CI und Agenten. Der Report beweist Aktualitaet der Projektion gegen die versionierte Registry, aber keine Claim-Wahrheit, Runtime-Korrektheit oder Merge-Readiness.
 
 Wahrheit liegt weder in der Uebersicht noch in der Projektion. Die Registry ist der versionierte Karteninput; primaere Quellen bleiben GitHub, CI, Runtime, Contracts und menschliche Entscheidungen.
 
