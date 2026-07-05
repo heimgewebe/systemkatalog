@@ -17,10 +17,17 @@ sys.path.insert(0, str(SCRIPTS))
 
 from write_bridge_artifact_manifest import (  # noqa: E402
     ARTIFACT_SPECS,
+    CONTRACT_PATH,
+    CONTRACT_VERSION,
+    EFFECT_FLAGS,
+    MANIFEST_KIND,
+    SCHEMA_PATH,
     BridgeArtifactManifestError,
     validate_and_build_manifest,
     write_manifest,
 )
+
+SCHEMA_FILE = ROOT / SCHEMA_PATH
 
 
 def write_json(root: Path, path: str, payload: dict[str, Any]) -> None:
@@ -70,6 +77,10 @@ def write_valid_artifacts(root: Path) -> None:
     (root / "bridge-probe-summary.md").write_text("# Summary\n", encoding="utf-8")
 
 
+def load_schema() -> dict[str, Any]:
+    return json.loads(SCHEMA_FILE.read_text(encoding="utf-8"))
+
+
 class BridgeArtifactManifestTests(unittest.TestCase):
     def test_manifest_is_written_for_complete_effect_closed_artifacts(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -79,11 +90,34 @@ class BridgeArtifactManifestTests(unittest.TestCase):
             manifest = write_manifest(root, Path("bridge-artifact-manifest.json"), "b" * 40)
             stored = json.loads((root / "bridge-artifact-manifest.json").read_text())
 
-        self.assertEqual(manifest["kind"], "cabinet_bridge_artifact_manifest")
+        self.assertEqual(manifest["kind"], MANIFEST_KIND)
+        self.assertEqual(manifest["contractVersion"], CONTRACT_VERSION)
+        self.assertEqual(manifest["contractPath"], CONTRACT_PATH)
+        self.assertEqual(manifest["schemaPath"], SCHEMA_PATH)
         self.assertEqual(manifest["mode"], "evidence_only")
         self.assertEqual(manifest["artifactCount"], len(ARTIFACT_SPECS))
         self.assertEqual(stored, manifest)
         self.assertFalse(manifest["effectFlags"]["importAllowed"])
+
+    def test_schema_matches_manifest_contract_constants(self) -> None:
+        schema = load_schema()
+        properties = schema["properties"]
+        schema_artifacts = [
+            {
+                "path": item["properties"]["path"]["const"],
+                "kind": item["properties"]["kind"]["const"],
+            }
+            for item in properties["artifacts"]["prefixItems"]
+        ]
+
+        self.assertEqual(properties["kind"]["const"], MANIFEST_KIND)
+        self.assertEqual(properties["contractVersion"]["const"], CONTRACT_VERSION)
+        self.assertEqual(properties["contractPath"]["const"], CONTRACT_PATH)
+        self.assertEqual(properties["schemaPath"]["const"], SCHEMA_PATH)
+        self.assertEqual(properties["artifactCount"]["const"], len(ARTIFACT_SPECS))
+        self.assertEqual(schema_artifacts, list(ARTIFACT_SPECS))
+        for field in EFFECT_FLAGS:
+            self.assertFalse(properties["effectFlags"]["properties"][field]["const"])
 
     def test_manifest_rejects_missing_artifact(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
