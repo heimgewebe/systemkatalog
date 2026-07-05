@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 from datetime import datetime
 import json
+import re
 import sys
 from pathlib import Path
 from typing import Any
@@ -111,6 +112,27 @@ def _parse_observed_at(value: str, label: str) -> datetime:
         raise ExternalDumpSourcesError(f"{label} must be an ISO timestamp") from exc
 
 
+def _validate_latest_manifest_path(latest_path: str, pattern: str, family: str, source_id: str) -> None:
+    if latest_path != latest_path.strip():
+        raise ExternalDumpSourcesError(f"source {source_id} latestManifestPath must not contain surrounding whitespace")
+    if "://" in latest_path or latest_path.startswith("//") or Path(latest_path).is_absolute():
+        raise ExternalDumpSourcesError(f"source {source_id} latestManifestPath must be a relative registry path")
+    if "\\" in latest_path:
+        raise ExternalDumpSourcesError(f"source {source_id} latestManifestPath must use forward slashes")
+    parts = latest_path.split("/")
+    if any(part in {"", ".", ".."} for part in parts):
+        raise ExternalDumpSourcesError(f"source {source_id} latestManifestPath must not contain empty or traversal segments")
+    if not latest_path.endswith("/manifest.json"):
+        raise ExternalDumpSourcesError(f"source {source_id} latestManifestPath must end with /manifest.json")
+    if f"external/{family}/" not in latest_path:
+        raise ExternalDumpSourcesError(f"source {source_id} latestManifestPath must stay under external/{family}/")
+    regex = re.escape(pattern)
+    regex = regex.replace(re.escape("{repository}"), r"[^/]+")
+    regex = regex.replace(re.escape("{ref}"), r"[^/]+")
+    if not re.fullmatch(regex, latest_path):
+        raise ExternalDumpSourcesError(f"source {source_id} latestManifestPath must match manifestPattern")
+
+
 def validate_sources(repo_root: Path, registry_path: Path = DEFAULT_REGISTRY) -> dict[str, Any]:
     repo_root = repo_root.resolve()
     path = registry_path if registry_path.is_absolute() else repo_root / registry_path
@@ -194,6 +216,7 @@ def validate_sources(repo_root: Path, registry_path: Path = DEFAULT_REGISTRY) ->
         if status == "observed":
             if not latest_path or not generated_at:
                 raise ExternalDumpSourcesError(f"source {source_id} observed state requires latest manifest path and timestamp")
+            _validate_latest_manifest_path(latest_path, pattern, family, source_id)
             _parse_observed_at(generated_at, f"source {source_id} latestManifestGeneratedAt")
         if status == "disabled" and generated_at:
             _parse_observed_at(generated_at, f"source {source_id} latestManifestGeneratedAt")

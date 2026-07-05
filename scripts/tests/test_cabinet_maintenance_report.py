@@ -219,6 +219,25 @@ class CabinetMaintenanceReportTests(unittest.TestCase):
         self.assertTrue(any(finding["id"].endswith(":missing-evidence-path") for finding in report["findings"]))
         self.assertEqual(report["summary"]["severityCounts"]["P2"], 1)
 
+    def test_external_dump_freshness_uses_report_timestamp_not_scan_midnight(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            make_repo(root, with_external_dump_registry=True)
+            registry_path = root / "registry/ecosystem/external-dump-sources.json"
+            payload = json.loads(registry_path.read_text(encoding="utf-8"))
+            payload["sources"][0]["observation"]["latestManifestGeneratedAt"] = "2026-07-03T01:00:00Z"
+            registry_path.write_text(json.dumps(payload), encoding="utf-8")
+
+            report = build_report(
+                root,
+                source_commit="e" * 40,
+                generated_at="2026-07-05T23:00:00Z",
+                scan_date=date(2026, 7, 5),
+            )
+
+        self.assertEqual(report["summary"]["status"], "warn")
+        self.assertTrue(any(finding["id"] == "cabqa:freshness:external-dump:repobrief:manifest-stale" for finding in report["findings"]))
+
     def test_schema_constants_match_producer_contract(self) -> None:
         schema = json.loads((ROOT / SCHEMA_PATH).read_text(encoding="utf-8"))
         properties = schema["properties"]

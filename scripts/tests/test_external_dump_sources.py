@@ -150,6 +150,42 @@ class ExternalDumpSourceTests(unittest.TestCase):
             with self.assertRaisesRegex(ExternalDumpSourcesError, "ISO timestamp"):
                 validate_sources(root, registry_path)
 
+    def test_observed_source_rejects_non_manifest_path(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            payload = registry()
+            obs = payload["sources"][0]["observation"]
+            obs["status"] = "observed"
+            obs["latestManifestPath"] = "not-a-manifest"
+            obs["latestManifestGeneratedAt"] = "2026-07-05T00:00:00Z"
+            registry_path = write_repo(root, payload)
+            with self.assertRaisesRegex(ExternalDumpSourcesError, "manifest.json"):
+                validate_sources(root, registry_path)
+
+    def test_ok_manifest_path(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            payload = registry()
+            obs = payload["sources"][0]["observation"]
+            obs["status"] = "observed"
+            obs["latestManifestPath"] = "/".join(["external", "repobrief", "cabinet", "main", "manifest.json"])
+            obs["latestManifestGeneratedAt"] = "2026-07-05T00:00:00Z"
+            registry_path = write_repo(root, payload)
+            result = validate_sources(root, registry_path)
+        self.assertEqual(result["sources"][0]["observation"]["status"], "observed")
+
+    def test_wrong_family_path_fails(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            payload = registry()
+            obs = payload["sources"][0]["observation"]
+            obs["status"] = "observed"
+            obs["latestManifestPath"] = "/".join(["external", "lenskit", "x", "main", "manifest.json"])
+            obs["latestManifestGeneratedAt"] = "2026-07-05T00:00:00Z"
+            registry_path = write_repo(root, payload)
+            with self.assertRaisesRegex(ExternalDumpSourcesError, "external/repobrief"):
+                validate_sources(root, registry_path)
+
 
 if __name__ == "__main__":
     unittest.main()

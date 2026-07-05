@@ -22,7 +22,9 @@
     "registry/ecosystem/external-dump-sources.json",
     "scripts/validate_external_dump_sources.py",
     "scripts/tests/test_external_dump_sources.py",
-    "steuerung/20 Aufgaben/cab-qa-002-external-dump-sources-contract.md"
+    "steuerung/20 Aufgaben/cab-qa-003-external-dump-sources-contract.md",
+    "steuerung/20 Aufgaben/cab-qa-002-maintenance-report-ci.md",
+    ".github/workflows/cabinet-maintenance-radar.yml"
   ],
   "admissible_candidate_statuses": [
     "evidenced",

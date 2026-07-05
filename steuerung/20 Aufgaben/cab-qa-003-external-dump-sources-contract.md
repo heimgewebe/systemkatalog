@@ -1,4 +1,4 @@
-# CAB-QA-002 — External-Dump-Quellenvertrag v1
+# CAB-QA-003 — External-Dump-Quellenvertrag v1
 
 Status: registered
 Datum: 2026-07-05
@@ -13,7 +13,7 @@ Cabinet registriert einen Quellenvertrag fuer extern erzeugte RepoBrief-/Lenskit
 
 CAB-QA-001 hat die fehlende Dump-Spezifikation als epistemische Luecke markiert. Diese Luecke wird hier in einen pruefbaren Vertrag umgewandelt: Pfadmuster, Manifest-Kind, Kadenz, Maximalalter, Hashalgorithmus, Artefakt-Suffixe und Beobachtungsstatus.
 
-## Scope CAB-QA-002
+## Scope CAB-QA-003
 
 - Contract: `docs/contracts/cabinet-external-dump-sources-v1.md`
 - Schema: `docs/contracts/cabinet-external-dump-sources-v1.schema.json`

@@ -24,6 +24,7 @@ on:
       - "scripts/tests/test_external_dump_sources.py"
       - "steuerung/20 Aufgaben/cab-qa-001-cabinet-coherence-radar.md"
       - "steuerung/20 Aufgaben/cab-qa-002-maintenance-report-ci.md"
+      - "steuerung/20 Aufgaben/cab-qa-003-external-dump-sources-contract.md"
   pull_request:
     branches:
       - main
@@ -47,6 +48,7 @@ on:
       - "scripts/tests/test_external_dump_sources.py"
       - "steuerung/20 Aufgaben/cab-qa-001-cabinet-coherence-radar.md"
       - "steuerung/20 Aufgaben/cab-qa-002-maintenance-report-ci.md"
+      - "steuerung/20 Aufgaben/cab-qa-003-external-dump-sources-contract.md"
   workflow_dispatch:
 
 concurrency:

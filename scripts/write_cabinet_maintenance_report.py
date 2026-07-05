@@ -397,7 +397,7 @@ def _parse_manifest_generated_at(value: str, label: str) -> datetime:
     return result
 
 
-def _scan_external_dump_sources(repo_root: Path, scan_date: date, external_dump_registry: str) -> list[dict[str, Any]]:
+def _scan_external_dump_sources(repo_root: Path, scan_time: datetime, external_dump_registry: str) -> list[dict[str, Any]]:
     registry_path = _repo_path(repo_root, external_dump_registry, "external dump registry")
     if not registry_path.exists():
         return []
@@ -417,7 +417,7 @@ def _scan_external_dump_sources(repo_root: Path, scan_date: date, external_dump_
         )]
 
     findings: list[dict[str, Any]] = []
-    scan_cutoff = datetime.combine(scan_date, datetime.min.time(), tzinfo=timezone.utc)
+    scan_cutoff = scan_time.astimezone(timezone.utc)
     for source in registry["sources"]:
         source_id = source["id"]
         observation = source["observation"]
@@ -449,7 +449,7 @@ def _scan_external_dump_sources(repo_root: Path, scan_date: date, external_dump_
                 "P2",
                 "open",
                 source_id,
-                f"External dump manifest is older than maxAgeHours={source['maxAgeHours']} at scan date {scan_date.isoformat()}.",
+                f"External dump manifest is older than maxAgeHours={source['maxAgeHours']} at report time {scan_cutoff.isoformat()}.",
                 [external_dump_registry, observation["latestManifestPath"]],
                 "repobrief_lenskit",
                 "refresh_external_dump_manifest_reference",
@@ -500,7 +500,9 @@ def build_report(
     commit = source_commit or _git_commit(repo_root)
     if not _is_commit_sha(commit):
         raise MaintenanceReportError("source_commit must be a 40 character lowercase git SHA")
-    date_value = scan_date or datetime.now(timezone.utc).date()
+    generated_at_value = generated_at or _generated_at()
+    report_generated_time = _parse_manifest_generated_at(generated_at_value, "report generatedAt")
+    date_value = scan_date or report_generated_time.astimezone(timezone.utc).date()
 
     nodes_doc = _load_json(repo_root, NODES_PATH)
     _load_json(repo_root, EDGES_PATH)
@@ -512,7 +514,7 @@ def build_report(
     findings = _scan_bridge_sources(repo_root, bridge_doc)
     claim_findings, candidates = _scan_claims(repo_root, claims, _node_ids(nodes_doc), bridge_doc, date_value)
     findings.extend(claim_findings)
-    findings.extend(_scan_external_dump_sources(repo_root, date_value, external_dump_registry))
+    findings.extend(_scan_external_dump_sources(repo_root, report_generated_time, external_dump_registry))
     findings.sort(key=lambda item: (item["severity"], item["class"], item["id"]))
     candidates.sort(key=lambda item: item["id"])
     gaps = _epistemic_gaps(repo_root, external_dump_registry)
@@ -527,7 +529,7 @@ def build_report(
         "source": {
             "repository": "heimgewebe/cabinet",
             "commit": commit,
-            "generatedAt": generated_at or _generated_at(),
+            "generatedAt": generated_at_value,
             "scanDate": date_value.isoformat(),
         },
         "effectFlags": {flag: False for flag in EFFECT_FLAGS},
