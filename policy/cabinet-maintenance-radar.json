@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "id": "cabinet_maintenance_radar_v0",
+  "status": "draft",
+  "updated_at": "2026-07-05",
+  "canonical_doc": "docs/blueprints/cabinet-maintenance-radar-v0.md",
+  "mode": "read_only_quality_radar",
+  "repobrief_lenskit_dump_generation": "external_only",
+  "cabinet_generates_repobrief_lenskit_dumps": false,
+  "allowed_scan_classes": [
+    "consistency",
+    "structural_error",
+    "freshness",
+    "authority_order",
+    "handoff_readiness",
+    "effect_closure",
+    "external_artifact_surface",
+    "learning_feedback"
+  ],
+  "required_finding_fields": [
+    "id",
+    "scan_id",
+    "rule_id",
+    "subject",
+    "finding_type",
+    "severity",
+    "evidence",
+    "confidence",
+    "status",
+    "responsible_organ",
+    "next_action",
+    "created_at"
+  ],
+  "required_outcome_fields": [
+    "finding_id",
+    "outcome",
+    "evidence",
+    "closed_at",
+    "reviewer",
+    "learning_allowed"
+  ],
+  "allowed_outputs": [
+    "cabinet.scan_finding.v1",
+    "cabinet.maintenance_report.v1",
+    "cabinet.maintenance_outcome.v1",
+    "cabinet.handoff_candidate.v1",
+    "heimlern.policy_adjustment.proposed.v1"
+  ],
+  "handoff": {
+    "bureau_mode": "proposal_only",
+    "grabowski_mode": "after_task_or_operator_release",
+    "requires_human_review": true,
+    "task_creation_allowed": false,
+    "dispatch_allowed": false,
+    "queue_mutation_allowed": false,
+    "runtime_mutation_allowed": false
+  },
+  "heimlern_bridge": {
+    "status": "planned_after_contract_repair",
+    "input_contracts": [
+      "cabinet.maintenance_outcome.v1",
+      "decision.outcome.v1"
+    ],
+    "output_contracts": [
+      "policy.weight_adjustment.proposed.v1",
+      "cabinet.scan_rule_weight_adjustment.proposed.v1",
+      "cabinet.routing_policy_adjustment.proposed.v1"
+    ],
+    "direct_policy_application_allowed": false,
+    "minimum_outcomes_per_rule": 20,
+    "minimum_confidence": 0.6
+  },
+  "prohibited_effects": [
+    "repobrief_or_lenskit_dump_generation",
+    "automatic_bureau_task_creation",
+    "automatic_grabowski_delegation",
+    "merge_or_push_action",
+    "runtime_mutation",
+    "cleanup_action",
+    "authority_inference_from_map",
+    "direct_policy_weight_application"
+  ],
+  "primary_sources": {
+    "git_pr_review": "GitHub",
+    "ci_signal": "CI",
+    "runtime_signal": "Runtime/systemd/logs/healthchecks",
+    "contract_invariant": "contracts/schemas/tests",
+    "priority_release_stop": "human_decision",
+    "context_dump": "external_repobrief_lenskit_artifact",
+    "learning_feedback": "heimlern_proposal_review"
+  },
+  "organ_roles": {
+    "cabinet": "read_only_coherence_radar_and_candidate_prioritizer",
+    "bureau": "task_cadence_receipt_and_handoff_owner",
+    "grabowski_operator": "execution_after_task_or_operator_release",
+    "repobrief_lenskit": "external_context_dump_producer_and_citable_context_surface",
+    "heimlern": "retrospective_outcome_analysis_and_proposal_only_policy_adjustments",
+    "chronik": "event_continuity_and_decision_trace",
+    "github_ci_runtime": "primary_truth_for_pr_check_and_runtime_state",
+    "external_agents": "proposal_and_review_not_authority"
+  },
+  "does_not_establish": [
+    "task_approval",
+    "merge_readiness",
+    "runtime_correctness",
+    "claim_truth",
+    "bureau_import_implemented",
+    "autonomous_dispatch",
+    "policy_change_approval",
+    "dump_freshness_truth"
+  ]
+}
