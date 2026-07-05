@@ -7,6 +7,9 @@
   "required": [
     "schemaVersion",
     "kind",
+    "contractVersion",
+    "contractPath",
+    "schemaPath",
     "mode",
     "bureauRef",
     "artifactCount",
@@ -16,6 +19,9 @@
   "properties": {
     "schemaVersion": {"const": 1},
     "kind": {"const": "cabinet_bridge_artifact_manifest"},
+    "contractVersion": {"const": "1"},
+    "contractPath": {"const": "docs/contracts/cabinet-bridge-artifact-manifest-v1.md"},
+    "schemaPath": {"const": "docs/contracts/cabinet-bridge-artifact-manifest-v1.schema.json"},
     "mode": {"const": "evidence_only"},
     "bureauRef": {
       "type": "string",
