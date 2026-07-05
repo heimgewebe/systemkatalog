@@ -6,11 +6,12 @@ Dieses Dokument ist der kanonische Einstieg für LLMs und Agenten im Cabinet-Rep
 
 1. [README.md](README.md) — Entrée und Schnellstart.
 2. [docs/blueprints/ecosystem-map-v0.md](docs/blueprints/ecosystem-map-v0.md) — Zweck, Dateien, Wahrheitsgrenzen und Reifekriterien der Karte.
-3. [rendered/ecosystem-map.mmd](rendered/ecosystem-map.mmd) — visuelle Mermaidkarte.
-4. [docs/blueprints/o.json](docs/blueprints/o.json) — kompakter maschinenlesbarer Seed.
-5. [registry/ecosystem/nodes.json](registry/ecosystem/nodes.json), [registry/ecosystem/edges.json](registry/ecosystem/edges.json), [registry/ecosystem/claims.jsonl](registry/ecosystem/claims.jsonl) — Graph, Kanten und Claims.
-6. [docs/blueprints/heim-pc-operatorium-index-v0.md](docs/blueprints/heim-pc-operatorium-index-v0.md) — Heim-PC als Operatorium.
-7. [docs/blueprints/agent-routing-brief-v0.md](docs/blueprints/agent-routing-brief-v0.md) — Aufgaben- und Agentenroute.
+3. [rendered/ecosystem-map.mmd](rendered/ecosystem-map.mmd) — lesbare Mermaid-Uebersicht.
+4. [rendered/ecosystem-registry-map.mmd](rendered/ecosystem-registry-map.mmd) — generierte Registry-Projektion aus Knoten und Kanten.
+5. [docs/blueprints/o.json](docs/blueprints/o.json) — kompakter maschinenlesbarer Seed.
+6. [registry/ecosystem/nodes.json](registry/ecosystem/nodes.json), [registry/ecosystem/edges.json](registry/ecosystem/edges.json), [registry/ecosystem/claims.jsonl](registry/ecosystem/claims.jsonl) — Graph, Kanten und Claims.
+7. [docs/blueprints/heim-pc-operatorium-index-v0.md](docs/blueprints/heim-pc-operatorium-index-v0.md) — Heim-PC als Operatorium.
+8. [docs/blueprints/agent-routing-brief-v0.md](docs/blueprints/agent-routing-brief-v0.md) — Aufgaben- und Agentenroute.
 
 ## Wahrheitsordnung
 
@@ -26,7 +27,7 @@ Dieses Dokument ist der kanonische Einstieg für LLMs und Agenten im Cabinet-Rep
 1. Erst lesen, dann handeln.
 2. Bei Cabinet-Fragen vorhandene Merge-Dumps nur als Snapshot behandeln; aktuelle Repo-/PR-Zustände gegen GitHub oder lokalen Working Tree prüfen.
 3. Sidecars, Health-Berichte und Reading Packs sind Navigation oder Diagnose, keine Inhaltswahrheit.
-4. Keine Claims aus der Mermaidkarte als Beweis verwenden. Graphkanten brauchen Quelle, Status und Kontext.
+4. Keine Claims aus Mermaidkarten als Beweis verwenden. Die Uebersicht darf buendeln; die Registry-Projektion ist ein Driftcheck, kein Wahrheitsersatz. Graphkanten brauchen Quelle, Status und Kontext.
 5. Widersprüche sichtbar lassen und einordnen.
 6. Mutationen eng schneiden: Wegweiser, Belege oder klar begrenzte Docs/Code-Slices.
 7. Kein Merge und kein direkter Main-Eingriff ohne aktuelle Head-Prüfung, Diff-Review und berücksichtigte Findings.

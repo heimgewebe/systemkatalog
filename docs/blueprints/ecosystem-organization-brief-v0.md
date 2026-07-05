@@ -39,7 +39,9 @@ RepoBrief ist der oeffentliche Name der Context-View-Schicht. Lenskit bleibt bis
 - `registry/ecosystem/edges.json`
 - `registry/ecosystem/claims.jsonl`
 - `rendered/ecosystem-map.mmd`
+- `rendered/ecosystem-registry-map.mmd`
 - `scripts/validate_ecosystem_map.py`
+- `scripts/render_ecosystem_registry_map.py`
 
 ## Wahrheitsgrenze
 

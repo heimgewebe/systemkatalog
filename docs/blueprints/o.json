@@ -15,7 +15,9 @@
       "claims": "registry/ecosystem/claims.jsonl"
     },
     "rendered": "rendered/ecosystem-map.mmd",
-    "validator": "scripts/validate_ecosystem_map.py"
+    "registry_projection": "rendered/ecosystem-registry-map.mmd",
+    "validator": "scripts/validate_ecosystem_map.py",
+    "registry_projection_generator": "scripts/render_ecosystem_registry_map.py"
   },
   "organs": [
     {"id": "cabinet", "role": "sense_evidence_prioritization_map_semantics"},
