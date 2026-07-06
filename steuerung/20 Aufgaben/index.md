@@ -49,7 +49,7 @@ Quelle: GitHub-PR-Liste und `origin/main` nach Merge `2ccd62b83a69ffc311efa81327
 
 ## Nächste Aktion
 
-CAB-QA-004 zuerst: externe RepoBrief-/Lenskit-Manifestreferenzen beobachten oder die weiterhin fehlenden Manifestorte als Leerstelle dokumentieren.
+CAB-QA-004 ist beobachtet und bleibt blockiert; siehe Befund 2026-07-06.
 - [Reference Refresh Contract 2026-07-03](reference-refresh-contract-2026-07-03.md)
 - [Bureau Reference Refresh Plan 2026-07-03](bureau-reference-refresh-plan-2026-07-03.md)
 - [Bureau Reference Refresh Proposal 2026-07-03](bureau-reference-refresh-proposal-2026-07-03.md)

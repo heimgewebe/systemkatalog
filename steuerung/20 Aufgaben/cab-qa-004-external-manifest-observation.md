@@ -1,6 +1,6 @@
 # CAB-QA-004 — Externe Manifestreferenzen beobachten
 
-Status: open
+Status: blocked
 Datum: 2026-07-05
 Organfuehrung: Cabinet -> RepoBrief/Lenskit
 
@@ -41,3 +41,7 @@ Stop, wenn kein aktuelles externes Manifest belegbar ist, ein Pfad nicht zum Con
 ## Epistemische Leere
 
 Aktuelle externe Manifestreferenzen fehlen. Noetig fuer Freshness-Scan ueber konkrete RepoBrief-/Lenskit-Dumps.
+
+## Beobachtung 2026-07-06
+
+Ergebnis: blockiert.
