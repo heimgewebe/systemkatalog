@@ -16,6 +16,7 @@ flowchart TD
         repo_device_graph["Device Graph<br/>id: repo:device-graph<br/>repository<br/>status: related"]
         repo_grabowski["Grabowski<br/>id: repo:grabowski<br/>repository<br/>status: active"]
         repo_infra["Infra<br/>id: repo:infra<br/>repository<br/>status: active"]
+        repo_leitstand["Leitstand<br/>id: repo:leitstand<br/>repository<br/>status: active"]
         repo_lenskit["Lenskit / RepoBrief implementation<br/>id: repo:lenskit<br/>repository<br/>status: legacy_name_active"]
         repo_schauwerk["Schauwerk<br/>id: repo:schauwerk<br/>repository<br/>status: active"]
         repo_steuerboard["Steuerboard<br/>id: repo:steuerboard<br/>repository<br/>status: active"]
@@ -55,9 +56,12 @@ flowchart TD
     agent_local -->|reports_to / active| repo_grabowski
     concept_repobrief -->|provides / active| repo_cabinet
     repo_bureau -->|delegates_to / active| repo_grabowski
+    repo_bureau -->|provides / planned| repo_leitstand
     repo_cabinet -->|owns / draft| artifact_ecosystem_map
     repo_cabinet -->|exports_candidate_to / planned| repo_bureau
+    repo_cabinet -->|provides / active| repo_leitstand
     repo_chronik -->|provides / active| repo_cabinet
+    repo_chronik -->|provides / active| repo_leitstand
     repo_device_graph -->|scope_boundary / related| artifact_ecosystem_map
     repo_grabowski -->|delegates_to / active| agent_claude
     repo_grabowski -->|delegates_to / active| agent_codex
@@ -66,12 +70,15 @@ flowchart TD
     repo_grabowski -->|operates_on / active| service_github
     repo_infra -->|provides / active| runtime_heim_pc
     repo_infra -->|provides / active| runtime_heimserver
+    repo_leitstand -->|observes / active| artifact_ecosystem_map
     repo_lenskit -->|implements / active| concept_repobrief
     repo_schauwerk -->|renders / planned| artifact_ecosystem_map
     repo_steuerboard -->|observes / active| repo_cabinet
     repo_vibe_lab -->|provides / active| repo_cabinet
     repo_weltgewebe -->|operates_on / active| service_github
     runtime_heim_pc -->|hosts / intended| repo_cabinet
+    service_ci -->|provides / active| repo_leitstand
+    service_github -->|provides / active| repo_leitstand
     service_github -->|validated_by / active| service_ci
 
     %% Visual anchor only; does not establish canonical truth.

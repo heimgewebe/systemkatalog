@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "status": "draft",
-  "updated_at": "2026-07-04",
+  "updated_at": "2026-07-06",
   "edge_types": [
     "owns",
     "steers",
@@ -192,6 +192,48 @@
       "type": "scope_boundary",
       "status": "related",
       "note": "Device Graph may describe infrastructure devices; it is not the ecosystem-governance map canon."
+    },
+    {
+      "from": "repo:cabinet",
+      "to": "repo:leitstand",
+      "type": "provides",
+      "status": "active",
+      "note": "Cabinet provides map artifacts for Leitstand display."
+    },
+    {
+      "from": "repo:leitstand",
+      "to": "artifact:ecosystem-map",
+      "type": "observes",
+      "status": "active",
+      "note": "Leitstand observes the map as orientation, not truth."
+    },
+    {
+      "from": "repo:chronik",
+      "to": "repo:leitstand",
+      "type": "provides",
+      "status": "active",
+      "note": "Chronik provides event trace artifacts for timelines."
+    },
+    {
+      "from": "repo:bureau",
+      "to": "repo:leitstand",
+      "type": "provides",
+      "status": "planned",
+      "note": "Bureau may provide read-only task status artifacts."
+    },
+    {
+      "from": "service:github",
+      "to": "repo:leitstand",
+      "type": "provides",
+      "status": "active",
+      "note": "Primary repo state can be reflected."
+    },
+    {
+      "from": "service:ci",
+      "to": "repo:leitstand",
+      "type": "provides",
+      "status": "active",
+      "note": "Primary check state can be reflected."
     }
   ]
 }
