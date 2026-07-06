@@ -69,6 +69,12 @@ jobs:
       - name: Validate External Artifact Registry
         run: python3 scripts/validate_external_dump_sources.py
 
+      - name: Test Cabinet Ecosystem Signals
+        run: python3 -m unittest discover -s scripts/tests -p 'test_ecosystem_signal_contract.py'
+
+      - name: Validate Cabinet Ecosystem Signal Fixture
+        run: python3 scripts/validate_ecosystem_signals.py --input scripts/tests/fixtures/ecosystem-signals/github-pr-signals.jsonl --json
+
   installer-shadow:
     name: Installer Shadow Test
     runs-on: ubuntu-latest

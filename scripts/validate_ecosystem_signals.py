@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+from datetime import datetime
 import json
 import sys
 from pathlib import Path
@@ -54,6 +55,18 @@ def _object(value: Any, label: str) -> dict[str, Any]:
     return value
 
 
+def _iso_timestamp(value: Any, label: str) -> str:
+    raw = _text(value, label)
+    candidate = raw[:-1] + "+00:00" if raw.endswith("Z") else raw
+    try:
+        parsed = datetime.fromisoformat(candidate)
+    except ValueError as exc:
+        raise EcosystemSignalError(f"{label} must be an ISO timestamp") from exc
+    if parsed.tzinfo is None:
+        raise EcosystemSignalError(f"{label} must include timezone")
+    return raw
+
+
 def validate_signal(signal: dict[str, Any]) -> None:
     if set(signal) != REQUIRED:
         raise EcosystemSignalError("top-level fields mismatch")
@@ -63,8 +76,7 @@ def validate_signal(signal: dict[str, Any]) -> None:
         raise EcosystemSignalError("contract mismatch")
     if not _text(signal["id"], "id").startswith("signal:"):
         raise EcosystemSignalError("id must start with signal:")
-    if "T" not in _text(signal["observedAt"], "observedAt"):
-        raise EcosystemSignalError("observedAt must be an ISO timestamp")
+    _iso_timestamp(signal["observedAt"], "observedAt")
     if signal["sourceSystem"] not in SOURCE_SYSTEMS:
         raise EcosystemSignalError("sourceSystem unsupported")
     for field in ("subject", "predicate", "object"):
@@ -90,8 +102,13 @@ def validate_signal(signal: dict[str, Any]) -> None:
     if set(flags) != set(EFFECT_FLAGS) or any(flags[field] is not False for field in EFFECT_FLAGS):
         raise EcosystemSignalError("all effectFlags must exist and be false")
     non_claims = signal["doesNotEstablish"]
-    if not isinstance(non_claims, list) or set(DOES_NOT_ESTABLISH) - {item for item in non_claims if isinstance(item, str)}:
-        raise EcosystemSignalError("doesNotEstablish missing required entries")
+    if (
+        not isinstance(non_claims, list)
+        or any(not isinstance(item, str) for item in non_claims)
+        or len(non_claims) != len(set(non_claims))
+        or set(non_claims) != set(DOES_NOT_ESTABLISH)
+    ):
+        raise EcosystemSignalError("doesNotEstablish must exactly list required non-establishing boundaries")
 
 
 def load_signals(path: Path) -> list[dict[str, Any]]:

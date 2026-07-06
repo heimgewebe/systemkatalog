@@ -15,16 +15,38 @@
       "const": "1"
     },
     "doesNotEstablish": {
-      "contains": {
-        "enum": [
-          "task_approval",
-          "merge_readiness",
-          "runtime_correctness",
-          "claim_truth",
-          "autonomous_dispatch",
-          "bureau_import_implemented"
-        ]
-      },
+      "allOf": [
+        {
+          "contains": {
+            "const": "task_approval"
+          }
+        },
+        {
+          "contains": {
+            "const": "merge_readiness"
+          }
+        },
+        {
+          "contains": {
+            "const": "runtime_correctness"
+          }
+        },
+        {
+          "contains": {
+            "const": "claim_truth"
+          }
+        },
+        {
+          "contains": {
+            "const": "autonomous_dispatch"
+          }
+        },
+        {
+          "contains": {
+            "const": "bureau_import_implemented"
+          }
+        }
+      ],
       "items": {
         "enum": [
           "task_approval",

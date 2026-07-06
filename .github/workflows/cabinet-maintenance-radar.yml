@@ -12,6 +12,12 @@ on:
       - "docs/contracts/cabinet-maintenance-report-v1.schema.json"
       - "docs/contracts/cabinet-external-dump-sources-v1.md"
       - "docs/contracts/cabinet-external-dump-sources-v1.schema.json"
+      - "docs/contracts/cabinet-ecosystem-signal-v1.md"
+      - "docs/contracts/cabinet-ecosystem-signal-v1.schema.json"
+      - "scripts/validate_ecosystem_signals.py"
+      - "scripts/tests/test_ecosystem_signal_contract.py"
+      - "scripts/tests/fixtures/ecosystem-signals/github-pr-signals.jsonl"
+      - "steuerung/20 Aufgaben/cab-qa-004-read-only-ecosystem-signal-ingest.md"
       - "policy/cabinet-maintenance-radar.json"
       - "registry/ecosystem/claims.jsonl"
       - "registry/ecosystem/bureau-bridge.json"
@@ -36,6 +42,12 @@ on:
       - "docs/contracts/cabinet-maintenance-report-v1.schema.json"
       - "docs/contracts/cabinet-external-dump-sources-v1.md"
       - "docs/contracts/cabinet-external-dump-sources-v1.schema.json"
+      - "docs/contracts/cabinet-ecosystem-signal-v1.md"
+      - "docs/contracts/cabinet-ecosystem-signal-v1.schema.json"
+      - "scripts/validate_ecosystem_signals.py"
+      - "scripts/tests/test_ecosystem_signal_contract.py"
+      - "scripts/tests/fixtures/ecosystem-signals/github-pr-signals.jsonl"
+      - "steuerung/20 Aufgaben/cab-qa-004-read-only-ecosystem-signal-ingest.md"
       - "policy/cabinet-maintenance-radar.json"
       - "registry/ecosystem/claims.jsonl"
       - "registry/ecosystem/bureau-bridge.json"
@@ -83,6 +95,12 @@ jobs:
 
       - name: Validate External Artifact Registry
         run: python3 scripts/validate_external_dump_sources.py
+
+      - name: Test Cabinet Ecosystem Signals
+        run: python3 -m unittest discover -s scripts/tests -p 'test_ecosystem_signal_contract.py'
+
+      - name: Validate Cabinet Ecosystem Signal Fixture
+        run: python3 scripts/validate_ecosystem_signals.py --input scripts/tests/fixtures/ecosystem-signals/github-pr-signals.jsonl --json
 
       - name: Test Cabinet Maintenance Radar Policy
         run: python3 -m unittest discover -s scripts/tests -p 'test_cabinet_maintenance_radar.py'
