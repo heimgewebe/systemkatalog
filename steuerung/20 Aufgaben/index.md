@@ -38,6 +38,7 @@ Quelle: GitHub-PR-Liste und `origin/main` nach Merge `2ccd62b83a69ffc311efa81327
 | CAB-QA-004 | Externe Manifestreferenzen beobachten | Cabinet -> RepoBrief/Lenskit | Der Maintenance Report meldet keine Spezifikationsluecke mehr, aber zwei unobserved Manifestquellen. | Externe Manifestorte pruefen und Registry nur mit belegten relativen Manifestpfaden aktualisieren; sonst Leerstelle dokumentieren. | Mittel: Freshness kann mit Wahrheit verwechselt werden. | Kein aktuelles Manifest belegbar oder Pfad passt nicht zum Contract. | External-Dump-Validator PASS und Maintenance-Report reduziert manifest-unobserved-Findings oder dokumentiert die Leerstelle. |
 | CAB-QA-005 | Read-only Ecosystem Signal Ingest | Cabinet | Cabinet braucht eine belegte Wahrnehmungsschicht, ohne daraus operative Wirkung abzuleiten. | Contract, Schema, Validator, Fixture, Tests und Claim-Kandidat fuer read-only Ecosystem-Signale. | Mittel: Signale koennen als Task-, Merge- oder Dispatch-Recht missverstanden werden. | Signal erzeugt Bureau-Import, Queue-Mutation, Dispatch, Runtime-Wirkung, Merge-/Push-Recht oder Dump-Erzeugung. | Ecosystem-Signal-Tests PASS, Fixture-Validator PASS und Maintenance-Report-Check PASS. |
 | CAB-QA-006 | Live Signal Probe v0 | Cabinet | CAB-QA-005 ist gemergt; der Contract braucht ein erstes echtes Probe-Artefakt. | Ein datiertes read-only Signal-JSONL zu Cabinet PR #75 und Main-CI validieren. | Mittel: ein Signal kann mit Freigabe oder Wahrheit verwechselt werden. | Signal erzeugt Bureau-Import, Queue-Mutation, Dispatch, Runtime-Wirkung, Schreibrecht oder Dump-Erzeugung. | Live-Signal-Validator PASS; Run-Evidence verweist auf konkrete GitHub-Actions-Runs. |
+| CAB-QA-007 | Read-only Live Signal Producer v0 | Cabinet | CAB-QA-004 ist beobachtet; Signale sollen aus registrierten Beobachtungen entstehen, nicht aus Handlung. | Producer erzeugt JSONL aus External-Dump-Registry und Maintenance Report. | Mittel: Signale koennen als Freigabe missverstanden werden. | Producer erzeugt Queue, Dispatch, Claim-Promotion, Runtime-Wirkung oder Dump-Erzeugung. | Live-Signal-Producer-Test PASS, JSONL-Validator PASS und Maintenance-Report PASS. |
 
 ## Nicht tun
 
@@ -49,7 +50,7 @@ Quelle: GitHub-PR-Liste und `origin/main` nach Merge `2ccd62b83a69ffc311efa81327
 
 ## Nächste Aktion
 
-CAB-QA-004 ist beobachtet: externe RepoBrief-/Lenskit-Manifestreferenzen fuer `cabinet/main` sind registriert. Naechste Aktion: CAB-QA-007 nur als read-only Producer auf Basis dieser Manifestbeobachtung planen.
+CAB-QA-007 ist umgesetzt: der read-only Producer erzeugt Signale aus External-Dump-Registry und Maintenance Report. Naechste Aktion: dauerhaften externen Manifest-Publikationsort klaeren, bevor Freshness-Automation regelmaessig laeuft.
 - [Reference Refresh Contract 2026-07-03](reference-refresh-contract-2026-07-03.md)
 - [Bureau Reference Refresh Plan 2026-07-03](bureau-reference-refresh-plan-2026-07-03.md)
 - [Bureau Reference Refresh Proposal 2026-07-03](bureau-reference-refresh-proposal-2026-07-03.md)
@@ -59,3 +60,4 @@ CAB-QA-004 ist beobachtet: externe RepoBrief-/Lenskit-Manifestreferenzen fuer `c
 - [CAB-QA-004 — Externe Manifestreferenzen beobachten](cab-qa-004-external-manifest-observation.md)
 - [CAB-QA-005 — Read-only Ecosystem Signal Ingest](cab-qa-005-read-only-ecosystem-signal-ingest.md)
 - [CAB-QA-006 — Live Signal Probe v0](cab-qa-006-live-signal-probe.md)
+- [CAB-QA-007 — Read-only Live Signal Producer v0](cab-qa-007-read-only-live-signal-producer-v0.md)
