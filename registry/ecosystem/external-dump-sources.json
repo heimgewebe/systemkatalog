@@ -5,7 +5,7 @@
   "contractPath": "docs/contracts/cabinet-external-dump-sources-v1.md",
   "schemaPath": "docs/contracts/cabinet-external-dump-sources-v1.schema.json",
   "mode": "external_dump_source_contract_registry",
-  "updatedAt": "2026-07-05",
+  "updatedAt": "2026-07-06",
   "cabinetGeneratesDumps": false,
   "sourceCount": 2,
   "sources": [
@@ -29,9 +29,9 @@
       "freshnessBasis": "manifest_generated_at",
       "cabinetStorage": "external_reference_only",
       "observation": {
-        "status": "unobserved",
-        "latestManifestPath": "",
-        "latestManifestGeneratedAt": ""
+        "status": "observed",
+        "latestManifestPath": "external/repobrief/cabinet/main/manifest.json",
+        "latestManifestGeneratedAt": "2026-07-06T16:01:58Z"
       },
       "doesNotEstablish": [
         "dump_freshness_truth",
@@ -65,9 +65,9 @@
       "freshnessBasis": "manifest_generated_at",
       "cabinetStorage": "external_reference_only",
       "observation": {
-        "status": "unobserved",
-        "latestManifestPath": "",
-        "latestManifestGeneratedAt": ""
+        "status": "observed",
+        "latestManifestPath": "external/lenskit/cabinet/main/manifest.json",
+        "latestManifestGeneratedAt": "2026-07-06T16:01:58Z"
       },
       "doesNotEstablish": [
         "dump_freshness_truth",

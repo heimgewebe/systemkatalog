@@ -1,6 +1,6 @@
 # CAB-QA-004 — Externe Manifestreferenzen beobachten
 
-Status: blocked
+Status: observed
 Datum: 2026-07-05
 Organfuehrung: Cabinet -> RepoBrief/Lenskit
 
@@ -45,3 +45,10 @@ Aktuelle externe Manifestreferenzen fehlen. Noetig fuer Freshness-Scan ueber kon
 ## Beobachtung 2026-07-06
 
 Ergebnis: blockiert.
+
+
+## Beobachtung 2026-07-06 -- observed
+
+Ergebnis: externe Manifestreferenzen fuer `cabinet/main` beobachtet und registriert.
+
+Beleg: `pruefung/30 Befunde/cab-qa-004-external-manifest-observed-2026-07-06.md`

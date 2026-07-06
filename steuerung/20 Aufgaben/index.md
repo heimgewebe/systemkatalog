@@ -49,7 +49,7 @@ Quelle: GitHub-PR-Liste und `origin/main` nach Merge `2ccd62b83a69ffc311efa81327
 
 ## Nächste Aktion
 
-CAB-QA-004 ist beobachtet und bleibt blockiert; siehe Befund 2026-07-06.
+CAB-QA-004 ist beobachtet: externe RepoBrief-/Lenskit-Manifestreferenzen fuer `cabinet/main` sind registriert. Naechste Aktion: CAB-QA-007 nur als read-only Producer auf Basis dieser Manifestbeobachtung planen.
 - [Reference Refresh Contract 2026-07-03](reference-refresh-contract-2026-07-03.md)
 - [Bureau Reference Refresh Plan 2026-07-03](bureau-reference-refresh-plan-2026-07-03.md)
 - [Bureau Reference Refresh Proposal 2026-07-03](bureau-reference-refresh-proposal-2026-07-03.md)
