@@ -1,8 +1,8 @@
-# CAB-QA-004 — Read-only Ecosystem Signal Ingest
+# CAB-QA-005 — Read-only Ecosystem Signal Ingest
 
 ## Status
 
-- Zustand: planned
+- Zustand: reviewable
 - Owner: Cabinet
 - Bureau-Kandidat: `claim:cabinet-read-only-ecosystem-signal-ingest-v0`
 - Erstellt: 2026-07-05
@@ -22,7 +22,7 @@ Wenn Signale direkt als Arbeit interpretiert werden, entsteht eine verdeckte Orc
 
 ## Synthese
 
-CAB-QA-004 baut nur Contract, Schema, Validator, Test und Fixture. Bureau darf daraus noch keine operative Aufgabe ableiten.
+CAB-QA-005 baut nur Contract, Schema, Validator, Test und Fixture. Bureau darf daraus noch keine operative Aufgabe ableiten.
 
 ## Akzeptanz
 

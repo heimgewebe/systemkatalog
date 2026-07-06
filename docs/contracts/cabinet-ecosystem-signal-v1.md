@@ -45,7 +45,7 @@ Jedes Signal bindet eine beobachtete Aussage an:
   "id": "signal:github:heimgewebe.bureau:pr:95:state:5e832b320786",
   "observedAt": "2026-07-05T16:38:42Z",
   "sourceSystem": "github",
-  "subject": "repo:bureau",
+  "subject": "pr:heimgewebe/bureau#95",
   "predicate": "github_pr_state",
   "object": "open",
   "evidence": [
@@ -80,6 +80,10 @@ Jedes Signal bindet eine beobachtete Aussage an:
   ]
 }
 ```
+
+## Subject-Konvention
+
+`subject` benennt die beobachtete Entitaet. PR-bezogene Praedikate wie `github_pr_state`, `github_pr_draft` und `github_check_state` nutzen `pr:<owner>/<repo>#<number>`. Repo-weite Praedikate nutzen `repo:<name>`.
 
 ## Erlaubte Source-Systeme
 
