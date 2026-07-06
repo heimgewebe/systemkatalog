@@ -88,6 +88,9 @@ def validate_signal(signal: dict[str, Any]) -> None:
         item = _object(raw, f"evidence {index}")
         _text(item.get("type"), f"evidence {index} type")
         _text(item.get("ref"), f"evidence {index} ref")
+        url = item.get("url")
+        if url is not None:
+            _text(url, f"evidence {index} url")
         sha = item.get("observedHeadSha")
         if sha is not None and (not isinstance(sha, str) or len(sha) != 40 or any(ch not in "0123456789abcdef" for ch in sha)):
             raise EcosystemSignalError(f"evidence {index} observedHeadSha must be a lowercase git SHA")

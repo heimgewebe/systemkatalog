@@ -71,6 +71,19 @@ class EcosystemSignalContractTests(unittest.TestCase):
         with self.assertRaises(EcosystemSignalError):
             validate_signal(signal)
 
+    def test_evidence_url_must_be_non_empty_string_when_present(self) -> None:
+        for bad_url in ("", " https://github.com/heimgewebe/bureau/pull/95 ", 7):
+            with self.subTest(bad_url=bad_url):
+                signal = valid_signal()
+                signal["evidence"][0]["url"] = bad_url
+                with self.assertRaises(EcosystemSignalError):
+                    validate_signal(signal)
+
+    def test_evidence_url_may_be_absent(self) -> None:
+        signal = valid_signal()
+        del signal["evidence"][0]["url"]
+        validate_signal(signal)
+
     def test_schema_constants_match_validator(self) -> None:
         schema = json.loads((ROOT / SCHEMA_PATH).read_text(encoding="utf-8"))
         properties = schema["properties"]
