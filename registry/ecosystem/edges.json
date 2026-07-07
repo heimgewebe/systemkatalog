@@ -15,7 +15,12 @@
     "renders",
     "hosts",
     "scope_boundary",
-    "implements"
+    "implements",
+    "delivers_to",
+    "emits_to",
+    "evidence_for",
+    "displayed_by",
+    "learning_input_for"
   ],
   "edges": [
     {
@@ -234,6 +239,41 @@
       "type": "provides",
       "status": "active",
       "note": "Primary check state can be reflected."
+    },
+    {
+      "from": "repo:plexer",
+      "to": "repo:chronik",
+      "type": "delivers_to",
+      "status": "active",
+      "note": "Plexer delivers bounded operational events to Chronik agent.ledger when configured."
+    },
+    {
+      "from": "repo:grabowski",
+      "to": "repo:chronik",
+      "type": "emits_to",
+      "status": "opt_in",
+      "note": "Grabowski may write task-local agent-run events through an explicit Chronik outbox path."
+    },
+    {
+      "from": "repo:chronik",
+      "to": "repo:bureau",
+      "type": "evidence_for",
+      "status": "bounded",
+      "note": "Chronik event presence can support evidence references; Bureau still owns task and verification truth."
+    },
+    {
+      "from": "repo:chronik",
+      "to": "repo:leitstand",
+      "type": "displayed_by",
+      "status": "planned",
+      "note": "Leitstand may display Chronik state without treating the display as authority."
+    },
+    {
+      "from": "repo:chronik",
+      "to": "repo:heimlern",
+      "type": "learning_input_for",
+      "status": "planned",
+      "note": "Heimlern may consume historical outcomes offline; no policy is auto-applied."
     }
   ]
 }

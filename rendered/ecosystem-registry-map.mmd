@@ -15,9 +15,11 @@ flowchart TD
         repo_chronik["Chronik<br/>id: repo:chronik<br/>repository<br/>status: active"]
         repo_device_graph["Device Graph<br/>id: repo:device-graph<br/>repository<br/>status: related"]
         repo_grabowski["Grabowski<br/>id: repo:grabowski<br/>repository<br/>status: active"]
+        repo_heimlern["heimlern<br/>id: repo:heimlern<br/>repository<br/>status: active"]
         repo_infra["Infra<br/>id: repo:infra<br/>repository<br/>status: active"]
         repo_leitstand["Leitstand<br/>id: repo:leitstand<br/>repository<br/>status: active"]
         repo_lenskit["Lenskit / RepoBrief implementation<br/>id: repo:lenskit<br/>repository<br/>status: legacy_name_active"]
+        repo_plexer["Plexer<br/>id: repo:plexer<br/>repository<br/>status: active"]
         repo_schauwerk["Schauwerk<br/>id: repo:schauwerk<br/>repository<br/>status: active"]
         repo_steuerboard["Steuerboard<br/>id: repo:steuerboard<br/>repository<br/>status: active"]
         repo_vibe_lab["Vibe-Lab<br/>id: repo:vibe-lab<br/>repository<br/>status: active"]
@@ -60,18 +62,23 @@ flowchart TD
     repo_cabinet -->|owns / draft| artifact_ecosystem_map
     repo_cabinet -->|exports_candidate_to / planned| repo_bureau
     repo_cabinet -->|provides / active| repo_leitstand
+    repo_chronik -->|evidence_for / bounded| repo_bureau
     repo_chronik -->|provides / active| repo_cabinet
+    repo_chronik -->|learning_input_for / planned| repo_heimlern
+    repo_chronik -->|displayed_by / planned| repo_leitstand
     repo_chronik -->|provides / active| repo_leitstand
     repo_device_graph -->|scope_boundary / related| artifact_ecosystem_map
     repo_grabowski -->|delegates_to / active| agent_claude
     repo_grabowski -->|delegates_to / active| agent_codex
     repo_grabowski -->|delegates_to / active| agent_jules
     repo_grabowski -->|delegates_to / active| agent_local
+    repo_grabowski -->|emits_to / opt_in| repo_chronik
     repo_grabowski -->|operates_on / active| service_github
     repo_infra -->|provides / active| runtime_heim_pc
     repo_infra -->|provides / active| runtime_heimserver
     repo_leitstand -->|observes / active| artifact_ecosystem_map
     repo_lenskit -->|implements / active| concept_repobrief
+    repo_plexer -->|delivers_to / active| repo_chronik
     repo_schauwerk -->|renders / planned| artifact_ecosystem_map
     repo_steuerboard -->|observes / active| repo_cabinet
     repo_vibe_lab -->|provides / active| repo_cabinet

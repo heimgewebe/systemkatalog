@@ -82,7 +82,7 @@
       "id": "repo:chronik",
       "kind": "repository",
       "label": "Chronik",
-      "role": "event trace and historical memory",
+      "role": "append-only event ledger and historical evidence axis",
       "status": "active"
     },
     {
@@ -167,6 +167,20 @@
       "kind": "repository",
       "label": "Leitstand",
       "role": "read-only ecosystem observability and status projection",
+      "status": "active"
+    },
+    {
+      "id": "repo:plexer",
+      "kind": "repository",
+      "label": "Plexer",
+      "role": "bounded event delivery and queueing gateway",
+      "status": "active"
+    },
+    {
+      "id": "repo:heimlern",
+      "kind": "repository",
+      "label": "heimlern",
+      "role": "offline operator-learning and proposal generation",
       "status": "active"
     }
   ]
