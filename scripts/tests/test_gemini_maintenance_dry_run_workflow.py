@@ -129,17 +129,26 @@ class GeminiMaintenanceDryRunWorkflowTests(unittest.TestCase):
         self.assertIn("gemini-maintenance-dry-run-scan.json", workflow)
         self.assertIn("CABINET-GEMINI-MAINT-V1-T004", workflow)
 
-    def test_execution_manifest_matches_workflow_boundary(self) -> None:
+    def test_execution_manifest_prefers_local_personal_login(self) -> None:
         manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
         self.assertEqual(manifest["status"], "manual-dry-run-enabled")
         self.assertEqual(manifest["bureau_task_lineage"], "CABINET-GEMINI-MAINT-V1-T004")
-        self.assertEqual(manifest["gemini_cli"]["initial_candidate_npm_version"], GEMINI_CLI_NPM_VERSION)
-        self.assertIn("leading v tag refs are forbidden", manifest["gemini_cli"]["version_policy"])
+        self.assertEqual(manifest["primary_execution_path"]["id"], "local-personal-gemini-cli")
+        self.assertEqual(manifest["primary_execution_path"]["runner"], "scripts/run_gemini_maintenance_local_dry_run.py")
+        self.assertFalse(manifest["primary_execution_path"]["requires_repository_credential"])
+        self.assertFalse(manifest["primary_execution_path"]["requires_workflow_dispatch"])
+        self.assertEqual(manifest["optional_ci_execution_path"]["id"], "github-actions-machine-auth")
+        self.assertEqual(
+            manifest["optional_ci_execution_path"]["gemini_cli"]["initial_candidate_npm_version"],
+            GEMINI_CLI_NPM_VERSION,
+        )
+        self.assertIn("leading v tag refs are forbidden", manifest["optional_ci_execution_path"]["gemini_cli"]["version_policy"])
         self.assertEqual(manifest["trigger_policy"]["schedule"], "forbidden until reviewed dry run succeeds")
         self.assertEqual(manifest["permissions_policy"]["contents"], "read")
         self.assertEqual(manifest["permissions_policy"]["issues"], "none")
         self.assertFalse(manifest["permissions_policy"]["checkout_persist_credentials"])
         self.assertFalse(manifest["dry_run_gate"]["may_create_schedule"])
+        self.assertTrue(manifest["dry_run_gate"]["may_run_local_manual_runner"])
 
     def test_extract_valid_scan_from_summary(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
