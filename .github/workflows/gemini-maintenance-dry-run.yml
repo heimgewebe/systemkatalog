@@ -88,6 +88,15 @@ jobs:
           task_approval, claim_truth, merge_readiness, runtime_correctness, bureau_import, autonomous_dispatch, bureau_task_created, schedule_approval, gemini_schedulability.
           PROMPT
 
+      - name: Read Gemini prompt
+        id: read-prompt
+        run: |
+          {
+            echo 'prompt<<GEMINI_PROMPT_EOF'
+            cat "$RUNNER_TEMP/gemini-maintenance-prompt.md"
+            echo 'GEMINI_PROMPT_EOF'
+          } >> "$GITHUB_OUTPUT"
+
       - name: Run Gemini over curated evidence packet
         id: gemini
         continue-on-error: true
