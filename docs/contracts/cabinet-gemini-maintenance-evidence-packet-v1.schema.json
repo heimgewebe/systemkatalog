@@ -1,0 +1,134 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://heimgewebe.local/cabinet/contracts/cabinet-gemini-maintenance-evidence-packet-v1.schema.json",
+  "title": "Cabinet Gemini Maintenance Evidence Packet v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "kind",
+    "contractVersion",
+    "contractPath",
+    "schemaPath",
+    "generator",
+    "source",
+    "inputPolicy",
+    "summary",
+    "maintenanceReport",
+    "entries",
+    "effectFlags",
+    "exclusionReport",
+    "doesNotEstablish"
+  ],
+  "properties": {
+    "schemaVersion": {"const": 1},
+    "kind": {"const": "cabinet_gemini_maintenance_evidence_packet"},
+    "contractVersion": {"const": "1"},
+    "contractPath": {"const": "docs/contracts/cabinet-gemini-maintenance-evidence-packet-v1.md"},
+    "schemaPath": {"const": "docs/contracts/cabinet-gemini-maintenance-evidence-packet-v1.schema.json"},
+    "generator": {"const": "scripts/write_gemini_maintenance_evidence_packet.py"},
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["repository", "commit", "generatedAt", "mode"],
+      "properties": {
+        "repository": {"const": "heimgewebe/cabinet"},
+        "commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "generatedAt": {"type": "string", "minLength": 1},
+        "mode": {"const": "curated_allowlist_only"}
+      }
+    },
+    "inputPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mode", "allowedRepoPaths", "generatedRefs", "forbiddenPathPrefixes", "forbiddenFileNames", "forbiddenFileSuffixes", "fullRepositoryCrawlAllowed"],
+      "properties": {
+        "mode": {"const": "curated_allowlist_only"},
+        "allowedRepoPaths": {"type": "array", "minItems": 10, "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+        "generatedRefs": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+        "forbiddenPathPrefixes": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+        "forbiddenFileNames": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+        "forbiddenFileSuffixes": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+        "fullRepositoryCrawlAllowed": {"const": false}
+      }
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["entryCount", "sourceFileCount", "generatedEntryCount", "totalBytes", "manifestSha256", "maintenanceReportStatus", "maintenanceReportFindingCount"],
+      "properties": {
+        "entryCount": {"type": "integer", "minimum": 1},
+        "sourceFileCount": {"type": "integer", "minimum": 1},
+        "generatedEntryCount": {"type": "integer", "minimum": 1},
+        "totalBytes": {"type": "integer", "minimum": 1},
+        "manifestSha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "maintenanceReportStatus": {"enum": ["pass", "warn", "fail"]},
+        "maintenanceReportFindingCount": {"type": "integer", "minimum": 0}
+      }
+    },
+    "maintenanceReport": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ref", "path", "kind", "sha256", "summary"],
+      "properties": {
+        "ref": {"const": "evidence:generated:maintenance-report"},
+        "path": {"const": "generated/cabinet-maintenance-report.json"},
+        "kind": {"const": "cabinet_maintenance_report"},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "summary": {"type": "object"}
+      }
+    },
+    "entries": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/entry"}},
+    "effectFlags": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "issueCreationAllowed": {"const": false},
+        "prCreationAllowed": {"const": false},
+        "commentCreationAllowed": {"const": false},
+        "taskCreationAllowed": {"const": false},
+        "queueMutationAllowed": {"const": false},
+        "grabowskiDispatchAllowed": {"const": false},
+        "pushOrMergeAllowed": {"const": false},
+        "runtimeMutationAllowed": {"const": false},
+        "secretRequestAllowed": {"const": false},
+        "dumpGenerationAllowed": {"const": false},
+        "cleanupActionAllowed": {"const": false},
+        "externalModelExecutionAllowed": {"const": false},
+        "scheduleAllowed": {"const": false}
+      },
+      "required": ["issueCreationAllowed", "prCreationAllowed", "commentCreationAllowed", "taskCreationAllowed", "queueMutationAllowed", "grabowskiDispatchAllowed", "pushOrMergeAllowed", "runtimeMutationAllowed", "secretRequestAllowed", "dumpGenerationAllowed", "cleanupActionAllowed", "externalModelExecutionAllowed", "scheduleAllowed"]
+    },
+    "exclusionReport": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["forbiddenPathHits", "privateKeyMarkerHits", "fullRepositoryCrawlUsed", "runtimeConfigIncluded", "privateLogsIncluded", "agentRuntimeIncluded"],
+      "properties": {
+        "forbiddenPathHits": {"type": "array", "maxItems": 0},
+        "privateKeyMarkerHits": {"type": "array", "maxItems": 0},
+        "fullRepositoryCrawlUsed": {"const": false},
+        "runtimeConfigIncluded": {"const": false},
+        "privateLogsIncluded": {"const": false},
+        "agentRuntimeIncluded": {"const": false}
+      }
+    },
+    "doesNotEstablish": {"type": "array", "minItems": 12, "items": {"type": "string", "minLength": 1}, "uniqueItems": true}
+  },
+  "$defs": {
+    "entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ref", "path", "role", "mediaType", "sha256", "bytes", "lines", "content"],
+      "properties": {
+        "ref": {"type": "string", "pattern": "^evidence:"},
+        "path": {"type": "string", "minLength": 1},
+        "role": {"type": "string", "minLength": 1},
+        "mediaType": {"type": "string", "minLength": 1},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "bytes": {"type": "integer", "minimum": 0},
+        "lines": {"type": "integer", "minimum": 0},
+        "content": {"type": "string"}
+      }
+    }
+  }
+}
