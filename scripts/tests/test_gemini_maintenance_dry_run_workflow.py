@@ -21,6 +21,7 @@ from validate_gemini_maintenance_scan import EFFECT_FLAGS  # noqa: E402
 
 WORKFLOW = ROOT / ".github/workflows/gemini-maintenance-dry-run.yml"
 MANIFEST = ROOT / "policy/gemini-maintenance-execution-manifest.v1.json"
+GEMINI_CLI_NPM_VERSION = "0.51.0-nightly.20260707.g15a9429b6"
 
 
 def read_workflow() -> str:
@@ -117,7 +118,8 @@ class GeminiMaintenanceDryRunWorkflowTests(unittest.TestCase):
         workflow = read_workflow()
         self.assertIn("persist-credentials: false", workflow)
         self.assertIn("google-github-actions/run-gemini-cli@f77273f4c914e4bf38440cf36a0369cb64a37489", workflow)
-        self.assertIn("gemini_cli_version: v0.51.0-nightly.20260707.g15a9429b6", workflow)
+        self.assertIn(f"gemini_cli_version: {GEMINI_CLI_NPM_VERSION}", workflow)
+        self.assertNotIn(f"gemini_cli_version: v{GEMINI_CLI_NPM_VERSION}", workflow)
         self.assertIn("gemini_debug: 'false'", workflow)
         self.assertIn("upload_artifacts: 'false'", workflow)
         self.assertIn('"coreTools":["ReadFileTool"]', workflow)
@@ -131,7 +133,8 @@ class GeminiMaintenanceDryRunWorkflowTests(unittest.TestCase):
         manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
         self.assertEqual(manifest["status"], "manual-dry-run-enabled")
         self.assertEqual(manifest["bureau_task_lineage"], "CABINET-GEMINI-MAINT-V1-T004")
-        self.assertTrue(manifest["trigger_policy"]["workflowDispatchOnly"] if "workflowDispatchOnly" in manifest["trigger_policy"] else True)
+        self.assertEqual(manifest["gemini_cli"]["initial_candidate_npm_version"], GEMINI_CLI_NPM_VERSION)
+        self.assertIn("leading v tag refs are forbidden", manifest["gemini_cli"]["version_policy"])
         self.assertEqual(manifest["trigger_policy"]["schedule"], "forbidden until reviewed dry run succeeds")
         self.assertEqual(manifest["permissions_policy"]["contents"], "read")
         self.assertEqual(manifest["permissions_policy"]["issues"], "none")
