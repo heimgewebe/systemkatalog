@@ -47,6 +47,7 @@ flowchart TD
     subgraph kind_agent[Agenten]
         agent_claude["Claude<br/>id: agent:claude<br/>agent<br/>status: available_with_quota_limits"]
         agent_codex["Codex<br/>id: agent:codex<br/>agent<br/>status: available"]
+        agent_gemini["Gemini<br/>id: agent:gemini<br/>agent<br/>status: proposed"]
         agent_jules["Jules<br/>id: agent:jules<br/>agent<br/>status: available"]
         agent_local["Local agents<br/>id: agent:local<br/>agent<br/>status: available"]
     end
@@ -54,6 +55,7 @@ flowchart TD
     actor_alexander -->|steers / active| repo_cabinet
     agent_claude -->|reports_to / active| repo_grabowski
     agent_codex -->|reports_to / active| repo_grabowski
+    agent_gemini -->|reports_to / proposed| repo_grabowski
     agent_jules -->|reports_to / active| repo_grabowski
     agent_local -->|reports_to / active| repo_grabowski
     concept_repobrief -->|provides / active| repo_cabinet
@@ -70,6 +72,7 @@ flowchart TD
     repo_device_graph -->|scope_boundary / related| artifact_ecosystem_map
     repo_grabowski -->|delegates_to / active| agent_claude
     repo_grabowski -->|delegates_to / active| agent_codex
+    repo_grabowski -->|delegates_to / proposed| agent_gemini
     repo_grabowski -->|delegates_to / active| agent_jules
     repo_grabowski -->|delegates_to / active| agent_local
     repo_grabowski -->|emits_to / opt_in| repo_chronik
