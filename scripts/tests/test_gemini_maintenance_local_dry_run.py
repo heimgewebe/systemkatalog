@@ -19,7 +19,7 @@ if str(SCRIPTS) in sys.path:
     sys.path.remove(str(SCRIPTS))
 sys.path.insert(0, str(SCRIPTS))
 
-from run_gemini_maintenance_local_dry_run import build_prompt, main as local_main  # noqa: E402
+from run_gemini_maintenance_local_dry_run import _model_response_from_stdout, build_prompt, main as local_main  # noqa: E402
 
 DUMP_PERMISSION = "dump_generation_" + "permission"
 AUTO_DISPATCH = "autonomous_" + "dispatch"
@@ -156,6 +156,14 @@ class LocalGeminiMaintenanceDryRunTests(unittest.TestCase):
         self.assertIn("Do not request repository writes", prompt)
         self.assertNotIn("GEMINI_API_KEY", prompt)
 
+    def test_model_response_unwraps_gemini_json_wrapper(self) -> None:
+        response = '{"schemaVersion": 1, "kind": "cabinet_gemini_maintenance_scan"}'
+        wrapper = json.dumps({"response": response, "stats": {"models": {}}, "error": None})
+        self.assertEqual(_model_response_from_stdout(wrapper), response)
+
+    def test_model_response_keeps_plain_text_stdout(self) -> None:
+        self.assertEqual(_model_response_from_stdout("plain model text"), "plain model text")
+
     def test_local_runner_dry_run_writes_reviewable_blocked_artifacts(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -174,7 +182,16 @@ class LocalGeminiMaintenanceDryRunTests(unittest.TestCase):
             self.assertEqual(rc, 0)
             self.assertFalse(payload["ok"])
             self.assertEqual(payload["scanStatus"], "blocked")
-            for key in ("evidencePacket", "rawOutput", "scanOutput", "reviewOutput", "summaryOutput", "errorOutput", "promptOutput"):
+            for key in (
+                "evidencePacket",
+                "rawOutput",
+                "scanOutput",
+                "reviewOutput",
+                "summaryOutput",
+                "errorOutput",
+                "wrapperOutput",
+                "promptOutput",
+            ):
                 self.assertTrue(Path(payload[key]).is_file(), key)
             scan = json.loads(Path(payload["scanOutput"]).read_text(encoding="utf-8"))
             self.assertEqual(scan["status"], "blocked")
