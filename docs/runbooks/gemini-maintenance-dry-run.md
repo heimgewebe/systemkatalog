@@ -3,7 +3,8 @@
 Status: manual-only
 Owner: Cabinet
 Bureau task: `CABINET-GEMINI-MAINT-V1-T004`
-Workflow: `.github/workflows/gemini-maintenance-dry-run.yml`
+Primary path: local personal Gemini CLI login
+Optional path: `.github/workflows/gemini-maintenance-dry-run.yml` with API/Vertex-style machine auth
 
 ## Purpose
 
@@ -11,17 +12,74 @@ This runbook describes the first manual, artifact-only Gemini maintenance dry ru
 
 The run is not a schedule, not a Cabinet finding import, not a Bureau task import, not a Grabowski dispatch and not a runtime action.
 
-## Preconditions
+## Decision
+
+Use the **local personal Gemini CLI path** when the operator wants to use a personal Google/Gemini CLI login instead of a GitHub Actions API key.
+
+The GitHub Actions workflow remains an optional API-auth path. It is not the preferred path for a personal Google AI Pro / Google-account workflow, because GitHub Actions is a headless CI environment and cannot use an interactive personal browser login safely.
+
+## Local personal-login path
+
+### Preconditions
+
+- Cabinet is checked out locally.
+- Gemini CLI is installed.
+- `gemini` is available on `PATH`.
+- The operator has already run `gemini` once locally and completed the Google sign-in flow.
+- No `GEMINI_API_KEY` repository secret is required for this path.
+
+Gemini CLI supports signing in with Google in an interactive terminal. Its upstream README describes this as the first authentication option and says to start `gemini`, then choose **Sign in with Google** when prompted.
+
+### Local command
+
+Run from the Cabinet repository root:
+
+```bash
+python3 scripts/run_gemini_maintenance_local_dry_run.py --json
+```
+
+If the scan is blocked but artifacts should still be retained and reviewed, run:
+
+```bash
+python3 scripts/run_gemini_maintenance_local_dry_run.py --allow-blocked --json
+```
+
+The command:
+
+1. builds `pruefung/10 Laeufe/gemini-maintenance-evidence-packet-v1.json`,
+2. writes the exact prompt used for the run,
+3. invokes local `gemini` with the personal login,
+4. stores raw Gemini stdout/stderr,
+5. extracts and validates `gemini-maintenance-dry-run-scan.json`,
+6. writes a review scaffold.
+
+### Local expected artifacts
+
+The local path writes:
+
+- `pruefung/10 Laeufe/gemini-maintenance-evidence-packet-v1.json`
+- `pruefung/10 Laeufe/gemini-maintenance-dry-run-gemini-summary.txt`
+- `pruefung/10 Laeufe/gemini-maintenance-dry-run-gemini-error.txt`
+- `pruefung/10 Laeufe/gemini-maintenance-dry-run-raw-output.json`
+- `pruefung/10 Laeufe/gemini-maintenance-dry-run-scan.json`
+- `pruefung/10 Laeufe/gemini-maintenance-dry-run-review.md`
+- `pruefung/10 Laeufe/gemini-maintenance-dry-run-prompt.md`
+
+## Optional GitHub Actions API-auth path
+
+Use this path only when API-key, Vertex, or other reviewed machine authentication is desired.
+
+### Preconditions
 
 - Cabinet `main` contains `.github/workflows/gemini-maintenance-dry-run.yml`.
-- The repository secret `GEMINI_API_KEY` exists if API-key authentication is used.
+- A reviewed machine auth method exists, such as `GEMINI_API_KEY`, Vertex AI, or another supported CI auth option.
 - The workflow input confirmation is exactly:
 
 ```text
 RUN_ARTIFACT_ONLY_GEMINI_DRY_RUN
 ```
 
-## Manual GitHub UI path
+### Manual GitHub UI path
 
 1. Open GitHub Actions for `heimgewebe/cabinet`.
 2. Select **Gemini Maintenance Dry Run**.
@@ -29,9 +87,9 @@ RUN_ARTIFACT_ONLY_GEMINI_DRY_RUN
 4. Enter `RUN_ARTIFACT_ONLY_GEMINI_DRY_RUN` as confirmation.
 5. Start the workflow.
 
-## Expected artifacts
+### Expected GitHub artifact
 
-The run uploads one artifact named `gemini-maintenance-dry-run` containing:
+The workflow uploads one artifact named `gemini-maintenance-dry-run` containing:
 
 - `pruefung/10 Laeufe/gemini-maintenance-evidence-packet-v1.json`
 - `pruefung/10 Laeufe/gemini-maintenance-dry-run-raw-output.json`
@@ -40,13 +98,13 @@ The run uploads one artifact named `gemini-maintenance-dry-run` containing:
 
 ## Expected success condition
 
-The workflow is successful only if `gemini-maintenance-dry-run-scan.json` validates as a completed `cabinet_gemini_maintenance_scan`.
+The dry run is successful only if `gemini-maintenance-dry-run-scan.json` validates as a completed `cabinet_gemini_maintenance_scan`.
 
 A blocked scan artifact is still useful evidence, but it does not complete T004.
 
 ## Review checklist
 
-Review the uploaded artifacts before any Bureau or schedule decision.
+Review the uploaded or locally written artifacts before any Bureau or schedule decision.
 
 Check:
 
@@ -61,11 +119,13 @@ Check:
 
 ## Failure interpretation
 
-A failed workflow can still be informative.
+A failed workflow or local run can still be informative.
 
 Common cases:
 
-- Missing or invalid `GEMINI_API_KEY`: Gemini availability is not established.
+- Local Gemini CLI not installed: local runner cannot start.
+- Local Gemini CLI not signed in: personal-login availability is not established.
+- Missing or invalid machine auth on GitHub Actions: CI-auth availability is not established.
 - Invalid Gemini JSON: scan quality is not established.
 - Blocked scan artifact: raw output must be reviewed manually.
 - Effect flag violation: output is invalid and must not feed Bureau.
@@ -88,6 +148,6 @@ This runbook does not approve:
 
 ## Next state transition
 
-Only after a reviewed workflow artifact exists may `CABINET-GEMINI-MAINT-V1-T004` move from `blocked` to `verified`.
+Only after a reviewed dry-run artifact exists may `CABINET-GEMINI-MAINT-V1-T004` move from `blocked` to `verified`.
 
 `CABINET-GEMINI-MAINT-V1-T005` remains blocked by T004 and must not decide scheduling before a reviewed dry-run artifact exists.
