@@ -125,6 +125,19 @@ class CabinetFrontierContractTests(unittest.TestCase):
         self.assertEqual(rc, 1)
         self.assertFalse(json.loads(stdout.getvalue())["ok"])
 
+    def test_validate_cli_reports_non_string_list_items_without_traceback(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "frontier.jsonl"
+            candidate = valid_candidate()
+            candidate["forbiddenEffects"] = ["bureau_task_creation", {"bad": "item"}]
+            path.write_text(json.dumps(candidate, sort_keys=True) + "\n", encoding="utf-8")
+            with contextlib.redirect_stdout(io.StringIO()) as stdout:
+                rc = validate_main(["--input", str(path), "--json"])
+        payload = json.loads(stdout.getvalue())
+        self.assertEqual(rc, 1)
+        self.assertFalse(payload["ok"])
+        self.assertIn("forbiddenEffects item 2", payload["error"])
+
     def test_schema_constants_match_validator(self) -> None:
         schema = json.loads((ROOT / SCHEMA_PATH).read_text(encoding="utf-8"))
         properties = schema["properties"]

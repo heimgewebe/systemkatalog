@@ -113,14 +113,14 @@ def _timestamp(value: Any, label: str) -> str:
 def _string_list(value: Any, label: str, *, exact: tuple[str, ...] | None = None, prefix: str | None = None) -> list[str]:
     if not isinstance(value, list) or not value:
         raise CabinetFrontierError(f"{label} must be a non-empty list")
-    if len(value) != len(set(value)):
-        raise CabinetFrontierError(f"{label} must not contain duplicates")
     result: list[str] = []
     for index, item in enumerate(value, start=1):
         raw = _text(item, f"{label} item {index}")
         if prefix and not raw.startswith(prefix):
             raise CabinetFrontierError(f"{label} item {index} must start with {prefix}")
         result.append(raw)
+    if len(result) != len(set(result)):
+        raise CabinetFrontierError(f"{label} must not contain duplicates")
     if exact is not None and set(result) != set(exact):
         raise CabinetFrontierError(f"{label} must exactly list required values")
     return result
