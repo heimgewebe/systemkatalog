@@ -16,8 +16,8 @@ if str(SCRIPTS) in sys.path:
     sys.path.remove(str(SCRIPTS))
 sys.path.insert(0, str(SCRIPTS))
 
-from extract_gemini_maintenance_scan import main as extract_main  # noqa: E402
-from validate_gemini_maintenance_scan import EFFECT_FLAGS  # noqa: E402
+from extract_gemini_maintenance_scan import _blocked_scan, main as extract_main  # noqa: E402
+from validate_gemini_maintenance_scan import EFFECT_FLAGS, validate_scan  # noqa: E402
 
 WORKFLOW = ROOT / ".github/workflows/gemini-maintenance-dry-run.yml"
 MANIFEST = ROOT / "policy/gemini-maintenance-execution-manifest.v1.json"
@@ -194,6 +194,55 @@ class GeminiMaintenanceDryRunWorkflowTests(unittest.TestCase):
             blocked = json.loads(scan_output.read_text(encoding="utf-8"))
             self.assertEqual(blocked["status"], "blocked")
             self.assertTrue(all(value is False for value in blocked["effectFlags"].values()))
+
+    def test_extract_invalid_scan_with_empty_summary_writes_blocked_scan(self) -> None:
+        broken = valid_scan()
+        broken["findings"]["plausible"] = [
+            {
+                "id": "finding:plausible:empty-summary",
+                "title": "Empty summary",
+                "summary": "",
+                "severity": "unknown",
+                "confidence": "medium",
+                "evidenceRefs": [],
+                "recommendedNextAction": "review_only",
+            }
+        ]
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            summary = root / "summary.txt"
+            raw = root / "raw.json"
+            scan_output = root / "scan.json"
+            summary.write_text(json.dumps(broken), encoding="utf-8")
+            with contextlib.redirect_stdout(io.StringIO()) as stdout:
+                rc = extract_main([
+                    "--summary-input",
+                    str(summary),
+                    "--raw-output",
+                    str(raw),
+                    "--scan-output",
+                    str(scan_output),
+                    "--source-commit",
+                    "a" * 40,
+                    "--json",
+                ])
+            payload = json.loads(stdout.getvalue())
+            self.assertEqual(rc, 2)
+            self.assertFalse(payload["ok"])
+            blocked = json.loads(scan_output.read_text(encoding="utf-8"))
+            self.assertEqual(blocked["status"], "blocked")
+            self.assertTrue(blocked["findings"]["plausible"][0]["summary"].strip())
+            validate_scan(blocked)
+
+    def test_blocked_scan_normalizes_empty_reason(self) -> None:
+        blocked = _blocked_scan(
+            created_at="2026-07-08T17:00:00Z",
+            source_commit="c" * 40,
+            evidence_manifest_ref="pruefung/10 Laeufe/gemini-maintenance-evidence-packet-v1.json",
+            reason="  \n\t  ",
+        )
+        self.assertTrue(blocked["findings"]["plausible"][0]["summary"].strip())
+        validate_scan(blocked)
 
 
 if __name__ == "__main__":
