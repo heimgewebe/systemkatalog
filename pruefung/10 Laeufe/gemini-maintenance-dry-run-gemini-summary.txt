@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "kind": "cabinet_gemini_maintenance_scan",
+  "contractVersion": "1",
+  "contractPath": "docs/contracts/cabinet-gemini-maintenance-scan-v1.md",
+  "schemaPath": "docs/contracts/cabinet-gemini-maintenance-scan-v1.schema.json",
+  "id": "gemini-scan:cabinet:2026-07-08T19-22-25Z",
+  "createdAt": "2026-07-08T19:22:25Z",
+  "status": "completed",
+  "source": {
+    "repository": "heimgewebe/cabinet",
+    "commit": "09065341e17f261a2ca476cbf186d1bd3e8328ef",
+    "executionManifestRef": "policy/gemini-maintenance-execution-manifest.v1.json",
+    "evidenceManifestRef": "pruefung/10 Laeufe/gemini-maintenance-evidence-packet-v1.json",
+    "inputRefs": [
+      "evidence:AGENTS.md",
+      "evidence:README.md",
+      "evidence:docs/blueprints/agent-routing-brief-v0.md",
+      "evidence:docs/blueprints/cabinet-maintenance-radar-v0.md",
+      "evidence:docs/contracts/cabinet-frontier-v1.md",
+      "evidence:docs/contracts/cabinet-gemini-maintenance-scan-v1.md",
+      "evidence:generated:maintenance-report",
+      "evidence:registry/ecosystem/claims.jsonl",
+      "evidence:registry/ecosystem/edges.json",
+      "evidence:registry/ecosystem/external-dump-sources.json",
+      "evidence:registry/ecosystem/nodes.json"
+    ]
+  },
+  "lane": {
+    "id": "cabinet-gemini-maintenance",
+    "bureauTask": "CABINET-GEMINI-MAINT-V1-T004",
+    "mode": "manual_dry_run"
+  },
+  "findings": {
+    "observed": [
+      {
+        "id": "finding:observed:gemini-proposal-only",
+        "title": "Gemini remains proposal-only",
+        "summary": "Gemini is currently registered only as a proposal-only review/scout capacity in Cabinet.",
+        "severity": "low",
+        "confidence": "high",
+        "evidenceRefs": [
+          "evidence:docs/blueprints/agent-routing-brief-v0.md",
+          "evidence:registry/ecosystem/claims.jsonl"
+        ],
+        "recommendedNextAction": "review_only"
+      }
+    ],
+    "plausible": [],
+    "speculative": []
+  },
+  "effectFlags": {
+    "issueCreated": false,
+    "prCreated": false,
+    "commentCreated": false,
+    "taskCreated": false,
+    "queueMutated": false,
+    "grabowskiDispatched": false,
+    "pushOrMerge": false,
+    "runtimeMutated": false,
+    "secretRequested": false,
+    "dumpGenerated": false,
+    "cleanupAction": false
+  },
+  "forbiddenEffects": [
+    "issue_creation",
+    "pr_creation",
+    "comment_creation",
+    "bureau_task_creation",
+    "queue_mutation",
+    "grabowski_dispatch",
+    "merge_or_push",
+    "runtime_mutation",
+    "secret_request",
+    "dump_generation",
+    "cleanup_action"
+  ],
+  "doesNotEstablish": [
+    "task_approval",
+    "claim_truth",
+    "merge_readiness",
+    "runtime_correctness",
+    "bureau_import",
+    "autonomous_dispatch",
+    "bureau_task_created",
+    "schedule_approval",
+    "gemini_schedulability"
+  ]
+}

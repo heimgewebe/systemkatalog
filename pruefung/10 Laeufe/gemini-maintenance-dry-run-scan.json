@@ -1,0 +1,89 @@
+{
+  "contractPath": "docs/contracts/cabinet-gemini-maintenance-scan-v1.md",
+  "contractVersion": "1",
+  "createdAt": "2026-07-08T19:22:25Z",
+  "doesNotEstablish": [
+    "task_approval",
+    "claim_truth",
+    "merge_readiness",
+    "runtime_correctness",
+    "bureau_import",
+    "autonomous_dispatch",
+    "bureau_task_created",
+    "schedule_approval",
+    "gemini_schedulability"
+  ],
+  "effectFlags": {
+    "cleanupAction": false,
+    "commentCreated": false,
+    "dumpGenerated": false,
+    "grabowskiDispatched": false,
+    "issueCreated": false,
+    "prCreated": false,
+    "pushOrMerge": false,
+    "queueMutated": false,
+    "runtimeMutated": false,
+    "secretRequested": false,
+    "taskCreated": false
+  },
+  "findings": {
+    "observed": [
+      {
+        "confidence": "high",
+        "evidenceRefs": [
+          "evidence:docs/blueprints/agent-routing-brief-v0.md",
+          "evidence:registry/ecosystem/claims.jsonl"
+        ],
+        "id": "finding:observed:gemini-proposal-only",
+        "recommendedNextAction": "review_only",
+        "severity": "low",
+        "summary": "Gemini is currently registered only as a proposal-only review/scout capacity in Cabinet.",
+        "title": "Gemini remains proposal-only"
+      }
+    ],
+    "plausible": [],
+    "speculative": []
+  },
+  "forbiddenEffects": [
+    "issue_creation",
+    "pr_creation",
+    "comment_creation",
+    "bureau_task_creation",
+    "queue_mutation",
+    "grabowski_dispatch",
+    "merge_or_push",
+    "runtime_mutation",
+    "secret_request",
+    "dump_generation",
+    "cleanup_action"
+  ],
+  "id": "gemini-scan:cabinet:2026-07-08T19-22-25Z",
+  "kind": "cabinet_gemini_maintenance_scan",
+  "lane": {
+    "bureauTask": "CABINET-GEMINI-MAINT-V1-T004",
+    "id": "cabinet-gemini-maintenance",
+    "mode": "manual_dry_run"
+  },
+  "schemaPath": "docs/contracts/cabinet-gemini-maintenance-scan-v1.schema.json",
+  "schemaVersion": 1,
+  "source": {
+    "commit": "09065341e17f261a2ca476cbf186d1bd3e8328ef",
+    "evidenceManifestRef": "pruefung/10 Laeufe/gemini-maintenance-evidence-packet-v1.json",
+    "executionManifestRef": "policy/gemini-maintenance-execution-manifest.v1.json",
+    "inputRefs": [
+      "evidence:AGENTS.md",
+      "evidence:README.md",
+      "evidence:docs/blueprints/agent-routing-brief-v0.md",
+      "evidence:docs/blueprints/cabinet-maintenance-radar-v0.md",
+      "evidence:docs/contracts/cabinet-frontier-v1.md",
+      "evidence:docs/contracts/cabinet-gemini-maintenance-scan-v1.md",
+      "evidence:generated:maintenance-report",
+      "evidence:registry/ecosystem/claims.jsonl",
+      "evidence:registry/ecosystem/edges.json",
+      "evidence:registry/ecosystem/external-dump-sources.json",
+      "evidence:registry/ecosystem/nodes.json"
+    ],
+    "repository": "heimgewebe/cabinet"
+  },
+  "status": "completed"
+}
