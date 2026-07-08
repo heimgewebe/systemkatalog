@@ -103,7 +103,7 @@ jobs:
         uses: google-github-actions/run-gemini-cli@f77273f4c914e4bf38440cf36a0369cb64a37489 # v0.1.22
         with:
           gemini_api_key: ${{ secrets.GEMINI_API_KEY }}
-          gemini_cli_version: v0.51.0-nightly.20260707.g15a9429b6
+          gemini_cli_version: 0.51.0-nightly.20260707.g15a9429b6
           gemini_debug: 'false'
           upload_artifacts: 'false'
           settings: >-
