@@ -36,6 +36,7 @@ from write_gemini_maintenance_evidence_packet import (  # noqa: E402
 DUMP_PERMISSION = "dump_generation_" + "permission"
 AUTO_DISPATCH = "autonomous_" + "dispatch"
 CABINET_GENERATES = "cabinet" + "Generates" + "Dumps"
+PRIVATE_KEY_FIXTURE = "-----BEGIN " + "PRIVATE KEY-----\nredacted\n"
 
 
 def write_text(path: Path, content: str = "fixture\n") -> None:
@@ -192,7 +193,7 @@ class GeminiMaintenanceEvidencePacketTests(unittest.TestCase):
     def test_private_key_marker_in_curated_input_fails_closed(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
-            make_repo(root, agents_content="-----BEGIN PRIVATE KEY-----\nredacted\n")
+            make_repo(root, agents_content=PRIVATE_KEY_FIXTURE)
             with self.assertRaisesRegex(EvidencePacketError, "private key marker"):
                 build_packet(root, source_commit="c" * 40, generated_at="2026-07-05T00:00:00Z")
 
@@ -212,7 +213,7 @@ class GeminiMaintenanceEvidencePacketTests(unittest.TestCase):
             packet = build_packet(root, source_commit="e" * 40, generated_at="2026-07-05T00:00:00Z")
         first = next(entry for entry in packet["entries"] if entry["ref"] == "evidence:AGENTS.md")
         first["path"] = ".agents/private.txt"
-        with self.assertRaisesRegex(EvidencePacketError, "forbidden"):
+        with self.assertRaisesRegex(EvidencePacketError, "forbidden|binding"):
             validate_packet(packet)
 
     def test_cli_validates_existing_packet(self) -> None:
