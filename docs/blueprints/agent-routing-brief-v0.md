@@ -1,7 +1,7 @@
 # Agent Routing Brief v0
 
 Status: draft
-Datum: 2026-07-04
+Datum: 2026-07-08
 
 ## Zweck
 
@@ -21,25 +21,25 @@ Cabinet bleibt Sinn- und Entscheidungsschicht. Bureau wird enger angebunden und 
 |---|---|---|
 | Grabowski | lokale Ausfuehrung | Git, lokale Dateien, Runtime, Receipts |
 | ChatGPT Pro / Codex | Umsetzung und Review | Code-Slices, PR-Reviews, Refactoring, Tests |
-| Gemini / Google AI Pro | breite Analyse | grosse Kontextvergleiche, Strukturvorschlaege, zweite Meinung |
+| Gemini / Google AI Pro | vorgeschlagene breite Analyse nach Preflight | grosse Kontextvergleiche, Strukturvorschlaege, zweite Meinung; bis Capability-/Sandbox-Preflight nicht einplanbar/schedulable |
 | Claude | Architektur- und Sicherheitsreview | riskante Diffs, Designkritik, Gegenposition |
 | Bureau | Koordination | Aufgaben, Kandidaten, Receipts, Laufstatus |
 | Cabinet | Sinnschicht | Bestand, Pruefung, Steuerung, Entscheidungen |
 
 ## Neue Leitlinie
 
-Externe Agenten duerfen genutzt werden, wenn der Input zur Aufgabe passt und der Lauf belegbar bleibt. Die alte Pauschalgrenze wird durch eine Routing-Policy ersetzt.
+Externe Agenten duerfen genutzt werden, wenn der Input zur Aufgabe passt und der Lauf belegbar bleibt. Die alte Pauschalgrenze wird durch eine Routing-Policy ersetzt. Gemini ist bis zur Capability- und Sandbox-Pruefung nur eine vorgeschlagene proposal-only Review-/Scout-Kapazitaet und nicht einplanbar/schedulable.
 
 ## Routing-Matrix
 
 | Aufgabe | Default | Zweitreview | Nachweis |
 |---|---|---|---|
-| kleiner Docs-Slice | Grabowski + ChatGPT | optional Gemini | PR + Checks |
+| kleiner Docs-Slice | Grabowski + ChatGPT | Gemini erst nach Preflight optional | PR + Checks |
 | Code-Slice | Codex oder Grabowski | Claude bei Risiko | Diff, Tests, PR |
-| Architekturentscheidung | ChatGPT + Cabinet-Brief | Claude und Gemini | Entscheidungsbrief |
+| Architekturentscheidung | ChatGPT + Cabinet-Brief | Claude; Gemini erst nach Preflight | Entscheidungsbrief |
 | Repo-Status / Drift | Grabowski + Steuerboard | Cabinet | Befund |
 | Worktree-Lifecycle | Grabowski typed tools | ChatGPT Review | Preview, Recovery, Apply-Beleg |
-| grosse Systemfrage | Cabinet Brief | Gemini + Claude | Synthese und offene Luecken |
+| grosse Systemfrage | Cabinet Brief | Claude; Gemini erst nach Preflight | Synthese und offene Luecken |
 
 ## Cabinet und Bureau
 
@@ -49,6 +49,10 @@ Cabinet und Bureau sollten enger verzahnt werden, aber nicht verschmelzen.
 - Bureau beantwortet: Welche Aufgabe laeuft, wer oder was hat sie erzeugt, welcher Receipt beweist den Lauf?
 - Uebergabe: Cabinet-Befund erzeugt Bureau-Kandidat; Bureau-Receipt wird zur Cabinet-Evidence.
 
+## Gemini-Grenze
+
+Gemini ist in Cabinet derzeit nur als vorgeschlagene proposal-only Review-/Scout-Kapazitaet registriert. Vor Nutzung muessen mindestens Verfuegbarkeit, nicht-interaktive Ausfuehrung, erlaubte Eingaben, Kontextgrenzen, Sandbox-Grenzen und Output-Schema geprueft sein. Bis diese Pruefung belegt ist, darf Gemini nicht aus Routing-Matrizen als aktive oder schedulable Kapazitaet abgeleitet werden. Gemini erhaelt keine Push-, Merge-, Runtime-, Repo-Schreib- oder private-Kontext-Autoritaet.
+
 ## Kosten- und Kontingentregel
 
 Die vorhandenen Abos sollen genutzt werden. Trotzdem wird kein Anbieter als unlimited behandelt. Coding-Agenten verbrauchen dynamische Kontingente. Jeder Lauf soll knapp nennen, warum genau dieses Modell verwendet wurde.
@@ -56,7 +60,7 @@ Die vorhandenen Abos sollen genutzt werden. Trotzdem wird kein Anbieter als unli
 ## Konfiguration v0
 
 1. Externe Agenten sind erlaubt fuer freigegebene Diffs, Repo-Briefe, Review-Prompts und Architekturfragen.
-2. Bei komplexen PRs: ChatGPT/Codex Self-Review plus Claude- oder Gemini-Gegenreview.
+2. Bei komplexen PRs: ChatGPT/Codex Self-Review plus Claude-Gegenreview; Gemini-Gegenreview erst nach dokumentiertem Capability-/Sandbox-Preflight.
 3. Bei grossen Systemfragen: Cabinet-Brief zuerst, dann externe Reviews.
 4. Bei mutierenden Schritten: Grabowski oder Operator-Relay, nie externer Agent direkt.
 5. Jede Abweichung von der Default-Route wird im Befund oder PR-Body begruendet.

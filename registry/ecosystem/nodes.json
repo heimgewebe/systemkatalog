@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "status": "draft",
-  "updated_at": "2026-07-06",
+  "updated_at": "2026-07-08",
   "owner": {
     "canonical_repo": "heimgewebe/cabinet",
     "local_worktree_intent": "/home/alex/repos/cabinet",
@@ -161,6 +161,13 @@
       "label": "Local agents",
       "role": "cheap prechecks and repetitive scans",
       "status": "available"
+    },
+    {
+      "id": "agent:gemini",
+      "kind": "agent",
+      "label": "Gemini",
+      "role": "proposed proposal-only review and scout capacity after capability and sandbox preflight; not verified or schedulable",
+      "status": "proposed"
     },
     {
       "id": "repo:leitstand",

@@ -18,6 +18,8 @@ Dieser Einstieg ist eine GitHub-Fassade. Das kanonische Inhaltsverzeichnis liegt
 
 Diese Dateien sind Mermaid-Quellen. Für eine gerenderte Ansicht nutze derzeit einen Editor mit Mermaid-Preview oder einen Mermaid-Renderer. Eine spätere Leitstand-Ansicht ist der richtige Dashboard-Ort; Cabinet bleibt der kanonische Kartenort.
 
+Die Mermaidkarten sind Orientierung und Driftfläche, kein Beweis für Claim-Wahrheit, Merge-Reife, Runtime-Korrektheit oder Agenten-Autorität.
+
 ## Nicht verwechseln
 
 - Dieses README ist ein Wegweiser, keine primäre Wahrheitsquelle.
@@ -26,3 +28,4 @@ Diese Dateien sind Mermaid-Quellen. Für eine gerenderte Ansicht nutze derzeit e
 - Für laufende Dienste gelten Runtime, systemd, Logs und Healthchecks.
 - Für Freigabe, Priorität und Abbruch gilt die menschliche Entscheidung.
 - Cabinet besitzt die Kartensemantik, nicht die Wahrheit aller Quellen.
+- Gemini ist derzeit nur vorgeschlagene proposal-only Kapazität und vor Capability-/Sandbox-Preflight nicht einplanbar/schedulable.

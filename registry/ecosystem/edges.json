@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "status": "draft",
-  "updated_at": "2026-07-06",
+  "updated_at": "2026-07-08",
   "edge_types": [
     "owns",
     "steers",
@@ -274,6 +274,20 @@
       "type": "learning_input_for",
       "status": "planned",
       "note": "Heimlern may consume historical outcomes offline; no policy is auto-applied."
+    },
+    {
+      "from": "repo:grabowski",
+      "to": "agent:gemini",
+      "type": "delegates_to",
+      "status": "proposed",
+      "note": "Gemini may be used only as proposal-only review/scout capacity after capability and sandbox preflight; no push, merge, runtime mutation or private-context authority."
+    },
+    {
+      "from": "agent:gemini",
+      "to": "repo:grabowski",
+      "type": "reports_to",
+      "status": "proposed",
+      "note": "Gemini output is a proposal until Grabowski or human review binds evidence and decides any effect."
     }
   ]
 }

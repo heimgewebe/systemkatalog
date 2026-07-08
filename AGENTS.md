@@ -47,6 +47,7 @@ Dieses Dokument ist der kanonische Einstieg für LLMs und Agenten im Cabinet-Rep
 - Schauwerk: Renderer und visuelle Fläche, nicht Karten-Canon.
 - GitHub / CI / Runtime: harte Realitätsprüfung.
 - Externe Agenten: Vorschlag, Review, Patch; keine direkte Mutationshoheit.
+- Gemini: vorgeschlagene proposal-only Review-/Scout-Kapazität nach Capability- und Sandbox-Preflight; nicht verifiziert, nicht einplanbar/schedulable, keine Push-, Merge-, Runtime- oder private-Kontext-Autorität.
 
 ## Stop-Kriterien
 
