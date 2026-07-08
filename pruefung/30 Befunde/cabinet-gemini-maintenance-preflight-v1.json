@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "id": "cabinet-gemini-maintenance-preflight-v1",
+  "created_at": "2026-07-08T13:00:00Z",
+  "status": "blocked",
+  "bureau_task": "CABINET-GEMINI-MAINT-V1-T001",
+  "repository": "heimgewebe/cabinet",
+  "decision": "Do not schedule or run Gemini maintenance scans until a concrete Gemini tool/action, version or pin, authentication model, permission manifest, cost/quota class and log privacy boundary are reviewed.",
+  "evaluated_acceptance": [
+    {
+      "id": "gemini-tool-bound",
+      "status": "blocked",
+      "evidence": "No concrete Gemini execution path, version/pin, auth mode or secret boundary is present in Cabinet."
+    },
+    {
+      "id": "read-only-proven-or-blocked",
+      "status": "blocked",
+      "evidence": "Read-only operation cannot be proven without a permission manifest and workflow/action review."
+    },
+    {
+      "id": "output-shape-tested",
+      "status": "blocked",
+      "evidence": "No Gemini dry run was executed; bounded Markdown plus JSON output remains untested."
+    },
+    {
+      "id": "cost-and-log-boundary",
+      "status": "blocked",
+      "evidence": "Cost/quota class and log privacy risks are not yet documented for a concrete Gemini path."
+    }
+  ],
+  "effect_flags": {
+    "gemini_run_executed": false,
+    "schedule_enabled": false,
+    "issue_created_by_gemini": false,
+    "pr_created_by_gemini": false,
+    "comment_created_by_gemini": false,
+    "bureau_task_created_by_gemini": false,
+    "queue_mutated_by_gemini": false,
+    "grabowski_dispatched_by_gemini": false,
+    "push_or_merge_by_gemini": false,
+    "runtime_mutated_by_gemini": false
+  },
+  "organs": {
+    "cabinet": "Records the preflight blocker and no-effect boundary.",
+    "bureau": "Owns queue/task state and should keep T001 unresolved or blocked until external execution evidence exists.",
+    "grabowski": "May execute repo-local doc/contract changes, not Gemini runtime actions without a typed task/gate.",
+    "github_ci": "Primary check surface for PR and validation status.",
+    "gemini": "Not yet an authorized actor; proposal-only candidate after future preflight."
+  },
+  "missing": [
+    "concrete Gemini tool/action",
+    "version or immutable pin",
+    "authentication mode",
+    "permission manifest",
+    "secret boundary without secret disclosure",
+    "cost/quota class",
+    "log privacy and retention boundary",
+    "bounded Markdown plus JSON dry-run evidence"
+  ],
+  "next_action": "Define a concrete Gemini execution manifest before any dry run or schedule decision.",
+  "does_not_establish": [
+    "gemini_available",
+    "gemini_schedulable",
+    "scan_quality",
+    "task_approval",
+    "claim_truth",
+    "merge_readiness",
+    "runtime_correctness",
+    "autonomous_dispatch"
+  ]
+}
