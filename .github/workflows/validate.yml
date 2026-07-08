@@ -66,6 +66,9 @@ jobs:
       - name: Test External Artifact Registry
         run: python3 -m unittest discover -s scripts/tests -p 'test_external*.py'
 
+      - name: Test rLens Repository Reference Importer
+        run: python3 -m unittest discover -s scripts/tests -p 'test_rlens_repository_reference_import.py'
+
       - name: Validate External Artifact Registry
         run: python3 scripts/validate_external_dump_sources.py
 
