@@ -19,6 +19,7 @@ SCHEMA_PATH = "docs/contracts/cabinet-gemini-maintenance-scan-v1.schema.json"
 EXECUTION_MANIFEST_REF = "policy/gemini-maintenance-execution-manifest.v1.json"
 DEFAULT_EVIDENCE_REF = "pruefung/10 Laeufe/gemini-maintenance-evidence-packet-v1.json"
 DEFAULT_SOURCE_COMMIT = "0" * 40
+DEFAULT_BLOCKED_REASON = "Gemini dry run did not produce a valid completed scan; review raw output and retry manually."
 
 
 class GeminiScanExtractionError(RuntimeError):
@@ -41,6 +42,11 @@ def _read_optional(path: Path | None) -> str:
 def _write_json(path: Path, payload: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(payload, indent=2, ensure_ascii=False, sort_keys=True) + "\n", encoding="utf-8")
+
+
+def _normalized_reason(reason: str) -> str:
+    normalized = " ".join(str(reason or "").split())
+    return normalized or DEFAULT_BLOCKED_REASON
 
 
 def _balanced_json_candidates(text: str) -> list[str]:
@@ -106,10 +112,14 @@ def _load_candidate(text: str) -> dict[str, Any]:
             errors.append("JSON value must be an object")
             continue
         return parsed
-    raise GeminiScanExtractionError("could not find a valid JSON object in Gemini summary: " + "; ".join(errors[-3:]))
+    detail = "; ".join(error for error in errors[-3:] if error.strip())
+    if detail:
+        raise GeminiScanExtractionError("could not find a valid JSON object in Gemini summary: " + detail)
+    raise GeminiScanExtractionError("could not find a valid JSON object in Gemini summary")
 
 
 def _blocked_scan(*, created_at: str, source_commit: str, evidence_manifest_ref: str, reason: str) -> dict[str, Any]:
+    safe_reason = _normalized_reason(reason)
     return {
         "schemaVersion": 1,
         "kind": KIND,
@@ -137,7 +147,7 @@ def _blocked_scan(*, created_at: str, source_commit: str, evidence_manifest_ref:
                 {
                     "id": "finding:plausible:gemini-output-blocked",
                     "title": "Gemini dry run did not produce a valid completed scan",
-                    "summary": reason,
+                    "summary": safe_reason,
                     "severity": "unknown",
                     "confidence": "medium",
                     "evidenceRefs": [],
@@ -205,7 +215,7 @@ def main(argv: list[str] | None = None) -> int:
     except (GeminiScanExtractionError, GeminiMaintenanceScanError) as exc:
         status = "blocked"
         ok = False
-        message = str(exc)
+        message = _normalized_reason(str(exc))
         scan = _blocked_scan(
             created_at=created_at,
             source_commit=args.source_commit,
