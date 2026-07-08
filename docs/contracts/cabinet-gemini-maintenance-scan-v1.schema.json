@@ -1,0 +1,113 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://heimgewebe.local/cabinet/contracts/cabinet-gemini-maintenance-scan-v1.schema.json",
+  "title": "Cabinet Gemini Maintenance Scan v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "kind",
+    "contractVersion",
+    "contractPath",
+    "schemaPath",
+    "id",
+    "createdAt",
+    "status",
+    "source",
+    "lane",
+    "findings",
+    "effectFlags",
+    "forbiddenEffects",
+    "doesNotEstablish"
+  ],
+  "properties": {
+    "schemaVersion": {"const": 1},
+    "kind": {"const": "cabinet_gemini_maintenance_scan"},
+    "contractVersion": {"const": "1"},
+    "contractPath": {"const": "docs/contracts/cabinet-gemini-maintenance-scan-v1.md"},
+    "schemaPath": {"const": "docs/contracts/cabinet-gemini-maintenance-scan-v1.schema.json"},
+    "id": {"type": "string", "pattern": "^gemini-scan:[A-Za-z0-9._:-]+$"},
+    "createdAt": {"type": "string", "minLength": 1},
+    "status": {"enum": ["completed", "blocked", "failed"]},
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["repository", "commit", "executionManifestRef", "evidenceManifestRef", "inputRefs"],
+      "properties": {
+        "repository": {"const": "heimgewebe/cabinet"},
+        "commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "executionManifestRef": {"const": "policy/gemini-maintenance-execution-manifest.v1.json"},
+        "evidenceManifestRef": {"type": "string", "minLength": 1},
+        "inputRefs": {"type": "array", "minItems": 1, "items": {"type": "string", "pattern": "^evidence:"}, "uniqueItems": true}
+      }
+    },
+    "lane": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "bureauTask", "mode"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "bureauTask": {"type": "string", "pattern": "^CABINET-GEMINI-MAINT-V1-T[0-9]{3}$"},
+        "mode": {"enum": ["manual_dry_run", "scheduled_candidate", "review_only"]}
+      }
+    },
+    "findings": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["observed", "plausible", "speculative"],
+      "properties": {
+        "observed": {"type": "array", "items": {"$ref": "#/$defs/finding"}},
+        "plausible": {"type": "array", "items": {"$ref": "#/$defs/finding"}},
+        "speculative": {"type": "array", "items": {"$ref": "#/$defs/finding"}}
+      }
+    },
+    "effectFlags": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["issueCreated", "prCreated", "commentCreated", "taskCreated", "queueMutated", "grabowskiDispatched", "pushOrMerge", "runtimeMutated", "secretRequested", "dumpGenerated", "cleanupAction"],
+      "properties": {
+        "issueCreated": {"const": false},
+        "prCreated": {"const": false},
+        "commentCreated": {"const": false},
+        "taskCreated": {"const": false},
+        "queueMutated": {"const": false},
+        "grabowskiDispatched": {"const": false},
+        "pushOrMerge": {"const": false},
+        "runtimeMutated": {"const": false},
+        "secretRequested": {"const": false},
+        "dumpGenerated": {"const": false},
+        "cleanupAction": {"const": false}
+      }
+    },
+    "forbiddenEffects": {
+      "type": "array",
+      "minItems": 11,
+      "maxItems": 11,
+      "uniqueItems": true,
+      "items": {"enum": ["issue_creation", "pr_creation", "comment_creation", "bureau_task_creation", "queue_mutation", "grabowski_dispatch", "merge_or_push", "runtime_mutation", "secret_request", "dump_generation", "cleanup_action"]}
+    },
+    "doesNotEstablish": {
+      "type": "array",
+      "minItems": 9,
+      "maxItems": 9,
+      "uniqueItems": true,
+      "items": {"enum": ["task_approval", "claim_truth", "merge_readiness", "runtime_correctness", "bureau_import", "autonomous_dispatch", "bureau_task_created", "schedule_approval", "gemini_schedulability"]}
+    }
+  },
+  "$defs": {
+    "finding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "title", "summary", "severity", "confidence", "evidenceRefs", "recommendedNextAction"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^finding:[A-Za-z0-9._:-]+$"},
+        "title": {"type": "string", "minLength": 1},
+        "summary": {"type": "string", "minLength": 1},
+        "severity": {"enum": ["info", "low", "medium", "high", "unknown"]},
+        "confidence": {"enum": ["low", "medium", "high", "unknown"]},
+        "evidenceRefs": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+        "recommendedNextAction": {"type": "string", "minLength": 1}
+      }
+    }
+  }
+}

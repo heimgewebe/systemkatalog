@@ -37,6 +37,8 @@ Der vorgeschlagene Weg ist **GitHub Actions + `google-github-actions/run-gemini-
 | debug_logging | forbidden |
 | extensions | forbidden |
 | repository_mutation | forbidden |
+| output_contract | `docs/contracts/cabinet-gemini-maintenance-scan-v1.md` |
+| output_validator | `scripts/validate_gemini_maintenance_scan.py` |
 
 ## Proposed manual dry-run workflow shape
 
@@ -65,7 +67,7 @@ jobs:
           prompt: |
             You are a read-only Cabinet maintenance scout. Read only the curated evidence packet embedded below. Do not request repository writes, issue creation, PR creation, comments, dispatch, queue mutation, push, merge, deploy, cleanup, runtime access, secrets, private logs, or .agents data.
 
-            Return strict JSON with observed/plausible/speculative findings and all effect flags false.
+            Return strict JSON matching docs/contracts/cabinet-gemini-maintenance-scan-v1.md. Observed findings must include evidenceRefs. Plausible and speculative findings must be labelled. All effectFlags must be false.
 ```
 
 ## Required evidence packet
@@ -77,6 +79,7 @@ The first dry run may only include a generated, bounded packet containing:
 - `docs/blueprints/cabinet-maintenance-radar-v0.md`
 - `docs/blueprints/agent-routing-brief-v0.md`
 - `docs/contracts/cabinet-frontier-v1.md`
+- `docs/contracts/cabinet-gemini-maintenance-scan-v1.md`
 - `registry/ecosystem/nodes.json`
 - `registry/ecosystem/edges.json`
 - `registry/ecosystem/claims.jsonl`
@@ -94,42 +97,13 @@ The packet must exclude:
 
 ## Output contract for dry run
 
-The dry-run response must be validated before any use.
+The dry-run response must validate against:
 
-Required top-level JSON fields:
+- Contract: `docs/contracts/cabinet-gemini-maintenance-scan-v1.md`
+- Schema: `docs/contracts/cabinet-gemini-maintenance-scan-v1.schema.json`
+- Validator: `scripts/validate_gemini_maintenance_scan.py`
 
-```json
-{
-  "schema_version": 1,
-  "scan_id": "string",
-  "status": "completed|blocked|failed",
-  "source_manifest": {},
-  "observed": [],
-  "plausible": [],
-  "speculative": [],
-  "effect_flags": {
-    "issue_created": false,
-    "pr_created": false,
-    "comment_created": false,
-    "task_created": false,
-    "queue_mutated": false,
-    "grabowski_dispatched": false,
-    "push_or_merge": false,
-    "runtime_mutated": false,
-    "secret_requested": false
-  },
-  "does_not_establish": [
-    "task_approval",
-    "claim_truth",
-    "merge_readiness",
-    "runtime_correctness",
-    "bureau_import",
-    "autonomous_dispatch"
-  ]
-}
-```
-
-Observed findings require evidence refs into the packet. Plausible and speculative findings must be explicitly labelled and cannot become Bureau tasks without review.
+Observed findings require evidence refs into the packet. Plausible and speculative findings must be explicitly labelled and cannot become Bureau tasks without review. Outputs that set any effect flag to true are invalid.
 
 ## Risk review
 
@@ -149,9 +123,9 @@ Risk controls:
 
 ## Current decision state
 
-This manifest satisfies the missing **execution-manifest** part of the previous blocker. It does **not** prove availability, secret configuration, safe dry-run output, cost acceptability, or schedule readiness.
+This manifest satisfies the missing **execution-manifest** part of the previous blocker and now references a strict output contract and validator. It does **not** prove availability, secret configuration, safe dry-run output, cost acceptability, or schedule readiness.
 
-Next safe step: create a deterministic evidence-packet generator and output validator before any Gemini workflow is committed.
+Next safe step: create a deterministic evidence-packet generator before any Gemini workflow is committed.
 
 ## Does not establish
 

@@ -84,6 +84,9 @@ jobs:
       - name: Test Cabinet Frontier Contract
         run: python3 -m unittest discover -s scripts/tests -p 'test_cabinet_frontier_contract.py'
 
+      - name: Test Gemini Maintenance Scan Contract
+        run: python3 -m unittest discover -s scripts/tests -p 'test_gemini_maintenance_scan_contract.py'
+
   installer-shadow:
     name: Installer Shadow Test
     runs-on: ubuntu-latest
