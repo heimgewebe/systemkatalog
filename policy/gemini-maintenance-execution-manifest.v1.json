@@ -4,31 +4,59 @@
   "kind": "cabinet_gemini_maintenance_execution_manifest",
   "status": "manual-dry-run-enabled",
   "created_at": "2026-07-08T13:30:00Z",
-  "updated_at": "2026-07-08T19:45:00Z",
+  "updated_at": "2026-07-08T20:35:00Z",
   "owner": "Cabinet",
   "bureau_task_lineage": "CABINET-GEMINI-MAINT-V1-T004",
-  "decision": "Enable exactly one manual, artifact-only Gemini maintenance dry-run workflow path. Do not schedule recurrence, create issues, create pull requests, create comments, mutate Bureau, dispatch Grabowski, push, merge, deploy, clean up or mutate runtime state.",
-  "action": {
-    "repository": "google-github-actions/run-gemini-cli",
-    "release": "v0.1.22",
-    "release_commit": "f77273f4c914e4bf38440cf36a0369cb64a37489",
-    "uses_ref": "google-github-actions/run-gemini-cli@f77273f4c914e4bf38440cf36a0369cb64a37489",
-    "action_yml_reviewed": true,
-    "risk_notes": [
-      "The action runs Gemini CLI with --yolo.",
-      "The action supports automated and scheduled workflows.",
-      "The action can upload stdout, stderr and telemetry artifacts when configured.",
-      "Gemini CLI settings are not treated as an airtight security mechanism; workflow permissions and curated inputs remain the primary boundary."
+  "decision": "Enable exactly one manual, artifact-only Gemini maintenance dry-run path. Prefer local personal Gemini CLI login when the operator wants to use a personal Google/Gemini CLI quota. Keep GitHub Actions as an optional machine-auth path only. Do not schedule recurrence, create issues, create pull requests, create comments, mutate Bureau, dispatch Grabowski, push, merge, deploy, clean up or mutate runtime state.",
+  "primary_execution_path": {
+    "id": "local-personal-gemini-cli",
+    "runner": "scripts/run_gemini_maintenance_local_dry_run.py",
+    "auth_model": "interactive personal Google sign-in handled by local Gemini CLI",
+    "requires_repository_credential": false,
+    "requires_workflow_dispatch": false,
+    "expected_command": "python3 scripts/run_gemini_maintenance_local_dry_run.py --json",
+    "blocked_review_command": "python3 scripts/run_gemini_maintenance_local_dry_run.py --allow-blocked --json",
+    "does_not_establish": [
+      "local_gemini_login_available",
+      "dry_run_success",
+      "scan_quality",
+      "schedule_approval",
+      "bureau_import_readiness"
     ]
   },
-  "gemini_cli": {
-    "version_policy": "exact npm package version only; latest, preview and nightly aliases are forbidden; leading v tag refs are forbidden for this workflow because run-gemini-cli builds git refs from source",
-    "initial_candidate_npm_version": "0.51.0-nightly.20260707.g15a9429b6",
-    "previous_blocked_tag_ref": "v0.51.0-nightly.20260707.g15a9429b6",
-    "candidate_status": "allowed for one reviewed manual dry run only"
+  "optional_ci_execution_path": {
+    "id": "github-actions-machine-auth",
+    "status": "optional_machine_auth_only",
+    "action": {
+      "repository": "google-github-actions/run-gemini-cli",
+      "release": "v0.1.22",
+      "release_commit": "f77273f4c914e4bf38440cf36a0369cb64a37489",
+      "uses_ref": "google-github-actions/run-gemini-cli@f77273f4c914e4bf38440cf36a0369cb64a37489",
+      "action_yml_reviewed": true,
+      "risk_notes": [
+        "The action runs Gemini CLI with --yolo.",
+        "The action supports automated and scheduled workflows.",
+        "The action can upload stdout, stderr and telemetry artifacts when configured.",
+        "Gemini CLI settings are not treated as an airtight security mechanism; workflow permissions and curated inputs remain the primary boundary."
+      ]
+    },
+    "gemini_cli": {
+      "version_policy": "exact npm package version only; latest, preview and nightly aliases are forbidden; leading v tag refs are forbidden for this workflow because run-gemini-cli builds git refs from source",
+      "initial_candidate_npm_version": "0.51.0-nightly.20260707.g15a9429b6",
+      "previous_blocked_tag_ref": "v0.51.0-nightly.20260707.g15a9429b6",
+      "candidate_status": "allowed for one reviewed manual dry run only"
+    },
+    "auth_policy": {
+      "preferred": "reviewed machine authentication only",
+      "personal_google_login": "not for GitHub Actions",
+      "credential_values_in_repo": false,
+      "credential_values_in_logs": false
+    }
   },
   "trigger_policy": {
-    "first_dry_run": "workflow_dispatch only",
+    "first_dry_run": "manual only",
+    "local_primary": "operator invokes local runner manually",
+    "github_actions_optional": "workflow_dispatch only",
     "schedule": "forbidden until reviewed dry run succeeds",
     "issue_or_pr_comment_triggers": "forbidden",
     "pull_request_gemini_execution": "forbidden",
@@ -39,14 +67,8 @@
     "issues": "none",
     "pull_requests": "none",
     "actions": "none",
-    "id_token": "none unless WIF is explicitly chosen and reviewed",
+    "id_token": "none unless explicitly chosen and reviewed",
     "checkout_persist_credentials": false
-  },
-  "auth_policy": {
-    "preferred": "Workload Identity Federation only if a Google Cloud boundary is explicitly reviewed",
-    "dry_run_fallback": "GEMINI_API_KEY repository secret may be used only for one manual dry run",
-    "secret_values_in_repo": false,
-    "secret_values_in_logs": false
   },
   "runtime_policy": {
     "debug_logging": false,
@@ -106,12 +128,13 @@
     "grabowski_dispatched": false,
     "push_or_merge": false,
     "runtime_mutated": false,
-    "secret_requested": false,
+    "credential_requested": false,
     "dump_generated": false,
     "cleanup_action": false,
     "schedule_enabled": false
   },
   "dry_run_gate": {
+    "may_run_local_manual_runner": true,
     "may_create_workflow": true,
     "may_run_workflow_dispatch": true,
     "may_create_schedule": false,
@@ -124,8 +147,8 @@
   },
   "does_not_establish": [
     "gemini_available",
-    "secret_available",
-    "wif_available",
+    "local_gemini_login_available",
+    "machine_auth_available",
     "schedule_approval",
     "dry_run_success",
     "scan_quality",

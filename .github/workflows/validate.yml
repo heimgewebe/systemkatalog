@@ -93,6 +93,9 @@ jobs:
       - name: Test Gemini Dry Run Workflow Contract
         run: python3 -m unittest discover -s scripts/tests -p 'test_gemini_maintenance_dry_run_workflow.py'
 
+      - name: Test Local Gemini Dry Run Runner
+        run: python3 -m unittest discover -s scripts/tests -p 'test_gemini_maintenance_local_dry_run.py'
+
   installer-shadow:
     name: Installer Shadow Test
     runs-on: ubuntu-latest
