@@ -10,7 +10,7 @@ RepoBrief- und Lenskit-Dumps werden nicht mehr als Cabinet-Aufgabe behandelt. Si
 
 Cabinet wird fuer den Oekosystembetrieb als read-only Kohaerenzradar ausgebaut: Es scannt Inkonsistenzen, strukturelle Fehler, Frische, Quellenordnung, Handoff-Reife, verbotene Effekte und Lernsignale. Es erzeugt Befunde und Vorschlaege, aber keine operativen Wirkungen.
 
-Gemini bleibt bis zu einem bestandenen Capability-/Sandbox-Preflight eine blockierte, proposal-only Kapazitaet. Der aktuelle Preflight-Befund liegt unter [`pruefung/30 Befunde/cabinet-gemini-maintenance-preflight-v1.md`](../../pruefung/30%20Befunde/cabinet-gemini-maintenance-preflight-v1.md). Er blockiert Scheduling, weil kein konkreter Gemini-Ausfuehrungsweg mit Version/Pin, Auth-Modell, Permission-Manifest, Kosten-/Quota-Klasse und Log-Privacy-Grenze vorliegt.
+Gemini bleibt bis zu einem bestandenen Capability-/Sandbox-Preflight eine blockierte, proposal-only Kapazitaet. Der aktuelle Preflight-Befund liegt unter [`pruefung/30 Befunde/cabinet-gemini-maintenance-preflight-v1.md`](../../pruefung/30%20Befunde/cabinet-gemini-maintenance-preflight-v1.md). Das konkrete, noch nicht aktivierte Ausfuehrungsmanifest liegt unter [`docs/blueprints/gemini-maintenance-execution-manifest-v1.md`](gemini-maintenance-execution-manifest-v1.md) und [`policy/gemini-maintenance-execution-manifest.v1.json`](../../policy/gemini-maintenance-execution-manifest.v1.json). Es erlaubt keinen Dry Run und kein Scheduling ohne weitere Evidence-Paket- und Validator-Scheibe.
 
 ## These
 
@@ -144,4 +144,4 @@ Startbedingung: Heimlern darf erst produktiv angebunden werden, wenn die relevan
 - Pfade, Frequenz und Manifestform der externen RepoBrief-/Lenskit-Erzeugung fehlen noch.
 - Das aktuelle Heimlern-Contract-Repair ist noch nicht als abgeschlossen vorauszusetzen.
 - Eine semantische Wahrheitspruefung bleibt ohne Primaerquellenzugriff unvollstaendig.
-- Fuer Gemini fehlt weiterhin ein konkreter Ausfuehrungsweg mit Version/Pin, Auth-Modell, Permission-Manifest, Kosten-/Quota-Klasse und Log-Privacy-Grenze.
+- Fuer Gemini fehlt weiterhin ein gepruefter Dry Run mit kuratiertem Evidence-Paket, Output-Schema, Validator, Secret-/WIF-Nachweis, Kosten-/Quota-Grenze und Log-Privacy-Beleg.

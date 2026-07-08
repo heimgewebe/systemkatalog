@@ -2,20 +2,25 @@
   "schema_version": 1,
   "id": "cabinet-gemini-maintenance-preflight-v1",
   "created_at": "2026-07-08T13:00:00Z",
-  "status": "blocked",
+  "updated_at": "2026-07-08T13:30:00Z",
+  "status": "manifest-defined-dry-run-blocked",
   "bureau_task": "CABINET-GEMINI-MAINT-V1-T001",
   "repository": "heimgewebe/cabinet",
-  "decision": "Do not schedule or run Gemini maintenance scans until a concrete Gemini tool/action, version or pin, authentication model, permission manifest, cost/quota class and log privacy boundary are reviewed.",
+  "decision": "A concrete non-enabled Gemini execution manifest now exists, but no Gemini run, workflow, or schedule is authorized until evidence packet generation, output validation, secret/WIF boundary, cost/quota and log privacy checks are reviewed.",
+  "execution_manifest": {
+    "markdown": "docs/blueprints/gemini-maintenance-execution-manifest-v1.md",
+    "policy": "policy/gemini-maintenance-execution-manifest.v1.json"
+  },
   "evaluated_acceptance": [
     {
       "id": "gemini-tool-bound",
-      "status": "blocked",
-      "evidence": "No concrete Gemini execution path, version/pin, auth mode or secret boundary is present in Cabinet."
+      "status": "partially_satisfied",
+      "evidence": "The manifest selects google-github-actions/run-gemini-cli release v0.1.22 at commit f77273f4c914e4bf38440cf36a0369cb64a37489 and defines the secret boundary."
     },
     {
       "id": "read-only-proven-or-blocked",
       "status": "blocked",
-      "evidence": "Read-only operation cannot be proven without a permission manifest and workflow/action review."
+      "evidence": "Read-only operation remains unproven until a manual dry-run PR shows exact workflow permissions, checkout credential handling and artifact behavior."
     },
     {
       "id": "output-shape-tested",
@@ -25,11 +30,12 @@
     {
       "id": "cost-and-log-boundary",
       "status": "blocked",
-      "evidence": "Cost/quota class and log privacy risks are not yet documented for a concrete Gemini path."
+      "evidence": "The manifest defines required boundaries, but real cost/quota and log behavior are not yet observed."
     }
   ],
   "effect_flags": {
     "gemini_run_executed": false,
+    "workflow_committed": false,
     "schedule_enabled": false,
     "issue_created_by_gemini": false,
     "pr_created_by_gemini": false,
@@ -41,23 +47,23 @@
     "runtime_mutated_by_gemini": false
   },
   "organs": {
-    "cabinet": "Records the preflight blocker and no-effect boundary.",
-    "bureau": "Owns queue/task state and should keep T001 unresolved or blocked until external execution evidence exists.",
+    "cabinet": "Records the execution manifest and no-effect boundary.",
+    "bureau": "Owns queue/task state and should not open dependent Gemini tasks until a dry-run gate exists.",
     "grabowski": "May execute repo-local doc/contract changes, not Gemini runtime actions without a typed task/gate.",
     "github_ci": "Primary check surface for PR and validation status.",
-    "gemini": "Not yet an authorized actor; proposal-only candidate after future preflight."
+    "gemini": "Not yet an authorized actor; proposal-only candidate after future dry-run evidence."
   },
-  "missing": [
-    "concrete Gemini tool/action",
-    "version or immutable pin",
-    "authentication mode",
-    "permission manifest",
-    "secret boundary without secret disclosure",
-    "cost/quota class",
-    "log privacy and retention boundary",
+  "still_missing": [
+    "workflow PR for manual dry run",
+    "deterministic evidence packet generator",
+    "Gemini scan output schema",
+    "Gemini scan output validator",
+    "secret or WIF availability without disclosure",
+    "real cost/quota observation",
+    "real log privacy observation",
     "bounded Markdown plus JSON dry-run evidence"
   ],
-  "next_action": "Define a concrete Gemini execution manifest before any dry run or schedule decision.",
+  "next_action": "Build a deterministic evidence packet generator and Gemini output validator before any workflow or dry run.",
   "does_not_establish": [
     "gemini_available",
     "gemini_schedulable",

@@ -1,0 +1,166 @@
+# Gemini Maintenance Execution Manifest v1
+
+Status: proposed-not-enabled
+Datum: 2026-07-08
+Owner: Cabinet
+Bureau task lineage: CABINET-GEMINI-MAINT-V1-T001
+
+## Entscheidung
+
+Dieses Manifest definiert den ersten konkret pruefbaren Ausfuehrungsweg fuer einen spaeteren Gemini-Maintenance-Dry-Run. Es aktiviert keinen Workflow, fuehrt Gemini nicht aus und hebt den Bureau-Blocker nicht automatisch auf.
+
+Der vorgeschlagene Weg ist **GitHub Actions + `google-github-actions/run-gemini-cli`**, aber nur fuer einen manuellen, artefaktbasierten Dry Run ueber ein kuratiertes Evidence-Paket.
+
+## Gepruefte externe Grundlage
+
+- `google-github-actions/run-gemini-cli` ist eine GitHub Action, die Gemini CLI in GitHub Workflows ausfuehrt.
+- Die offizielle README beschreibt Anwendungsfaelle wie PR Reviews, Issue Triage, Codeanalyse, Codeaenderung und scheduled Automationen.
+- Die Action nennt als Inputs unter anderem `gemini_api_key`, `gemini_cli_version`, `gemini_model`, `prompt`, `settings`, `upload_artifacts`, WIF-/GCP-Inputs sowie GitHub Issue-/PR-Kontext.
+- Das Action-YAML fuer `v0.1.22` fuehrt Gemini CLI mit `--yolo --prompt ... --output-format json` aus. Das ist fuer Cabinet ein hartes Risiko und nur unter strikten No-Write-Grenzen akzeptabel.
+
+## Manifest
+
+| Feld | Wert |
+|---|---|
+| action_repository | `google-github-actions/run-gemini-cli` |
+| action_release | `v0.1.22` |
+| action_release_commit | `f77273f4c914e4bf38440cf36a0369cb64a37489` |
+| workflow_ref_policy | `uses: google-github-actions/run-gemini-cli@f77273f4c914e4bf38440cf36a0369cb64a37489` |
+| gemini_cli_version_policy | exact tag or commit only; `latest`, `preview` and `nightly` are forbidden |
+| initial_candidate_cli_tag | `v0.51.0-nightly.20260707.g15a9429b6` |
+| trigger_policy | `workflow_dispatch` only for first dry run |
+| schedule_policy | forbidden until reviewed dry run succeeds |
+| checkout_policy | `actions/checkout` with `persist-credentials: false` |
+| permissions_policy | `contents: read`, no `issues`, no `pull-requests`, no `actions: write`, no `id-token` unless WIF is explicitly chosen |
+| auth_policy | prefer WIF when a Google Cloud boundary exists; otherwise `GEMINI_API_KEY` may be used only as a repository secret for one manual dry run |
+| upload_artifacts | `true`, but artifact must be treated as untrusted and reviewed before use |
+| debug_logging | forbidden |
+| extensions | forbidden |
+| repository_mutation | forbidden |
+
+## Proposed manual dry-run workflow shape
+
+This is a non-operative sketch. It must not be copied into `.github/workflows` until the dry-run gate is explicitly opened.
+
+```yaml
+name: Gemini Maintenance Dry Run
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  dry-run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Run Gemini maintenance scout over curated evidence
+        uses: google-github-actions/run-gemini-cli@f77273f4c914e4bf38440cf36a0369cb64a37489
+        with:
+          gemini_api_key: ${{ secrets.GEMINI_API_KEY }}
+          gemini_cli_version: v0.51.0-nightly.20260707.g15a9429b6
+          gemini_debug: 'false'
+          upload_artifacts: 'true'
+          prompt: |
+            You are a read-only Cabinet maintenance scout. Read only the curated evidence packet embedded below. Do not request repository writes, issue creation, PR creation, comments, dispatch, queue mutation, push, merge, deploy, cleanup, runtime access, secrets, private logs, or .agents data.
+
+            Return strict JSON with observed/plausible/speculative findings and all effect flags false.
+```
+
+## Required evidence packet
+
+The first dry run may only include a generated, bounded packet containing:
+
+- `AGENTS.md`
+- `README.md`
+- `docs/blueprints/cabinet-maintenance-radar-v0.md`
+- `docs/blueprints/agent-routing-brief-v0.md`
+- `docs/contracts/cabinet-frontier-v1.md`
+- `registry/ecosystem/nodes.json`
+- `registry/ecosystem/edges.json`
+- `registry/ecosystem/claims.jsonl`
+- `registry/ecosystem/external-dump-sources.json`
+- deterministic Cabinet maintenance report output
+
+The packet must exclude:
+
+- Secrets
+- private logs
+- unrestricted runtime data
+- `.agents` runtime content
+- full repository crawl
+- untrusted issue, PR, or comment bodies unless separately quoted and taint-marked
+
+## Output contract for dry run
+
+The dry-run response must be validated before any use.
+
+Required top-level JSON fields:
+
+```json
+{
+  "schema_version": 1,
+  "scan_id": "string",
+  "status": "completed|blocked|failed",
+  "source_manifest": {},
+  "observed": [],
+  "plausible": [],
+  "speculative": [],
+  "effect_flags": {
+    "issue_created": false,
+    "pr_created": false,
+    "comment_created": false,
+    "task_created": false,
+    "queue_mutated": false,
+    "grabowski_dispatched": false,
+    "push_or_merge": false,
+    "runtime_mutated": false,
+    "secret_requested": false
+  },
+  "does_not_establish": [
+    "task_approval",
+    "claim_truth",
+    "merge_readiness",
+    "runtime_correctness",
+    "bureau_import",
+    "autonomous_dispatch"
+  ]
+}
+```
+
+Observed findings require evidence refs into the packet. Plausible and speculative findings must be explicitly labelled and cannot become Bureau tasks without review.
+
+## Risk review
+
+The action is not a passive text processor. Its own documentation frames it as an autonomous agent and collaborator, and the action path executes Gemini CLI with `--yolo`. Therefore Cabinet must assume tool-use risk even when the workflow permissions are read-only.
+
+Risk controls:
+
+1. Manual dispatch only.
+2. No GitHub write permissions.
+3. Checkout credentials disabled.
+4. No debug streaming.
+5. No extensions.
+6. Curated evidence packet only.
+7. Strict output validation.
+8. No direct Bureau import.
+9. No schedule before a reviewed dry run.
+
+## Current decision state
+
+This manifest satisfies the missing **execution-manifest** part of the previous blocker. It does **not** prove availability, secret configuration, safe dry-run output, cost acceptability, or schedule readiness.
+
+Next safe step: create a deterministic evidence-packet generator and output validator before any Gemini workflow is committed.
+
+## Does not establish
+
+- Gemini availability
+- Secret availability
+- WIF availability
+- schedule approval
+- dry-run success
+- scan quality
+- Bureau import readiness
+- autonomous dispatch
+- runtime correctness
