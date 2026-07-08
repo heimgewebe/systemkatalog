@@ -87,6 +87,9 @@ jobs:
       - name: Test Gemini Maintenance Scan Contract
         run: python3 -m unittest discover -s scripts/tests -p 'test_gemini_maintenance_scan_contract.py'
 
+      - name: Test Gemini Evidence Packet Generator
+        run: python3 -m unittest discover -s scripts/tests -p 'test_gemini_maintenance_evidence_packet.py'
+
   installer-shadow:
     name: Installer Shadow Test
     runs-on: ubuntu-latest
