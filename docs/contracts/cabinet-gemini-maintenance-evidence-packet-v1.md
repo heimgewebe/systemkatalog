@@ -51,7 +51,7 @@ Das Paket darf nicht enthalten:
 - `daemon-token`
 - Key- und Zertifikatsdateien wie `.key`, `.pem`, `.p12`, `.pfx`
 - Logs wie `.log`
-- private key marker wie `-----BEGIN PRIVATE KEY-----`
+- private PEM-Key-Begin-Marker
 
 ## Manifest-Pflichten
 
