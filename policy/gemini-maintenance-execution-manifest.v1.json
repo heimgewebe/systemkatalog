@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "id": "gemini-maintenance-execution-manifest-v1",
+  "status": "proposed-not-enabled",
+  "created_at": "2026-07-08T13:30:00Z",
+  "owner": "Cabinet",
+  "bureau_task_lineage": "CABINET-GEMINI-MAINT-V1-T001",
+  "decision": "Define a concrete but non-enabled Gemini maintenance dry-run path. Do not commit a workflow, run Gemini, or schedule recurrence yet.",
+  "action": {
+    "repository": "google-github-actions/run-gemini-cli",
+    "release": "v0.1.22",
+    "release_commit": "f77273f4c914e4bf38440cf36a0369cb64a37489",
+    "uses_ref": "google-github-actions/run-gemini-cli@f77273f4c914e4bf38440cf36a0369cb64a37489",
+    "action_yml_reviewed": true,
+    "risk_notes": [
+      "The action runs Gemini CLI with --yolo.",
+      "The action supports automated and scheduled workflows.",
+      "The action can upload stdout, stderr and telemetry artifacts when configured."
+    ]
+  },
+  "gemini_cli": {
+    "version_policy": "exact tag or commit only; latest, preview and nightly aliases are forbidden",
+    "initial_candidate_tag": "v0.51.0-nightly.20260707.g15a9429b6",
+    "candidate_status": "requires review before dry-run use"
+  },
+  "trigger_policy": {
+    "first_dry_run": "workflow_dispatch only",
+    "schedule": "forbidden until reviewed dry run succeeds",
+    "issue_or_pr_comment_triggers": "forbidden"
+  },
+  "permissions_policy": {
+    "contents": "read",
+    "issues": "none",
+    "pull_requests": "none",
+    "actions": "none",
+    "id_token": "none unless WIF is explicitly chosen and reviewed",
+    "checkout_persist_credentials": false
+  },
+  "auth_policy": {
+    "preferred": "Workload Identity Federation only if a Google Cloud boundary is explicitly reviewed",
+    "dry_run_fallback": "GEMINI_API_KEY repository secret may be used only for one manual dry run",
+    "secret_values_in_repo": false,
+    "secret_values_in_logs": false
+  },
+  "runtime_policy": {
+    "debug_logging": false,
+    "extensions_allowed": false,
+    "full_repo_crawl_allowed": false,
+    "private_logs_allowed": false,
+    "agents_runtime_content_allowed": false,
+    "untrusted_issue_pr_comment_context_allowed": false
+  },
+  "evidence_packet": {
+    "required": true,
+    "allowed_inputs": [
+      "AGENTS.md",
+      "README.md",
+      "docs/blueprints/cabinet-maintenance-radar-v0.md",
+      "docs/blueprints/agent-routing-brief-v0.md",
+      "docs/contracts/cabinet-frontier-v1.md",
+      "registry/ecosystem/nodes.json",
+      "registry/ecosystem/edges.json",
+      "registry/ecosystem/claims.jsonl",
+      "registry/ecosystem/external-dump-sources.json",
+      "deterministic Cabinet maintenance report output"
+    ]
+  },
+  "required_effect_flags": {
+    "issue_created": false,
+    "pr_created": false,
+    "comment_created": false,
+    "task_created": false,
+    "queue_mutated": false,
+    "grabowski_dispatched": false,
+    "push_or_merge": false,
+    "runtime_mutated": false,
+    "secret_requested": false
+  },
+  "dry_run_gate": {
+    "may_create_workflow": false,
+    "next_required_artifacts": [
+      "deterministic evidence packet generator",
+      "Gemini scan output schema",
+      "Gemini scan output validator",
+      "manual dry-run PR with reviewed permissions"
+    ]
+  },
+  "does_not_establish": [
+    "gemini_available",
+    "secret_available",
+    "wif_available",
+    "schedule_approval",
+    "dry_run_success",
+    "scan_quality",
+    "bureau_import_readiness",
+    "autonomous_dispatch",
+    "runtime_correctness"
+  ]
+}
