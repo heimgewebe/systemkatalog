@@ -1,0 +1,172 @@
+name: Gemini Maintenance Dry Run
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm_no_effects:
+        description: "Type RUN_ARTIFACT_ONLY_GEMINI_DRY_RUN to confirm no schedule, no GitHub writes, no Bureau mutation and no runtime action."
+        required: true
+        type: string
+
+concurrency:
+  group: gemini-maintenance-dry-run-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+env:
+  PYTHONDONTWRITEBYTECODE: "1"
+  EVIDENCE_PACKET: "pruefung/10 Laeufe/gemini-maintenance-evidence-packet-v1.json"
+  RAW_OUTPUT: "pruefung/10 Laeufe/gemini-maintenance-dry-run-raw-output.json"
+  SCAN_OUTPUT: "pruefung/10 Laeufe/gemini-maintenance-dry-run-scan.json"
+  REVIEW_OUTPUT: "pruefung/10 Laeufe/gemini-maintenance-dry-run-review.md"
+
+jobs:
+  dry-run:
+    name: Manual artifact-only dry run
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Verify manual confirmation
+        run: |
+          test "${{ inputs.confirm_no_effects }}" = "RUN_ARTIFACT_ONLY_GEMINI_DRY_RUN"
+
+      - name: Checkout
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+
+      - name: Setup Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
+        with:
+          python-version: "3.12"
+
+      - name: Build curated evidence packet
+        run: python3 scripts/write_gemini_maintenance_evidence_packet.py --output "$EVIDENCE_PACKET" --json
+
+      - name: Write Gemini prompt
+        run: |
+          mkdir -p "$(dirname "$REVIEW_OUTPUT")"
+          cat > "$RUNNER_TEMP/gemini-maintenance-prompt.md" <<'PROMPT'
+          You are a read-only Cabinet maintenance scout.
+
+          Read only this curated evidence packet:
+          pruefung/10 Laeufe/gemini-maintenance-evidence-packet-v1.json
+
+          Do not read private logs, .agents runtime content, unrestricted runtime data, secrets, environment files, issue bodies, pull request bodies, comments, or files outside the evidence packet. Do not request repository writes, issue creation, pull request creation, comments, Bureau task creation, queue mutation, Grabowski dispatch, push, merge, deploy, cleanup, runtime access, secrets, private logs, or recurrence.
+
+          Return exactly one JSON object. Do not wrap it in Markdown. It must match docs/contracts/cabinet-gemini-maintenance-scan-v1.md and scripts/validate_gemini_maintenance_scan.py.
+
+          Fixed values:
+          - schemaVersion: 1
+          - kind: cabinet_gemini_maintenance_scan
+          - contractVersion: "1"
+          - contractPath: docs/contracts/cabinet-gemini-maintenance-scan-v1.md
+          - schemaPath: docs/contracts/cabinet-gemini-maintenance-scan-v1.schema.json
+          - source.repository: heimgewebe/cabinet
+          - source.commit: use the current commit SHA printed in the evidence packet source.commit
+          - source.executionManifestRef: policy/gemini-maintenance-execution-manifest.v1.json
+          - source.evidenceManifestRef: pruefung/10 Laeufe/gemini-maintenance-evidence-packet-v1.json
+          - lane.id: cabinet-gemini-maintenance
+          - lane.bureauTask: CABINET-GEMINI-MAINT-V1-T004
+          - lane.mode: manual_dry_run
+
+          Findings:
+          - observed findings must be directly evidenced by evidenceRefs from the packet.
+          - plausible and speculative findings must be labelled in the correct lists.
+          - do not overclaim claim truth, task approval, merge readiness, runtime correctness, Bureau import, autonomous dispatch, Bureau task creation, schedule approval, or Gemini schedulability.
+
+          All effectFlags must be false:
+          issueCreated, prCreated, commentCreated, taskCreated, queueMutated, grabowskiDispatched, pushOrMerge, runtimeMutated, secretRequested, dumpGenerated, cleanupAction.
+
+          forbiddenEffects must list exactly:
+          issue_creation, pr_creation, comment_creation, bureau_task_creation, queue_mutation, grabowski_dispatch, merge_or_push, runtime_mutation, secret_request, dump_generation, cleanup_action.
+
+          doesNotEstablish must list exactly:
+          task_approval, claim_truth, merge_readiness, runtime_correctness, bureau_import, autonomous_dispatch, bureau_task_created, schedule_approval, gemini_schedulability.
+          PROMPT
+
+      - name: Run Gemini over curated evidence packet
+        id: gemini
+        continue-on-error: true
+        uses: google-github-actions/run-gemini-cli@f77273f4c914e4bf38440cf36a0369cb64a37489 # v0.1.22
+        with:
+          gemini_api_key: ${{ secrets.GEMINI_API_KEY }}
+          gemini_cli_version: v0.51.0-nightly.20260707.g15a9429b6
+          gemini_debug: 'false'
+          upload_artifacts: 'false'
+          settings: >-
+            {"coreTools":["ReadFileTool"],"autoAccept":false,"fileFiltering":{"respectGitIgnore":true,"enableRecursiveFileSearch":false},"telemetry":{"enabled":false,"logPrompts":false},"usageStatisticsEnabled":false,"mcpServers":{}}
+          prompt: ${{ steps.read-prompt.outputs.prompt }}
+
+      - name: Capture Gemini outputs
+        if: always()
+        env:
+          GEMINI_SUMMARY: ${{ steps.gemini.outputs.summary }}
+          GEMINI_ERROR: ${{ steps.gemini.outputs.error }}
+        run: |
+          printf '%s' "$GEMINI_SUMMARY" > "$RUNNER_TEMP/gemini-summary.txt"
+          printf '%s' "$GEMINI_ERROR" > "$RUNNER_TEMP/gemini-error.txt"
+
+      - name: Extract and validate scan
+        if: always()
+        run: |
+          python3 scripts/extract_gemini_maintenance_scan.py \
+            --summary-input "$RUNNER_TEMP/gemini-summary.txt" \
+            --error-input "$RUNNER_TEMP/gemini-error.txt" \
+            --raw-output "$RAW_OUTPUT" \
+            --scan-output "$SCAN_OUTPUT" \
+            --source-commit "$GITHUB_SHA" \
+            --evidence-manifest-ref "$EVIDENCE_PACKET" \
+            --json || true
+          python3 scripts/validate_gemini_maintenance_scan.py --input "$SCAN_OUTPUT" --json
+
+      - name: Write review scaffold
+        if: always()
+        run: |
+          cat > "$REVIEW_OUTPUT" <<'MARKDOWN'
+          # Gemini Maintenance Dry Run Review
+
+          ## Scope
+
+          Manual artifact-only dry run for `CABINET-GEMINI-MAINT-V1-T004`.
+
+          ## Required review points
+
+          - Useful findings:
+          - False positives:
+          - Missing evidence:
+          - Hallucinated refs:
+          - Overclaiming:
+          - Any effect flag violation:
+          - Schedule readiness: not established
+          - Bureau import readiness: not established
+
+          ## Boundary
+
+          This artifact does not approve a schedule, create a task, create an issue, create a pull request, comment on GitHub, dispatch Grabowski, mutate runtime, push, merge, deploy or clean up anything.
+          MARKDOWN
+
+      - name: Upload dry run artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gemini-maintenance-dry-run
+          path: |
+            pruefung/10 Laeufe/gemini-maintenance-evidence-packet-v1.json
+            pruefung/10 Laeufe/gemini-maintenance-dry-run-raw-output.json
+            pruefung/10 Laeufe/gemini-maintenance-dry-run-scan.json
+            pruefung/10 Laeufe/gemini-maintenance-dry-run-review.md
+          if-no-files-found: error
+
+      - name: Require completed Gemini scan
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          scan = json.loads(Path("pruefung/10 Laeufe/gemini-maintenance-dry-run-scan.json").read_text(encoding="utf-8"))
+          if scan.get("status") != "completed":
+              raise SystemExit("Gemini dry run did not complete with a validated completed scan; inspect uploaded artifacts.")
+          PY
