@@ -75,6 +75,12 @@ jobs:
       - name: Validate Cabinet Ecosystem Signal Fixture
         run: python3 scripts/validate_ecosystem_signals.py --input scripts/tests/fixtures/ecosystem-signals/github-pr-signals.jsonl --json
 
+      - name: Check Cabinet Frontier Contract
+        run: python3 scripts/write_cabinet_frontier.py --check --json
+
+      - name: Test Cabinet Frontier Contract
+        run: python3 -m unittest discover -s scripts/tests -p 'test_cabinet_frontier_contract.py'
+
   installer-shadow:
     name: Installer Shadow Test
     runs-on: ubuntu-latest
