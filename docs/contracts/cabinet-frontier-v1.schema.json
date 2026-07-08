@@ -1,0 +1,122 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://heimgewebe.local/cabinet/contracts/cabinet-frontier-v1.schema.json",
+  "title": "Cabinet Frontier Candidate v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "kind",
+    "contractVersion",
+    "contractPath",
+    "schemaPath",
+    "id",
+    "createdAt",
+    "source",
+    "target",
+    "proposal",
+    "acceptance",
+    "evidence",
+    "forbiddenEffects",
+    "effectFlags",
+    "doesNotEstablish"
+  ],
+  "properties": {
+    "schemaVersion": {"const": 1},
+    "kind": {"const": "cabinet_frontier_candidate"},
+    "contractVersion": {"const": "1"},
+    "contractPath": {"const": "docs/contracts/cabinet-frontier-v1.md"},
+    "schemaPath": {"const": "docs/contracts/cabinet-frontier-v1.schema.json"},
+    "id": {"type": "string", "pattern": "^frontier:[A-Za-z0-9._:-]+$"},
+    "createdAt": {"type": "string", "minLength": 1},
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["repository", "commit", "maintenanceReportStatus", "maintenanceReportRef", "signalRefs"],
+      "properties": {
+        "repository": {"const": "heimgewebe/cabinet"},
+        "commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "maintenanceReportStatus": {"enum": ["pass", "warn", "fail", "unknown"]},
+        "maintenanceReportRef": {"type": "string", "minLength": 1},
+        "signalRefs": {"type": "array", "items": {"type": "string", "pattern": "^signal:"}, "uniqueItems": true}
+      }
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["repository", "organ"],
+      "properties": {
+        "repository": {"type": "string", "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$"},
+        "organ": {"type": "string", "minLength": 1}
+      }
+    },
+    "proposal": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["title", "summary", "nextAction", "responsibleOrgan", "risk", "priorityHint"],
+      "properties": {
+        "title": {"type": "string", "minLength": 1},
+        "summary": {"type": "string", "minLength": 1},
+        "nextAction": {"type": "string", "minLength": 1},
+        "responsibleOrgan": {"type": "string", "minLength": 1},
+        "risk": {"enum": ["low", "medium", "high", "unknown"]},
+        "priorityHint": {"enum": ["now", "next", "later", "blocked"]}
+      }
+    },
+    "acceptance": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "assertion"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "assertion": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "evidence": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "required": ["type", "ref"],
+        "properties": {
+          "type": {"type": "string", "minLength": 1},
+          "ref": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "forbiddenEffects": {
+      "type": "array",
+      "minItems": 8,
+      "maxItems": 8,
+      "uniqueItems": true,
+      "items": {"enum": ["bureau_task_creation", "queue_mutation", "agent_dispatch", "merge_or_push", "runtime_mutation", "cleanup_action", "dump_generation", "authority_inference"]}
+    },
+    "effectFlags": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["taskCreationAllowed", "queueMutationAllowed", "dispatchAllowed", "mergeOrPushAllowed", "runtimeMutationAllowed", "cleanupAllowed", "dumpGenerationAllowed", "authorityInferenceAllowed"],
+      "properties": {
+        "taskCreationAllowed": {"const": false},
+        "queueMutationAllowed": {"const": false},
+        "dispatchAllowed": {"const": false},
+        "mergeOrPushAllowed": {"const": false},
+        "runtimeMutationAllowed": {"const": false},
+        "cleanupAllowed": {"const": false},
+        "dumpGenerationAllowed": {"const": false},
+        "authorityInferenceAllowed": {"const": false}
+      }
+    },
+    "doesNotEstablish": {
+      "type": "array",
+      "minItems": 7,
+      "maxItems": 7,
+      "uniqueItems": true,
+      "items": {"enum": ["task_approval", "merge_readiness", "runtime_correctness", "claim_truth", "autonomous_dispatch", "bureau_import_implemented", "bureau_task_created"]}
+    }
+  }
+}
