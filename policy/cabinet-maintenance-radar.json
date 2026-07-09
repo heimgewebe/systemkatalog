@@ -2,9 +2,56 @@
   "schema_version": 1,
   "id": "cabinet_maintenance_radar_v0",
   "status": "draft",
-  "updated_at": "2026-07-05",
+  "updated_at": "2026-07-09",
   "canonical_doc": "docs/blueprints/cabinet-maintenance-radar-v0.md",
+  "role_boundary_doc": "docs/blueprints/cabinet-role-boundary-v1.md",
   "mode": "read_only_quality_radar",
+  "role_decision": {
+    "decision": "keep_cabinet_as_semantic_evidence_and_prioritization_layer",
+    "replacement_decision": "do_not_replace_with_a_single_general_purpose_tool",
+    "cabinet_canon_for": [
+      "meaning",
+      "evidence_surface",
+      "claim_boundaries",
+      "prioritization_context",
+      "map_semantics",
+      "read_only_coherence_radar",
+      "maintenance_findings",
+      "proposal_only_handoff_candidates"
+    ],
+    "cabinet_not_canon_for": [
+      "task_queue",
+      "scheduler",
+      "operator_execution",
+      "merge_or_push_decision",
+      "runtime_state",
+      "live_dashboard",
+      "service_catalog_ui",
+      "github_ci_runtime_truth",
+      "repobrief_lenskit_dump_generation"
+    ]
+  },
+  "default_tool_routing": {
+    "task_queue": "bureau",
+    "task_cadence_receipts": "bureau",
+    "repo_execution": "grabowski_operator",
+    "context_dumps": "repobrief_lenskit",
+    "live_display": "leitstand_or_schauwerk",
+    "git_pr_review_truth": "github",
+    "ci_truth": "ci",
+    "runtime_truth": "runtime_systemd_logs_healthchecks",
+    "learning_feedback": "heimlern_after_review"
+  },
+  "replacement_gate": {
+    "cabinet_replacement_allowed": false,
+    "minimum_conditions": [
+      "versioned_claims_evidence_expiry_primary_sources_and_organ_roles",
+      "separates_radar_queue_operator_runtime_and_release_authority",
+      "controllable_for_local_and_private_sources",
+      "machine_checkable_drift_and_non_claims",
+      "no_new_shadow_authority"
+    ]
+  },
   "repobrief_lenskit_dump_generation": "external_only",
   "cabinet_generates_repobrief_lenskit_dumps": false,
   "allowed_scan_classes": [
@@ -78,7 +125,10 @@
     "runtime_mutation",
     "cleanup_action",
     "authority_inference_from_map",
-    "direct_policy_weight_application"
+    "direct_policy_weight_application",
+    "dashboard_authority_inference",
+    "service_catalog_authority_inference",
+    "task_queue_authority_inference"
   ],
   "primary_sources": {
     "git_pr_review": "GitHub",
@@ -96,6 +146,7 @@
     "repobrief_lenskit": "external_context_dump_producer_and_citable_context_surface",
     "heimlern": "retrospective_outcome_analysis_and_proposal_only_policy_adjustments",
     "chronik": "event_continuity_and_decision_trace",
+    "leitstand_schauwerk": "display_and_visualization_consumer_not_canon",
     "github_ci_runtime": "primary_truth_for_pr_check_and_runtime_state",
     "external_agents": "proposal_and_review_not_authority"
   },
@@ -107,6 +158,9 @@
     "bureau_import_implemented",
     "autonomous_dispatch",
     "policy_change_approval",
-    "dump_freshness_truth"
+    "dump_freshness_truth",
+    "service_catalog_truth",
+    "dashboard_truth",
+    "tool_replacement_approval"
   ]
 }
