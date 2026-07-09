@@ -1,7 +1,7 @@
 # Cabinet Maintenance Radar v0
 
 Status: draft
-Datum: 2026-07-05
+Datum: 2026-07-09
 Owner: Cabinet
 
 ## Entscheidung
@@ -9,6 +9,8 @@ Owner: Cabinet
 RepoBrief- und Lenskit-Dumps werden nicht mehr als Cabinet-Aufgabe behandelt. Sie werden ausserhalb von Cabinet erzeugt und von Cabinet nur als Eingangsartefakte mit Provenienz, Frische und Beleggrenze konsumiert.
 
 Cabinet wird fuer den Oekosystembetrieb als read-only Kohaerenzradar ausgebaut: Es scannt Inkonsistenzen, strukturelle Fehler, Frische, Quellenordnung, Handoff-Reife, verbotene Effekte und Lernsignale. Es erzeugt Befunde und Vorschlaege, aber keine operativen Wirkungen.
+
+Die Rollenentscheidung ist in [Cabinet Role Boundary v1](cabinet-role-boundary-v1.md) festgehalten. Cabinet bleibt die semantische Evidenz- und Priorisierungsschicht; Aufgabenqueue, Operator, Live-Dashboard, Servicekatalog und Primaerwahrheit bleiben bei den jeweils zustaendigen Organen.
 
 Gemini bleibt bis zu einem bestandenen Capability-/Sandbox-Preflight eine blockierte, proposal-only Kapazitaet. Der aktuelle Preflight-Befund liegt unter [`pruefung/30 Befunde/cabinet-gemini-maintenance-preflight-v1.md`](../../pruefung/30%20Befunde/cabinet-gemini-maintenance-preflight-v1.md). Das konkrete, noch nicht aktivierte Ausfuehrungsmanifest liegt unter [`docs/blueprints/gemini-maintenance-execution-manifest-v1.md`](gemini-maintenance-execution-manifest-v1.md) und [`policy/gemini-maintenance-execution-manifest.v1.json`](../../policy/gemini-maintenance-execution-manifest.v1.json). Es erlaubt keinen Dry Run und kein Scheduling ohne weitere Evidence-Paket- und Validator-Scheibe.
 
@@ -20,9 +22,11 @@ Der Betrieb braucht einen Ort, der quer ueber Repos, Karten, Claims, CI, Runtime
 
 Wenn Cabinet selbst Tasks erzeugt, Dispatch ausloest, Grabowski startet, Merges vorbereitet oder Runtime veraendert, wird aus dem Radar ein Schatten-Orchestrator. Das wuerde die bestehende Organtrennung beschaedigen.
 
+Wenn Bedienkomfort, Live-Status oder Servicekatalog hoeher gewichtet werden als Quellenordnung und Nicht-Claims, sind Leitstand, Backstage, GitHub Projects, Linear, Obsidian oder Notion fuer diese Teilaufgaben praktischer. Diese Werkzeuge sind dann Consumer oder Nachbarorgane, nicht Ersatz fuer Cabinet-Canon.
+
 ## Synthese
 
-Cabinet darf automatisch sehen, pruefen, priorisieren und Belege verdichten. Bureau besitzt Taktung und Receipts. Grabowski handelt erst nach Task- oder Operatorfreigabe. Heimlern bewertet rueckblickend Outcomes und schlaegt Anpassungen vor, wendet sie aber nicht direkt an.
+Cabinet darf automatisch sehen, pruefen, priorisieren und Belege verdichten. Bureau besitzt Taktung und Receipts. Grabowski handelt erst nach Task- oder Operatorfreigabe. Heimlern bewertet rueckblickend Outcomes und schlaegt Anpassungen vor, wendet sie aber nicht direkt an. Leitstand oder Schauwerk duerfen anzeigen, aber nicht kanonisieren.
 
 ## Scope
 
@@ -44,6 +48,8 @@ Erlaubte Scan-Klassen:
 Cabinet erzeugt in diesem Modell keine RepoBriefs und keine Lenskit-Dumps. Cabinet darf fehlende, alte oder widerspruechliche Dump-Artefakte melden, aber nicht deren Erzeugung uebernehmen.
 
 Cabinet fuehrt keine Bereinigung aus, veraendert keine Runtime, erstellt keine Bureau-Tasks, delegiert nicht automatisch an Grabowski und leitet keine Autoritaet aus Mermaidkarten ab.
+
+Cabinet ist auch kein Ersatz fuer Aufgabenqueue, Live-Dashboard, Servicekatalog, Notizsystem oder PR-/CI-/Runtime-Quelle. Diese Flaechen duerfen Cabinet-Artefakte konsumieren, aber keine Cabinet-Wahrheit ueberschreiben.
 
 ## Artefakte
 
@@ -127,6 +133,7 @@ Startbedingung: Heimlern darf erst produktiv angebunden werden, wenn die relevan
 | RepoBrief / Lenskit | extern erzeugte Kontext- und Dump-Artefakte |
 | Heimlern | retrospektive Outcome-Auswertung und proposal-only Policy-Vorschlaege |
 | Chronik | Ereigniskontinuitaet und historische Entscheidungsspuren |
+| Leitstand / Schauwerk | Anzeige und Visualisierung, nicht Cabinet-Canon |
 | GitHub / CI / Runtime | primaere Realitaetsquellen |
 | Externe Agenten | Review, Vorschlag, Gegenposition, keine Mutationshoheit |
 
@@ -138,6 +145,8 @@ Startbedingung: Heimlern darf erst produktiv angebunden werden, wenn die relevan
 4. Handoff an Bureau bleibt proposal-only und reviewpflichtig.
 5. Heimlern-Output bleibt proposal-only und braucht Review.
 6. Externe Dump-Artefakte werden nur konsumiert, nicht in Cabinet erzeugt.
+7. Rollenentscheidung ist als Boundary-Doc und Policy-Felder auffindbar.
+8. Spezialwerkzeuge werden nur als Consumer oder Nachbarorgane eingebunden.
 
 ## Epistemische Leerstellen
 
@@ -145,3 +154,4 @@ Startbedingung: Heimlern darf erst produktiv angebunden werden, wenn die relevan
 - Das aktuelle Heimlern-Contract-Repair ist noch nicht als abgeschlossen vorauszusetzen.
 - Eine semantische Wahrheitspruefung bleibt ohne Primaerquellenzugriff unvollstaendig.
 - Fuer Gemini fehlt weiterhin ein gepruefter Dry Run mit kuratiertem Evidence-Paket, Output-Schema, Validator, Secret-/WIF-Nachweis, Kosten-/Quota-Grenze und Log-Privacy-Beleg.
+- Leitstand-/Backstage-/GitHub-Projects-Integration ist mit dieser Entscheidung nicht freigegeben, sondern nur geroutet.
