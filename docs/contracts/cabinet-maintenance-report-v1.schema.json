@@ -16,25 +16,54 @@
     "summary",
     "findings",
     "bureauCandidates",
+    "claimEvidenceRevalidations",
     "epistemicGaps",
     "doesNotEstablish"
   ],
   "properties": {
-    "schemaVersion": {"const": 1},
-    "kind": {"const": "cabinet_maintenance_report"},
-    "contractVersion": {"const": "1"},
-    "contractPath": {"const": "docs/contracts/cabinet-maintenance-report-v1.md"},
-    "schemaPath": {"const": "docs/contracts/cabinet-maintenance-report-v1.schema.json"},
-    "mode": {"const": "read_only_coherence_scan"},
+    "schemaVersion": {
+      "const": 1
+    },
+    "kind": {
+      "const": "cabinet_maintenance_report"
+    },
+    "contractVersion": {
+      "const": "1"
+    },
+    "contractPath": {
+      "const": "docs/contracts/cabinet-maintenance-report-v1.md"
+    },
+    "schemaPath": {
+      "const": "docs/contracts/cabinet-maintenance-report-v1.schema.json"
+    },
+    "mode": {
+      "const": "read_only_coherence_scan"
+    },
     "source": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["repository", "commit", "generatedAt", "scanDate"],
+      "required": [
+        "repository",
+        "commit",
+        "generatedAt",
+        "scanDate"
+      ],
       "properties": {
-        "repository": {"const": "heimgewebe/cabinet"},
-        "commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
-        "generatedAt": {"type": "string", "minLength": 1},
-        "scanDate": {"type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"}
+        "repository": {
+          "const": "heimgewebe/cabinet"
+        },
+        "commit": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "generatedAt": {
+          "type": "string",
+          "minLength": 1
+        },
+        "scanDate": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+        }
       }
     },
     "effectFlags": {
@@ -50,13 +79,27 @@
         "authorityInferenceFromMapAllowed"
       ],
       "properties": {
-        "bureauTaskCreationAllowed": {"const": false},
-        "grabowskiDelegationAllowed": {"const": false},
-        "mergeOrPushAllowed": {"const": false},
-        "runtimeMutationAllowed": {"const": false},
-        "cleanupAllowed": {"const": false},
-        "dumpGenerationAllowed": {"const": false},
-        "authorityInferenceFromMapAllowed": {"const": false}
+        "bureauTaskCreationAllowed": {
+          "const": false
+        },
+        "grabowskiDelegationAllowed": {
+          "const": false
+        },
+        "mergeOrPushAllowed": {
+          "const": false
+        },
+        "runtimeMutationAllowed": {
+          "const": false
+        },
+        "cleanupAllowed": {
+          "const": false
+        },
+        "dumpGenerationAllowed": {
+          "const": false
+        },
+        "authorityInferenceFromMapAllowed": {
+          "const": false
+        }
       }
     },
     "summary": {
@@ -68,43 +111,118 @@
         "epistemicGapCount",
         "bureauCandidateCount",
         "blockedHandoffCount",
-        "severityCounts"
+        "severityCounts",
+        "claimEvidenceRevalidationCounts"
       ],
       "properties": {
-        "status": {"enum": ["pass", "warn", "fail"]},
-        "findingCount": {"type": "integer", "minimum": 0},
-        "epistemicGapCount": {"type": "integer", "minimum": 0},
-        "bureauCandidateCount": {"type": "integer", "minimum": 0},
-        "blockedHandoffCount": {"type": "integer", "minimum": 0},
+        "status": {
+          "enum": [
+            "pass",
+            "warn",
+            "fail"
+          ]
+        },
+        "findingCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "epistemicGapCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "bureauCandidateCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "blockedHandoffCount": {
+          "type": "integer",
+          "minimum": 0
+        },
         "severityCounts": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["P0", "P1", "P2", "P3"],
+          "required": [
+            "P0",
+            "P1",
+            "P2",
+            "P3"
+          ],
           "properties": {
-            "P0": {"type": "integer", "minimum": 0},
-            "P1": {"type": "integer", "minimum": 0},
-            "P2": {"type": "integer", "minimum": 0},
-            "P3": {"type": "integer", "minimum": 0}
+            "P0": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "P1": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "P2": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "P3": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        },
+        "claimEvidenceRevalidationCounts": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "still_established",
+            "stale",
+            "missing",
+            "changed",
+            "unverifiable"
+          ],
+          "properties": {
+            "still_established": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "stale": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "missing": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "changed": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "unverifiable": {
+              "type": "integer",
+              "minimum": 0
+            }
           }
         }
       }
     },
     "findings": {
       "type": "array",
-      "items": {"$ref": "#/$defs/finding"}
+      "items": {
+        "$ref": "#/$defs/finding"
+      }
     },
     "bureauCandidates": {
       "type": "array",
-      "items": {"$ref": "#/$defs/bureauCandidate"}
+      "items": {
+        "$ref": "#/$defs/bureauCandidate"
+      }
     },
     "epistemicGaps": {
       "type": "array",
-      "items": {"$ref": "#/$defs/epistemicGap"}
+      "items": {
+        "$ref": "#/$defs/epistemicGap"
+      }
     },
     "doesNotEstablish": {
       "type": "array",
-      "minItems": 7,
-      "maxItems": 7,
+      "minItems": 9,
+      "maxItems": 9,
       "items": {
         "enum": [
           "claim_truth",
@@ -113,10 +231,18 @@
           "task_approval",
           "bureau_import_implemented",
           "autonomous_dispatch",
-          "external_dump_freshness_completeness"
+          "external_dump_freshness_completeness",
+          "repobrief_claim_truth_oracle",
+          "cabinet_repobrief_lenskit_producer"
         ]
       },
       "uniqueItems": true
+    },
+    "claimEvidenceRevalidations": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/claimEvidenceRevalidation"
+      }
     }
   },
   "$defs": {
@@ -136,41 +262,235 @@
         "bureauAdmissible"
       ],
       "properties": {
-        "id": {"type": "string", "minLength": 1},
-        "class": {"enum": ["consistency", "error", "freshness", "handoff", "authority", "risk"]},
-        "severity": {"enum": ["P0", "P1", "P2", "P3"]},
-        "status": {"enum": ["open", "blocked", "candidate"]},
-        "subject": {"type": "string", "minLength": 1},
-        "message": {"type": "string", "minLength": 1},
-        "evidence": {"type": "array", "items": {"type": "string", "minLength": 1}},
-        "responsibleOrgan": {"type": "string", "minLength": 1},
-        "nextAction": {"type": "string", "minLength": 1},
-        "bureauAdmissible": {"type": "boolean"}
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "class": {
+          "enum": [
+            "consistency",
+            "error",
+            "freshness",
+            "handoff",
+            "authority",
+            "risk"
+          ]
+        },
+        "severity": {
+          "enum": [
+            "P0",
+            "P1",
+            "P2",
+            "P3"
+          ]
+        },
+        "status": {
+          "enum": [
+            "open",
+            "blocked",
+            "candidate"
+          ]
+        },
+        "subject": {
+          "type": "string",
+          "minLength": 1
+        },
+        "message": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "responsibleOrgan": {
+          "type": "string",
+          "minLength": 1
+        },
+        "nextAction": {
+          "type": "string",
+          "minLength": 1
+        },
+        "bureauAdmissible": {
+          "type": "boolean"
+        }
       }
     },
     "bureauCandidate": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "status", "evidence", "expiresAtOrRefreshHint", "nextAction", "responsibleOrgan"],
+      "required": [
+        "id",
+        "status",
+        "evidence",
+        "expiresAtOrRefreshHint",
+        "nextAction",
+        "responsibleOrgan"
+      ],
       "properties": {
-        "id": {"type": "string", "minLength": 1},
-        "status": {"type": "string", "minLength": 1},
-        "evidence": {"type": "array", "items": {"type": "string", "minLength": 1}},
-        "expiresAtOrRefreshHint": {"type": "string", "minLength": 1},
-        "nextAction": {"type": "string", "minLength": 1},
-        "responsibleOrgan": {"type": "string", "minLength": 1}
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "expiresAtOrRefreshHint": {
+          "type": "string",
+          "minLength": 1
+        },
+        "nextAction": {
+          "type": "string",
+          "minLength": 1
+        },
+        "responsibleOrgan": {
+          "type": "string",
+          "minLength": 1
+        }
       }
     },
     "epistemicGap": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "topic", "missing", "neededFor", "severity"],
+      "required": [
+        "id",
+        "topic",
+        "missing",
+        "neededFor",
+        "severity"
+      ],
       "properties": {
-        "id": {"type": "string", "minLength": 1},
-        "topic": {"type": "string", "minLength": 1},
-        "missing": {"type": "string", "minLength": 1},
-        "neededFor": {"type": "string", "minLength": 1},
-        "severity": {"enum": ["P0", "P1", "P2", "P3"]}
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "topic": {
+          "type": "string",
+          "minLength": 1
+        },
+        "missing": {
+          "type": "string",
+          "minLength": 1
+        },
+        "neededFor": {
+          "type": "string",
+          "minLength": 1
+        },
+        "severity": {
+          "enum": [
+            "P0",
+            "P1",
+            "P2",
+            "P3"
+          ]
+        }
+      }
+    },
+    "claimEvidenceRevalidation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "claimId",
+        "evidenceIndex",
+        "type",
+        "ref",
+        "status",
+        "reason",
+        "citationId",
+        "sourcePath",
+        "startLine",
+        "endLine",
+        "expectedSha256",
+        "actualSha256",
+        "freshnessBasis",
+        "generatedAt",
+        "maxAgeHours",
+        "doesNotEstablish"
+      ],
+      "properties": {
+        "claimId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidenceIndex": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "ref": {
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "still_established",
+            "stale",
+            "missing",
+            "changed",
+            "unverifiable"
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "citationId": {
+          "type": "string"
+        },
+        "sourcePath": {
+          "type": "string"
+        },
+        "startLine": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "endLine": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "expectedSha256": {
+          "type": "string"
+        },
+        "actualSha256": {
+          "type": "string"
+        },
+        "freshnessBasis": {
+          "type": "string"
+        },
+        "generatedAt": {
+          "type": "string"
+        },
+        "maxAgeHours": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "doesNotEstablish": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "items": {
+            "enum": [
+              "claim_truth",
+              "repo_understood",
+              "repobrief_truth_oracle",
+              "dump_generation"
+            ]
+          },
+          "uniqueItems": true
+        }
       }
     }
   }

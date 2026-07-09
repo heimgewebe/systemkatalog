@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from datetime import date
+import hashlib
 import json
 import sys
 import tempfile
@@ -181,15 +182,42 @@ def make_repo(root: Path, claim_overrides: dict[str, Any] | None = None, *, with
         claim.update(claim_overrides)
     (root / "registry/ecosystem/claims.jsonl").write_text(json.dumps(claim) + "\n", encoding="utf-8")
     for evidence in bridge["allowed_sources"] + claim["evidence"]:
-        if evidence.startswith("registry/"):
+        if isinstance(evidence, dict):
+            evidence_ref = evidence.get("sourcePath") or evidence.get("ref") or ""
+        else:
+            evidence_ref = evidence
+        if not isinstance(evidence_ref, str) or not evidence_ref or evidence_ref.startswith("registry/"):
             continue
-        write_text(root / evidence)
+        write_text(root / evidence_ref)
     if with_external_dump_registry:
         write_text(root / ("docs/contracts/" + "cabinet-" + "external-dump-sources-v1.md"))
         write_json(root / ("docs/contracts/" + "cabinet-" + "external-dump-sources-v1.schema.json"), {})
         registry_payload = external_dump_registry()
         write_json(root / ("registry/ecosystem/" + "external-dump-sources.json"), registry_payload)
         write_external_manifests(root, registry_payload)
+
+
+def structured_repobrief_evidence(
+    *,
+    path: str = "docs/blueprints/cabinet-qa-radar-v1.md",
+    sha256: str | None = None,
+    generated_at: str = "2026-07-05T00:00:00Z",
+    max_age_hours: int = 48,
+) -> dict[str, Any]:
+    if sha256 is None:
+        sha256 = hashlib.sha256(b"x\n").hexdigest()
+    return {
+        "type": "repobrief_source_range",
+        "ref": "external/repobrief/cabinet/main/manifest.json",
+        "citationId": "citation:cabinet-qa-radar-v1:1-1",
+        "sourcePath": path,
+        "startLine": 1,
+        "endLine": 1,
+        "sha256": sha256,
+        "freshnessBasis": "external_manifest_generated_at",
+        "generatedAt": generated_at,
+        "maxAgeHours": max_age_hours,
+    }
 
 
 class CabinetMaintenanceReportTests(unittest.TestCase):
@@ -264,6 +292,108 @@ class CabinetMaintenanceReportTests(unittest.TestCase):
         self.assertEqual(report["summary"]["status"], "warn")
         self.assertTrue(any(finding["id"].endswith(":missing-evidence-path") for finding in report["findings"]))
         self.assertEqual(report["summary"]["severityCounts"]["P2"], 1)
+
+
+    def test_structured_repobrief_evidence_can_remain_still_established(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            make_repo(
+                root,
+                {"evidence": [structured_repobrief_evidence()]},
+                with_external_dump_registry=True,
+            )
+
+            report = build_report(
+                root,
+                source_commit="1" * 40,
+                generated_at="2026-07-05T00:00:00Z",
+                scan_date=date(2026, 7, 5),
+            )
+
+        self.assertEqual(report["summary"]["status"], "pass")
+        self.assertEqual(report["claimEvidenceRevalidations"][0]["status"], "still_established")
+        self.assertEqual(report["claimEvidenceRevalidations"][0]["citationId"], "citation:cabinet-qa-radar-v1:1-1")
+        self.assertEqual(report["summary"]["claimEvidenceRevalidationCounts"]["still_established"], 1)
+
+    def test_structured_repobrief_evidence_changed_is_p2_revalidation_finding(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            make_repo(
+                root,
+                {"evidence": [structured_repobrief_evidence(sha256="0" * 64)]},
+                with_external_dump_registry=True,
+            )
+
+            report = build_report(
+                root,
+                source_commit="2" * 40,
+                generated_at="2026-07-05T00:00:00Z",
+                scan_date=date(2026, 7, 5),
+            )
+
+        self.assertEqual(report["summary"]["status"], "warn")
+        self.assertEqual(report["claimEvidenceRevalidations"][0]["status"], "changed")
+        self.assertTrue(any(finding["id"].endswith(":changed") for finding in report["findings"]))
+
+    def test_structured_repobrief_evidence_stale_is_p2_revalidation_finding(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            make_repo(
+                root,
+                {"evidence": [structured_repobrief_evidence(generated_at="2026-07-01T00:00:00Z", max_age_hours=1)]},
+                with_external_dump_registry=True,
+            )
+
+            report = build_report(
+                root,
+                source_commit="3" * 40,
+                generated_at="2026-07-05T00:00:00Z",
+                scan_date=date(2026, 7, 5),
+            )
+
+        self.assertEqual(report["summary"]["status"], "warn")
+        self.assertEqual(report["claimEvidenceRevalidations"][0]["status"], "stale")
+        self.assertTrue(any(finding["id"].endswith(":stale") for finding in report["findings"]))
+
+    def test_structured_repobrief_evidence_missing_is_p2_revalidation_finding(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            make_repo(
+                root,
+                {"evidence": [structured_repobrief_evidence(path="docs/missing-repobrief-evidence.md")]},
+                with_external_dump_registry=True,
+            )
+            (root / "docs/missing-repobrief-evidence.md").unlink()
+
+            report = build_report(
+                root,
+                source_commit="4" * 40,
+                generated_at="2026-07-05T00:00:00Z",
+                scan_date=date(2026, 7, 5),
+            )
+
+        self.assertEqual(report["summary"]["status"], "warn")
+        self.assertEqual(report["claimEvidenceRevalidations"][0]["status"], "missing")
+        self.assertTrue(any(finding["id"].endswith(":missing") for finding in report["findings"]))
+
+    def test_structured_repobrief_evidence_without_hash_or_freshness_is_unverifiable(self) -> None:
+        evidence = structured_repobrief_evidence()
+        for key in ("sha256", "generatedAt", "maxAgeHours", "freshnessBasis"):
+            evidence.pop(key, None)
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            make_repo(root, {"evidence": [evidence]}, with_external_dump_registry=True)
+
+            report = build_report(
+                root,
+                source_commit="5" * 40,
+                generated_at="2026-07-05T00:00:00Z",
+                scan_date=date(2026, 7, 5),
+            )
+
+        self.assertEqual(report["summary"]["status"], "warn")
+        self.assertEqual(report["claimEvidenceRevalidations"][0]["status"], "unverifiable")
+        self.assertEqual(report["summary"]["severityCounts"]["P3"], 1)
 
     def test_external_dump_freshness_uses_report_timestamp_not_scan_midnight(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

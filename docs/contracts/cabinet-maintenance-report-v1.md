@@ -17,6 +17,7 @@ It records:
 - summary counts by severity;
 - findings for consistency, error, freshness, handoff, authority and risk;
 - Bureau candidate readiness;
+- claim evidence revalidation status for bounded RepoBrief citation/source-range references;
 - epistemic gaps;
 - explicit non-claims.
 
@@ -69,6 +70,30 @@ A Bureau candidate may be listed only when the source claim:
 
 A listed candidate is still proposal-only.
 
+## Claim evidence revalidation
+
+`claimEvidenceRevalidations` records a bounded re-check for each claim evidence entry.
+
+Legacy string evidence remains compatible. Local Cabinet paths can be confirmed as `still_established` or `missing`; textual or external legacy references are marked `unverifiable` without becoming claim truth.
+
+Structured evidence entries may use `type: repobrief_citation` or `type: repobrief_source_range` and can carry:
+
+- `ref` or `sourcePath`;
+- optional `citationId`;
+- optional `startLine` / `endLine` source range;
+- `sha256` or `expectedSha256` for current-file hash comparison;
+- `generatedAt`, `freshnessBasis` and `maxAgeHours` for freshness checks.
+
+The revalidation status vocabulary is:
+
+- `still_established`;
+- `stale`;
+- `missing`;
+- `changed`;
+- `unverifiable`.
+
+This revalidation is a maintenance signal only. RepoBrief citation ids and hashes can show that the referenced evidence surface still matches, is stale, changed, missing or cannot be checked. They do not prove the claim itself.
+
 ## Non-claims
 
 A valid report does not establish:
@@ -79,4 +104,6 @@ A valid report does not establish:
 - task approval;
 - Bureau import completion;
 - autonomous dispatch;
-- external dump freshness completeness.
+- external dump freshness completeness;
+- `repobrief_claim_truth_oracle`;
+- `cabinet_repobrief_lenskit_producer`.

@@ -4,6 +4,7 @@ Vorläufige Auswertungen.
 
 ## Aktuelle Befunde
 
+- [RPU-V1-T014 Claim Evidence Revalidation 2026-07-09](rpu-v1-t014-claim-evidence-revalidation-2026-07-09.md)
 - [CAB-QA-008 External Manifest Refresh 2026-07-09](cab-qa-008-external-manifest-refresh-2026-07-09.md)
 - [Cabinet Gemini Maintenance Preflight v1](cabinet-gemini-maintenance-preflight-v1.md)
 - [CAB-QA-004 Observed 2026-07-06](cab-qa-004-external-manifest-observed-2026-07-06.md)

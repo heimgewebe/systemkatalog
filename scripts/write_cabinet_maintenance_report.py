@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 from datetime import date, datetime, timedelta, timezone
+import hashlib
 import json
 import subprocess
 import sys
@@ -44,10 +45,19 @@ DOES_NOT_ESTABLISH = (
     "bureau_import_implemented",
     "autonomous_dispatch",
     "external_dump_freshness_completeness",
+    "repobrief_claim_truth_oracle",
+    "cabinet_repobrief_lenskit_producer",
 )
 
 FINDING_CLASSES = ("consistency", "error", "freshness", "handoff", "authority", "risk")
 SEVERITIES = ("P0", "P1", "P2", "P3")
+REVALIDATION_STATUSES = ("still_established", "stale", "missing", "changed", "unverifiable")
+CLAIM_EVIDENCE_REVALIDATION_NON_CLAIMS = (
+    "claim_truth",
+    "repo_understood",
+    "repobrief_truth_oracle",
+    "dump_generation",
+)
 ADMISSIBLE_FALLBACK = {"evidenced", "approved", "draft_decision_with_explicit_human_release"}
 BLOCKED_FALLBACK = {"plausible", "speculative", "expired", "contradicted", "unverified"}
 
@@ -147,11 +157,27 @@ def _string_set(value: Any, fallback: set[str]) -> set[str]:
     return result or set(fallback)
 
 
-def _claim_evidence(claim: dict[str, Any]) -> list[str]:
+def _claim_evidence_items(claim: dict[str, Any]) -> list[Any]:
     evidence = claim.get("evidence")
     if not isinstance(evidence, list):
         return []
-    return [item for item in evidence if isinstance(item, str) and item]
+    return [item for item in evidence if isinstance(item, (str, dict))]
+
+
+def _evidence_ref(item: Any) -> str:
+    if isinstance(item, str):
+        return item
+    if not isinstance(item, dict):
+        return ""
+    for key in ("ref", "sourcePath", "citationId"):
+        value = item.get(key)
+        if isinstance(value, str) and value:
+            return value
+    return ""
+
+
+def _claim_evidence(claim: dict[str, Any]) -> list[str]:
+    return [ref for ref in (_evidence_ref(item) for item in _claim_evidence_items(claim)) if ref]
 
 
 def _claim_expiry(claim: dict[str, Any]) -> date | None:
@@ -178,6 +204,351 @@ def _local_evidence_candidate(value: str) -> bool:
     if value.startswith(("github.com:", "git@", "claim:", "repo:", "artifact:")):
         return False
     return "/" in value or value.endswith((".md", ".json", ".jsonl", ".py", ".yml", ".yaml"))
+
+
+def _sha256_file(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def _valid_sha256(value: str) -> bool:
+    return len(value) == 64 and all(ch in "0123456789abcdef" for ch in value)
+
+
+def _line_count(path: Path) -> int:
+    return len(path.read_text(encoding="utf-8").splitlines())
+
+
+def _revalidation_record(
+    *,
+    claim_id: str,
+    evidence_index: int,
+    evidence_type: str,
+    ref: str,
+    status: str,
+    reason: str,
+    citation_id: str = "",
+    source_path: str = "",
+    start_line: int = 0,
+    end_line: int = 0,
+    expected_sha256: str = "",
+    actual_sha256: str = "",
+    freshness_basis: str = "",
+    generated_at: str = "",
+    max_age_hours: int = 0,
+) -> dict[str, Any]:
+    return {
+        "claimId": claim_id,
+        "evidenceIndex": evidence_index,
+        "type": evidence_type,
+        "ref": ref,
+        "status": status,
+        "reason": reason,
+        "citationId": citation_id,
+        "sourcePath": source_path,
+        "startLine": start_line,
+        "endLine": end_line,
+        "expectedSha256": expected_sha256,
+        "actualSha256": actual_sha256,
+        "freshnessBasis": freshness_basis,
+        "generatedAt": generated_at,
+        "maxAgeHours": max_age_hours,
+        "doesNotEstablish": list(CLAIM_EVIDENCE_REVALIDATION_NON_CLAIMS),
+    }
+
+
+def _claim_evidence_revalidation(
+    repo_root: Path,
+    claim_id: str,
+    evidence_index: int,
+    item: Any,
+    scan_time: datetime,
+) -> dict[str, Any]:
+    if isinstance(item, str):
+        if not _local_evidence_candidate(item):
+            return _revalidation_record(
+                claim_id=claim_id,
+                evidence_index=evidence_index,
+                evidence_type="legacy_string",
+                ref=item,
+                status="unverifiable",
+                reason="legacy evidence string is not a local Cabinet path and carries no RepoBrief hash or freshness metadata",
+            )
+        try:
+            evidence_path = _repo_path(repo_root, item, f"claim evidence {claim_id}#{evidence_index}")
+        except MaintenanceReportError as exc:
+            return _revalidation_record(
+                claim_id=claim_id,
+                evidence_index=evidence_index,
+                evidence_type="legacy_string",
+                ref=item,
+                status="missing",
+                reason=str(exc),
+            )
+        if not evidence_path.exists():
+            return _revalidation_record(
+                claim_id=claim_id,
+                evidence_index=evidence_index,
+                evidence_type="legacy_string",
+                ref=item,
+                status="missing",
+                reason="legacy local evidence path is missing",
+            )
+        return _revalidation_record(
+            claim_id=claim_id,
+            evidence_index=evidence_index,
+            evidence_type="legacy_string",
+            ref=item,
+            status="still_established",
+            reason="legacy local evidence path exists; no RepoBrief hash or freshness metadata was asserted",
+            actual_sha256=_sha256_file(evidence_path) if evidence_path.is_file() else "",
+        )
+
+    if not isinstance(item, dict):
+        return _revalidation_record(
+            claim_id=claim_id,
+            evidence_index=evidence_index,
+            evidence_type="invalid",
+            ref="",
+            status="unverifiable",
+            reason="claim evidence item is neither string nor object",
+        )
+
+    evidence_type = item.get("type")
+    if evidence_type not in {"repobrief_citation", "repobrief_source_range"}:
+        return _revalidation_record(
+            claim_id=claim_id,
+            evidence_index=evidence_index,
+            evidence_type=str(evidence_type or "unknown"),
+            ref=_evidence_ref(item),
+            status="unverifiable",
+            reason="structured claim evidence type is not supported by Cabinet revalidation",
+        )
+
+    ref = item.get("ref") if isinstance(item.get("ref"), str) else ""
+    citation_id = item.get("citationId") if isinstance(item.get("citationId"), str) else ""
+    source_path = item.get("sourcePath") if isinstance(item.get("sourcePath"), str) else ""
+    path_ref = source_path or ref
+    if not path_ref:
+        return _revalidation_record(
+            claim_id=claim_id,
+            evidence_index=evidence_index,
+            evidence_type=evidence_type,
+            ref=ref,
+            status="unverifiable",
+            reason="structured RepoBrief evidence must include ref or sourcePath",
+            citation_id=citation_id,
+            source_path=source_path,
+        )
+
+    try:
+        evidence_path = _repo_path(repo_root, path_ref, f"claim evidence {claim_id}#{evidence_index}")
+    except MaintenanceReportError as exc:
+        return _revalidation_record(
+            claim_id=claim_id,
+            evidence_index=evidence_index,
+            evidence_type=evidence_type,
+            ref=ref or path_ref,
+            status="missing",
+            reason=str(exc),
+            citation_id=citation_id,
+            source_path=source_path,
+        )
+    if not evidence_path.is_file():
+        return _revalidation_record(
+            claim_id=claim_id,
+            evidence_index=evidence_index,
+            evidence_type=evidence_type,
+            ref=ref or path_ref,
+            status="missing",
+            reason="structured RepoBrief evidence path is missing or not a regular file",
+            citation_id=citation_id,
+            source_path=source_path,
+        )
+
+    actual_sha256 = _sha256_file(evidence_path)
+    expected_sha256 = item.get("sha256") or item.get("expectedSha256")
+    expected_sha256 = expected_sha256 if isinstance(expected_sha256, str) else ""
+    generated_at = item.get("generatedAt") if isinstance(item.get("generatedAt"), str) else ""
+    freshness_basis = item.get("freshnessBasis") if isinstance(item.get("freshnessBasis"), str) else ""
+    raw_max_age = item.get("maxAgeHours")
+    max_age_hours = raw_max_age if isinstance(raw_max_age, int) and not isinstance(raw_max_age, bool) else 0
+    start_line = item.get("startLine") if isinstance(item.get("startLine"), int) and not isinstance(item.get("startLine"), bool) else 0
+    end_line = item.get("endLine") if isinstance(item.get("endLine"), int) and not isinstance(item.get("endLine"), bool) else 0
+
+    if start_line or end_line:
+        if start_line < 1 or end_line < start_line:
+            return _revalidation_record(
+                claim_id=claim_id,
+                evidence_index=evidence_index,
+                evidence_type=evidence_type,
+                ref=ref or path_ref,
+                status="unverifiable",
+                reason="structured RepoBrief source range is invalid",
+                citation_id=citation_id,
+                source_path=source_path,
+                start_line=start_line,
+                end_line=end_line,
+                expected_sha256=expected_sha256,
+                actual_sha256=actual_sha256,
+                freshness_basis=freshness_basis,
+                generated_at=generated_at,
+                max_age_hours=max_age_hours,
+            )
+        if end_line > _line_count(evidence_path):
+            return _revalidation_record(
+                claim_id=claim_id,
+                evidence_index=evidence_index,
+                evidence_type=evidence_type,
+                ref=ref or path_ref,
+                status="unverifiable",
+                reason="structured RepoBrief source range exceeds the current evidence file",
+                citation_id=citation_id,
+                source_path=source_path,
+                start_line=start_line,
+                end_line=end_line,
+                expected_sha256=expected_sha256,
+                actual_sha256=actual_sha256,
+                freshness_basis=freshness_basis,
+                generated_at=generated_at,
+                max_age_hours=max_age_hours,
+            )
+
+    if expected_sha256:
+        if not _valid_sha256(expected_sha256):
+            return _revalidation_record(
+                claim_id=claim_id,
+                evidence_index=evidence_index,
+                evidence_type=evidence_type,
+                ref=ref or path_ref,
+                status="unverifiable",
+                reason="structured RepoBrief evidence hash is not a lowercase sha256 digest",
+                citation_id=citation_id,
+                source_path=source_path,
+                start_line=start_line,
+                end_line=end_line,
+                expected_sha256=expected_sha256,
+                actual_sha256=actual_sha256,
+                freshness_basis=freshness_basis,
+                generated_at=generated_at,
+                max_age_hours=max_age_hours,
+            )
+        if expected_sha256 != actual_sha256:
+            return _revalidation_record(
+                claim_id=claim_id,
+                evidence_index=evidence_index,
+                evidence_type=evidence_type,
+                ref=ref or path_ref,
+                status="changed",
+                reason="structured RepoBrief evidence hash no longer matches the current Cabinet file",
+                citation_id=citation_id,
+                source_path=source_path,
+                start_line=start_line,
+                end_line=end_line,
+                expected_sha256=expected_sha256,
+                actual_sha256=actual_sha256,
+                freshness_basis=freshness_basis,
+                generated_at=generated_at,
+                max_age_hours=max_age_hours,
+            )
+
+    if generated_at or max_age_hours:
+        if not generated_at or max_age_hours < 1:
+            return _revalidation_record(
+                claim_id=claim_id,
+                evidence_index=evidence_index,
+                evidence_type=evidence_type,
+                ref=ref or path_ref,
+                status="unverifiable",
+                reason="structured RepoBrief freshness metadata is incomplete",
+                citation_id=citation_id,
+                source_path=source_path,
+                start_line=start_line,
+                end_line=end_line,
+                expected_sha256=expected_sha256,
+                actual_sha256=actual_sha256,
+                freshness_basis=freshness_basis,
+                generated_at=generated_at,
+                max_age_hours=max_age_hours,
+            )
+        if _parse_manifest_generated_at(generated_at, f"{claim_id} evidence {evidence_index} generatedAt") + timedelta(hours=max_age_hours) < scan_time.astimezone(timezone.utc):
+            return _revalidation_record(
+                claim_id=claim_id,
+                evidence_index=evidence_index,
+                evidence_type=evidence_type,
+                ref=ref or path_ref,
+                status="stale",
+                reason="structured RepoBrief evidence freshness window has expired",
+                citation_id=citation_id,
+                source_path=source_path,
+                start_line=start_line,
+                end_line=end_line,
+                expected_sha256=expected_sha256,
+                actual_sha256=actual_sha256,
+                freshness_basis=freshness_basis,
+                generated_at=generated_at,
+                max_age_hours=max_age_hours,
+            )
+
+    if not expected_sha256 and not (generated_at and max_age_hours):
+        return _revalidation_record(
+            claim_id=claim_id,
+            evidence_index=evidence_index,
+            evidence_type=evidence_type,
+            ref=ref or path_ref,
+            status="unverifiable",
+            reason="structured RepoBrief evidence has neither hash nor freshness metadata",
+            citation_id=citation_id,
+            source_path=source_path,
+            start_line=start_line,
+            end_line=end_line,
+            actual_sha256=actual_sha256,
+        )
+
+    return _revalidation_record(
+        claim_id=claim_id,
+        evidence_index=evidence_index,
+        evidence_type=evidence_type,
+        ref=ref or path_ref,
+        status="still_established",
+        reason="structured RepoBrief evidence path, range, hash and freshness metadata are still established within Cabinet's bounded surface",
+        citation_id=citation_id,
+        source_path=source_path,
+        start_line=start_line,
+        end_line=end_line,
+        expected_sha256=expected_sha256,
+        actual_sha256=actual_sha256,
+        freshness_basis=freshness_basis,
+        generated_at=generated_at,
+        max_age_hours=max_age_hours,
+    )
+
+
+def _revalidation_finding(revalidation: dict[str, Any]) -> dict[str, Any] | None:
+    status = revalidation["status"]
+    if status == "still_established" or revalidation["type"] == "legacy_string":
+        return None
+    klass = "freshness" if status == "stale" else "consistency" if status in {"missing", "changed"} else "risk"
+    severity = "P3" if status == "unverifiable" else "P2"
+    evidence = [str(CLAIMS_PATH)]
+    if revalidation["ref"]:
+        evidence.append(revalidation["ref"])
+    elif revalidation["sourcePath"]:
+        evidence.append(revalidation["sourcePath"])
+    return _finding(
+        f"cabqa:revalidation:{revalidation['claimId']}:evidence-{revalidation['evidenceIndex']}:{status}",
+        klass,
+        severity,
+        "open",
+        revalidation["claimId"],
+        f"Claim evidence revalidation is {status}: {revalidation['reason']}.",
+        evidence,
+        "cabinet",
+        "refresh_replace_or_retire_claim_evidence_reference",
+    )
 
 
 def _finding(
@@ -261,16 +632,31 @@ def _scan_bridge_sources(repo_root: Path, bridge_doc: dict[str, Any]) -> list[di
     return findings
 
 
-def _scan_claims(repo_root: Path, claims: list[dict[str, Any]], node_ids: set[str], bridge_doc: dict[str, Any], scan_date: date) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+def _scan_claims(
+    repo_root: Path,
+    claims: list[dict[str, Any]],
+    node_ids: set[str],
+    bridge_doc: dict[str, Any],
+    scan_date: date,
+    scan_time: datetime,
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]], list[dict[str, Any]]]:
     findings: list[dict[str, Any]] = []
     candidates: list[dict[str, Any]] = []
+    revalidations: list[dict[str, Any]] = []
     admissible = _string_set(bridge_doc.get("admissible_candidate_statuses"), ADMISSIBLE_FALLBACK)
     blocked = _string_set(bridge_doc.get("blocked_statuses"), BLOCKED_FALLBACK)
 
     for index, claim in enumerate(claims, start=1):
         claim_id = claim.get("id") if isinstance(claim.get("id"), str) and claim["id"] else f"claim-line-{index}"
+        raw_evidence = _claim_evidence_items(claim)
         evidence = _claim_evidence(claim)
         status = claim.get("status")
+        for evidence_index, item in enumerate(raw_evidence, start=1):
+            revalidation = _claim_evidence_revalidation(repo_root, claim_id, evidence_index, item, scan_time)
+            revalidations.append(revalidation)
+            revalidation_finding = _revalidation_finding(revalidation)
+            if revalidation_finding is not None:
+                findings.append(revalidation_finding)
         if claim.get("subject") not in node_ids:
             findings.append(_finding(
                 f"cabqa:consistency:{claim_id}:unknown-subject",
@@ -383,7 +769,7 @@ def _scan_claims(repo_root: Path, claims: list[dict[str, Any]], node_ids: set[st
                 "nextAction": str(claim["next_action"]),
                 "responsibleOrgan": str(claim["responsible_organ"]),
             })
-    return findings, candidates
+    return findings, candidates, revalidations
 
 
 
@@ -572,7 +958,19 @@ def _epistemic_gaps(repo_root: Path, external_dump_registry: str) -> list[dict[s
     }]
 
 
-def _summary(findings: list[dict[str, Any]], candidates: list[dict[str, Any]], gaps: list[dict[str, str]]) -> dict[str, Any]:
+def _revalidation_counts(revalidations: list[dict[str, Any]]) -> dict[str, int]:
+    counts = {status: 0 for status in REVALIDATION_STATUSES}
+    for item in revalidations:
+        counts[item["status"]] += 1
+    return counts
+
+
+def _summary(
+    findings: list[dict[str, Any]],
+    candidates: list[dict[str, Any]],
+    gaps: list[dict[str, str]],
+    revalidations: list[dict[str, Any]],
+) -> dict[str, Any]:
     severity_counts = {severity: 0 for severity in SEVERITIES}
     for finding in findings:
         severity_counts[finding["severity"]] += 1
@@ -589,6 +987,7 @@ def _summary(findings: list[dict[str, Any]], candidates: list[dict[str, Any]], g
         "bureauCandidateCount": len(candidates),
         "blockedHandoffCount": sum(1 for finding in findings if finding["class"] == "handoff" and not finding["bureauAdmissible"]),
         "severityCounts": severity_counts,
+        "claimEvidenceRevalidationCounts": _revalidation_counts(revalidations),
     }
 
 
@@ -616,7 +1015,14 @@ def build_report(
         raise MaintenanceReportError("bureau bridge document must be an object")
 
     findings = _scan_bridge_sources(repo_root, bridge_doc)
-    claim_findings, candidates = _scan_claims(repo_root, claims, _node_ids(nodes_doc), bridge_doc, date_value)
+    claim_findings, candidates, revalidations = _scan_claims(
+        repo_root,
+        claims,
+        _node_ids(nodes_doc),
+        bridge_doc,
+        date_value,
+        report_generated_time,
+    )
     findings.extend(claim_findings)
     findings.extend(_scan_external_dump_sources(repo_root, report_generated_time, external_dump_registry))
     findings.sort(key=lambda item: (item["severity"], item["class"], item["id"]))
@@ -637,9 +1043,10 @@ def build_report(
             "scanDate": date_value.isoformat(),
         },
         "effectFlags": {flag: False for flag in EFFECT_FLAGS},
-        "summary": _summary(findings, candidates, gaps),
+        "summary": _summary(findings, candidates, gaps, revalidations),
         "findings": findings,
         "bureauCandidates": candidates,
+        "claimEvidenceRevalidations": revalidations,
         "epistemicGaps": gaps,
         "doesNotEstablish": list(DOES_NOT_ESTABLISH),
     }
@@ -651,7 +1058,7 @@ def validate_report(report: dict[str, Any]) -> None:
     required = {
         "schemaVersion", "kind", "contractVersion", "contractPath", "schemaPath",
         "mode", "source", "effectFlags", "summary", "findings",
-        "bureauCandidates", "epistemicGaps", "doesNotEstablish",
+        "bureauCandidates", "claimEvidenceRevalidations", "epistemicGaps", "doesNotEstablish",
     }
     if set(report) != required:
         raise MaintenanceReportError("report top-level fields mismatch")
@@ -679,17 +1086,20 @@ def validate_report(report: dict[str, Any]) -> None:
 
     findings = report["findings"]
     candidates = report["bureauCandidates"]
+    revalidations = report["claimEvidenceRevalidations"]
     gaps = report["epistemicGaps"]
-    if not isinstance(findings, list) or not isinstance(candidates, list) or not isinstance(gaps, list):
+    if not isinstance(findings, list) or not isinstance(candidates, list) or not isinstance(revalidations, list) or not isinstance(gaps, list):
         raise MaintenanceReportError("report collections must be lists")
     for finding in findings:
         _validate_finding(finding)
     for candidate in candidates:
         _validate_candidate(candidate)
+    for revalidation in revalidations:
+        _validate_claim_evidence_revalidation(revalidation)
     for gap in gaps:
         _validate_gap(gap)
 
-    expected_summary = _summary(findings, candidates, gaps)
+    expected_summary = _summary(findings, candidates, gaps, revalidations)
     if report["summary"] != expected_summary:
         raise MaintenanceReportError("summary does not match report contents")
     non_claims = report["doesNotEstablish"]
@@ -721,6 +1131,37 @@ def _validate_candidate(candidate: Any) -> None:
             raise MaintenanceReportError(f"bureauCandidate.{field} must be a non-empty string")
     if not isinstance(candidate["evidence"], list) or not candidate["evidence"]:
         raise MaintenanceReportError("bureauCandidate.evidence must be non-empty")
+
+
+def _validate_claim_evidence_revalidation(revalidation: Any) -> None:
+    fields = {
+        "claimId", "evidenceIndex", "type", "ref", "status", "reason",
+        "citationId", "sourcePath", "startLine", "endLine", "expectedSha256",
+        "actualSha256", "freshnessBasis", "generatedAt", "maxAgeHours",
+        "doesNotEstablish",
+    }
+    if not isinstance(revalidation, dict) or set(revalidation) != fields:
+        raise MaintenanceReportError("claimEvidenceRevalidation fields mismatch")
+    for field in ("claimId", "type", "status", "reason"):
+        if not isinstance(revalidation[field], str) or not revalidation[field]:
+            raise MaintenanceReportError(f"claimEvidenceRevalidation.{field} must be a non-empty string")
+    for field in ("ref", "citationId", "sourcePath", "expectedSha256", "actualSha256", "freshnessBasis", "generatedAt"):
+        if not isinstance(revalidation[field], str):
+            raise MaintenanceReportError(f"claimEvidenceRevalidation.{field} must be a string")
+    if not isinstance(revalidation["evidenceIndex"], int) or revalidation["evidenceIndex"] < 1:
+        raise MaintenanceReportError("claimEvidenceRevalidation.evidenceIndex must be a positive integer")
+    for field in ("startLine", "endLine", "maxAgeHours"):
+        if not isinstance(revalidation[field], int) or isinstance(revalidation[field], bool) or revalidation[field] < 0:
+            raise MaintenanceReportError(f"claimEvidenceRevalidation.{field} must be a non-negative integer")
+    if revalidation["status"] not in REVALIDATION_STATUSES:
+        raise MaintenanceReportError("claimEvidenceRevalidation.status mismatch")
+    non_claims = revalidation["doesNotEstablish"]
+    if (
+        not isinstance(non_claims, list)
+        or set(non_claims) != set(CLAIM_EVIDENCE_REVALIDATION_NON_CLAIMS)
+        or len(non_claims) != len(CLAIM_EVIDENCE_REVALIDATION_NON_CLAIMS)
+    ):
+        raise MaintenanceReportError("claimEvidenceRevalidation.doesNotEstablish mismatch")
 
 
 def _validate_gap(gap: Any) -> None:
