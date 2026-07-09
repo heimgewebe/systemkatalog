@@ -880,6 +880,39 @@ def _external_manifest_surface_findings(
                 "refresh_external_dump_manifest_reference",
             )]
 
+    artifacts = manifest.get("artifacts")
+    if not isinstance(artifacts, list):
+        return [_finding(
+            f"cabqa:freshness:{source_id}:manifest-artifacts-invalid",
+            "freshness",
+            "P2",
+            "open",
+            source_id,
+            "External dump manifest field 'artifacts' must be a list.",
+            evidence,
+            "repobrief_lenskit",
+            "refresh_external_dump_manifest_reference",
+        )]
+
+    artifact_paths = [
+        artifact.get("path")
+        for artifact in artifacts
+        if isinstance(artifact, dict) and isinstance(artifact.get("path"), str)
+    ]
+    for suffix in source["requiredArtifactSuffixes"]:
+        if not any(path.endswith(suffix) for path in artifact_paths):
+            return [_finding(
+                f"cabqa:freshness:{source_id}:manifest-required-artifact-missing",
+                "freshness",
+                "P2",
+                "open",
+                source_id,
+                f"External dump manifest does not contain required artifact suffix {suffix!r}.",
+                evidence,
+                "repobrief_lenskit",
+                "refresh_external_dump_manifest_reference",
+            )]
+
     return []
 
 

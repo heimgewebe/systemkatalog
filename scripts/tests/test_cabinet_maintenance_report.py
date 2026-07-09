@@ -63,10 +63,11 @@ def external_manifest_payload(source: dict[str, Any]) -> dict[str, Any]:
         },
         "artifacts": [
             {
-                "role": "canonical_md",
-                "path": "cabinet-test_merge.md",
+                "role": f"required_{index}",
+                "path": f"cabinet-test{suffix}",
                 "sha256": "a" * 64,
             }
+            for index, suffix in enumerate(source["requiredArtifactSuffixes"], start=1)
         ],
         "doesNotEstablish": [
             "dump_freshness_truth",
@@ -453,6 +454,32 @@ class CabinetMaintenanceReportTests(unittest.TestCase):
         self.assertEqual(report["summary"]["status"], "warn")
         self.assertTrue(any(
             finding["id"] == "cabqa:freshness:external-dump:repobrief:manifest-timestamp-mismatch"
+            for finding in report["findings"]
+        ))
+
+    def test_observed_external_manifest_missing_required_artifact_is_p2_finding(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            make_repo(root, with_external_dump_registry=True)
+            manifest_path = root / "external/repobrief/cabinet/main/manifest.json"
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            manifest["artifacts"] = [
+                artifact
+                for artifact in manifest["artifacts"]
+                if not artifact["path"].endswith("_merge.json")
+            ]
+            manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+
+            report = build_report(
+                root,
+                source_commit="1" * 40,
+                generated_at="2026-07-05T00:00:00Z",
+                scan_date=date(2026, 7, 5),
+            )
+
+        self.assertEqual(report["summary"]["status"], "warn")
+        self.assertTrue(any(
+            finding["id"] == "cabqa:freshness:external-dump:repobrief:manifest-required-artifact-missing"
             for finding in report["findings"]
         ))
 

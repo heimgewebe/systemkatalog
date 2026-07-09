@@ -23,11 +23,18 @@
       "sha256": "a0fd4ca82fad1567816486903d05d57dfc5aa99e66b4faadbd97de9d16243904"
     },
     {
-      "bytes": 1722499,
-      "contentType": "text/markdown",
-      "path": "cabinet-max-260709-0938_merge.md",
-      "role": "canonical_md",
-      "sha256": "dd82ecd0b507db374ac5a533b2a54b8143c468fc5a1723e6d1829a653b1d97a8"
+      "bytes": 4925,
+      "contentType": "application/json",
+      "path": "cabinet-max-260709-0938_merge.bundle_health.post.json",
+      "role": "bundle_health_post",
+      "sha256": "c81884dde4cc0b0b5d4328f0b18f855a908e02bddec8fbefcd446ea1a40947a2"
+    },
+    {
+      "bytes": 2195456,
+      "contentType": "application/octet-stream",
+      "path": "cabinet-max-260709-0938_merge.chunk_index.index.sqlite",
+      "role": "sqlite_index",
+      "sha256": "59b44fa0732963cd112080b5364d88339d0ea66d402bc511dfbce0054b27938d"
     },
     {
       "bytes": 811946,
@@ -93,6 +100,13 @@
       "sha256": "44d29ebc67894642cb15a856e0b332a605c0e0891f8f740bd860deb2e247adcb"
     },
     {
+      "bytes": 1722499,
+      "contentType": "text/markdown",
+      "path": "cabinet-max-260709-0938_merge.md",
+      "role": "canonical_md",
+      "sha256": "dd82ecd0b507db374ac5a533b2a54b8143c468fc5a1723e6d1829a653b1d97a8"
+    },
+    {
       "bytes": 3360,
       "contentType": "application/json",
       "path": "cabinet-max-260709-0938_merge.output_health.json",
@@ -105,13 +119,6 @@
       "path": "cabinet-max-260709-0938_merge.retrieval_eval.json",
       "role": "retrieval_eval_json",
       "sha256": "a5567f80d6b5010898478557ce1d36e3e4d20ca2b3646af372cdf15e73f03b76"
-    },
-    {
-      "bytes": 2195456,
-      "contentType": "application/octet-stream",
-      "path": "cabinet-max-260709-0938_merge.chunk_index.index.sqlite",
-      "role": "sqlite_index",
-      "sha256": "59b44fa0732963cd112080b5364d88339d0ea66d402bc511dfbce0054b27938d"
     }
   ],
   "bundleManifest": {

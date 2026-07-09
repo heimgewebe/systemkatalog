@@ -57,9 +57,11 @@ It does not establish:
 A Cabinet maintenance report may:
 
 - validate the registry shape;
-- surface unobserved or stale dump sources as findings;
+- validate that an observed manifest file exists at the registered Cabinet-relative path;
+- validate the observed manifest surface fields and required artifact suffixes;
+- surface unobserved, missing, mismatching or stale dump sources as findings;
 - use a latest observed manifest timestamp for freshness classification;
-- cite the source registry as evidence.
+- cite the source registry and observed manifest path as evidence.
 
 It must not:
 

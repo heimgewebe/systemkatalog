@@ -56,7 +56,6 @@
         "_merge.json",
         "_merge.chunk_index.jsonl",
         "_merge.citation_map.jsonl",
-        "_merge.claim_evidence_map.json",
         "_merge.output_health.json",
         "_merge.bundle_health.post.json",
         "_merge.retrieval_eval.json"
