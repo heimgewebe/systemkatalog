@@ -68,6 +68,9 @@ REQUIRED_PROHIBITED_EFFECTS = {
     "runtime_mutation",
     "cleanup_action",
     "authority_inference_from_map",
+    "dashboard_authority_inference",
+    "service_catalog_authority_inference",
+    "task_queue_authority_inference",
     "direct_policy_weight_application",
 }
 
@@ -80,6 +83,9 @@ REQUIRED_NON_CLAIMS = {
     "autonomous_dispatch",
     "policy_change_approval",
     "dump_freshness_truth",
+    "service_catalog_truth",
+    "dashboard_truth",
+    "tool_replacement_approval",
 }
 
 REQUIRED_ORGAN_ROLES = {
@@ -89,8 +95,52 @@ REQUIRED_ORGAN_ROLES = {
     "repobrief_lenskit",
     "heimlern",
     "chronik",
+    "leitstand_schauwerk",
     "github_ci_runtime",
     "external_agents",
+}
+
+REQUIRED_ROLE_DECISION_CANON_FOR = {
+    "meaning",
+    "evidence_surface",
+    "claim_boundaries",
+    "prioritization_context",
+    "map_semantics",
+    "read_only_coherence_radar",
+    "maintenance_findings",
+    "proposal_only_handoff_candidates",
+}
+
+REQUIRED_ROLE_DECISION_NOT_CANON_FOR = {
+    "task_queue",
+    "scheduler",
+    "operator_execution",
+    "merge_or_push_decision",
+    "runtime_state",
+    "live_dashboard",
+    "service_catalog_ui",
+    "github_ci_runtime_truth",
+    "repobrief_lenskit_dump_generation",
+}
+
+REQUIRED_DEFAULT_TOOL_ROUTING = {
+    "task_queue": "bureau",
+    "task_cadence_receipts": "bureau",
+    "repo_execution": "grabowski_operator",
+    "context_dumps": "repobrief_lenskit",
+    "live_display": "leitstand_or_schauwerk",
+    "git_pr_review_truth": "github",
+    "ci_truth": "ci",
+    "runtime_truth": "runtime_systemd_logs_healthchecks",
+    "learning_feedback": "heimlern_after_review",
+}
+
+REQUIRED_REPLACEMENT_GATE_CONDITIONS = {
+    "versioned_claims_evidence_expiry_primary_sources_and_organ_roles",
+    "separates_radar_queue_operator_runtime_and_release_authority",
+    "controllable_for_local_and_private_sources",
+    "machine_checkable_drift_and_non_claims",
+    "no_new_shadow_authority",
 }
 
 REQUIRED_PRIMARY_SOURCE_KEYS = {
@@ -162,6 +212,74 @@ def _require_false(payload: dict[str, Any], key: str) -> None:
         raise MaintenanceRadarPolicyError(f"{key} must be false")
 
 
+def _require_repo_file(repo_root: Path, value: Any, label: str) -> Path:
+    relative_path = _require_string(value, label)
+    resolved_path = (repo_root / relative_path).resolve()
+    try:
+        resolved_path.relative_to(repo_root)
+    except ValueError:
+        raise MaintenanceRadarPolicyError(f"{label} escapes repository: {relative_path}") from None
+    if not resolved_path.is_file():
+        raise MaintenanceRadarPolicyError(f"{label} missing: {relative_path}")
+    return resolved_path
+
+
+def _require_mapping_values(
+    required: dict[str, str],
+    actual: dict[str, Any],
+    label: str,
+) -> None:
+    _require_subset(set(required), set(actual), label)
+    for key, expected in required.items():
+        if actual.get(key) != expected:
+            raise MaintenanceRadarPolicyError(f"{label}.{key} must be {expected}")
+
+
+def _validate_role_boundary(repo_root: Path, policy: dict[str, Any]) -> None:
+    _require_repo_file(repo_root, policy.get("role_boundary_doc"), "role_boundary_doc")
+
+    role_decision = _require_object(policy.get("role_decision"), "role_decision")
+    if role_decision.get("decision") != "keep_cabinet_as_semantic_evidence_and_prioritization_layer":
+        raise MaintenanceRadarPolicyError(
+            "role_decision.decision must keep Cabinet as semantic evidence and prioritization layer"
+        )
+    if role_decision.get("replacement_decision") != "do_not_replace_with_a_single_general_purpose_tool":
+        raise MaintenanceRadarPolicyError(
+            "role_decision.replacement_decision must reject single-tool replacement"
+        )
+    _require_subset(
+        REQUIRED_ROLE_DECISION_CANON_FOR,
+        _require_string_set(role_decision.get("cabinet_canon_for"), "role_decision.cabinet_canon_for"),
+        "role_decision.cabinet_canon_for",
+    )
+    _require_subset(
+        REQUIRED_ROLE_DECISION_NOT_CANON_FOR,
+        _require_string_set(
+            role_decision.get("cabinet_not_canon_for"),
+            "role_decision.cabinet_not_canon_for",
+        ),
+        "role_decision.cabinet_not_canon_for",
+    )
+
+    routing = _require_object(policy.get("default_tool_routing"), "default_tool_routing")
+    _require_mapping_values(REQUIRED_DEFAULT_TOOL_ROUTING, routing, "default_tool_routing")
+    for key, value in routing.items():
+        _require_string(key, "default_tool_routing key")
+        _require_string(value, f"default_tool_routing.{key}")
+
+    replacement_gate = _require_object(policy.get("replacement_gate"), "replacement_gate")
+    if replacement_gate.get("cabinet_replacement_allowed") is not False:
+        raise MaintenanceRadarPolicyError("replacement_gate.cabinet_replacement_allowed must be false")
+    _require_subset(
+        REQUIRED_REPLACEMENT_GATE_CONDITIONS,
+        _require_string_set(
+            replacement_gate.get("minimum_conditions"),
+            "replacement_gate.minimum_conditions",
+        ),
+        "replacement_gate.minimum_conditions",
+    )
+
+
 def validate_policy(repo_root: Path, policy_path: Path = DEFAULT_POLICY) -> dict[str, Any]:
     repo_root = repo_root.resolve()
     raw_policy_path = policy_path
@@ -179,14 +297,8 @@ def validate_policy(repo_root: Path, policy_path: Path = DEFAULT_POLICY) -> dict
         raise MaintenanceRadarPolicyError("RepoBrief/Lenskit dump generation must be external_only")
     _require_false(policy, "cabinet_generates_repobrief_lenskit_dumps")
 
-    canonical_doc = _require_string(policy.get("canonical_doc"), "canonical_doc")
-    canonical_path = (repo_root / canonical_doc).resolve()
-    try:
-        canonical_path.relative_to(repo_root)
-    except ValueError:
-        raise MaintenanceRadarPolicyError(f"canonical_doc escapes repository: {canonical_doc}") from None
-    if not canonical_path.is_file():
-        raise MaintenanceRadarPolicyError(f"canonical_doc missing: {canonical_doc}")
+    _require_repo_file(repo_root, policy.get("canonical_doc"), "canonical_doc")
+    _validate_role_boundary(repo_root, policy)
 
     _require_subset(
         REQUIRED_SCAN_CLASSES,

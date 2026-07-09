@@ -22,6 +22,7 @@ from validate_cabinet_maintenance_radar import (  # noqa: E402
 
 SOURCE_POLICY = ROOT / "policy" / "cabinet-maintenance-radar.json"
 SOURCE_DOC = ROOT / "docs" / "blueprints" / "cabinet-maintenance-radar-v0.md"
+SOURCE_BOUNDARY_DOC = ROOT / "docs" / "blueprints" / "cabinet-role-boundary-v1.md"
 
 
 def write_fixture(root: Path) -> dict[str, Any]:
@@ -29,6 +30,9 @@ def write_fixture(root: Path) -> dict[str, Any]:
     target_doc = root / policy["canonical_doc"]
     target_doc.parent.mkdir(parents=True, exist_ok=True)
     target_doc.write_text(SOURCE_DOC.read_text(encoding="utf-8"), encoding="utf-8")
+    target_boundary_doc = root / policy["role_boundary_doc"]
+    target_boundary_doc.parent.mkdir(parents=True, exist_ok=True)
+    target_boundary_doc.write_text(SOURCE_BOUNDARY_DOC.read_text(encoding="utf-8"), encoding="utf-8")
     target_policy = root / "policy" / "cabinet-maintenance-radar.json"
     target_policy.parent.mkdir(parents=True, exist_ok=True)
     target_policy.write_text(json.dumps(policy, indent=2) + "\n", encoding="utf-8")
@@ -53,6 +57,57 @@ class CabinetMaintenanceRadarPolicyTests(unittest.TestCase):
             loaded = validate_policy(root, root / "policy" / "cabinet-maintenance-radar.json")
 
         self.assertEqual(loaded["allowed_scan_classes"], policy["allowed_scan_classes"])
+
+
+    def test_rejects_missing_role_boundary_doc(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            policy = write_fixture(root)
+            (root / policy["role_boundary_doc"]).unlink()
+            path = write_policy(root, policy)
+
+            with self.assertRaises(MaintenanceRadarPolicyError):
+                validate_policy(root, path)
+
+    def test_rejects_removed_role_boundary_non_canon(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            policy = write_fixture(root)
+            policy["role_decision"]["cabinet_not_canon_for"].remove("task_queue")
+            path = write_policy(root, policy)
+
+            with self.assertRaises(MaintenanceRadarPolicyError):
+                validate_policy(root, path)
+
+    def test_rejects_wrong_default_tool_routing(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            policy = write_fixture(root)
+            policy["default_tool_routing"]["task_queue"] = "cabinet"
+            path = write_policy(root, policy)
+
+            with self.assertRaises(MaintenanceRadarPolicyError):
+                validate_policy(root, path)
+
+    def test_rejects_replacement_gate_activation(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            policy = write_fixture(root)
+            policy["replacement_gate"]["cabinet_replacement_allowed"] = True
+            path = write_policy(root, policy)
+
+            with self.assertRaises(MaintenanceRadarPolicyError):
+                validate_policy(root, path)
+
+    def test_rejects_removed_dashboard_non_claim(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            policy = write_fixture(root)
+            policy["does_not_establish"].remove("dashboard_truth")
+            path = write_policy(root, policy)
+
+            with self.assertRaises(MaintenanceRadarPolicyError):
+                validate_policy(root, path)
 
     def test_rejects_cabinet_dump_generation(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

@@ -137,8 +137,8 @@ Diese Entscheidung beweist nicht:
 - Aktuelle PRs sind mergebar.
 - Runtime-Zustand ist gesund.
 
-## Naechster Slice
+## Umsetzungsumfang dieser Scheibe
 
-- Policy um die Rollenentscheidung erweitern.
-- Entrée, Agent Entry und Cabinet Home auf diese Entscheidung verlinken.
-- Keine Runtime-, Queue- oder Dispatch-Wirkung einbauen.
+- Policy um die Rollenentscheidung erweitert.
+- Entrée, Agent Entry und Cabinet Home auf diese Entscheidung verlinkt.
+- Keine Runtime-, Queue- oder Dispatch-Wirkung eingebaut.
