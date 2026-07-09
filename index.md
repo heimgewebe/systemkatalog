@@ -7,6 +7,7 @@ Cabinet ordnet Repositories, Projekte, Prüfungen und nächste Schritte.
 - [README](README.md) — GitHub-Fassade und Schnellstart.
 - [Agent Entry](AGENTS.md) — Lesereihenfolge, Wahrheitsgrenzen und Stop-Kriterien für LLMs und Agenten.
 - [Ecosystem Map v0](docs/blueprints/ecosystem-map-v0.md) — Systemkarte, Dateien, Pflegeprinzipien und Reifekriterien.
+- [Cabinet Role Boundary v1](docs/blueprints/cabinet-role-boundary-v1.md) — Rollenentscheidung: Cabinet behalten; Queue, Operator, Dashboard und Servicekatalog an zuständige Organe auslagern.
 - [Mermaidkarte](rendered/ecosystem-map.mmd) — lesbare Übersicht.
 - [Registry-Mermaidkarte](rendered/ecosystem-registry-map.mmd) — generierte Ansicht aus Knoten und Kanten.
 - [Heim-PC Operatorium Index v0](docs/blueprints/heim-pc-operatorium-index-v0.md) — lokale Operatorium-Schicht.
