@@ -6,13 +6,14 @@ Dieses Dokument ist der kanonische Einstieg für LLMs und Agenten im Cabinet-Rep
 
 1. [README.md](README.md) — Entrée und Schnellstart.
 2. [docs/blueprints/ecosystem-map-v0.md](docs/blueprints/ecosystem-map-v0.md) — Zweck, Dateien, Wahrheitsgrenzen und Reifekriterien der Karte.
-3. [rendered/ecosystem-map.mmd](rendered/ecosystem-map.mmd) — lesbare Mermaid-Uebersicht.
-4. [rendered/ecosystem-registry-map.mmd](rendered/ecosystem-registry-map.mmd) — generierte Registry-Projektion aus Knoten und Kanten.
-5. [docs/blueprints/o.json](docs/blueprints/o.json) — kompakter maschinenlesbarer Seed.
-6. [registry/ecosystem/nodes.json](registry/ecosystem/nodes.json), [registry/ecosystem/edges.json](registry/ecosystem/edges.json), [registry/ecosystem/claims.jsonl](registry/ecosystem/claims.jsonl) — Graph, Kanten und Claims.
-7. [docs/blueprints/heim-pc-operatorium-index-v0.md](docs/blueprints/heim-pc-operatorium-index-v0.md) — Heim-PC als Operatorium.
-8. [docs/blueprints/cabinet-maintenance-radar-v0.md](docs/blueprints/cabinet-maintenance-radar-v0.md) — Maintenance-Radar, Scan-Grenzen und Heimlern-Rueckkopplung.
-9. [docs/blueprints/agent-routing-brief-v0.md](docs/blueprints/agent-routing-brief-v0.md) — Aufgaben- und Agentenroute.
+3. [docs/blueprints/cabinet-role-boundary-v1.md](docs/blueprints/cabinet-role-boundary-v1.md) — Rollenentscheidung: Cabinet behalten, aber nicht als Queue, Operator, Dashboard oder Primärquelle verwenden.
+4. [rendered/ecosystem-map.mmd](rendered/ecosystem-map.mmd) — lesbare Mermaid-Uebersicht.
+5. [rendered/ecosystem-registry-map.mmd](rendered/ecosystem-registry-map.mmd) — generierte Registry-Projektion aus Knoten und Kanten.
+6. [docs/blueprints/o.json](docs/blueprints/o.json) — kompakter maschinenlesbarer Seed.
+7. [registry/ecosystem/nodes.json](registry/ecosystem/nodes.json), [registry/ecosystem/edges.json](registry/ecosystem/edges.json), [registry/ecosystem/claims.jsonl](registry/ecosystem/claims.jsonl) — Graph, Kanten und Claims.
+8. [docs/blueprints/heim-pc-operatorium-index-v0.md](docs/blueprints/heim-pc-operatorium-index-v0.md) — Heim-PC als Operatorium.
+9. [docs/blueprints/cabinet-maintenance-radar-v0.md](docs/blueprints/cabinet-maintenance-radar-v0.md) — Maintenance-Radar, Scan-Grenzen und Heimlern-Rueckkopplung.
+10. [docs/blueprints/agent-routing-brief-v0.md](docs/blueprints/agent-routing-brief-v0.md) — Aufgaben- und Agentenroute.
 
 ## Wahrheitsordnung
 
@@ -33,6 +34,7 @@ Dieses Dokument ist der kanonische Einstieg für LLMs und Agenten im Cabinet-Rep
 6. Mutationen eng schneiden: Wegweiser, Belege oder klar begrenzte Docs/Code-Slices.
 7. Kein Merge und kein direkter Main-Eingriff ohne aktuelle Head-Prüfung, Diff-Review und berücksichtigte Findings.
 8. Erfinde keine Dateiinhalte. Wenn Kontext fehlt, fordere einen extern erzeugten RepoBrief-/Lenskit-Dump an oder benenne die Leerstelle ausdrücklich.
+9. Nutze Cabinet nicht als Taskqueue, Operator, Live-Dashboard oder Ersatz für GitHub/CI/Runtime. Route solche Ansprüche an das zuständige Organ.
 
 ## Organrollen
 
@@ -45,6 +47,7 @@ Dieses Dokument ist der kanonische Einstieg für LLMs und Agenten im Cabinet-Rep
 - Vibe-Lab: Methoden- und Evidence-Lab.
 - Chronik: Event-Trace und historische Kontinuität.
 - Schauwerk: Renderer und visuelle Fläche, nicht Karten-Canon.
+- Leitstand: Live-Anzeige und Operator-Oberfläche, nicht Cabinet-Canon.
 - GitHub / CI / Runtime: harte Realitätsprüfung.
 - Externe Agenten: Vorschlag, Review, Patch; keine direkte Mutationshoheit.
 - Gemini: vorgeschlagene proposal-only Review-/Scout-Kapazität nach Capability- und Sandbox-Preflight; nicht verifiziert, nicht einplanbar/schedulable, keine Push-, Merge-, Runtime- oder private-Kontext-Autorität.
