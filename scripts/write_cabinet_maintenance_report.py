@@ -397,6 +397,106 @@ def _parse_manifest_generated_at(value: str, label: str) -> datetime:
     return result
 
 
+def _external_manifest_surface_findings(
+    repo_root: Path,
+    source: dict[str, Any],
+    external_dump_registry: str,
+) -> list[dict[str, Any]]:
+    source_id = str(source["id"])
+    observation = source["observation"]
+    manifest_ref = str(observation["latestManifestPath"])
+    evidence = [external_dump_registry, manifest_ref]
+
+    try:
+        manifest_path = _repo_path(repo_root, manifest_ref, f"{source_id} latest manifest")
+    except MaintenanceReportError as exc:
+        return [_finding(
+            f"cabqa:freshness:{source_id}:manifest-path-invalid",
+            "freshness",
+            "P2",
+            "open",
+            source_id,
+            f"External dump manifest path is not usable by Cabinet: {exc}.",
+            evidence,
+            "repobrief_lenskit",
+            "refresh_external_dump_manifest_reference",
+        )]
+
+    if not manifest_path.is_file():
+        return [_finding(
+            f"cabqa:freshness:{source_id}:manifest-missing",
+            "freshness",
+            "P2",
+            "open",
+            source_id,
+            "External dump source is observed in the registry, but the referenced manifest file is missing.",
+            evidence,
+            "repobrief_lenskit",
+            "refresh_external_dump_manifest_reference",
+        )]
+
+    try:
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as exc:
+        return [_finding(
+            f"cabqa:freshness:{source_id}:manifest-invalid-json",
+            "freshness",
+            "P2",
+            "open",
+            source_id,
+            f"External dump manifest is not valid JSON: {exc}.",
+            evidence,
+            "repobrief_lenskit",
+            "refresh_external_dump_manifest_reference",
+        )]
+
+    if not isinstance(manifest, dict):
+        return [_finding(
+            f"cabqa:freshness:{source_id}:manifest-invalid-shape",
+            "freshness",
+            "P2",
+            "open",
+            source_id,
+            "External dump manifest must be a JSON object.",
+            evidence,
+            "repobrief_lenskit",
+            "refresh_external_dump_manifest_reference",
+        )]
+
+    expected_fields = {
+        "kind": source["requiredManifestKind"],
+        "artifactFamily": source["artifactFamily"],
+        "repository": "cabinet",
+        "ref": "main",
+        "generatedAt": observation["latestManifestGeneratedAt"],
+    }
+    mismatch_ids = {
+        "kind": "manifest-kind-mismatch",
+        "artifactFamily": "manifest-family-mismatch",
+        "repository": "manifest-repository-mismatch",
+        "ref": "manifest-ref-mismatch",
+        "generatedAt": "manifest-timestamp-mismatch",
+    }
+    for field, expected in expected_fields.items():
+        if manifest.get(field) != expected:
+            return [_finding(
+                f"cabqa:freshness:{source_id}:{mismatch_ids[field]}",
+                "freshness",
+                "P2",
+                "open",
+                source_id,
+                (
+                    f"External dump manifest field {field!r} does not match the registry observation "
+                    f"or source contract."
+                ),
+                evidence,
+                "repobrief_lenskit",
+                "refresh_external_dump_manifest_reference",
+            )]
+
+    return []
+
+
 def _scan_external_dump_sources(repo_root: Path, scan_time: datetime, external_dump_registry: str) -> list[dict[str, Any]]:
     registry_path = _repo_path(repo_root, external_dump_registry, "external dump registry")
     if not registry_path.exists():
@@ -436,6 +536,10 @@ def _scan_external_dump_sources(repo_root: Path, scan_time: datetime, external_d
                 "repobrief_lenskit",
                 "publish_latest_manifest_reference_or_mark_source_disabled",
             ))
+            continue
+        manifest_findings = _external_manifest_surface_findings(repo_root, source, external_dump_registry)
+        if manifest_findings:
+            findings.extend(manifest_findings)
             continue
         generated_at = _parse_manifest_generated_at(
             observation["latestManifestGeneratedAt"],

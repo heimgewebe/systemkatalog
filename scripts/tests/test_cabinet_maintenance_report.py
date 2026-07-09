@@ -44,6 +44,50 @@ AUTO_DISPATCH = "autonomous_" + "dispatch"
 CABINET_GENERATES = "cabinet" + "Generates" + "Dumps"
 
 
+def external_manifest_payload(source: dict[str, Any]) -> dict[str, Any]:
+    observation = source["observation"]
+    return {
+        "kind": source["requiredManifestKind"],
+        "version": "1",
+        "artifactFamily": source["artifactFamily"],
+        "repository": "cabinet",
+        "ref": "main",
+        "generatedAt": observation["latestManifestGeneratedAt"],
+        "freshnessBasis": "bundle_manifest.created_at",
+        "bundleManifest": {
+            "kind": "repolens.bundle.manifest",
+            "path": "cabinet-test_merge.bundle.manifest.json",
+            "runId": "cabinet-test",
+            "createdAt": observation["latestManifestGeneratedAt"],
+        },
+        "artifacts": [
+            {
+                "role": "canonical_md",
+                "path": "cabinet-test_merge.md",
+                "sha256": "a" * 64,
+            }
+        ],
+        "doesNotEstablish": [
+            "dump_freshness_truth",
+            "claim_truth",
+            "runtime_correctness",
+            "semantic_correctness",
+            "task_approval",
+            DUMP_PERMISSION,
+            "repo_understood",
+            "merge_readiness",
+        ],
+    }
+
+
+def write_external_manifests(root: Path, payload: dict[str, Any]) -> None:
+    for source in payload["sources"]:
+        observation = source["observation"]
+        if observation["status"] != "observed":
+            continue
+        write_json(root / observation["latestManifestPath"], external_manifest_payload(source))
+
+
 def external_dump_registry() -> dict[str, Any]:
     def source(source_id: str, family: str) -> dict[str, Any]:
         return {
@@ -143,7 +187,9 @@ def make_repo(root: Path, claim_overrides: dict[str, Any] | None = None, *, with
     if with_external_dump_registry:
         write_text(root / ("docs/contracts/" + "cabinet-" + "external-dump-sources-v1.md"))
         write_json(root / ("docs/contracts/" + "cabinet-" + "external-dump-sources-v1.schema.json"), {})
-        write_json(root / ("registry/ecosystem/" + "external-dump-sources.json"), external_dump_registry())
+        registry_payload = external_dump_registry()
+        write_json(root / ("registry/ecosystem/" + "external-dump-sources.json"), registry_payload)
+        write_external_manifests(root, registry_payload)
 
 
 class CabinetMaintenanceReportTests(unittest.TestCase):
@@ -227,6 +273,7 @@ class CabinetMaintenanceReportTests(unittest.TestCase):
             payload = json.loads(registry_path.read_text(encoding="utf-8"))
             payload["sources"][0]["observation"]["latestManifestGeneratedAt"] = "2026-07-03T01:00:00Z"
             registry_path.write_text(json.dumps(payload), encoding="utf-8")
+            write_external_manifests(root, payload)
 
             report = build_report(
                 root,
@@ -237,6 +284,47 @@ class CabinetMaintenanceReportTests(unittest.TestCase):
 
         self.assertEqual(report["summary"]["status"], "warn")
         self.assertTrue(any(finding["id"] == "cabqa:freshness:external-dump:repobrief:manifest-stale" for finding in report["findings"]))
+
+    def test_observed_external_manifest_missing_is_p2_freshness_finding(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            make_repo(root, with_external_dump_registry=True)
+            (root / "external/repobrief/cabinet/main/manifest.json").unlink()
+
+            report = build_report(
+                root,
+                source_commit="f" * 40,
+                generated_at="2026-07-05T00:00:00Z",
+                scan_date=date(2026, 7, 5),
+            )
+
+        self.assertEqual(report["summary"]["status"], "warn")
+        self.assertTrue(any(
+            finding["id"] == "cabqa:freshness:external-dump:repobrief:manifest-missing"
+            for finding in report["findings"]
+        ))
+
+    def test_observed_external_manifest_timestamp_mismatch_is_p2_finding(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            make_repo(root, with_external_dump_registry=True)
+            manifest_path = root / "external/repobrief/cabinet/main/manifest.json"
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            manifest["generatedAt"] = "2026-07-05T01:00:00Z"
+            manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+
+            report = build_report(
+                root,
+                source_commit="0" * 40,
+                generated_at="2026-07-05T00:00:00Z",
+                scan_date=date(2026, 7, 5),
+            )
+
+        self.assertEqual(report["summary"]["status"], "warn")
+        self.assertTrue(any(
+            finding["id"] == "cabqa:freshness:external-dump:repobrief:manifest-timestamp-mismatch"
+            for finding in report["findings"]
+        ))
 
     def test_schema_constants_match_producer_contract(self) -> None:
         schema = json.loads((ROOT / SCHEMA_PATH).read_text(encoding="utf-8"))

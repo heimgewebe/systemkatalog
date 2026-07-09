@@ -1,0 +1,140 @@
+{
+  "artifactFamily": "lenskit",
+  "artifacts": [
+    {
+      "bytes": 8355,
+      "contentType": "application/json",
+      "path": "cabinet-max-260709-0938_merge.agent_entry_manifest.json",
+      "role": "agent_entry_manifest",
+      "sha256": "6f6838fb8068081250fd01cbacf8447520b422e73e4ff25191ac3bcb3b86de69"
+    },
+    {
+      "bytes": 20251,
+      "contentType": "text/markdown",
+      "path": "cabinet-max-260709-0938_merge.agent_reading_pack.md",
+      "role": "agent_reading_pack",
+      "sha256": "d572f4bfe5ba9b65da10e8f326bf664aff2b81dd5fee7f8e06d224f8b38454e0"
+    },
+    {
+      "bytes": 411941,
+      "contentType": "application/json",
+      "path": "cabinet-max-260709-0938_merge.architecture_graph.json",
+      "role": "architecture_graph_json",
+      "sha256": "a0fd4ca82fad1567816486903d05d57dfc5aa99e66b4faadbd97de9d16243904"
+    },
+    {
+      "bytes": 1722499,
+      "contentType": "text/markdown",
+      "path": "cabinet-max-260709-0938_merge.md",
+      "role": "canonical_md",
+      "sha256": "dd82ecd0b507db374ac5a533b2a54b8143c468fc5a1723e6d1829a653b1d97a8"
+    },
+    {
+      "bytes": 811946,
+      "contentType": "application/x-ndjson",
+      "path": "cabinet-max-260709-0938_merge.chunk_index.jsonl",
+      "role": "chunk_index_jsonl",
+      "sha256": "e577e4f70aaf9a8d7d45f301938b642a4229b00db78ff995a88c72f47cb2993a"
+    },
+    {
+      "bytes": 250866,
+      "contentType": "application/x-ndjson",
+      "path": "cabinet-max-260709-0938_merge.citation_map.jsonl",
+      "role": "citation_map_jsonl",
+      "sha256": "e0b6469da839d78aa043566f3928fe0547861b8e3aef694ec97644c76b1caeb7"
+    },
+    {
+      "bytes": 4972,
+      "contentType": "application/x-ndjson",
+      "path": "cabinet-max-260709-0938_merge.concept_cards.jsonl",
+      "role": "concept_cards_jsonl",
+      "sha256": "39c3a8959d2c5917a3d4fa25b5bad757726fad6a022b90691e3138ca7b2db416"
+    },
+    {
+      "bytes": 2039,
+      "contentType": "application/json",
+      "path": "cabinet-max-260709-0938_merge.derived_index.json",
+      "role": "derived_manifest_json",
+      "sha256": "63d06ff54ee1a331601c9ba7bc06c394d26ec50603cb42056c673c45bb6a3c72"
+    },
+    {
+      "bytes": 1780,
+      "contentType": "application/json",
+      "path": "cabinet-max-260709-0938_merge.dump_index.json",
+      "role": "dump_index_json",
+      "sha256": "5359f665308500ee03009bc84c9f4b940317bce0dcd57c4aba4464d91a0edc83"
+    },
+    {
+      "bytes": 28909,
+      "contentType": "application/json",
+      "path": "cabinet-max-260709-0938_merge.entrypoints.json",
+      "role": "entrypoints_json",
+      "sha256": "891c8b559e69a8a17d08b7214624a30497bb0dfe114813525a5f36f6a5468085"
+    },
+    {
+      "bytes": 15414,
+      "contentType": "application/json",
+      "path": "cabinet-max-260709-0938_merge.graph_index.json",
+      "role": "graph_index_json",
+      "sha256": "f555a24e77ea33bb9933470c7427a03816eb4e4fa37ad2350844ba22535bc673"
+    },
+    {
+      "bytes": 441504,
+      "contentType": "application/json",
+      "path": "cabinet-max-260709-0938_merge.json",
+      "role": "index_sidecar_json",
+      "sha256": "1bb9914bab92e8775da03c256422f61a0c027e1d3761be8ffb1453e9dbb36d22"
+    },
+    {
+      "bytes": 211273,
+      "contentType": "application/x-ndjson",
+      "path": "cabinet-max-260709-0938_merge.lens_cards.jsonl",
+      "role": "lens_cards_jsonl",
+      "sha256": "44d29ebc67894642cb15a856e0b332a605c0e0891f8f740bd860deb2e247adcb"
+    },
+    {
+      "bytes": 3360,
+      "contentType": "application/json",
+      "path": "cabinet-max-260709-0938_merge.output_health.json",
+      "role": "output_health",
+      "sha256": "aaa3c7e76f90d85df93fda114c23e55e5f48e48891030bf768b98cc026087256"
+    },
+    {
+      "bytes": 26177,
+      "contentType": "application/json",
+      "path": "cabinet-max-260709-0938_merge.retrieval_eval.json",
+      "role": "retrieval_eval_json",
+      "sha256": "a5567f80d6b5010898478557ce1d36e3e4d20ca2b3646af372cdf15e73f03b76"
+    },
+    {
+      "bytes": 2195456,
+      "contentType": "application/octet-stream",
+      "path": "cabinet-max-260709-0938_merge.chunk_index.index.sqlite",
+      "role": "sqlite_index",
+      "sha256": "59b44fa0732963cd112080b5364d88339d0ea66d402bc511dfbce0054b27938d"
+    }
+  ],
+  "bundleManifest": {
+    "createdAt": "2026-07-09T09:38:19Z",
+    "kind": "repolens.bundle.manifest",
+    "path": "../../../../../merges/cabinet-max-260709-0938_merge.bundle.manifest.json",
+    "runId": "cabinet-full-max-260709-0938"
+  },
+  "doesNotEstablish": [
+    "dump_freshness_truth",
+    "claim_truth",
+    "runtime_correctness",
+    "semantic_correctness",
+    "task_approval",
+    "dump_generation_permission",
+    "repo_understood",
+    "merge_readiness"
+  ],
+  "freshnessBasis": "bundle_manifest.created_at",
+  "generatedAt": "2026-07-09T09:38:19Z",
+  "kind": "lenskit_bundle_manifest",
+  "ref": "main",
+  "repository": "cabinet",
+  "snapshotProvenance": null,
+  "version": "1"
+}
