@@ -32,8 +32,6 @@ Der Katalog beantwortet, welche Systeme existieren, welchem Zweck sie dienen, we
 | Steuerboard | repository | read-only repo-state signal |
 | Vibe-Lab | repository | method lab and evidence experiments |
 | Weltgewebe | repository | product and domain core |
-| heim-pc | runtime | local worktrees, operator cockpit and execution surface |
-| heimserver | runtime | home server runtime surface |
 | CI / Checks | service | automated tests, lint, gates and review signals |
 | GitHub | service | repository, PR, issue and review state |
 
@@ -79,8 +77,6 @@ Nur Beziehungen mit einer stabilen Klasse (`active`, `bounded`, `related`) werde
 | Grabowski | `delegates_to` | Jules | Jules is suited for small clear patches. |
 | Grabowski | `delegates_to` | Local agents | Local agents are suited for cheap scans and repetitive checks. |
 | Grabowski | `operates_on` | GitHub | PRs, branches, issues and reviews remain GitHub-owned state. |
-| Infra | `provides` | heim-pc | Infra owns cockpit and host runbook concerns. |
-| Infra | `provides` | heimserver | Infra owns server operation knowledge. |
 | Leitstand | `observes` | Ecosystem Map v0 | Leitstand observes the map as orientation, not truth. |
 | Lenskit / RepoBrief implementation | `implements` | RepoBrief | RepoBrief is the public context-view name; Lenskit remains an implementation namespace for now. |
 | Plexer | `delivers_to` | Chronik | Plexer delivers bounded operational events to Chronik agent.ledger when configured. |
@@ -109,4 +105,5 @@ Nur Beziehungen mit einer stabilen Klasse (`active`, `bounded`, `related`) werde
 - Technische Prüfergebnisse: CI und Review-Gates.
 - Laufende Dienste: Runtime, Healthchecks, systemd und Logs.
 - Lokale und repositorybezogene Ausführung: Grabowski nach Freigabe.
+- Konkrete Runtime-Identitäten und Topologie bleiben in privater Operator-Evidence und werden hier nicht vervielfältigt.
 - Die externe Cabinet-App ist nur ein vorübergehender optionaler Viewer und für diese Datei nicht erforderlich.
