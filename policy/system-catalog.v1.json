@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "kind": "heimgewebe_system_catalog_policy",
+  "status": "migration_target",
+  "role": "app-independent system catalog",
+  "answers": [
+    "which_systems_exist",
+    "what_is_each_systems_purpose",
+    "which_truth_source_owns_each_domain",
+    "which_stable_relationships_exist",
+    "where_are_the_entrypoints"
+  ],
+  "doesNotAnswer": [
+    "task_priority",
+    "task_state",
+    "runtime_health",
+    "merge_readiness",
+    "active_execution",
+    "agent_dispatch",
+    "scheduler_state"
+  ],
+  "currentCanonicalInputs": [
+    "registry/ecosystem/nodes.json",
+    "registry/ecosystem/edges.json",
+    "registry/ecosystem/authority-matrix.v1.json"
+  ],
+  "canonicalReadableProjection": "rendered/system-catalog.md",
+  "targetFormat": {
+    "schema": "catalog/system-catalog.schema.v1.json",
+    "example": "catalog/system-catalog.example.v1.json",
+    "exampleIsCanonical": false,
+    "requiredSystemFields": [
+      "id",
+      "name",
+      "type",
+      "purpose",
+      "notResponsibleFor",
+      "truthOwnership",
+      "entrypoints"
+    ]
+  },
+  "entrypoints": [
+    {"id": "cabinet", "label": "Cabinet / Systemkatalog", "target": "README.md"},
+    {"id": "bureau", "label": "Bureau", "target": "https://github.com/heimgewebe/bureau"},
+    {"id": "grabowski", "label": "Grabowski", "target": "https://github.com/heimgewebe/grabowski"},
+    {"id": "repobrief_lenskit", "label": "RepoBrief / Lenskit", "target": "https://github.com/heimgewebe/lenskit"},
+    {"id": "leitstand", "label": "Leitstand", "target": "https://github.com/heimgewebe/leitstand"},
+    {"id": "github", "label": "GitHub", "target": "https://github.com/heimgewebe"}
+  ],
+  "externalCabinetApp": {
+    "role": "temporary_optional_viewer",
+    "required": false,
+    "canonical": false,
+    "runtimeAuthoritative": false,
+    "shutdownAuthorized": false
+  },
+  "stableRelationStatuses": [
+    "active",
+    "bounded",
+    "related"
+  ],
+  "prohibitedOperationalFields": [
+    "priority",
+    "taskState",
+    "runtimeHealth",
+    "mergeReadiness",
+    "activeExecution",
+    "agentDispatch",
+    "schedulerState"
+  ],
+  "legacyMigrationDebt": [
+    {
+      "surface": "registry/ecosystem/nodes.json",
+      "field": "status",
+      "disposition": "remove_or_replace_during_T004"
+    },
+    {
+      "surface": "registry/ecosystem/edges.json",
+      "field": "status",
+      "disposition": "replace_with_stability_class_during_T004"
+    },
+    {
+      "surface": "registry/ecosystem/claims.jsonl",
+      "field": "dynamic_claim_state",
+      "disposition": "retain_only_stable_architecture_claims_during_T004"
+    }
+  ],
+  "doesNotEstablish": [
+    "repository_rename_completion",
+    "external_app_shutdown",
+    "runtime_health",
+    "task_eligibility",
+    "merge_readiness",
+    "claim_truth"
+  ]
+}
