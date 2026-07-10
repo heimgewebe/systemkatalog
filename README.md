@@ -12,6 +12,7 @@ Dieser Einstieg ist eine GitHub-Fassade. Das kanonische Inhaltsverzeichnis liegt
 4. **Rollenentscheidung lesen:** [Cabinet Role Boundary v1](docs/blueprints/cabinet-role-boundary-v1.md)
 5. **Mermaidkarten direkt öffnen:** [lesbare Übersicht](rendered/ecosystem-map.mmd) und [generierte Registry-Projektion](rendered/ecosystem-registry-map.mmd)
 6. **Redundanz prüfen:** [Operator Ecosystem Redundancy Audit v1](docs/blueprints/operator-ecosystem-redundancy-audit-v1.md)
+7. **Autorität und Nutzung prüfen:** [Authority Matrix](registry/ecosystem/authority-matrix.v1.json) und [Consumer Usage Snapshot](registry/ecosystem/consumer-usage.v1.json)
 
 ## Rolle
 

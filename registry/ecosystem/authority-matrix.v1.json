@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "kind": "cabinet_ecosystem_authority_matrix",
+  "updatedAt": "2026-07-10T08:10:00+02:00",
+  "canonicalMap": "rendered/ecosystem-registry-map.mmd",
+  "registryInputs": [
+    "registry/ecosystem/nodes.json",
+    "registry/ecosystem/edges.json",
+    "registry/ecosystem/claims.jsonl"
+  ],
+  "specializedViews": [
+    {
+      "path": "rendered/ecosystem-map.mmd",
+      "purpose": "human-curated orientation only",
+      "authoritative": false
+    }
+  ],
+  "authorities": [
+    {"domain": "tasks_claims_completion", "owner": "bureau", "projections": ["leitstand", "cabinet"]},
+    {"domain": "local_fleet_execution", "owner": "grabowski", "projections": ["leitstand"]},
+    {"domain": "repository_context_citations", "owner": "repobrief_lenskit", "projections": ["rlens", "cabinet"]},
+    {"domain": "ecosystem_semantics", "owner": "cabinet", "projections": ["leitstand", "schauwerk"]},
+    {"domain": "repository_observation_readiness", "owner": "steuerboard", "projections": ["grabowski", "leitstand"]},
+    {"domain": "general_operator_display", "owner": "leitstand", "projections": []},
+    {"domain": "specialized_visual_rendering", "owner": "schauwerk", "projections": []},
+    {"domain": "append_only_history", "owner": "chronik", "projections": ["leitstand"]},
+    {"domain": "offline_learning_proposals", "owner": "heimlern", "projections": ["cabinet"]},
+    {"domain": "bounded_experiments", "owner": "vibe_lab", "projections": ["cabinet"]},
+    {"domain": "shared_fleet_ci_checks", "owner": "wgx", "projections": ["github_ci"]},
+    {"domain": "branches_prs_reviews", "owner": "github", "projections": ["bureau", "cabinet", "leitstand"]},
+    {"domain": "technical_check_results", "owner": "ci", "projections": ["github", "leitstand"]},
+    {"domain": "live_service_state", "owner": "runtime", "projections": ["leitstand", "cabinet"]}
+  ],
+  "doesNotEstablish": [
+    "runtime_health",
+    "task_eligibility",
+    "merge_readiness",
+    "execution_permission",
+    "claim_truth"
+  ]
+}

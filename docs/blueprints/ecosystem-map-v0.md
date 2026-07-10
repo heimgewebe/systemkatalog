@@ -54,9 +54,9 @@ scripts/write_ecosystem_map_artifact_manifest.py  # generiert/validiert Map-Arte
 
 ## Ansichten
 
-`rendered/ecosystem-map.mmd` ist die menschlich kuratierte Uebersicht. Sie darf Knoten buendeln und Beziehungen vereinfachen, aber daraus folgt keine Beweiskraft.
+`rendered/ecosystem-map.mmd` ist eine nicht-autoritative, menschlich kuratierte Spezialansicht. Sie darf Knoten buendeln und Beziehungen vereinfachen, ist aber weder Canon noch zweite Registry.
 
-`rendered/ecosystem-registry-map.mmd` ist die deterministische Projektion aus `nodes.json` und `edges.json`. Sie ist fuer Driftpruefung nuetzlicher, aber nicht automatisch besser lesbar.
+`rendered/ecosystem-registry-map.mmd` ist die einzige kanonische generierte Kartenansicht und die deterministische Projektion aus `nodes.json` und `edges.json`. Sie ist fuer Driftpruefung nuetzlicher, aber nicht automatisch besser lesbar.
 
 `docs/blueprints/o.json` darf die View-Reihenfolge, Gruppentitel und visuellen Anker der Registry-Projektion konfigurieren. Diese View-Konfiguration ist Darstellung, keine zusaetzliche Wahrheitsquelle.
 
@@ -64,7 +64,7 @@ scripts/write_ecosystem_map_artifact_manifest.py  # generiert/validiert Map-Arte
 
 `scripts/write_ecosystem_map_artifact_manifest.py --check` prueft, ob ein read-only Map-Artefaktmanifest erzeugbar waere. Ein Consumer- oder Release-Job kann mit `--output rendered/ecosystem-map-artifact-manifest.json` ein konkretes Manifest schreiben. Dieses Manifest enthaelt Commit, Generierungszeit, Pfade, Bytes, SHA-256 und explizite Nicht-Claims; es ist Quelle-/Provenienzvertrag, nicht Kartenwahrheit.
 
-Wahrheit liegt weder in der Uebersicht noch in der Projektion. Die Registry ist der versionierte Karteninput; primaere Quellen bleiben GitHub, CI, Runtime, Contracts und menschliche Entscheidungen.
+Die Autoritätszuordnung liegt ausschließlich in `registry/ecosystem/authority-matrix.v1.json`; die Registry ist der versionierte Karteninput; primaere Quellen bleiben GitHub, CI, Runtime, Contracts und menschliche Entscheidungen.
 
 ## Pflegeprinzipien
 
