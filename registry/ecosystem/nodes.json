@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
   "status": "draft",
-  "updated_at": "2026-07-08",
+  "updated_at": "2026-07-10",
   "owner": {
     "canonical_repo": "heimgewebe/cabinet",
     "local_worktree_intent": "/home/alex/repos/cabinet",
-    "separation": "Cabinet owns the map semantics; GitHub, CI, runtime, contracts, and explicit human decisions remain primary truth sources in their domains."
+    "separation": "The system catalog owns stable ecosystem semantics; Bureau, GitHub, CI, runtime, contracts and explicit human decisions remain primary truth sources in their domains."
   },
   "nodes": [
     {
@@ -26,7 +26,7 @@
       "id": "repo:cabinet",
       "kind": "repository",
       "label": "Cabinet",
-      "role": "sense, evidence, prioritization, learning, map ownership",
+      "role": "app-independent system catalog for purpose, truth ownership, stable relations and entrypoints",
       "status": "active"
     },
     {
@@ -166,7 +166,7 @@
       "id": "agent:gemini",
       "kind": "agent",
       "label": "Gemini",
-      "role": "proposed proposal-only review and scout capacity after capability and sandbox preflight; not verified or schedulable",
+      "role": "proposal-only review capacity; no recurring Cabinet maintenance schedule",
       "status": "proposed"
     },
     {
