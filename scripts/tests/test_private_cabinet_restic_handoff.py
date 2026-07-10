@@ -423,6 +423,124 @@ class PrivateCabinetResticHandoffTests(unittest.TestCase):
             ):
                 HANDOFF._run_restic(context, ["snapshots", "--json"], read_only=True)
 
+    def test_snapshot_summary_parser_accepts_short_and_full_ids(self) -> None:
+        short_id = "a1b2c3d4"
+        full_id = "b" * 64
+        for snapshot_id in (short_id, full_id.upper()):
+            output = json.dumps({"message_type": "summary", "snapshot_id": snapshot_id})
+            self.assertEqual(
+                HANDOFF._parse_snapshot_summary_id(output),
+                snapshot_id.lower(),
+            )
+
+    def test_snapshot_summary_parser_rejects_missing_malformed_or_ambiguous_ids(
+        self,
+    ) -> None:
+        cases = [
+            ("{}\n", "restic_snapshot_id_missing"),
+            (
+                json.dumps({"message_type": "summary", "snapshot_id": "abc1234"}),
+                "restic_snapshot_id_invalid",
+            ),
+            (
+                json.dumps({"message_type": "summary", "snapshot_id": "g" * 8}),
+                "restic_snapshot_id_invalid",
+            ),
+            (
+                "\n".join(
+                    [
+                        json.dumps({"message_type": "summary", "snapshot_id": "a" * 8}),
+                        json.dumps({"message_type": "summary", "snapshot_id": "b" * 8}),
+                    ]
+                ),
+                "restic_snapshot_id_ambiguous",
+            ),
+        ]
+        for output, error_code in cases:
+            with (
+                self.subTest(error_code=error_code),
+                self.assertRaisesRegex(HANDOFF.HandoffError, error_code),
+            ):
+                HANDOFF._parse_snapshot_summary_id(output)
+
+    def test_full_snapshot_resolution_requires_one_matching_tagged_id(self) -> None:
+        full_id = "abc12345" + "d" * 56
+        self.assertEqual(
+            HANDOFF._resolve_full_snapshot_id("abc12345", [full_id]),
+            full_id,
+        )
+        self.assertEqual(
+            HANDOFF._resolve_full_snapshot_id(full_id, [full_id]),
+            full_id,
+        )
+        for tagged_ids in ([], [full_id, "e" * 64], ["short-id"]):
+            with (
+                self.subTest(tagged_ids=tagged_ids),
+                self.assertRaisesRegex(
+                    HANDOFF.HandoffError, "snapshot_tag_binding_failed"
+                ),
+            ):
+                HANDOFF._resolve_full_snapshot_id("abc12345", tagged_ids)
+        with self.assertRaisesRegex(
+            HANDOFF.HandoffError, "snapshot_summary_id_mismatch"
+        ):
+            HANDOFF._resolve_full_snapshot_id("deadbeef", [full_id])
+
+    def test_short_summary_id_restores_exact_full_tagged_snapshot(self) -> None:
+        snapshot_id = "abc12345" + "f" * 56
+        snapshot_store = self.root / "short-id-snapshot-store"
+        commands: list[list[str]] = []
+
+        def run_restic(
+            _context: HANDOFF.ResticContext,
+            arguments: list[str],
+            *,
+            read_only: bool,
+            timeout_seconds: int = 120,
+        ) -> subprocess.CompletedProcess[str]:
+            del _context, timeout_seconds
+            self.assertFalse(read_only)
+            commands.append(arguments)
+            if arguments[0] == "backup":
+                shutil.copytree(Path(arguments[-1]), snapshot_store)
+                output = json.dumps(
+                    {"message_type": "summary", "snapshot_id": "abc12345"}
+                )
+                return subprocess.CompletedProcess([], 0, output + "\n", "")
+            if arguments[0] == "restore":
+                self.assertEqual(arguments[1], snapshot_id)
+                target = Path(arguments[arguments.index("--target") + 1])
+                shutil.copytree(snapshot_store, target / "archive")
+                return subprocess.CompletedProcess([], 0, "", "")
+            self.fail(f"unexpected Restic command: {arguments}")
+
+        receipt = self._execute(
+            mock.Mock(side_effect=run_restic),
+            snapshot_id=snapshot_id,
+        )
+        self.assertEqual(receipt["status"], "snapshot_verified")
+        self.assertEqual([command[0] for command in commands], ["backup", "restore"])
+        self.assertEqual(
+            receipt["snapshot"]["id_sha256"], HANDOFF._sha256_text(snapshot_id)
+        )
+
+    def test_short_summary_prefix_mismatch_stops_before_restore(self) -> None:
+        full_id = "abc12345" + "f" * 56
+        run = mock.Mock(
+            return_value=subprocess.CompletedProcess(
+                [],
+                0,
+                json.dumps({"message_type": "summary", "snapshot_id": "deadbeef"})
+                + "\n",
+                "",
+            )
+        )
+        with self.assertRaises(HANDOFF.HandoffError) as raised:
+            self._execute(run, snapshot_id=full_id)
+        self.assertEqual(raised.exception.code, "snapshot_summary_id_mismatch")
+        self.assertTrue(raised.exception.snapshot_may_exist)
+        self.assertEqual(run.call_count, 1)
+
     def test_execute_creates_one_snapshot_restores_verifies_and_cleans(self) -> None:
         snapshot_id = "a" * 64
         snapshot_store = self.root / "snapshot-store"
@@ -488,12 +606,29 @@ class PrivateCabinetResticHandoffTests(unittest.TestCase):
         self.assertEqual(raised.exception.code, "restic_snapshot_id_missing")
         self.assertTrue(raised.exception.snapshot_may_exist)
         self.assertFalse(raised.exception.staging_cleanup_required)
+        self.assertEqual(run.call_count, 1)
         self.assertFalse(
             any(
                 item.name.startswith("cabinet-private-restic-")
                 for item in self.tmpfs.iterdir()
             )
         )
+
+    def test_invalid_summary_stops_after_one_backup_without_restore(self) -> None:
+        run = mock.Mock(
+            return_value=subprocess.CompletedProcess(
+                [],
+                0,
+                json.dumps({"message_type": "summary", "snapshot_id": "not-hex-id"})
+                + "\n",
+                "",
+            )
+        )
+        with self.assertRaises(HANDOFF.HandoffError) as raised:
+            self._execute(run)
+        self.assertEqual(raised.exception.code, "restic_snapshot_id_invalid")
+        self.assertTrue(raised.exception.snapshot_may_exist)
+        self.assertEqual(run.call_count, 1)
 
     def test_restore_failure_reports_snapshot_may_exist_and_cleans(self) -> None:
         snapshot_id = "b" * 64

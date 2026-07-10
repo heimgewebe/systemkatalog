@@ -105,12 +105,12 @@ python3 scripts/private_cabinet_restic_handoff.py execute \
 3. Archiv ausschließlich auf `tmpfs` erzeugen und lokal prüfen.
 4. Vorher prüfen, dass der gebundene Tag im Repository noch nicht existiert.
 5. Genau einen getaggten Restic-Snapshot erzeugen.
-6. Nach dem Backup prüfen, dass der Tag exakt auf die zurückgegebene vollständige Snapshot-ID gebunden ist.
-7. Genau diesen Snapshot in ein zweites `tmpfs`-Verzeichnis wiederherstellen.
+6. Die Backup-Summary-ID gegen den eindeutigen Tag binden: Eine vollständige ID muss exakt übereinstimmen; eine Restic-0.12.1-Kurz-ID muss Präfix genau einer vollständigen 64-stelligen Tag-ID sein.
+7. Ausschließlich diese vollständige Snapshot-ID in ein zweites `tmpfs`-Verzeichnis wiederherstellen.
 8. Manifest-Hash und vollständige Archivintegrität erneut prüfen.
 9. Beide Klartext-Stagingbäume identitätsgebunden entfernen.
 
-Das Werkzeug enthält keine Retention-, Forget- oder Prune-Funktion. Eine owner-only Sperrdatei auf `tmpfs` verhindert parallele Handoffs; sie enthält keine privaten Daten. Der Plan blockiert bereits, wenn die Plattform keine symlink-resistente rekursive Löschung unterstützt. Der CLI-Pfad unterdrückt Python-Bytecode-Schreiben. Es steuert keinen Dienst. `--help`, unbekannte Argumente und ein fehlendes Bestätigungstoken führen vor jeder Arbeitswirkung zum Ende. Jeder unklare Backup-Ausgang, einschließlich Zeitüberschreitung oder Restic-Fehlercode, meldet konservativ, dass bereits ein Snapshot existieren kann; er wird nicht automatisch gelöscht. Auch frühe Staging-Cleanup-Fehler werden ausdrücklich als manuell zu bereinigen ausgewiesen.
+Das Werkzeug enthält keine Retention-, Forget- oder Prune-Funktion. Eine owner-only Sperrdatei auf `tmpfs` verhindert parallele Handoffs; sie enthält keine privaten Daten. Der Plan blockiert bereits, wenn die Plattform keine symlink-resistente rekursive Löschung unterstützt. Der CLI-Pfad unterdrückt Python-Bytecode-Schreiben. Es steuert keinen Dienst. `--help`, unbekannte Argumente und ein fehlendes Bestätigungstoken führen vor jeder Arbeitswirkung zum Ende. Jeder unklare Backup-Ausgang, einschließlich Zeitüberschreitung oder Restic-Fehlercode, meldet konservativ, dass bereits ein Snapshot existieren kann; er wird nicht automatisch gelöscht. Fehlende, ungültige, mehrdeutige oder nicht zur vollständigen Tag-ID passende Summary-IDs stoppen vor dem Restore und lösen niemals einen zweiten Backup-Lauf aus. Auch frühe Staging-Cleanup-Fehler werden ausdrücklich als manuell zu bereinigen ausgewiesen.
 
 Öffentliche Receipts enthalten nur Aggregate sowie Hashes von Snapshot-ID und Tag. Restic-Endpunkt, Passwortdatei, konkrete Pfade, Snapshot-ID, Tag und private Manifestinhalte werden nicht ausgegeben.
 

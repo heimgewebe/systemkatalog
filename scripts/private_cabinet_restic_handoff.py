@@ -39,6 +39,7 @@ DEFAULT_RESTIC_BINARY = Path("/usr/bin/restic")
 DEFAULT_HOST = "cabinet-migration"
 MIN_FREE_MULTIPLIER = 3
 SNAPSHOT_ID_RE = re.compile(r"^[0-9a-f]{64}$")
+SNAPSHOT_SUMMARY_ID_RE = re.compile(r"^[0-9a-f]{8,64}$")
 TAG_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.:-]{0,63}$")
 
 
@@ -542,19 +543,41 @@ def _remove_stage(path: Path, root: Path, identity: StageIdentity) -> bool:
         return False
 
 
-def _parse_snapshot_id(output: str) -> str:
-    snapshot_id = ""
+def _parse_snapshot_summary_id(output: str) -> str:
+    candidates: list[str] = []
     for line in output.splitlines():
         try:
             record = json.loads(line)
         except json.JSONDecodeError:
             continue
-        if isinstance(record, dict) and record.get("message_type") == "summary":
-            candidate = record.get("snapshot_id")
-            if isinstance(candidate, str):
-                snapshot_id = candidate.lower()
-    if not SNAPSHOT_ID_RE.fullmatch(snapshot_id):
+        if not isinstance(record, dict) or record.get("message_type") != "summary":
+            continue
+        candidate = record.get("snapshot_id")
+        if not isinstance(candidate, str):
+            raise HandoffError("restic_snapshot_id_invalid")
+        normalized = candidate.lower()
+        if not SNAPSHOT_SUMMARY_ID_RE.fullmatch(normalized):
+            raise HandoffError("restic_snapshot_id_invalid")
+        candidates.append(normalized)
+    unique = sorted(set(candidates))
+    if not unique:
         raise HandoffError("restic_snapshot_id_missing")
+    if len(unique) != 1:
+        raise HandoffError("restic_snapshot_id_ambiguous")
+    return unique[0]
+
+
+def _resolve_full_snapshot_id(
+    summary_snapshot_id: str,
+    tagged_snapshot_ids: list[str],
+) -> str:
+    if len(tagged_snapshot_ids) != 1:
+        raise HandoffError("snapshot_tag_binding_failed")
+    snapshot_id = tagged_snapshot_ids[0]
+    if not SNAPSHOT_ID_RE.fullmatch(snapshot_id):
+        raise HandoffError("snapshot_tag_binding_failed")
+    if not snapshot_id.startswith(summary_snapshot_id):
+        raise HandoffError("snapshot_summary_id_mismatch")
     return snapshot_id
 
 
@@ -692,17 +715,25 @@ def _execute_handoff_locked(
             if backup.returncode != 0:
                 raise HandoffError("restic_backup_failed", snapshot_may_exist=True)
             try:
-                snapshot_id = _parse_snapshot_id(backup.stdout)
+                summary_snapshot_id = _parse_snapshot_summary_id(backup.stdout)
             except HandoffError as exc:
                 raise HandoffError(exc.code, snapshot_may_exist=True) from exc
             try:
                 tagged_snapshot_ids = _restic_snapshot_ids_for_tag(context, tag)
-            except HandoffError as exc:
-                raise HandoffError(exc.code, snapshot_may_exist=True) from exc
-            if tagged_snapshot_ids != [snapshot_id]:
-                raise HandoffError(
-                    "snapshot_tag_binding_failed", snapshot_may_exist=True
+                snapshot_id = _resolve_full_snapshot_id(
+                    summary_snapshot_id,
+                    tagged_snapshot_ids,
                 )
+            except HandoffError as exc:
+                raise HandoffError(
+                    exc.code,
+                    snapshot_may_exist=True,
+                    snapshot_id_sha256=(
+                        _sha256_text(summary_snapshot_id)
+                        if SNAPSHOT_ID_RE.fullmatch(summary_snapshot_id)
+                        else None
+                    ),
+                ) from exc
 
             restore_root = stage_root / "restored"
             restore_root.mkdir(mode=0o700)
