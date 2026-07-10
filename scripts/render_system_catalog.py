@@ -37,13 +37,23 @@ def render_text() -> str:
     edges_doc = _load(EDGES)
     authority = _load(AUTHORITY)
 
-    nodes = [item for item in nodes_doc.get("nodes", []) if isinstance(item, dict)]
+    public_projection = policy.get("publicProjection", {})
+    excluded_kinds = set(public_projection.get("excludedKinds", [])) if isinstance(public_projection, dict) else set()
+    nodes = [
+        item
+        for item in nodes_doc.get("nodes", [])
+        if isinstance(item, dict) and item.get("kind") not in excluded_kinds
+    ]
     node_by_id = {item.get("id"): item for item in nodes if isinstance(item.get("id"), str)}
+    visible_node_ids = set(node_by_id)
     stable_statuses = set(policy.get("stableRelationStatuses", []))
     edges = [
         item
         for item in edges_doc.get("edges", [])
-        if isinstance(item, dict) and item.get("status") in stable_statuses
+        if isinstance(item, dict)
+        and item.get("status") in stable_statuses
+        and item.get("from") in visible_node_ids
+        and item.get("to") in visible_node_ids
     ]
     authorities = [item for item in authority.get("authorities", []) if isinstance(item, dict)]
     entrypoints = [item for item in policy.get("entrypoints", []) if isinstance(item, dict)]
@@ -144,6 +154,7 @@ def render_text() -> str:
             "- Technische Prüfergebnisse: CI und Review-Gates.",
             "- Laufende Dienste: Runtime, Healthchecks, systemd und Logs.",
             "- Lokale und repositorybezogene Ausführung: Grabowski nach Freigabe.",
+            "- Konkrete Runtime-Identitäten und Topologie bleiben in privater Operator-Evidence und werden hier nicht vervielfältigt.",
             "- Die externe Cabinet-App ist nur ein vorübergehender optionaler Viewer und für diese Datei nicht erforderlich.",
             "",
         ]
