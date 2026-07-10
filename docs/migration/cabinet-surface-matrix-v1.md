@@ -52,6 +52,7 @@ Kategorien:
 | `ops/patches/**` | Patch der gepinnten Fremd-App | `REMOVE` | keine fremde App als Katalogfundament | T013 |
 | `.cabinet`-Raumkonfiguration und app-spezifische Räume | Darstellung und Arbeitsfläche der Fremd-App | `ARCHIVE` oder `REMOVE` | optionaler Übergangsviewer, kein Canon | T012/T013 |
 | lokale App-Daten, Conversations, Memory und Konfiguration | möglicherweise nichtversionierte private Inhalte | `MOVE` in privates Archiv | außerhalb des öffentlichen Repositories | T012 |
+| `scripts/private_cabinet_archive.py` | create-only Sicherungs- und isoliertes Restore-Werkzeug | `ARCHIVE` nach abgeschlossenem Runtime-Rückbau | migrationsgebundener Schutzmechanismus, kein Bestandteil des Systemkatalogs | T012/T013 |
 | Repositoryname `heimgewebe/cabinet` | mit Fremdprodukt verwechselbare Identität | `MOVE` | `heimgewebe/heimgewebe-katalog` erst nach Runtime-Rückbau | T014 |
 
 ## Organrouting

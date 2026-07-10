@@ -62,6 +62,8 @@ Kein Server, Daemon, Scheduler, KI-Agent oder Datenbankdienst ist für den Katal
 
 Der erste Schritt ist bewusst nichtdestruktiv. Bestehende Räume, Radar-, Gemini- und Runtime-Flächen bleiben zunächst lesbar, sind aber Migrationsgegenstand und keine Zielarchitektur. Abschaltung der App, Löschung lokaler Daten und Umbenennung des Repositories benötigen eigene Bureau-Tasks und separate Review-Gates.
 
+Für die vorgelagerte private Datensicherung existiert ein [begrenztes Archiv- und Restore-Verfahren](docs/migration/private-cabinet-archive-v1.md). Seine Dokumentation erteilt keine Ausführungserlaubnis; der echte Export benötigt eine eigene, zielgebundene Bureau-Autorisierung.
+
 Die geplante Zielidentität nach abgeschlossener Entkopplung lautet `heimgewebe/heimgewebe-katalog`.
 
 ## Nicht verwechseln
