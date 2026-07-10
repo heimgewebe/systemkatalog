@@ -11,6 +11,7 @@ Dieser Einstieg ist eine GitHub-Fassade. Das kanonische Inhaltsverzeichnis liegt
 3. **Systemkarte finden:** [Ecosystem Map v0](docs/blueprints/ecosystem-map-v0.md)
 4. **Rollenentscheidung lesen:** [Cabinet Role Boundary v1](docs/blueprints/cabinet-role-boundary-v1.md)
 5. **Mermaidkarten direkt öffnen:** [lesbare Übersicht](rendered/ecosystem-map.mmd) und [generierte Registry-Projektion](rendered/ecosystem-registry-map.mmd)
+6. **Redundanz prüfen:** [Operator Ecosystem Redundancy Audit v1](docs/blueprints/operator-ecosystem-redundancy-audit-v1.md)
 
 ## Rolle
 

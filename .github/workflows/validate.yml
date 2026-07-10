@@ -63,6 +63,12 @@ jobs:
       - name: Test Cabinet Maintenance Report
         run: python3 -m unittest discover -s scripts/tests -p 'test_cabinet_maintenance_report.py'
 
+      - name: Validate Operator Ecosystem Redundancy Audit
+        run: python3 scripts/validate_operator_redundancy_audit.py --json
+
+      - name: Test Operator Ecosystem Redundancy Audit
+        run: python3 -m unittest discover -s scripts/tests -p 'test_operator_redundancy_audit.py'
+
       - name: Test External Artifact Registry
         run: python3 -m unittest discover -s scripts/tests -p 'test_external*.py'
 

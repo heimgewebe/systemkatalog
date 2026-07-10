@@ -12,6 +12,7 @@ Cabinet ordnet Repositories, Projekte, Prüfungen und nächste Schritte.
 - [Registry-Mermaidkarte](rendered/ecosystem-registry-map.mmd) — generierte Ansicht aus Knoten und Kanten.
 - [Heim-PC Operatorium Index v0](docs/blueprints/heim-pc-operatorium-index-v0.md) — lokale Operatorium-Schicht.
 - [Cabinet Maintenance Radar v0](docs/blueprints/cabinet-maintenance-radar-v0.md) — read-only Kohärenzradar, Wartungsbefunde und Heimlern-Rückkopplung.
+- [Operator Ecosystem Redundancy Audit v1](docs/blueprints/operator-ecosystem-redundancy-audit-v1.md) — Autorität, reale Konsumenten, Doppelungen, Pflegekosten und Abschaltbarkeit der Operator-Organe.
 
 ## Aktive Räume
 

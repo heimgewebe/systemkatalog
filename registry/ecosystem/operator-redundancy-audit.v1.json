@@ -1,0 +1,568 @@
+{
+  "schemaVersion": 1,
+  "kind": "operator_ecosystem_redundancy_audit",
+  "observedAt": "2026-07-10T07:09:52+02:00",
+  "scope": {
+    "definition": "Operator organs named by Cabinet, plus WGX and the external GitHub/CI/runtime authority plane.",
+    "repositoriesChecked": [
+      "bureau",
+      "grabowski",
+      "cabinet",
+      "lenskit",
+      "steuerboard",
+      "leitstand",
+      "schauwerk",
+      "chronik",
+      "heimlern",
+      "vibe-lab",
+      "wgx",
+      "metarepo"
+    ],
+    "liveChecks": [
+      "git status and open pull requests for the target repositories",
+      "user and system systemd service/timer inventory",
+      "Grabowski deployment identity and worktree inventory",
+      "cross-repository source/config references excluding documentation-only paths"
+    ]
+  },
+  "evidenceRefs": [
+    {
+      "id": "ev-grabowski-runtime",
+      "kind": "live_runtime",
+      "reference": "grabowski_status and grabowski_context full; deployed head b69fc0d57a64bbc658deebfe4a707f1551e65c8c",
+      "observedAt": "2026-07-10T06:58:00+02:00"
+    },
+    {
+      "id": "ev-systemd-units",
+      "kind": "live_runtime",
+      "reference": "systemctl --user list-units --all --type=service --type=timer plus system unit inventory",
+      "observedAt": "2026-07-10T07:03:00+02:00"
+    },
+    {
+      "id": "ev-grabowski-worktrees",
+      "kind": "live_repository",
+      "reference": "git -C /home/alex/repos/grabowski worktree list --porcelain",
+      "observedAt": "2026-07-10T07:05:00+02:00"
+    },
+    {
+      "id": "ev-cabinet-boundary",
+      "kind": "source_contract",
+      "reference": "cabinet/README.md, cabinet/AGENTS.md, docs/blueprints/cabinet-role-boundary-v1.md",
+      "observedAt": "2026-07-10T07:00:00+02:00"
+    },
+    {
+      "id": "ev-bureau-boundary",
+      "kind": "source_contract",
+      "reference": "bureau/README.md and registry initiative BUR-2026-004",
+      "observedAt": "2026-07-10T07:02:00+02:00"
+    },
+    {
+      "id": "ev-organ-contracts",
+      "kind": "source_contract",
+      "reference": "steuerboard/README.md, schauwerk/README.md, chronik/README.md, heimlern/README.md, vibe-lab/README.md, metarepo/docs/system/heimgewebe-organismus.md",
+      "observedAt": "2026-07-10T07:01:00+02:00"
+    },
+    {
+      "id": "ev-cross-repo-consumers",
+      "kind": "source_integration_scan",
+      "reference": "bounded cross-repository scan of source, config, workflows, policy, schema and registry paths; docs/tests excluded",
+      "observedAt": "2026-07-10T07:06:00+02:00"
+    }
+  ],
+  "summary": {
+    "coreKeep": [
+      "bureau",
+      "grabowski",
+      "repobrief_lenskit",
+      "github_ci_runtime"
+    ],
+    "keepAsDerivedSurface": [
+      "cabinet",
+      "leitstand",
+      "schauwerk"
+    ],
+    "conditionalOrNarrow": [
+      "steuerboard",
+      "chronik",
+      "heimlern",
+      "vibe_lab",
+      "wgx"
+    ],
+    "highestLeverage": "Reduce duplicated status/coordination paths before adding new organs or evidence formats.",
+    "liveSignals": {
+      "bureauActiveTimers": 10,
+      "grabowskiWorktrees": 44,
+      "grabowskiFailedTransientUnits": 21,
+      "cabinetServiceActive": true,
+      "leitstandServiceActive": true,
+      "rlensServiceActive": true,
+      "schauwerkKeepaliveTimerActive": true,
+      "chronikLocalUnitsObserved": 0,
+      "heimlernLocalUnitsObserved": 0,
+      "vibeLabLocalUnitsObserved": 0
+    }
+  },
+  "organs": [
+    {
+      "id": "bureau",
+      "authority": "Commitments, ordering, dependencies, claims, dispatch envelopes, completion verification and receipts.",
+      "observedConsumers": [
+        "Grabowski dispatch and task handoff",
+        "Leitstand operator snapshots",
+        "Cabinet bridge and coherence work",
+        "human operator sessions"
+      ],
+      "duplicateData": [
+        "queue and task status are restated in Cabinet, Leitstand and narrative reports",
+        "ten active timer lanes produce overlapping discovery, curation, verification, review and bridge projections"
+      ],
+      "manualMaintenance": {
+        "level": "high",
+        "drivers": [
+          "large Git registry",
+          "many operational organs and timer units",
+          "frequent queue closeout pull requests"
+        ]
+      },
+      "shutdown": {
+        "class": "core_not_replaceable",
+        "conditions": [
+          "replace cross-repository claims and deterministic completion receipts",
+          "migrate all active dispatch and queue consumers"
+        ],
+        "partialShutdown": "Individual Ops timers are highly disableable because Bureau Core remains authoritative."
+      },
+      "recommendation": "Keep Bureau Core. Audit and consolidate timer lanes; prefer one scheduler pipeline with explicit stages over independent periodic organs.",
+      "confidence": 0.96,
+      "evidenceClass": [
+        "live_runtime",
+        "source_contract",
+        "cross_repo_reference"
+      ]
+    },
+    {
+      "id": "grabowski",
+      "authority": "Local and fleet execution, processes, resource leases, durable tasks, workers and runtime effects.",
+      "observedConsumers": [
+        "ChatGPT operator relay",
+        "Bureau dispatch adapter",
+        "Leitstand operator snapshots",
+        "repository and runtime maintenance workflows"
+      ],
+      "duplicateData": [
+        "task state is also projected into Bureau and Leitstand",
+        "multiple old worktrees and transient task units retain historical execution state"
+      ],
+      "manualMaintenance": {
+        "level": "high",
+        "drivers": [
+          "44 linked worktrees observed",
+          "21 failed or bad-setting transient task units observed",
+          "multiple watchdog and Dauersong timer lanes"
+        ]
+      },
+      "shutdown": {
+        "class": "core_not_replaceable",
+        "conditions": [
+          "replace typed local/fleet execution and audited mutation paths"
+        ],
+        "partialShutdown": "Optional autonomous, watchdog and historical transient-unit surfaces can be disabled independently."
+      },
+      "recommendation": "Keep the operator core. Prioritize lifecycle cleanup and task reconciliation over adding more execution roles or receipts.",
+      "confidence": 0.99,
+      "evidenceClass": [
+        "live_runtime",
+        "deployment_identity",
+        "worktree_inventory"
+      ]
+    },
+    {
+      "id": "repobrief_lenskit",
+      "authority": "No domain truth; produces source-bound repository context, citations, snapshots and freshness identity.",
+      "observedConsumers": [
+        "Grabowski context tools",
+        "Cabinet external manifest ingestion",
+        "LLM and review workflows",
+        "rLens web UI"
+      ],
+      "duplicateData": [
+        "several report, sidecar, bundle and projected context formats describe the same source tree",
+        "Cabinet and agent workflows may retain additional copies of generated artifacts"
+      ],
+      "manualMaintenance": {
+        "level": "medium_high",
+        "drivers": [
+          "artifact format count",
+          "freshness and publication automation",
+          "repository-wide snapshot storage"
+        ]
+      },
+      "shutdown": {
+        "class": "replaceable_with_quality_loss",
+        "conditions": [
+          "agents fall back to direct repository reads",
+          "citation and freshness guarantees are accepted as weaker"
+        ],
+        "partialShutdown": "UI and redundant export formats can be removed while keeping query, range and context-pack primitives."
+      },
+      "recommendation": "Keep the context primitives. Consolidate daily use around manifest, context pack and freshness identity; make full reports diagnostic outputs.",
+      "confidence": 0.94,
+      "evidenceClass": [
+        "live_runtime",
+        "source_contract",
+        "cross_repo_reference"
+      ]
+    },
+    {
+      "id": "cabinet",
+      "authority": "Meaning, evidence framing, readable decisions, map semantics and read-only coherence findings.",
+      "observedConsumers": [
+        "human ecosystem orientation",
+        "Bureau bridge previews",
+        "Schauwerk map rendering",
+        "Leitstand/Cabinet visual surfaces"
+      ],
+      "duplicateData": [
+        "two ecosystem maps, graph registries, seed files, claims and narrative blueprints overlap",
+        "legacy rooms and active rooms preserve parallel navigation structures",
+        "status wording can duplicate source-system projections"
+      ],
+      "manualMaintenance": {
+        "level": "high",
+        "drivers": [
+          "manual semantic maps and blueprints",
+          "registry plus narrative synchronization",
+          "large contract and validation surface"
+        ]
+      },
+      "shutdown": {
+        "class": "service_disableable_repo_useful",
+        "conditions": [
+          "retain decisions and authority map in version control"
+        ],
+        "partialShutdown": "The active Cabinet service can stop without losing GitHub, Bureau, CI or runtime truth."
+      },
+      "recommendation": "Keep one semantic authority matrix and one generated map. Freeze new rooms and duplicate projections until existing paths are consolidated.",
+      "confidence": 0.95,
+      "evidenceClass": [
+        "live_runtime",
+        "source_contract",
+        "repository_structure"
+      ]
+    },
+    {
+      "id": "steuerboard",
+      "authority": "Action-specific readiness is claimed externally, while its own contract says it is not a canonical source of truth.",
+      "observedConsumers": [
+        "Grabowski operator context routing",
+        "Cabinet repository observation policies",
+        "Bureau references to readiness and repo-state assessment"
+      ],
+      "duplicateData": [
+        "repository status, branch drift and action readiness overlap GitHub, Grabowski and Bureau",
+        "two bounded mutators overlap Grabowski Git execution"
+      ],
+      "manualMaintenance": {
+        "level": "high",
+        "drivers": [
+          "broad CLI and schema surface",
+          "read-only observation plus derivation, fetch and mutation classes",
+          "no active local service observed"
+        ]
+      },
+      "shutdown": {
+        "class": "high_after_migration",
+        "conditions": [
+          "migrate the operator report used by Grabowski",
+          "move or retire switch-main and fast-forward-only mutation paths"
+        ],
+        "partialShutdown": "New feature work can stop immediately while existing reports remain available."
+      },
+      "recommendation": "Freeze scope. Decide one role: either a small repo-state/readiness library consumed by Grabowski, or retire it after migration.",
+      "confidence": 0.9,
+      "evidenceClass": [
+        "source_contract",
+        "cross_repo_reference",
+        "live_runtime_absence"
+      ]
+    },
+    {
+      "id": "leitstand",
+      "authority": "Display and operator interaction only; source systems remain authoritative.",
+      "observedConsumers": [
+        "human operator"
+      ],
+      "duplicateData": [
+        "renders Bureau, Grabowski, Cabinet and runtime status already available at source",
+        "can overlap Cabinet maps and Steuerboard reports"
+      ],
+      "manualMaintenance": {
+        "level": "medium",
+        "drivers": [
+          "active service",
+          "ten-minute snapshot timer",
+          "view-model compatibility across source systems"
+        ]
+      },
+      "shutdown": {
+        "class": "easy_with_usability_loss",
+        "conditions": [
+          "operators accept source-specific CLI and web views"
+        ],
+        "partialShutdown": "Individual panels and duplicate status feeds can be removed independently."
+      },
+      "recommendation": "Retain as the single operator display. Do not give it task, readiness or runtime truth authority.",
+      "confidence": 0.95,
+      "evidenceClass": [
+        "live_runtime",
+        "source_contract",
+        "cross_repo_reference"
+      ]
+    },
+    {
+      "id": "schauwerk",
+      "authority": "Visual projections, controlled Miro surfaces and publishable renderings.",
+      "observedConsumers": [
+        "human review, teaching and Miro workflows",
+        "Cabinet ecosystem map handoff"
+      ],
+      "duplicateData": [
+        "generic ecosystem maps overlap Cabinet map semantics and Leitstand display",
+        "snapshot and view registries duplicate source metadata for rendering"
+      ],
+      "manualMaintenance": {
+        "level": "medium",
+        "drivers": [
+          "Miro OAuth and keepalive",
+          "snapshot/apply/verify contracts",
+          "renderer-specific registries"
+        ]
+      },
+      "shutdown": {
+        "class": "easy_except_visual_workflows",
+        "conditions": [
+          "replace Miro and publication workflows where actually used"
+        ],
+        "partialShutdown": "Generic ecosystem dashboard ambitions can stop while specialized renderers remain."
+      },
+      "recommendation": "Keep as a specialist renderer. Consume Cabinet or domain sources; do not maintain a second generic ecosystem canon.",
+      "confidence": 0.91,
+      "evidenceClass": [
+        "live_runtime",
+        "source_contract",
+        "cross_repo_reference"
+      ]
+    },
+    {
+      "id": "chronik",
+      "authority": "Append-only event history and historical evidence, not task or decision authority.",
+      "observedConsumers": [
+        "declared integrations in Grabowski, Plexer, HausKI, Heimgeist, Heimlern, SemantAH and Leitstand",
+        "Bureau event and learning initiatives"
+      ],
+      "duplicateData": [
+        "Git, Bureau receipts and runtime logs already preserve much operational history",
+        "unbounded event capture would duplicate source logs without a query consumer"
+      ],
+      "manualMaintenance": {
+        "level": "medium",
+        "drivers": [
+          "event contracts, retention and consumer gates",
+          "no active local Chronik unit observed"
+        ]
+      },
+      "shutdown": {
+        "class": "currently_easy_future_conditional",
+        "conditions": [
+          "confirm no remote Chronik service is authoritative",
+          "retain source logs and Bureau receipts"
+        ],
+        "partialShutdown": "Optional producers can remain off until a named consumer and query use case exists."
+      },
+      "recommendation": "Keep only high-value lifecycle events with named consumers. Do not mirror Git commits, diffs or every Bureau transition.",
+      "confidence": 0.84,
+      "evidenceClass": [
+        "cross_repo_reference",
+        "live_runtime_absence",
+        "source_contract"
+      ]
+    },
+    {
+      "id": "heimlern",
+      "authority": "Proposal-only retrospective learning and policy-adjustment suggestions.",
+      "observedConsumers": [
+        "Bureau learning initiatives",
+        "declared HausKI, Heimgeist, SemantAH, WGX and Leitstand integrations"
+      ],
+      "duplicateData": [
+        "overlaps Grabowski friction analysis, Cabinet outcomes and Vibe-Lab experiments",
+        "policy proposal formats exist without a demonstrated automatic consumption loop"
+      ],
+      "manualMaintenance": {
+        "level": "medium_high",
+        "drivers": [
+          "Rust crates and policy contracts",
+          "multiple integration plans",
+          "no active local unit observed"
+        ]
+      },
+      "shutdown": {
+        "class": "easy_now",
+        "conditions": [
+          "retain existing reports and fixtures as archived evidence"
+        ],
+        "partialShutdown": "Expansion can pause without affecting Bureau or Grabowski operation."
+      },
+      "recommendation": "Pause expansion until one closed loop shows that a proposal changes routing or policy and measurably reduces operator friction.",
+      "confidence": 0.9,
+      "evidenceClass": [
+        "cross_repo_reference",
+        "live_runtime_absence",
+        "source_contract"
+      ]
+    },
+    {
+      "id": "vibe_lab",
+      "authority": "Experiment evidence and promoted practices, not production operation.",
+      "observedConsumers": [
+        "Bureau experiment tasks",
+        "Cabinet repository observation"
+      ],
+      "duplicateData": [
+        "experiments, benchmarks, decisions and schemas can duplicate normal repository proofs and review evidence",
+        "many proposed experiment contracts have no named production consumer"
+      ],
+      "manualMaintenance": {
+        "level": "high_relative_to_current_use",
+        "drivers": [
+          "large schema and experiment-governance surface",
+          "no active local unit observed",
+          "promotion requires continued curation"
+        ]
+      },
+      "shutdown": {
+        "class": "easy_archive",
+        "conditions": [
+          "preserve adopted practices and completed experiment evidence"
+        ],
+        "partialShutdown": "New experiments can be blocked unless they have a sponsor, decision target and expiry date."
+      },
+      "recommendation": "Retain as a bounded lab, not a permanent work generator. Require consumer, decision question and expiry before starting an experiment.",
+      "confidence": 0.93,
+      "evidenceClass": [
+        "repository_structure",
+        "cross_repo_reference",
+        "live_runtime_absence"
+      ]
+    },
+    {
+      "id": "wgx",
+      "authority": "Standardized fleet checks, profiles and CI motor functions; source repositories and CI remain factual authorities.",
+      "observedConsumers": [
+        "Lenskit and other WGX-enabled repository workflows",
+        "Metarepo templates",
+        "fleet metrics consumers"
+      ],
+      "duplicateData": [
+        "guards, smoke and metrics can overlap repository-native CI and Grabowski operations",
+        "fleet status projections overlap Leitstand and Bureau observation"
+      ],
+      "manualMaintenance": {
+        "level": "medium_high",
+        "drivers": [
+          "cross-repository workflow compatibility",
+          "profile and template propagation",
+          "no dedicated active local unit observed"
+        ]
+      },
+      "shutdown": {
+        "class": "medium_after_ci_migration",
+        "conditions": [
+          "migrate shared guards and metrics to repository-native or reusable GitHub workflows"
+        ],
+        "partialShutdown": "Operator-like mutation paths can be excluded while standardized CI checks remain."
+      },
+      "recommendation": "Keep only genuinely shared fleet checks and templates. Do not duplicate Grabowski execution or Bureau coordination.",
+      "confidence": 0.87,
+      "evidenceClass": [
+        "cross_repo_reference",
+        "source_contract",
+        "live_runtime_absence"
+      ]
+    },
+    {
+      "id": "github_ci_runtime",
+      "authority": "Branches, pull requests, reviews, CI results and actual service/runtime state.",
+      "observedConsumers": [
+        "all operator organs"
+      ],
+      "duplicateData": [
+        "all local projections risk becoming stale copies"
+      ],
+      "manualMaintenance": {
+        "level": "external_and_necessary",
+        "drivers": [
+          "source repositories, workflows and deployed services"
+        ]
+      },
+      "shutdown": {
+        "class": "not_disableable",
+        "conditions": [
+          "replace source control, CI and runtime infrastructure"
+        ],
+        "partialShutdown": "Only derived caches and projections are optional."
+      },
+      "recommendation": "Treat as primary reality. Every dashboard and audit must preserve source links and freshness instead of copying authority.",
+      "confidence": 1.0,
+      "evidenceClass": [
+        "primary_authority"
+      ]
+    }
+  ],
+  "actions": [
+    {
+      "priority": "P1",
+      "id": "bureau-timer-consolidation-audit",
+      "owner": "bureau",
+      "decision": "Map overlap, ordering and unique output of the ten active Bureau timers; consolidate only after consumers are identified."
+    },
+    {
+      "priority": "P1",
+      "id": "grabowski-lifecycle-cleanup",
+      "owner": "grabowski",
+      "decision": "Reconcile failed transient task units and classify the 44 worktrees before archive or cleanup."
+    },
+    {
+      "priority": "P1",
+      "id": "steuerboard-role-decision",
+      "owner": "steuerboard",
+      "decision": "Freeze scope and decide whether to extract the operator report/readiness library into Grabowski or retain a sharply bounded standalone component."
+    },
+    {
+      "priority": "P2",
+      "id": "cabinet-canon-consolidation",
+      "owner": "cabinet",
+      "decision": "Reduce maps, rooms and duplicated status prose to one authority matrix, one registry and one generated view."
+    },
+    {
+      "priority": "P2",
+      "id": "learning-experiment-consumer-gates",
+      "owner": "bureau",
+      "decision": "Require named consumer, decision target, success metric and expiry for Heimlern and Vibe-Lab work."
+    },
+    {
+      "priority": "P2",
+      "id": "chronik-high-value-event-policy",
+      "owner": "chronik",
+      "decision": "Define the small event set worth storing beyond Git, Bureau receipts and source logs."
+    }
+  ],
+  "doesNotEstablish": [
+    "safe_immediate_shutdown",
+    "complete_remote_runtime_inventory",
+    "consumer_semantic_correctness",
+    "automatic_task_approval",
+    "merge_readiness",
+    "runtime_health"
+  ]
+}
