@@ -42,6 +42,9 @@ class SystemCatalogTests(unittest.TestCase):
         self.assertEqual(rendered, RENDERER.render_text())
         self.assertNotIn("runtime health:", rendered.lower())
         self.assertNotIn("merge ready", rendered.lower())
+        self.assertNotIn("| heim-pc |", rendered)
+        self.assertNotIn("| heimserver |", rendered)
+        self.assertIn("[README.md](../README.md)", rendered)
 
     def test_external_app_is_optional_and_non_canonical(self) -> None:
         policy = VALIDATOR._load(VALIDATOR.POLICY)
@@ -50,6 +53,7 @@ class SystemCatalogTests(unittest.TestCase):
         self.assertFalse(app["canonical"])
         self.assertFalse(app["runtimeAuthoritative"])
         self.assertFalse(app["shutdownAuthorized"])
+        self.assertEqual(policy["publicProjection"]["excludedKinds"], ["runtime"])
 
     def test_example_rejects_operational_status_fields(self) -> None:
         policy = VALIDATOR._load(VALIDATOR.POLICY)
