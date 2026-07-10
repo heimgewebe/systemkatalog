@@ -25,6 +25,12 @@
     "registry/ecosystem/authority-matrix.v1.json"
   ],
   "canonicalReadableProjection": "rendered/system-catalog.md",
+  "publicProjection": {
+    "excludedKinds": [
+      "runtime"
+    ],
+    "reason": "Concrete runtime identities and topology remain in private operator evidence; the public catalog points to the runtime truth domain without duplicating host inventory."
+  },
   "targetFormat": {
     "schema": "catalog/system-catalog.schema.v1.json",
     "example": "catalog/system-catalog.example.v1.json",
