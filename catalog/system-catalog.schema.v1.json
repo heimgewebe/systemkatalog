@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/heimgewebe/cabinet/catalog/system-catalog.schema.v1.json",
+  "title": "Heimgewebe System Catalog v1",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "kind",
+    "exampleOnly",
+    "systems",
+    "relations",
+    "truthOwners"
+  ],
+  "properties": {
+    "schemaVersion": {"const": 1},
+    "kind": {"const": "heimgewebe_system_catalog"},
+    "exampleOnly": {"type": "boolean"},
+    "systems": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "type",
+          "purpose",
+          "notResponsibleFor",
+          "truthOwnership",
+          "entrypoints"
+        ],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "name": {"type": "string", "minLength": 1},
+          "type": {"enum": ["repository", "service", "runtime", "concept", "human", "artifact"]},
+          "purpose": {"type": "string", "minLength": 1},
+          "notResponsibleFor": {"type": "array", "items": {"type": "string", "minLength": 1}},
+          "truthOwnership": {"type": "array", "items": {"type": "string", "minLength": 1}},
+          "entrypoints": {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {"type": "string", "minLength": 1}
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "relations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["from", "to", "type", "meaning"],
+        "properties": {
+          "from": {"type": "string", "minLength": 1},
+          "to": {"type": "string", "minLength": 1},
+          "type": {"type": "string", "minLength": 1},
+          "meaning": {"type": "string", "minLength": 1}
+        },
+        "additionalProperties": false
+      }
+    },
+    "truthOwners": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["domain", "owner"],
+        "properties": {
+          "domain": {"type": "string", "minLength": 1},
+          "owner": {"type": "string", "minLength": 1}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}
