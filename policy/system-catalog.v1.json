@@ -176,7 +176,7 @@
     ],
     "compatibilityValidationWorkflow": ".github/workflows/validate.yml",
     "bridgeProbeAdapter": "scripts/prepare_legacy_bridge_probe.py",
-    "bridgeProbeWorkflow": ".github/workflows/cabinet-bridge-probe.yml"
+    "bridgeProbeWorkflow": ".github/workflows/systemkatalog-bridge-probe.yml"
   },
   "legacySourceArchives": [
     {

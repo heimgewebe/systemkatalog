@@ -1,6 +1,6 @@
-# Cabinet Bridge Artifact Manifest v1
+# Systemkatalog Bridge Artifact Manifest v1
 
-This contract defines the evidence-only manifest emitted by the Cabinet Bridge Probe workflow.
+This versioned compatibility contract defines the evidence-only manifest emitted by the Heimgewebe-Systemkatalog Bridge Probe workflow.
 
 It is a Cabinet contract. Bureau owns the import-review policy and its validator. Cabinet owns the bridge evidence bundle surface and the manifest that describes that bundle.
 
@@ -18,7 +18,7 @@ The manifest is produced by:
 scripts/write_bridge_artifact_manifest.py
 ```
 
-The Cabinet Bridge Probe workflow runs the script after these files exist:
+The Heimgewebe-Systemkatalog Bridge Probe workflow runs the script after these files exist:
 
 ```text
 bridge-import-policy-review.json
@@ -97,3 +97,7 @@ docs/contracts/cabinet-bridge-artifact-manifest-v1.schema.json
 ```
 
 The schema describes the manifest output. The script remains the executable contract for validating the input artifact bundle before the manifest is written.
+
+## Compatibility naming
+
+The `cabinet_*` JSON kind values are retained as versioned wire-format identifiers so historical receipts remain verifiable. They are not executable aliases or current repository names.

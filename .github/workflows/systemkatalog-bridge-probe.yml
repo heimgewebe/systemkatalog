@@ -1,4 +1,4 @@
-name: Cabinet Bridge Probe
+name: Heimgewebe-Systemkatalog Bridge Probe
 
 on:
   push:
@@ -10,7 +10,7 @@ on:
       - docs/contracts/cabinet-bridge-artifact-manifest-v1.schema.json
       - scripts/write_bridge_artifact_manifest.py
       - scripts/tests/test_bridge_artifact_manifest.py
-      - .github/workflows/cabinet-bridge-probe.yml
+      - .github/workflows/systemkatalog-bridge-probe.yml
   pull_request:
     branches:
       - main
@@ -20,7 +20,7 @@ on:
       - docs/contracts/cabinet-bridge-artifact-manifest-v1.schema.json
       - scripts/write_bridge_artifact_manifest.py
       - scripts/tests/test_bridge_artifact_manifest.py
-      - .github/workflows/cabinet-bridge-probe.yml
+      - .github/workflows/systemkatalog-bridge-probe.yml
   workflow_dispatch:
 
 permissions:
@@ -28,15 +28,15 @@ permissions:
 
 env:
   PYTHONDONTWRITEBYTECODE: "1"
-  BUREAU_PROBE_REF: "586791576ba1df650729d08e30aee64d33f05476"
+  BUREAU_PROBE_REF: "25a03c03ec7a311e17993b49e54cfe466ece24c7"
 
 jobs:
   probe:
-    name: Run Cabinet-Bureau bridge probe
+    name: Run Systemkatalog-Bureau bridge probe
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - name: Checkout Cabinet
+      - name: Checkout Heimgewebe-Systemkatalog
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           persist-credentials: false
@@ -60,7 +60,7 @@ jobs:
       - name: Run Bureau import policy gate
         working-directory: bureau-policy
         run: |
-          bureau-cabinet-bridge-import-policy \
+          bureau-systemkatalog-bridge-import-policy \
             --json \
             --policy docs/cabinet-bridge-import-review-contract-v0.policy.json \
             | tee ../bridge-import-policy-review.json
@@ -88,7 +88,7 @@ jobs:
       - name: Run bridge probe
         run: |
           set -o pipefail
-          bureau --json cabinet-bridge-probe \
+          bureau --json systemkatalog-bridge-probe \
             --bridge-policy bridge-probe-sandbox/registry/ecosystem/bureau-bridge.json \
             | tee bridge-probe-report.json
 
@@ -109,7 +109,7 @@ jobs:
 
           summary = Path("bridge-probe-summary.md")
           rows = [
-              "# Cabinet Bridge Probe",
+              "# Heimgewebe-Systemkatalog Bridge Probe",
               "",
               f"- candidateCount: {report['candidateCount']}",
               f"- admissibleCount: {report['admissibleCount']}",
@@ -134,13 +134,13 @@ jobs:
 
       - name: Run bridge preview
         run: |
-          bureau-cabinet-bridge-preview \
+          bureau-systemkatalog-bridge-preview \
             --json \
             --probe-report bridge-probe-report.json \
             --candidate-id claim:bureau-consumes-approved-candidates-v0 \
-            --task-id BUR-CAB-BRIDGE-001 \
-            --initiative BUR-CAB \
-            --target-proof "Cabinet bridge probe has an admissible candidate and preview remains proposal-only." \
+            --task-id BUR-SYSTEMKATALOG-BRIDGE-001 \
+            --initiative BUR-SYSTEMKATALOG \
+            --target-proof "Systemkatalog bridge probe has an admissible candidate and preview remains proposal-only." \
             --approve \
             | tee bridge-preview.json
 
@@ -172,7 +172,7 @@ jobs:
 
       - name: Run bridge review gate
         run: |
-          bureau-cabinet-bridge-review \
+          bureau-systemkatalog-bridge-review \
             --json \
             --preview bridge-preview.json \
             | tee bridge-review.json
@@ -196,12 +196,12 @@ jobs:
 
       - name: Run bridge receipt
         run: |
-          bureau-cabinet-bridge-receipt \
+          bureau-systemkatalog-bridge-receipt \
             --json \
             --review-gate bridge-review.json \
-            --reviewer cabinet-ci-review-gate \
+            --reviewer systemkatalog-ci-review-gate \
             --decision ready-for-design \
-            --evidence "Cabinet CI produced a requires_human_review gate with all effect flags disabled." \
+            --evidence "Systemkatalog CI produced a requires_human_review gate with all effect flags disabled." \
             --note "Technical receipt only; this is not an import approval." \
             | tee bridge-receipt.json
 
@@ -214,7 +214,7 @@ jobs:
           receipt = json.loads(Path("bridge-receipt.json").read_text(encoding="utf-8"))
           assert receipt["kind"] == "cabinet_bridge_review_receipt"
           assert receipt["status"] == "review_recorded"
-          assert receipt["reviewer"] == "cabinet-ci-review-gate"
+          assert receipt["reviewer"] == "systemkatalog-ci-review-gate"
           assert receipt["decision"] == "ready-for-design"
           assert receipt["importAllowed"] is False
           assert receipt["importReviewRequired"] is True
@@ -233,7 +233,7 @@ jobs:
       - name: Upload bridge probe report
         uses: actions/upload-artifact@v4
         with:
-          name: cabinet-bridge-probe-report
+          name: systemkatalog-bridge-probe-report
           path: |
             bridge-artifact-manifest.json
             bridge-import-policy-review.json
