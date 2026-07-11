@@ -29,8 +29,8 @@
 | Repository | Commit-Klassifikation | Worktree-Klassifikation | Evidenzstatus | Review-HEAD | Import-HEAD | Beziehung beim Import | Import-Worktree | Erfasst | Quelle |
 |---|---|---|---|---|---|---|---|---|---|
 | `bureau` | `snapshot-identical` | `snapshot-clean-at-import` | direkt-belegt: gespeicherte Review- und Import-HEADs sind identisch | `cf0fef56e194dcbe0c5e9c9674a814beed157a7a` | `cf0fef56e194dcbe0c5e9c9674a814beed157a7a` | identisch | `clean:0` | `2026-07-03T12:54:24Z` | `steuerung/40 Organe/Bureau/Repository Reference.md` |
-| `cabinet` | `snapshot-identical` | `snapshot-clean-at-import` | direkt-belegt: gespeicherte Review- und Import-HEADs sind identisch | `3ce791b34b1c095afd3ea1c76f7c1461759e26b0` | `3ce791b34b1c095afd3ea1c76f7c1461759e26b0` | identisch | `clean:0` | `2026-07-02T12:54:24Z` | `steuerung/40 Organe/Heimgewebe-Systemkatalog/Repository Reference.md` |
 | `grabowski` | `snapshot-identical` | `snapshot-clean-at-import` | direkt-belegt: gespeicherte Review- und Import-HEADs sind identisch | `abc3ad470615ffb5fd6c18ae27d0e992be6ac73e` | `abc3ad470615ffb5fd6c18ae27d0e992be6ac73e` | identisch | `clean:0` | `2026-07-02T12:54:24Z` | `steuerung/40 Organe/grabowski/Repository Reference.md` |
+| `heimgewebe-katalog` | `snapshot-identical` | `snapshot-clean-at-import` | direkt-belegt: gespeicherte Review- und Import-HEADs sind identisch | `3ce791b34b1c095afd3ea1c76f7c1461759e26b0` | `3ce791b34b1c095afd3ea1c76f7c1461759e26b0` | identisch | `clean:0` | `2026-07-02T12:54:24Z` | `steuerung/40 Organe/Heimgewebe-Systemkatalog/Repository Reference.md` |
 | `infra` | `snapshot-review-contained` | `snapshot-clean-at-import` | reference-claim: der Importstand soll den Reviewstand enthalten | `5d9b7f840fcd59742b75ce19ba2f90fa396ddee8` | `627923f09b2b3b5e0d25aa8a61af8a2b79cdd711` | Live-Stand enthält Review-Stand | `clean:0` | `2026-07-03T20:24:19Z` | `werkstatt/20 Werkzeuge/Infra/Repository Reference.md` |
 | `lenskit` | `snapshot-identical` | `snapshot-dirty-at-import` | direkt-belegt: gespeicherte Review- und Import-HEADs sind identisch | `c692cfc7c51cdb898e95e7df9ebc762190c0767e` | `c692cfc7c51cdb898e95e7df9ebc762190c0767e` | identisch | `dirty:6` | `2026-06-23T18:38:45.731368+00:00` | `werkstatt/20 Werkzeuge/Lenskit/Repository Reference.md` |
 | `steuerboard` | `snapshot-divergence-claimed` | `snapshot-clean-at-import` | reference-claim: Divergenz oder umgeschriebene Historie wurde behauptet | `62669eb95800d71aeb0d5d1f488e21524321659d` | `5a2a9a4e8a333162196d5cf16cce7d0440de34f7` | divergent oder rewritten/amended | `clean:0` | `2026-06-23T18:38:45.731368+00:00` | `werkstatt/20 Werkzeuge/Steuerboard/Repository Reference.md` |
@@ -43,8 +43,8 @@
 |---:|---|---|---|
 | 2 | `lenskit` | damals 6 Working-Tree-Änderungen; später neu erheben | nur Snapshot `2026-06-23T18:38:45.731368+00:00` |
 | 4 | `bureau` | keine besondere Priorität aus dem Snapshot ableitbar | nur Snapshot `2026-07-03T12:54:24Z` |
-| 4 | `cabinet` | keine besondere Priorität aus dem Snapshot ableitbar | nur Snapshot `2026-07-02T12:54:24Z` |
 | 4 | `grabowski` | keine besondere Priorität aus dem Snapshot ableitbar | nur Snapshot `2026-07-02T12:54:24Z` |
+| 4 | `heimgewebe-katalog` | keine besondere Priorität aus dem Snapshot ableitbar | nur Snapshot `2026-07-02T12:54:24Z` |
 | 4 | `infra` | keine besondere Priorität aus dem Snapshot ableitbar | nur Snapshot `2026-07-03T20:24:19Z` |
 | 4 | `steuerboard` | keine besondere Priorität aus dem Snapshot ableitbar | nur Snapshot `2026-06-23T18:38:45.731368+00:00` |
 | 4 | `vibe-lab` | keine besondere Priorität aus dem Snapshot ableitbar | nur Snapshot `2026-06-23T18:38:45.731368+00:00` |

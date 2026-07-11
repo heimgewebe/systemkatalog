@@ -24,8 +24,8 @@
 | Repository | Grund | Quelle |
 |---|---|---|
 | `bureau` | Keine besondere Priorität aus dem gespeicherten Snapshot ableitbar. | `steuerung/40 Organe/Bureau/Repository Reference.md` |
-| `cabinet` | Keine besondere Priorität aus dem gespeicherten Snapshot ableitbar. | `steuerung/40 Organe/Heimgewebe-Systemkatalog/Repository Reference.md` |
 | `grabowski` | Keine besondere Priorität aus dem gespeicherten Snapshot ableitbar. | `steuerung/40 Organe/grabowski/Repository Reference.md` |
+| `heimgewebe-katalog` | Keine besondere Priorität aus dem gespeicherten Snapshot ableitbar. | `steuerung/40 Organe/Heimgewebe-Systemkatalog/Repository Reference.md` |
 | `infra` | Keine besondere Priorität aus dem gespeicherten Snapshot ableitbar. | `werkstatt/20 Werkzeuge/Infra/Repository Reference.md` |
 | `steuerboard` | Keine besondere Priorität aus dem gespeicherten Snapshot ableitbar. | `werkstatt/20 Werkzeuge/Steuerboard/Repository Reference.md` |
 | `vibe-lab` | Keine besondere Priorität aus dem gespeicherten Snapshot ableitbar. | `labor/30 Versuchsstände/Vibe-Lab/Repository Reference.md` |
