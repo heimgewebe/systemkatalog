@@ -38,41 +38,6 @@
       "status": "observed"
     },
     {
-      "description": "Cabinet soll sich vom lokalen Ordnungsraum zu einer Ecosystem-Intelligence-Schicht entwickeln.",
-      "freshness": {
-        "class": "dated_snapshot",
-        "observedAt": "2026-07-02T12:54:24Z"
-      },
-      "healthDimensions": [
-        "reference_freshness",
-        "review_import_relationship",
-        "import_worktree_state"
-      ],
-      "id": "repo:cabinet",
-      "kind": "ecosystem_node",
-      "links": [],
-      "name": "cabinet",
-      "nodeType": "repository",
-      "notes": "origin=github.com:heimgewebe/heimgewebe-katalog.git; default_branch=main; review_head=3ce791b34b1c095afd3ea1c76f7c1461759e26b0; import_head=3ce791b34b1c095afd3ea1c76f7c1461759e26b0; relationship=identisch; import_worktree=clean:0",
-      "roles": [
-        "Cabinet soll sich vom lokalen Ordnungsraum zu einer Ecosystem-Intelligence-Schicht entwickeln."
-      ],
-      "schemaVersion": 1,
-      "sources": [
-        {
-          "observedAt": "2026-07-02T12:54:24Z",
-          "ref": "steuerung/40 Organe/Cabinet/Repository Reference.md",
-          "type": "cabinet"
-        },
-        {
-          "observedAt": "2026-07-02T12:54:24Z",
-          "ref": "3ce791b34b1c095afd3ea1c76f7c1461759e26b0",
-          "type": "git"
-        }
-      ],
-      "status": "observed"
-    },
-    {
       "description": "Lokaler Operator für den Heim-PC.",
       "freshness": {
         "class": "dated_snapshot",
@@ -102,6 +67,41 @@
         {
           "observedAt": "2026-07-02T12:54:24Z",
           "ref": "abc3ad470615ffb5fd6c18ae27d0e992be6ac73e",
+          "type": "git"
+        }
+      ],
+      "status": "observed"
+    },
+    {
+      "description": "Der Heimgewebe-Systemkatalog beschreibt stabile Systeme, Zuständigkeiten, Beziehungen und Einstiegspunkte; er ist keine operative Steuerungsschicht.",
+      "freshness": {
+        "class": "dated_snapshot",
+        "observedAt": "2026-07-02T12:54:24Z"
+      },
+      "healthDimensions": [
+        "reference_freshness",
+        "review_import_relationship",
+        "import_worktree_state"
+      ],
+      "id": "repo:heimgewebe-katalog",
+      "kind": "ecosystem_node",
+      "links": [],
+      "name": "heimgewebe-katalog",
+      "nodeType": "repository",
+      "notes": "origin=github.com:heimgewebe/heimgewebe-katalog.git; default_branch=main; review_head=3ce791b34b1c095afd3ea1c76f7c1461759e26b0; import_head=3ce791b34b1c095afd3ea1c76f7c1461759e26b0; relationship=identisch; import_worktree=clean:0",
+      "roles": [
+        "Der Heimgewebe-Systemkatalog beschreibt stabile Systeme, Zuständigkeiten, Beziehungen und Einstiegspunkte; er ist keine operative Steuerungsschicht."
+      ],
+      "schemaVersion": 1,
+      "sources": [
+        {
+          "observedAt": "2026-07-02T12:54:24Z",
+          "ref": "steuerung/40 Organe/Heimgewebe-Systemkatalog/Repository Reference.md",
+          "type": "cabinet"
+        },
+        {
+          "observedAt": "2026-07-02T12:54:24Z",
+          "ref": "3ce791b34b1c095afd3ea1c76f7c1461759e26b0",
           "type": "git"
         }
       ],
