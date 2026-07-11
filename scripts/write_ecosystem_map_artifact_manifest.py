@@ -31,16 +31,6 @@ ARTIFACT_SPECS: tuple[dict[str, str], ...] = (
         "contentType": "text/mermaid",
     },
     {
-        "role": "readable_overview_mermaid",
-        "path": "rendered/ecosystem-registry-map.mmd",
-        "contentType": "text/mermaid",
-    },
-    {
-        "role": "generated_registry_projection_mermaid",
-        "path": "rendered/ecosystem-registry-map.mmd",
-        "contentType": "text/mermaid",
-    },
-    {
         "role": "rendered_catalog_markdown",
         "path": "rendered/system-catalog.md",
         "contentType": "text/markdown",

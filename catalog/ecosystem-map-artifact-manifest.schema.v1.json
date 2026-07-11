@@ -53,19 +53,13 @@
       "additionalProperties": false
     },
     "artifactCount": {
-      "const": 7
+      "const": 5
     },
     "artifacts": {
       "type": "array",
       "prefixItems": [
         {
           "$ref": "#/$defs/canonicalEcosystemMapMermaid"
-        },
-        {
-          "$ref": "#/$defs/readableOverviewMermaid"
-        },
-        {
-          "$ref": "#/$defs/generatedRegistryProjectionMermaid"
         },
         {
           "$ref": "#/$defs/renderedCatalogMarkdown"
@@ -81,8 +75,8 @@
         }
       ],
       "items": false,
-      "minItems": 7,
-      "maxItems": 7
+      "minItems": 5,
+      "maxItems": 5
     },
     "doesNotEstablish": {
       "type": "array",
@@ -132,46 +126,6 @@
         }
       },
       "additionalProperties": false
-    },
-    "readableOverviewMermaid": {
-      "allOf": [
-        {
-          "$ref": "#/$defs/artifactBase"
-        },
-        {
-          "properties": {
-            "role": {
-              "const": "readable_overview_mermaid"
-            },
-            "path": {
-              "const": "rendered/ecosystem-registry-map.mmd"
-            },
-            "contentType": {
-              "const": "text/mermaid"
-            }
-          }
-        }
-      ]
-    },
-    "generatedRegistryProjectionMermaid": {
-      "allOf": [
-        {
-          "$ref": "#/$defs/artifactBase"
-        },
-        {
-          "properties": {
-            "role": {
-              "const": "generated_registry_projection_mermaid"
-            },
-            "path": {
-              "const": "rendered/ecosystem-registry-map.mmd"
-            },
-            "contentType": {
-              "const": "text/mermaid"
-            }
-          }
-        }
-      ]
     },
     "renderedCatalogMarkdown": {
       "allOf": [
