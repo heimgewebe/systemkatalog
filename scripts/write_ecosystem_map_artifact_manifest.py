@@ -177,10 +177,16 @@ def validate_manifest(manifest: dict[str, Any]) -> None:
         raise EcosystemMapManifestError("manifest non-claims mismatch")
 
 
-def write_manifest(repo_root: Path, output: Path) -> dict[str, Any]:
+def write_manifest(
+    repo_root: Path,
+    output: Path,
+    *,
+    source_commit: str | None = None,
+    generated_at: str | None = None,
+) -> dict[str, Any]:
     root = repo_root.resolve()
     target = _safe_path(root, output, "output")
-    manifest = build_manifest(root)
+    manifest = build_manifest(root, source_commit=source_commit, generated_at=generated_at)
     validate_manifest(manifest)
     target.parent.mkdir(parents=True, exist_ok=True)
     target.write_text(json.dumps(manifest, indent=2, ensure_ascii=False, sort_keys=True) + "\n", encoding="utf-8")
@@ -192,11 +198,22 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--repo-root", default=".")
     parser.add_argument("--output", default=str(DEFAULT_OUTPUT))
     parser.add_argument("--check", action="store_true")
+    parser.add_argument("--source-commit")
+    parser.add_argument("--generated-at")
     parser.add_argument("--json", action="store_true")
     args = parser.parse_args(argv)
     root = Path(args.repo_root).resolve()
     try:
-        manifest = build_manifest(root) if args.check else write_manifest(root, Path(args.output))
+        manifest = (
+            build_manifest(root, source_commit=args.source_commit, generated_at=args.generated_at)
+            if args.check
+            else write_manifest(
+                root,
+                Path(args.output),
+                source_commit=args.source_commit,
+                generated_at=args.generated_at,
+            )
+        )
         validate_manifest(manifest)
     except (EcosystemMapManifestError, OSError, UnicodeError) as exc:
         if args.json:
