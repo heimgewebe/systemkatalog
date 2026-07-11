@@ -1,8 +1,8 @@
 # Cabinet Surface Migration Matrix v1
 
-Status: T004 catalog-core consolidation complete; runtime and rename follow-ups remain
+Status: T004 catalog-core consolidation complete; T013 read-only preflight complete, runtime effect and rename remain unauthorized
 
-Bureau tasks: `OPERATOR-ECOSYSTEM-REDUNDANCY-V1-T011`, `T007`, `T004`
+Bureau tasks: `OPERATOR-ECOSYSTEM-REDUNDANCY-V1-T011`, `T007`, `T004`, `T013`
 
 ## Ziel
 
@@ -54,6 +54,8 @@ Kategorien:
 | lokale App-Daten, Conversations, Memory und Konfiguration | möglicherweise nichtversionierte private Inhalte | `MOVE` in privates Archiv | außerhalb des öffentlichen Repositories | T012 |
 | `scripts/private_cabinet_archive.py` | create-only Sicherungs- und isoliertes Restore-Werkzeug | `ARCHIVE` nach abgeschlossenem Runtime-Rückbau | migrationsgebundener Schutzmechanismus, kein Bestandteil des Systemkatalogs | T012/T013 |
 | `scripts/private_cabinet_restic_handoff.py` | tmpfs-zu-Restic Snapshot- und Restore-Verifier | `ARCHIVE` nach abgeschlossenem Runtime-Rückbau | verschlüsselter migrationsgebundener Handoff; keine Katalogruntime und keine Retentionsteuerung | T012/T013 |
+| `docs/migration/cabinet-runtime-retirement-preflight-v1.json` | redaktierter, datierter Runtime-Entscheidungsbeleg | `KEEP` bis T013-Abschluss, danach `ARCHIVE` | bindet privaten Livebeleg per Hash; keine Live-Status- oder Abschaltautorität | T013 Preflight abgeschlossen |
+| `docs/migration/cabinet-runtime-retirement-authorization-v1.md` | gestufter Rückbau- und Rollbackplan | `KEEP` bis T013-Abschluss, danach `ARCHIVE` | Phase-A–D-Gates; jede Wirkung benötigt eigene Autorisierung | T013 Preflight abgeschlossen |
 | Repositoryname `heimgewebe/cabinet` | mit Fremdprodukt verwechselbare Identität | `MOVE` | `heimgewebe/heimgewebe-katalog` erst nach Runtime-Rückbau | T014 |
 
 ## Organrouting
@@ -72,8 +74,8 @@ Kategorien:
 ## Gates vor destruktiven Schritten
 
 1. Private lokale App-Daten sind inventarisiert, exportiert oder ausdrücklich als entbehrlich klassifiziert.
-2. Der Katalog validiert und rendert, während `cabinet.service` gestoppt ist.
-3. Aktive Consumer sind bekannt; öffentliche Belege enthalten keine privaten Runtime-Details.
+2. Ein begrenzter Stopptest wurde separat autorisiert, mit Rollback ausgeführt und zeigt, dass der Katalog ohne laufende externe App validiert und rendert. Der aktuelle Preflight bereitet diesen Test nur vor.
+3. Aktive Consumer sind soweit möglich bekannt; öffentliche Belege enthalten keine privaten Runtime-Details und Restunsicherheit bleibt sichtbar.
 4. Bureau autorisiert Runtime-Rückbau und Repository-Rename jeweils separat.
 5. Jeder destruktive Schritt besitzt Backup, Rollback und Receipt.
 

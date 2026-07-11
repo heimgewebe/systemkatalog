@@ -12,7 +12,8 @@ Das Repository befindet sich in einer kontrollierten Migration weg von der exter
 4. **Wahrheitszuständigkeiten prüfen:** [registry/ecosystem/authority-matrix.v1.json](registry/ecosystem/authority-matrix.v1.json)
 5. **Stabile Katalogregistry prüfen:** [Knoten](registry/ecosystem/nodes.json) und [Beziehungen](registry/ecosystem/edges.json)
 6. **Migrationsmatrix lesen:** [docs/migration/cabinet-surface-matrix-v1.md](docs/migration/cabinet-surface-matrix-v1.md)
-7. **Katalogschema ansehen:** [Schema](catalog/system-catalog.schema.v1.json) und [nichtkanonisches Beispiel](catalog/system-catalog.example.v1.json)
+7. **Runtime-Rückbau vorbereiten:** [redaktierter T013-Preflight](docs/migration/cabinet-runtime-retirement-preflight-v1.json) und [Autorisierungs-/Rollbackpaket](docs/migration/cabinet-runtime-retirement-authorization-v1.md)
+8. **Katalogschema ansehen:** [Schema](catalog/system-catalog.schema.v1.json) und [nichtkanonisches Beispiel](catalog/system-catalog.example.v1.json)
 
 ## Cabinet beantwortet
 
@@ -60,7 +61,7 @@ Kein Server, Daemon, Scheduler, KI-Agent oder Datenbankdienst ist für den Katal
 
 ## Migration
 
-Die Katalogkonsolidierung ist bewusst nichtdestruktiv. Bestehende Räume, Radar-, Gemini- und Runtime-Flächen bleiben zunächst lesbar, sind aber Migrations- oder Kompatibilitätsflächen und keine Zielarchitektur. Legacy-Radar und Gemini-Dry-Run sind ausschließlich manuell startbar; sie besitzen keine Katalogautorität. Abschaltung der App, Löschung lokaler Daten und Umbenennung des Repositories benötigen eigene Bureau-Tasks und separate Review-Gates.
+Die Katalogkonsolidierung ist bewusst nichtdestruktiv. Bestehende Räume, Radar-, Gemini- und Runtime-Flächen bleiben zunächst lesbar, sind aber Migrations- oder Kompatibilitätsflächen und keine Zielarchitektur. Legacy-Radar und Gemini-Dry-Run sind ausschließlich manuell startbar; sie besitzen keine Katalogautorität. Der [T013-Runtime-Preflight](docs/migration/cabinet-runtime-retirement-preflight-v1.json) ist abgeschlossen und empfiehlt einen gestuften, reversiblen Rückbau, er autorisiert jedoch keine Wirkung. Abschaltung der App, Löschung lokaler Daten und Umbenennung des Repositories benötigen eigene Bureau-Autorisierungen und separate Review-Gates.
 
 Für die vorgelagerte private Datensicherung existiert ein [begrenztes Archiv-, verschlüsseltes Restic-Handoff- und Restore-Verfahren](docs/migration/private-cabinet-archive-v1.md). Seine Dokumentation erteilt keine Ausführungserlaubnis; Werkzeugentwicklung und echter Export benötigen getrennte, zielgebundene Bureau-Autorisierungen.
 

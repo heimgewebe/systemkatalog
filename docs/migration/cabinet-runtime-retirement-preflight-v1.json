@@ -1,0 +1,142 @@
+{
+  "catalogAuthoritative": false,
+  "contractDrift": {
+    "detected": true,
+    "existingAuditPassed": false,
+    "firstFailureClass": "local_wrapper_drift",
+    "repairRecommendation": "do_not_rebase_catalog_on_external_runtime; use_retirement_preflight"
+  },
+  "decision": {
+    "nextAllowedWithoutNewAuthorization": [
+      "refresh_read_only_inventory",
+      "maintain_rollback_plan",
+      "prepare_authorization_packet"
+    ],
+    "readOnlyPreflightComplete": true,
+    "recommendation": "controlled_reversible_retirement_after_explicit_authorization",
+    "repositoryRenameAuthorized": false,
+    "requiresExplicitAuthorization": [
+      "bounded_service_stop_test",
+      "service_disablement",
+      "runtime_file_quarantine_or_removal",
+      "versioned_runtime_surface_removal",
+      "repository_rename"
+    ],
+    "runtimeEffectAuthorized": false
+  },
+  "dependencies": {
+    "T004": {
+      "mergeCommit": "0b718077a47b922262fdfbd8ccbe8e3e40464289",
+      "verified": true
+    },
+    "T007": {
+      "privateEvidenceSha256": "89bf8e7f8dc386d1a9dbdfdeff06d192a01d5c1fa753104320723101fc68a63f",
+      "publicSnapshotSha256": "a0324b0b6f0c03d3414a129356f16b32467ed126c391a10232caea11306e7a98",
+      "verified": true
+    },
+    "T012": {
+      "receiptSha256": "71678cde0c13d0640ce83497bb94fd575526a058c689b9bbb8c84a42ee5794d3",
+      "verified": true
+    },
+    "T018": {
+      "receiptSha256": "aa7685d5b939c46b99903434143bdca8bbaf829f0a89b10dfb4ddbb986da9a33",
+      "verified": true
+    }
+  },
+  "doesNotEstablish": [
+    "safe_immediate_shutdown",
+    "current_human_non_use",
+    "remote_consumer_absence",
+    "runtime_removal_permission",
+    "private_data_deletion_permission",
+    "backup_or_retention_change_permission",
+    "repository_rename_permission"
+  ],
+  "kind": "cabinet_runtime_retirement_preflight",
+  "observedAt": "2026-07-11T07:19:46.991237Z",
+  "privateEvidenceSha256": "d152176b79dd2365a31ea0dc34a8c5049a6bff456fd2616bc17ff1d99d8a060b",
+  "residualUncertainty": [
+    "one registered location unreachable",
+    "one registered location only partially attributable",
+    "Cabinet human use not directly measured"
+  ],
+  "rollbackPlan": {
+    "alwaysPreserve": [
+      "private_configuration_until_separate_classification",
+      "private_state_until_separate_classification",
+      "verified_export_and_restore_receipts"
+    ],
+    "phaseA": {
+      "action": "bounded_service_stop_test",
+      "executed": false,
+      "rollback": "restart_service_and_verify_loopback_runtime"
+    },
+    "phaseB": {
+      "action": "disable_service_but_retain_all_files",
+      "executed": false,
+      "rollback": "enable_and_restart_service"
+    },
+    "phaseC": {
+      "action": "remove_versioned_runtime_surfaces_in_reviewed_pr",
+      "executed": false,
+      "rollback": "revert_repository_change"
+    },
+    "phaseD": {
+      "action": "quarantine_external_app_binaries_after_retention_decision",
+      "executed": false,
+      "rollback": "restore_quarantined_paths"
+    }
+  },
+  "runtimeObservation": {
+    "footprints": {
+      "cliDistribution": {
+        "bytes": 267336,
+        "directories": 1,
+        "exists": true,
+        "regularFiles": 3,
+        "symlinks": 0
+      },
+      "externalApp": {
+        "bytes": 1890745490,
+        "directories": 8844,
+        "exists": true,
+        "regularFiles": 79559,
+        "symlinks": 108
+      },
+      "privateConfig": {
+        "bytes": 730,
+        "directories": 0,
+        "exists": true,
+        "regularFiles": 6,
+        "symlinks": 0
+      },
+      "privateStateExcludingEvidence": {
+        "bytes": 1383378,
+        "directories": 63,
+        "exists": true,
+        "regularFiles": 77,
+        "symlinks": 0
+      }
+    },
+    "listenerCount": 2,
+    "listenerExposure": "loopback_only",
+    "observedRuntimeVersion": "0.5.0",
+    "privateLogSummary": {
+      "bytes": 1192396,
+      "errorWordLines": 0,
+      "exists": true,
+      "startMarkers": 28,
+      "stopMarkers": 0
+    },
+    "processCount": 8,
+    "repositoryRuntimeContractVersion": "0.4.4",
+    "restartCount": 0,
+    "serviceActiveAtObservation": true,
+    "serviceEnabledAtObservation": true,
+    "serviceLoadedAtObservation": true
+  },
+  "schemaVersion": 1,
+  "snapshotRole": "dated_decision_evidence_not_live_status",
+  "sourceCommit": "0b718077a47b922262fdfbd8ccbe8e3e40464289",
+  "task": "OPERATOR-ECOSYSTEM-REDUNDANCY-V1-T013"
+}

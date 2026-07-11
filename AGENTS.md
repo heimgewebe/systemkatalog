@@ -10,8 +10,9 @@ Dieses Dokument ist der kanonische Einstieg für LLMs und Agenten im Cabinet-Rep
 4. [registry/ecosystem/authority-matrix.v1.json](registry/ecosystem/authority-matrix.v1.json) — Wahrheitszuständigkeiten.
 5. [registry/ecosystem/nodes.json](registry/ecosystem/nodes.json) und [registry/ecosystem/edges.json](registry/ecosystem/edges.json) — kanonische stabile Katalogregistry.
 6. [docs/migration/cabinet-surface-matrix-v1.md](docs/migration/cabinet-surface-matrix-v1.md) — Keep/Simplify/Move/Archive/Remove-Zuordnung.
-7. [catalog/system-catalog.schema.v1.json](catalog/system-catalog.schema.v1.json) und [catalog/system-catalog.example.v1.json](catalog/system-catalog.example.v1.json) — Zielformat und ausdrücklich nichtkanonisches Beispiel.
-8. Frühere Role-Boundary-, Radar-, Gemini- und Raumdokumente nur als Migrations- oder historische Quellen lesen, nicht als Zielarchitektur.
+7. [docs/migration/cabinet-runtime-retirement-preflight-v1.json](docs/migration/cabinet-runtime-retirement-preflight-v1.json) und [docs/migration/cabinet-runtime-retirement-authorization-v1.md](docs/migration/cabinet-runtime-retirement-authorization-v1.md) — datierter T013-Entscheidungsbeleg und nicht ausgeführter Rollbackplan; keine Live- oder Abschaltautorität.
+8. [catalog/system-catalog.schema.v1.json](catalog/system-catalog.schema.v1.json) und [catalog/system-catalog.example.v1.json](catalog/system-catalog.example.v1.json) — Zielformat und ausdrücklich nichtkanonisches Beispiel.
+9. Frühere Role-Boundary-, Radar-, Gemini- und Raumdokumente nur als Migrations- oder historische Quellen lesen, nicht als Zielarchitektur.
 
 ## Zielrolle
 
@@ -51,7 +52,8 @@ Die externe Cabinet AI Workspace App ist nur ein vorübergehender optionaler Vie
 9. Kein Merge und kein direkter Main-Eingriff ohne aktuelle Head-Prüfung, Diff-Review, grüne Gates und berücksichtigte Findings.
 10. Erfinde keine Dateiinhalte. Wenn Kontext fehlt, nutze einen extern erzeugten RepoBrief-/Lenskit-Dump oder benenne die Leerstelle ausdrücklich.
 11. Öffentliche Artefakte dürfen keine privaten Host-, Unit-, Listener-, Port-, Journal-, Reachability-, Secret- oder App-Daten enthalten.
-12. Runtime-Abschaltung, Datenlöschung und Repository-Rename benötigen jeweils eine separate Bureau-Autorisierung.
+12. Der T013-Runtime-Preflight ist ein datierter Entscheidungsbeleg, kein Livezustand und keine Ausführungserlaubnis.
+13. Runtime-Abschaltung, Datenlöschung und Repository-Rename benötigen jeweils eine separate Bureau-Autorisierung.
 
 ## Organrollen
 

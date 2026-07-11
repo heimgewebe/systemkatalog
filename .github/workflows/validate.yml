@@ -90,6 +90,13 @@ jobs:
       - name: Test Private Cabinet Restic Handoff
         run: python3 -m unittest discover -s scripts/tests -p 'test_private_cabinet_restic_handoff.py'
 
+      - name: Validate Runtime Retirement Preflight
+        run: python3 scripts/validate_runtime_retirement_preflight.py
+
+      - name: Test Runtime Retirement Preflight
+        run: python3 -m unittest discover -s scripts/tests -p 'test_runtime_retirement_preflight.py'
+
+
       - name: Test External Artifact Registry
         run: python3 -m unittest discover -s scripts/tests -p 'test_external*.py'
 

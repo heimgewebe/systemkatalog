@@ -11,6 +11,7 @@ Cabinet wird zu einem app-unabhängigen Katalog für Systeme, Zwecke, Wahrheitsz
 - [Authority Matrix](registry/ecosystem/authority-matrix.v1.json) — Zuordnung der Wahrheitsdomänen zu ihren Primärquellen.
 - [Knoten](registry/ecosystem/nodes.json) und [Beziehungen](registry/ecosystem/edges.json) — kanonische stabile Katalogregistry.
 - [Migrationsmatrix](docs/migration/cabinet-surface-matrix-v1.md) — Keep/Simplify/Move/Archive/Remove für die bestehende Oberfläche.
+- [Runtime-Rückbau-Preflight](docs/migration/cabinet-runtime-retirement-preflight-v1.json) und [Autorisierungs-/Rollbackpaket](docs/migration/cabinet-runtime-retirement-authorization-v1.md) — datierter T013-Entscheidungsbeleg ohne Abschaltfreigabe.
 - [Zielformat](catalog/system-catalog.schema.v1.json) und [nichtkanonisches Beispiel](catalog/system-catalog.example.v1.json) — app-unabhängiger Datenvertrag.
 
 ## Wahrheitsrouting
