@@ -28,7 +28,7 @@ Kategorien:
 | `registry/ecosystem/edges.json` | Beziehungen mit geplanten und laufzeitnahen Klassen | `SIMPLIFY` | nur stabile Architekturbeziehungen | T004 |
 | `registry/ecosystem/claims.jsonl` | gemischte langlebige und statusnahe Claims | `SIMPLIFY` | nur stabile Architektur- und Ownership-Aussagen | T004 |
 | `registry/ecosystem/authority-matrix.v1.json` | Wahrheitszuständigkeiten und Projektionen | `KEEP` | genau eine Authority Matrix; keine Cabinet-Projektion operativer Zustände | T011/T004 |
-| `registry/ecosystem/consumer-usage.v1.json` | öffentliche Nutzungs- und Runtime-Inventur | `SIMPLIFY` | nur redaktierte Aggregataussagen; Detailbeleg privat | T011/T012 |
+| `registry/ecosystem/consumer-usage.v1.json` | datierter, redaktierter Consumer- und Nutzungsmessbeleg | `KEEP` als Entscheidungsbeleg | keine Live-Statusquelle; private Detailbelege bleiben außerhalb des Repositories | T007 |
 | `registry/ecosystem/operator-redundancy-audit.v1.json` | datierter Audit | `ARCHIVE` | Entscheidungsbeleg, keine aktuelle Statusquelle | T004 |
 | `rendered/system-catalog.md` | neue lesbare Projektion | `KEEP` | kanonische menschenlesbare Katalogansicht | T011 |
 | `rendered/ecosystem-registry-map.mmd` | generierte Registry-Karte | `SIMPLIFY` | optionale Katalogprojektion ohne Statusautorität | T004 |

@@ -2,92 +2,142 @@
   "schemaVersion": 1,
   "kind": "operator_consumer_usage_snapshot",
   "visibility": "public_redacted_summary",
-  "observedAt": "2026-07-10T08:05:00+02:00",
+  "snapshotRole": "dated_decision_evidence_not_live_status",
+  "taskId": "OPERATOR-ECOSYSTEM-REDUNDANCY-V1-T007",
+  "observedAt": "2026-07-11T05:14:56Z",
   "window": "7d",
   "coverageSummary": {
+    "registeredLocations": 4,
     "observedLocations": 2,
     "partiallyObservedLocations": 1,
     "unknownLocations": 1,
-    "detailPolicy": "Host, unit, listener, journal and reachability details are retained only in private operator evidence."
+    "detailPolicy": "Location identities, units, listeners, access routes, journal details and private data paths remain only in owner-controlled evidence."
+  },
+  "measurementMethod": [
+    "registered fleet inventory and bounded reachability probes",
+    "local unit, timer, process and listener observation",
+    "privacy-preserving service journal and private-data activity aggregates",
+    "current source, configuration and workflow scan bound to repository commits"
+  ],
+  "sourceSnapshot": {
+    "bureau": "678d68954d6627ce800658fa024cc3999288f55c",
+    "cabinet": "8ca544a8c00076aafd2d738fd6361ee6f6dbde3d",
+    "chronik": "de1287423f3156cfae86c3cae6f4538732356c01",
+    "grabowski": "c0d6678173646056a14dc8c30cd9bd9032298d7d",
+    "heimlern": "03fa2eb127614cf118a6ce8ccdb0076f5a1271d2",
+    "leitstand": "99a925cba0b71ddfba7acc85367930e90e119b77",
+    "lenskit": "f2179e47d48eee782d705a691c723fccbe2bfa42",
+    "metarepo": "10daa1c84469dce76e93cdc24c47c1dfc5e156d6",
+    "schauwerk": "af43afc87fb808a25b5306cf460e16bfe6a00515",
+    "steuerboard": "28f9660f5e3237cf469826800e69ded85a9b40aa",
+    "vibe-lab": "fd49528bc156b98ae3b584bf6c81175937e5ede1",
+    "wgx": "44069602da536e781675a788e8d9d4c45c7c1f75"
   },
   "surfaces": [
     {
       "id": "cabinet",
-      "classification": "runtime_observed",
-      "usageSignal": "Service lifecycle was observed; no privacy-preserving human request counter was available.",
-      "decision": "retain_semantic_source_and_measure_usage_before_shutdown"
+      "consumerClass": "runtime_observed",
+      "usageClass": "runtime_without_operator_access_signal",
+      "usageSignal": "The runtime was present during the bounded probe, but the available redacted journal and private-data aggregates did not establish recent operator access.",
+      "decision": "proceed_with_repository_catalog_consolidation_but_require_separate_shutdown_authorization",
+      "uncertainty": "One registered location was unreachable and one could only be partially inspected."
     },
     {
       "id": "leitstand",
-      "classification": "runtime_observed",
-      "usageSignal": "Display and snapshot activity was observed; human requests were not separable from automated checks.",
-      "decision": "retain_as_single_general_operator_display"
+      "consumerClass": "runtime_observed",
+      "usageClass": "automated_activity_only",
+      "usageSignal": "The display runtime and its automated refresh lane were observed; human requests were not separable from automation.",
+      "decision": "retain_as_single_general_operator_display_and_add_usage_telemetry_only_if_it_remains_privacy_preserving",
+      "uncertainty": "No bounded signal proves recent human use."
     },
     {
       "id": "rlens",
-      "classification": "runtime_observed",
-      "usageSignal": "Local artifact-consumer activity was observed without publishing endpoint or request details.",
-      "decision": "retain_pending_artifact_surface_consolidation"
+      "consumerClass": "runtime_observed",
+      "usageClass": "recent_access_observed",
+      "usageSignal": "Recent access-shaped runtime entries were observed without retaining routes, clients or content.",
+      "decision": "retain_context_and_repository_browsing_surface_pending_separate_product_scope_review",
+      "uncertainty": "The aggregate does not identify unique users or distinguish every automated request."
     },
     {
       "id": "schauwerk",
-      "classification": "scheduled_surface_without_proven_usage",
-      "usageSignal": "A scheduled integration surface exists, but the public evidence does not establish meaningful use.",
-      "decision": "retain_specialized_only_and_review_schedule_need"
+      "consumerClass": "runtime_observed",
+      "usageClass": "automated_activity_only",
+      "usageSignal": "A scheduled integration lane completed during the observation window; this does not prove that a person viewed the resulting surface.",
+      "decision": "retain_as_specialist_renderer_and_do_not_treat_keepalive_as_human_usage",
+      "uncertainty": "Human review frequency is not measured."
     },
     {
       "id": "chronik",
-      "classification": "source_integrated_without_proven_runtime_consumer",
-      "usageSignal": "Repository integrations exist; the public evidence does not establish a high-value active consumer.",
-      "decision": "do_not_activate_until_high_value_event_consumer_is_proven"
+      "consumerClass": "source_integrated",
+      "usageClass": "no_runtime_activity_observed",
+      "usageSignal": "Current Bureau, Grabowski, Leitstand, Heimlern and workflow sources contain executable Chronik integration paths, but no matching local runtime was observed.",
+      "decision": "retain_only_consumed_event_contracts_and_do_not_infer_runtime_from_source_links",
+      "uncertainty": "Remote runtime coverage is incomplete."
     },
     {
       "id": "heimlern",
-      "classification": "proposal_surface_without_proven_runtime_consumer",
-      "usageSignal": "Proposal contracts exist; no current consumer is established by this public snapshot.",
-      "decision": "gate_new_work_by_named_consumer"
+      "consumerClass": "source_integrated",
+      "usageClass": "no_runtime_activity_observed",
+      "usageSignal": "Current Leitstand, WGX and integration sources consume or validate Heimlern outputs, but no matching local runtime was observed.",
+      "decision": "retain_review_only_learning_contracts_with_named_consumers",
+      "uncertainty": "Source integration does not prove that proposed learning outputs are regularly reviewed."
     },
     {
       "id": "vibe_lab",
-      "classification": "repository_only",
-      "usageSignal": "The repository contains experiment artifacts; ongoing consumption is not established.",
-      "decision": "require_consumer_metric_and_expiry"
+      "consumerClass": "declared_only",
+      "usageClass": "no_runtime_activity_observed",
+      "usageSignal": "The current scan found planning and self-description references but no external executable consumer path or matching local runtime.",
+      "decision": "do_not_expand_without_a_named_consumer_and_expiry",
+      "uncertainty": "An unobserved remote or manual consumer remains possible."
     },
     {
       "id": "steuerboard",
-      "classification": "source_integrated_without_proven_effect_consumer",
-      "usageSignal": "Readiness and report references exist; no effect-bearing consumer is established.",
-      "decision": "observation_and_derivation_only"
+      "consumerClass": "source_integrated",
+      "usageClass": "no_runtime_activity_observed",
+      "usageSignal": "Current Bureau and Grabowski code consume bounded Steuerboard repository-state signals, while no separate local runtime was observed.",
+      "decision": "freeze_scope_to_the_existing_read_only_signal_and_avoid_a_second_status_plane",
+      "uncertainty": "The scan does not prove how often the signal changes an operator decision."
     },
     {
       "id": "wgx",
-      "classification": "ci_source_integrated",
-      "usageSignal": "Workflow and template consumers exist; a separate operator runtime is not established.",
-      "decision": "retain_only_shared_fleet_checks"
+      "consumerClass": "source_integrated",
+      "usageClass": "no_runtime_activity_observed",
+      "usageSignal": "Current Lenskit, Chronik, Heimlern, Leitstand and metarepo workflows or loaders consume WGX contracts and metrics, while no separate local runtime was observed.",
+      "decision": "retain_shared_fleet_checks_and_reusable_workflows_only",
+      "uncertainty": "Workflow references do not prove every configured job ran successfully in the observation window."
     }
   ],
   "privateEvidence": {
     "storedOutsideRepository": true,
     "publicDetailsRedacted": true,
+    "evidenceFormat": "cabinet-consumer-usage-private-evidence-v1",
+    "evidenceSha256": "89bf8e7f8dc386d1a9dbdfdeff06d192a01d5c1fa753104320723101fc68a63f",
     "contains": [
-      "host identifiers",
-      "unit names",
-      "listener and endpoint details",
-      "journal counts",
-      "reachability diagnostics"
+      "registered location identities and reachability results",
+      "unit, timer, process and listener observations",
+      "redacted journal and private-data activity aggregates",
+      "source integration matches and repository commits"
     ]
   },
+  "decisionInputs": {
+    "T004": "All prerequisite consumer classes are now measured. Repository-only catalog consolidation may proceed without stopping services.",
+    "T013": "Runtime decoupling still requires explicit authorization, rollback and a fresh preflight because remote coverage remains incomplete and Cabinet human use is not directly measured.",
+    "T014": "Repository rename remains gated behind completed runtime decoupling and reference migration."
+  },
   "measurementLimits": [
-    "Activity indicators are not unique human usage.",
-    "No bounded request counter exists for every surface.",
-    "Remote coverage is incomplete.",
-    "Source references prove integration paths, not semantic consumption."
+    "Service presence is not human usage.",
+    "Automated activity is not human usage.",
+    "Browser-history aggregation was not admitted as evidence because the bounded probe did not complete reliably.",
+    "One registered location was unreachable and one was only partially inspectable.",
+    "Source references prove integration paths, not successful semantic consumption."
   ],
   "doesNotEstablish": [
     "safe_shutdown",
     "complete_remote_inventory",
     "unique_human_users",
     "runtime_health",
-    "consumer_semantic_correctness"
+    "consumer_semantic_correctness",
+    "current_live_status",
+    "repository_rename_readiness"
   ]
 }
