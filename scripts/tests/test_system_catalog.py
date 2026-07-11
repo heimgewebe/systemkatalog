@@ -136,7 +136,7 @@ class SystemCatalogTests(unittest.TestCase):
         self.assertEqual(adapter, "scripts/prepare_legacy_bridge_probe.py")
         self.assertIn(adapter, policy["legacyCompatibilitySurfaces"])
         workflow_path = policy["legacyAutomationPolicy"]["bridgeProbeWorkflow"]
-        self.assertEqual(workflow_path, ".github/workflows/cabinet-bridge-probe.yml")
+        self.assertEqual(workflow_path, ".github/workflows/systemkatalog-bridge-probe.yml")
         workflow = (ROOT / workflow_path).read_text(encoding="utf-8")
         self.assertIn(f"python3 {adapter} --output bridge-probe-sandbox", workflow)
         self.assertIn("--bridge-policy bridge-probe-sandbox/registry/ecosystem/bureau-bridge.json", workflow)
