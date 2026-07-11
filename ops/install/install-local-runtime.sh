@@ -29,7 +29,7 @@ destination.write_text(text, encoding="utf-8")
 PY
 }
 
-for tool in cp date find git install mkdir mktemp python3 readlink rmdir sed seq sleep systemctl; do
+for tool in cp date find git install ln mkdir mktemp python3 readlink rmdir sed seq sleep systemctl; do
   command -v "$tool" >/dev/null || die "Werkzeug fehlt: $tool"
 done
 git -C "$REPO_ROOT" rev-parse --git-dir >/dev/null 2>&1 || die "Kein Cabinet-Repository: $REPO_ROOT"
@@ -77,6 +77,7 @@ if [[ -d "$OLD_DROPIN" ]]; then
 fi
 rm -f -- "$OLD_UNIT" \
   "$BIN_DIR/cabinet" "$BIN_DIR/cabinet-session" "$BIN_DIR/cabinetctl" "$BIN_DIR/cabinet-security-gate"
+ln -sfn heimgewebe-systemkatalog.service "$OLD_UNIT"
 
 systemctl --user daemon-reload
 
