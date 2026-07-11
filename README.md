@@ -1,83 +1,79 @@
-# Heimgewebe-Systemkatalog
+# Systemkatalog
 
-Der Heimgewebe-Systemkatalog beschreibt die Systeme des Heimgewebe-Ökosystems, ihre Zwecke, Wahrheitszuständigkeiten, stabilen Beziehungen und Einstiegspunkte.
+Der Systemkatalog beschreibt die stabilen Bestandteile des Heimgewebe-Ökosystems: vorhandene Systeme, ihren Zweck, ihre Grenzen, Wahrheitszuständigkeiten, dauerhafte Beziehungen und Einstiegspunkte.
 
-Die externe Cabinet AI Workspace App ist außer Betrieb. Der aktive lokale Viewer ist ein kleiner, read-only Heimgewebe-Systemkatalog ohne Node, Next, KI-Agent, Daemon, Datenbank oder Secret-Konfiguration.
+Er ist **kein Steuerungs- oder Statussystem**. Aufgaben, Prioritäten, Laufzustände, Pull Requests, Prüfungen und Ausführung bleiben bei den dafür zuständigen Primärsystemen.
 
-## Schnellstart
+## Einstieg
 
-1. **Lokalen Systemkatalog öffnen:** `http://127.0.0.1:4001/`
-2. **Lesbare Repositoryprojektion öffnen:** [rendered/system-catalog.md](rendered/system-catalog.md)
-3. **Agentenregeln lesen:** [AGENTS.md](AGENTS.md)
-4. **Maschinenlesbare Rollenpolicy lesen:** [policy/system-catalog.v1.json](policy/system-catalog.v1.json)
-5. **Wahrheitszuständigkeiten prüfen:** [registry/ecosystem/authority-matrix.v1.json](registry/ecosystem/authority-matrix.v1.json)
-6. **Stabile Katalogregistry prüfen:** [Knoten](registry/ecosystem/nodes.json) und [Beziehungen](registry/ecosystem/edges.json)
-7. **Migrationsmatrix lesen:** [docs/migration/cabinet-surface-matrix-v1.md](docs/migration/cabinet-surface-matrix-v1.md)
-8. **Abgeschlossenen Runtime-Cutover nachvollziehen:** [T013-Preflight](docs/migration/cabinet-runtime-retirement-preflight-v1.json) und [Cutover-/Rollbackbeleg](docs/migration/cabinet-runtime-retirement-authorization-v1.md)
-9. **Katalogschema ansehen:** [Schema](catalog/system-catalog.schema.v1.json) und [nichtkanonisches Beispiel](catalog/system-catalog.example.v1.json)
+1. [Erzeugte Leseansicht](rendered/system-catalog.md)
+2. [Katalogpolicy](policy/system-catalog.v1.json)
+3. [Systeme](registry/ecosystem/nodes.json)
+4. [Stabile Beziehungen](registry/ecosystem/edges.json)
+5. [Wahrheitszuständigkeiten](registry/ecosystem/authority-matrix.v1.json)
+6. [Agenteneinstieg](AGENTS.md)
+7. [Architektur](docs/architecture/systemkatalog.md)
+8. [Audit der früheren Cabinet-Räume](docs/audits/systemkatalog-room-audit-v1.md)
 
-## Der Systemkatalog beantwortet
+## Was der Systemkatalog beantwortet
 
 - Welche Systeme existieren?
-- Was ist ihr Zweck?
-- Wofür sind sie ausdrücklich nicht zuständig?
+- Welchem Zweck dient jedes System?
+- Wofür ist es ausdrücklich nicht zuständig?
 - Wem gehört welche Wahrheit?
 - Welche stabilen Beziehungen bestehen?
-- Wo liegen die Einstiegspunkte?
+- Wo liegen die verlässlichen Einstiegspunkte?
 
-## Der Systemkatalog beantwortet nicht
+## Was er nicht beantwortet
 
-- Welche Aufgabe ist als Nächstes dran?
-- Welcher Task ist aktiv oder blockiert?
-- Ist ein Dienst gesund?
-- Ist ein Pull Request mergebereit?
-- Welcher Agent soll handeln?
-- Welche Priorität oder Taktung gilt gerade?
+- Welche Aufgabe als Nächstes bearbeitet werden soll.
+- Ob ein Dienst gerade gesund ist.
+- Ob ein Pull Request mergebar ist.
+- Ob Tests oder Reviews ausreichend sind.
+- Ob eine Ausführung erlaubt ist.
+- Ob ein historischer Claim heute noch gilt.
 
-## Wahrheitsordnung
+Dafür gelten die Primärquellen:
 
-| Aussage | Primärquelle |
+| Bereich | Primärquelle |
 |---|---|
-| Aufgaben, Queue, Claims und Receipts | Bureau |
-| lokale und repositorybezogene Ausführung | Grabowski |
-| Repositories, Branches, Pull Requests und Reviews | GitHub |
-| technische Prüfergebnisse | CI und Review-Gates |
-| laufender Dienstzustand | Runtime, Healthchecks, systemd und Logs |
-| allgemeine Live-Anzeige | Leitstand |
-| Repo-Snapshots und zitierfähiger Kontext | RepoBrief / Lenskit |
-| stabile Ökosystem-Semantik und Truth Ownership | dieser Systemkatalog |
+| Aufgaben, Queue, Claims, Receipts | Bureau |
+| Lokale und repositorybezogene Ausführung | Grabowski |
+| Repositories, Branches, PRs, Issues, Reviews | GitHub |
+| Technische Prüfergebnisse | CI und Review-Gates |
+| Laufende Dienste | Runtime, systemd, Healthchecks und Logs |
+| Zitierfähiger Repositorykontext | RepoBrief / Lenskit |
+| Allgemeine Live-Anzeige | Leitstand |
 
-Der Systemkatalog verweist auf die jeweilige Primärquelle. Es kopiert deren wechselnde Zustände nicht in ein zweites Statusmodell.
+## Aktive Struktur
 
-## Technischer Kern
-
-Der notwendige Unterbau besteht nur aus:
-
-- versionierten Katalog- und Registry-Dateien;
-- deterministischen Validatoren;
-- deterministischen Renderern;
-- CI-Prüfungen gegen Inkonsistenzen und private Runtime-Leaks.
-
-Der Katalogkanon benötigt keinen Server. Für die lokale Leseoberfläche läuft ausschließlich `heimgewebe-systemkatalog.service`: ein zustandsloser Python-HTTP-Dienst auf Loopback. Ein Dienstalias unter dem alten Cabinet-Namen existiert nicht mehr.
-
-## Runtime und Migration
-
-Der aktive Dienst liefert den Katalog ausschließlich lesend aus. Seine Inhalte werden bei jedem Request aus den versionierten kanonischen Eingaben zusammengesetzt. Der frühere Node-/Next-App- und Daemon-Unterbau wurde aus dem aktiven Repository- und Dienstvertrag entfernt. Private Altbestände bleiben außerhalb des Katalogkanons als Rückfall- und Archivmaterial erhalten.
-
-Bedienung:
-
-```bash
-systemkatalogctl status
-systemkatalogctl url
-systemkatalogctl restart
+```text
+catalog/              Schema und nichtkanonisches Beispiel
+policy/               Rollen- und Projektionsgrenzen
+registry/ecosystem/   Kanonische Systeme, Beziehungen, Claims und Zuständigkeiten
+rendered/             Deterministisch erzeugte Leseansicht und Karte
+scripts/              Validatoren, Renderer und read-only Dienst
+ops/                  Reproduzierbare lokale Runtime
 ```
 
-Die kanonische Repositoryidentität ist `heimgewebe/heimgewebe-katalog`. Der frühere Name bleibt ausschließlich in historischen Belegen und im von GitHub verwalteten Weiterleitungsverhalten sichtbar.
+Die frühere Cabinet-Raumstruktur liegt ausschließlich unter `docs/archive/cabinet-era/`. Sie ist historisches Material, keine aktive Navigation, kein zweiter Katalog und keine Wahrheitsquelle.
 
-## Nicht verwechseln
+## Lokale Leseoberfläche
 
-- Der lesbare Katalog ist eine Projektion, keine Live- oder Merge-Wahrheit.
-- Mermaidkarten sind Orientierung, kein Wahrheitsbeweis.
-- Das öffentliche Consumer-Usage-Artefakt enthält nur redaktierte Aggregataussagen; Runtime-Details bleiben privat.
-- Die externe Cabinet-App ist retired und kein aktiver Runtime-Unterbau.
-- Ein wiederkehrender Gemini-Maintenance-Scout wird nicht eingerichtet.
+Der Katalogkanon benötigt keinen Server. Optional stellt `systemkatalog.service` eine zustandslose, read-only Oberfläche auf Loopback bereit.
+
+```bash
+./ops/install/install-local-runtime.sh --cutover
+systemkatalogctl status
+```
+
+Die Runtime enthält keine Datenbank, keinen Scheduler, keinen Agenten und keine Schreibschnittstelle.
+
+## Validierung
+
+```bash
+./scripts/ci/validate-repository.sh
+python3 -m unittest discover -s scripts/tests -p 'test_*.py'
+```
+
+Ein grüner Lauf belegt Struktur- und Vertragskonsistenz. Er belegt nicht automatisch Runtime-Korrektheit, fachliche Vollständigkeit oder Merge-Reife.

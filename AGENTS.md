@@ -1,88 +1,61 @@
-# Heimgewebe-Systemkatalog – Agent Entry
-
-Dieses Dokument ist der kanonische Einstieg für LLMs und Agenten im aktiven Heimgewebe-Systemkatalog.
+# Systemkatalog – Agenteneinstieg
 
 ## Lesereihenfolge
 
-1. [README.md](README.md) — Zielrolle und Schnellstart.
-2. [policy/system-catalog.v1.json](policy/system-catalog.v1.json) — maschinenlesbare Rollen- und Wirkungsgrenze.
-3. [rendered/system-catalog.md](rendered/system-catalog.md) — deterministisch erzeugte Leseansicht.
-4. [registry/ecosystem/authority-matrix.v1.json](registry/ecosystem/authority-matrix.v1.json) — Wahrheitszuständigkeiten.
-5. [registry/ecosystem/nodes.json](registry/ecosystem/nodes.json) und [registry/ecosystem/edges.json](registry/ecosystem/edges.json) — kanonische stabile Katalogregistry.
-6. [docs/migration/cabinet-surface-matrix-v1.md](docs/migration/cabinet-surface-matrix-v1.md) — Keep/Simplify/Move/Archive/Remove-Zuordnung.
-7. [docs/migration/cabinet-runtime-retirement-preflight-v1.json](docs/migration/cabinet-runtime-retirement-preflight-v1.json) und [docs/migration/cabinet-runtime-retirement-authorization-v1.md](docs/migration/cabinet-runtime-retirement-authorization-v1.md) — historische T013-Ausgangslage und abgeschlossener Cutover-/Rollbackvertrag; keine Live-Statusquelle.
-8. [catalog/system-catalog.schema.v1.json](catalog/system-catalog.schema.v1.json) und [catalog/system-catalog.example.v1.json](catalog/system-catalog.example.v1.json) — Zielformat und ausdrücklich nichtkanonisches Beispiel.
-9. Frühere Role-Boundary-, Radar-, Gemini- und Raumdokumente nur als Migrations- oder historische Quellen lesen, nicht als Zielarchitektur.
+1. [README.md](README.md)
+2. [policy/system-catalog.v1.json](policy/system-catalog.v1.json)
+3. [rendered/system-catalog.md](rendered/system-catalog.md)
+4. [registry/ecosystem/authority-matrix.v1.json](registry/ecosystem/authority-matrix.v1.json)
+5. [registry/ecosystem/nodes.json](registry/ecosystem/nodes.json)
+6. [registry/ecosystem/edges.json](registry/ecosystem/edges.json)
+7. [docs/architecture/systemkatalog.md](docs/architecture/systemkatalog.md)
 
-## Zielrolle
+## Rolle
 
-Der Heimgewebe-Systemkatalog ist app-unabhängig. Es beschreibt:
+Der Systemkatalog pflegt nur stabile Ökosystem-Semantik:
 
-- vorhandene Systeme;
-- Zweck und ausdrückliche Nicht-Zuständigkeit;
+- Systeme und Zwecke;
+- ausdrückliche Grenzen;
 - Wahrheitszuständigkeiten;
 - stabile Beziehungen;
 - Einstiegspunkte.
 
-Der Systemkatalog pflegt keine Aufgabenpriorität, keinen Taskstatus, keine Runtime-Gesundheit, keine Merge-Reife, keine aktive Agentendisposition und keinen Schedulerzustand.
-
-Die externe Cabinet AI Workspace App ist retired. Die lokale Oberfläche wird von `heimgewebe-systemkatalog.service` als zustandslose read-only Projektion bereitgestellt; alte Cabinet-Service-Aliasse sind entfernt.
+Er pflegt keine Aufgabenpriorität, keinen Taskstatus, keine Runtime-Gesundheit, keine Merge-Reife, keine Agentendisposition und keinen Schedulerzustand.
 
 ## Wahrheitsordnung
 
-- Bureau ist primär für Aufgaben, Queue, Claims, Handoffs und Receipts.
-- Grabowski ist primär für freigegebene lokale und repositorybezogene Ausführung.
-- GitHub ist primär für Repositories, Branches, Pull Requests, Issues und Reviews.
-- CI und Review-Gates sind primär für technische Prüfsignale.
-- Runtime, systemd, Logs und Healthchecks sind primär für laufende Dienste.
-- RepoBrief / Lenskit ist primär für extern erzeugte Snapshots und zitierfähigen Repositorykontext.
-- Leitstand ist die allgemeine Live-Anzeige.
-- Der Heimgewebe-Systemkatalog besitzt nur die stabile Ökosystem-Semantik und die Zuordnung von Wahrheitsdomänen zu ihren Primärquellen.
+- Bureau: Aufgaben, Queue, Claims, Handoffs und Receipts.
+- Grabowski: freigegebene lokale und repositorybezogene Ausführung.
+- GitHub: Repositories, Branches, Pull Requests, Issues und Reviews.
+- CI und Review-Gates: technische Prüfsignale.
+- Runtime, systemd, Logs und Healthchecks: laufende Dienste.
+- RepoBrief / Lenskit: zitierfähiger Repositorykontext.
+- Leitstand: allgemeine Live-Anzeige.
+- Systemkatalog: stabile Ökosystem-Semantik und Zuordnung der Wahrheitsdomänen.
 
-## Arbeitsregel
+## Arbeitsregeln
 
-1. Erst lesen, dann handeln.
-2. Bei Cabinet-Fragen vorhandene Merge-Dumps nur als Snapshot behandeln; aktuelle Repo-/PR-Zustände gegen GitHub oder lokalen Working Tree prüfen.
-3. Sidecars, Health-Berichte und Reading Packs sind Navigation oder Diagnose, keine Inhaltswahrheit.
-4. Keine Claims aus Mermaidkarten als Beweis verwenden. Karten sind Projektionen.
-5. Keine wechselnden Zustände aus GitHub, Bureau, CI oder Runtime in den Systemkatalog kopieren.
-6. Neue Katalogfelder müssen stabil, quellengebunden und app-unabhängig sein.
-7. Das nichtkanonische Beispiel unter `catalog/` darf nie als vollständige Registry behandelt werden.
-8. Mutationen eng schneiden und an den aktiven Bureau-Task binden.
-9. Kein Merge und kein direkter Main-Eingriff ohne aktuelle Head-Prüfung, Diff-Review, grüne Gates und berücksichtigte Findings.
-10. Erfinde keine Dateiinhalte. Wenn Kontext fehlt, nutze einen extern erzeugten RepoBrief-/Lenskit-Dump oder benenne die Leerstelle ausdrücklich.
-11. Öffentliche Artefakte dürfen keine privaten Host-, Unit-, Listener-, Port-, Journal-, Reachability-, Secret- oder App-Daten enthalten.
-12. T013-Preflight und Cutoverbeleg sind historische Evidence, kein Livezustand.
-13. Weitere Runtime-, Daten-, Retention- oder Rename-Wirkungen benötigen jeweils eine neue, exakt begrenzte Autorisierung.
-
-## Organrollen
-
-- Heimgewebe-Systemkatalog: stabile Systeme, Zwecke, Grenzen, Truth Ownership, Beziehungen und Einstiegspunkte.
-- Bureau: Aufgaben, Taktung, Kandidaten, Claims, Receipts und Abschluss.
-- Grabowski: lokale/repositorybezogene Ausführung und Review-Gates.
-- RepoBrief / Lenskit: extern erzeugte zitierfähige Kontext- und Dump-Artefakte.
-- Leitstand: allgemeine Live-Anzeige und Operator-Oberfläche.
-- Schauwerk: spezialisierte Visualisierung.
-- Heimlern: retrospektive Outcome-Auswertung und proposal-only Lernvorschläge.
-- Chronik: append-only Ereigniskontinuität, sofern tatsächlich konsumiert.
-- GitHub / CI / Runtime: harte Primärrealität für ihre jeweiligen Domänen.
-- Externe Agenten: Vorschlag, Review oder Patch; keine unmittelbare Mutationshoheit aus dem Systemkatalog heraus.
+1. Aktuelle Zustände immer an ihrer Primärquelle prüfen.
+2. Katalogdaten dürfen keine wechselnden Betriebszustände kopieren.
+3. Mermaidkarten und Markdownansichten sind Projektionen, keine eigene Wahrheit.
+4. `docs/archive/cabinet-era/` ist historisch und nicht aktiv zu pflegen.
+5. Neue Felder müssen stabil, quellengebunden und app-unabhängig sein.
+6. Keine privaten Host-, Listener-, Journal-, Secret- oder App-Daten in öffentliche Artefakte übernehmen.
+7. Vor Änderungen Livezustand, Branch, Dirty-State, PRs, CI und aktive Leases prüfen.
+8. Vor Merge aktuellen Diff prüfen und grüne Gates verlangen.
+9. Fehlende Belege ausdrücklich als Leerstelle benennen.
 
 ## Stop-Kriterien
 
-Wenn ein Stop-Kriterium greift, brich die Ausführung sofort ab und antworte zwingend mit dem Präfix `[HARD-FAIL]`, gefolgt von einer kurzen Begründung. Starte keine weiteren Lösungsversuche.
+Mit `[HARD-FAIL]` abbrechen, wenn:
 
-Stop-Kriterien:
+- Zielzustand oder Eigentümer einer Wahrheit unklar ist;
+- ein überlappender PR, Worktree oder Lease plausibel ist;
+- private Runtime- oder Secret-Daten offengelegt würden;
+- eine nötige Lösch-, Rename-, Shutdown- oder Merge-Autorisierung fehlt;
+- Tests oder Review-Evidence für den behaupteten Abschluss fehlen.
 
-- der lokale oder remote Zielzustand ist nicht eindeutig;
-- ein überlappender offener PR oder Worktree ist plausibel;
-- ein Schritt würde Secrets, private Runtime-Daten oder `.agents`-Runtime-Inhalte offenlegen;
-- die Aufgabe setzt eine nicht vorliegende Freigabe, Lösch-, Shutdown-, Rename- oder Merge-Entscheidung voraus;
-- Tests, Gates oder Review-Evidence fehlen, sind aber für den Anspruch nötig.
-
-## Minimaler Bericht nach Arbeit
-
-Generiere nach Abschluss exakt diese Liste:
+## Abschlussbericht
 
 - **Geänderte Dateien:**
 - **Geprüfte Quellen:**

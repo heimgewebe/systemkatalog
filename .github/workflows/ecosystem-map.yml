@@ -2,11 +2,9 @@ name: Ecosystem Map
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   pull_request:
-    branches:
-      - main
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -31,17 +29,14 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Validate registry and bridge
+      - name: Validate registry
         run: python3 scripts/validate_ecosystem_map.py
 
-      - name: Check registry Mermaid projection
+      - name: Check generated Mermaid projection
         run: python3 scripts/render_ecosystem_registry_map.py --check
 
-      - name: Check ecosystem map artifact manifest
+      - name: Check read-only map manifest
         run: python3 scripts/write_ecosystem_map_artifact_manifest.py --check
 
-      - name: Test registry Mermaid projection
-        run: python3 -m unittest discover -s scripts/tests -p 'test_ecosystem_registry_map_render.py'
-
-      - name: Test ecosystem map artifact manifest
-        run: python3 -m unittest discover -s scripts/tests -p 'test_ecosystem_map_artifact_manifest.py'
+      - name: Test map projection and manifest
+        run: python3 -m unittest discover -s scripts/tests -p 'test_ecosystem_*.py'

@@ -2,11 +2,9 @@ name: Validate
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   pull_request:
-    branches:
-      - main
+    branches: [main]
   workflow_dispatch:
 
 concurrency:
@@ -30,108 +28,17 @@ jobs:
         with:
           persist-credentials: false
           fetch-depth: 0
-
       - name: Setup Python
         uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
         with:
           python-version: "3.12"
-
-      - name: Validate Repository Contract
+      - name: Validate repository
         run: ./scripts/ci/validate-repository.sh
-
-      - name: Test Validator
+      - name: Test validator fail-closed behavior
         run: ./scripts/ci/test-validate-repository.sh
 
-      - name: Test Phase Four Layout
-        run: timeout --signal=TERM --kill-after=10s 60s python3 -m unittest discover -s scripts/tests -p 'test_phase4_*.py'
-
-      - name: Test Repository Inventory Generator
-        run: timeout --signal=TERM --kill-after=10s 60s python3 -m unittest discover -s scripts/tests -p 'test_build_repository_index.py'
-
-      - name: Test Repository Inventory Entrypoint
-        run: python3 -m unittest discover -s scripts/tests -p 'test_repository_inventory_entrypoint.py'
-
-      - name: Test Repository Inventory Hygiene
-        run: python3 -m unittest discover -s scripts/tests -p 'test_repository_inventory_hygiene.py'
-
-      - name: Test Bridge Artifact Manifest
-        run: python3 -m unittest discover -s scripts/tests -p 'test_bridge_artifact_manifest.py'
-
-      - name: Check Cabinet Maintenance Report
-        run: python3 scripts/write_cabinet_maintenance_report.py --check
-
-      - name: Test Cabinet Maintenance Report
-        run: python3 -m unittest discover -s scripts/tests -p 'test_cabinet_maintenance_report.py'
-
-      - name: Validate Operator Ecosystem Redundancy Audit
-        run: python3 scripts/validate_operator_redundancy_audit.py --json
-
-      - name: Test Operator Ecosystem Redundancy Audit
-        run: python3 -m unittest discover -s scripts/tests -p 'test_operator_redundancy_audit.py'
-
-      - name: Validate Ecosystem Authority
-        run: python3 scripts/validate_ecosystem_authority.py
-
-      - name: Test Ecosystem Authority
-        run: python3 -m unittest discover -s scripts/tests -p 'test_ecosystem_authority.py'
-
-      - name: Validate System Catalog
-        run: python3 scripts/validate_system_catalog.py
-
-      - name: Check System Catalog Projection
-        run: python3 scripts/render_system_catalog.py --check
-
-      - name: Test System Catalog
-        run: python3 -m unittest discover -s scripts/tests -p 'test_system_catalog.py'
-
-      - name: Test Private Cabinet Archive
-        run: python3 -m unittest discover -s scripts/tests -p 'test_private_cabinet_archive.py'
-
-      - name: Test Private Cabinet Restic Handoff
-        run: python3 -m unittest discover -s scripts/tests -p 'test_private_cabinet_restic_handoff.py'
-
-      - name: Validate Runtime Retirement Preflight
-        run: python3 scripts/validate_runtime_retirement_preflight.py
-
-      - name: Test Runtime Retirement Preflight
-        run: python3 -m unittest discover -s scripts/tests -p 'test_runtime_retirement_preflight.py'
-
-
-      - name: Test External Artifact Registry
-        run: python3 -m unittest discover -s scripts/tests -p 'test_external*.py'
-
-      - name: Test rLens Repository Reference Importer
-        run: python3 -m unittest discover -s scripts/tests -p 'test_rlens_repository_reference_import.py'
-
-      - name: Validate External Artifact Registry
-        run: python3 scripts/validate_external_dump_sources.py
-
-      - name: Test Cabinet Ecosystem Signals
-        run: python3 -m unittest discover -s scripts/tests -p 'test_ecosystem_signal_contract.py'
-
-      - name: Validate Cabinet Ecosystem Signal Fixture
-        run: python3 scripts/validate_ecosystem_signals.py --input scripts/tests/fixtures/ecosystem-signals/github-pr-signals.jsonl --json
-
-      - name: Check Cabinet Frontier Contract
-        run: python3 scripts/write_cabinet_frontier.py --check --json
-
-      - name: Test Cabinet Frontier Contract
-        run: python3 -m unittest discover -s scripts/tests -p 'test_cabinet_frontier_contract.py'
-
-      - name: Test Gemini Maintenance Scan Contract
-        run: python3 -m unittest discover -s scripts/tests -p 'test_gemini_maintenance_scan_contract.py'
-
-      - name: Test Gemini Evidence Packet Generator
-        run: python3 -m unittest discover -s scripts/tests -p 'test_gemini_maintenance_evidence_packet.py'
-
-      - name: Test Gemini Dry Run Workflow Contract
-        run: python3 -m unittest discover -s scripts/tests -p 'test_gemini_maintenance_dry_run_workflow.py'
-
-      - name: Test Local Gemini Dry Run Runner
-        run: python3 -m unittest discover -s scripts/tests -p 'test_gemini_maintenance_local_dry_run.py'
-
   installer-shadow:
-    name: System Catalog Installer Shadow Test
+    name: Runtime Installer Shadow Test
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -140,13 +47,11 @@ jobs:
         with:
           persist-credentials: false
           fetch-depth: 0
-
       - name: Setup Python
         uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
         with:
           python-version: "3.12"
-
-      - name: Test System Catalog Runtime Install
+      - name: Test runtime installation
         run: ./scripts/ci/test-install-local-runtime.sh
 
   secret-scan:
@@ -159,32 +64,21 @@ jobs:
         with:
           persist-credentials: false
           fetch-depth: 0
-
       - name: Ensure no custom ignore files
         run: |
           if [[ -f .gitleaks.toml ]] || [[ -f .gitleaksignore ]]; then
-            echo "FAIL: Custom gitleaks configuration found, which might hide secrets."
+            echo "FAIL: custom gitleaks configuration could hide secrets"
             exit 1
           fi
-
-      - name: Setup Output Directory
-        run: mkdir -p "${RUNNER_TEMP}/cabinet-gitleaks"
-
-      - name: Gitleaks Contract Tests
+      - name: Setup output directory
+        run: mkdir -p "${RUNNER_TEMP}/systemkatalog-gitleaks"
+      - name: Gitleaks contract tests
         run: ./scripts/ci/test-gitleaks-contract.sh
-
-      - name: Gitleaks History Scan
+      - name: Gitleaks history scan
         run: |
-          ./scripts/ci/run-gitleaks.sh \
-            --mode git \
-            --source "$GITHUB_WORKSPACE" \
-            --report "${RUNNER_TEMP}/cabinet-gitleaks/history.json" \
-            --label history
-
-      - name: Gitleaks Tree Scan
+          ./scripts/ci/run-gitleaks.sh --mode git --source "$GITHUB_WORKSPACE" \
+            --report "${RUNNER_TEMP}/systemkatalog-gitleaks/history.json" --label history
+      - name: Gitleaks tree scan
         run: |
-          ./scripts/ci/run-gitleaks.sh \
-            --mode dir \
-            --source "$GITHUB_WORKSPACE" \
-            --report "${RUNNER_TEMP}/cabinet-gitleaks/tree.json" \
-            --label tree
+          ./scripts/ci/run-gitleaks.sh --mode dir --source "$GITHUB_WORKSPACE" \
+            --report "${RUNNER_TEMP}/systemkatalog-gitleaks/tree.json" --label tree

@@ -1,21 +1,14 @@
 {
   "schemaVersion": 1,
-  "kind": "heimgewebe_system_catalog_authority_matrix",
-  "updatedAt": "2026-07-11T15:45:00+02:00",
+  "kind": "system_catalog_authority_matrix",
+  "updatedAt": "2026-07-11T00:00:00+02:00",
   "canonicalMap": "rendered/ecosystem-registry-map.mmd",
   "registryInputs": [
     "registry/ecosystem/nodes.json",
     "registry/ecosystem/edges.json",
     "registry/ecosystem/claims.jsonl"
   ],
-  "specializedViews": [
-    {
-      "path": "rendered/ecosystem-map.mmd",
-      "purpose": "legacy human-curated orientation only",
-      "authoritative": false,
-      "maintained": false
-    }
-  ],
+  "specializedViews": [],
   "authorities": [
     {
       "domain": "tasks_claims_completion",
@@ -36,12 +29,12 @@
       "owner": "repobrief_lenskit",
       "projections": [
         "rlens",
-        "heimgewebe_katalog"
+        "systemkatalog"
       ]
     },
     {
       "domain": "ecosystem_semantics",
-      "owner": "heimgewebe_katalog",
+      "owner": "systemkatalog",
       "projections": [
         "leitstand",
         "schauwerk"
@@ -76,14 +69,14 @@
       "domain": "offline_learning_proposals",
       "owner": "heimlern",
       "projections": [
-        "heimgewebe_katalog"
+        "systemkatalog"
       ]
     },
     {
       "domain": "bounded_experiments",
       "owner": "vibe_lab",
       "projections": [
-        "heimgewebe_katalog"
+        "systemkatalog"
       ]
     },
     {

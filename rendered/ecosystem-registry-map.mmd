@@ -14,7 +14,6 @@ flowchart TD
         repo_chronik["Chronik<br/>id: repo:chronik<br/>repository<br/>append-only event ledger and historical evidence axis"]
         repo_device_graph["Device Graph<br/>id: repo:device-graph<br/>repository<br/>infrastructure device graph; adjacent but not ecosystem-governance canon"]
         repo_grabowski["Grabowski<br/>id: repo:grabowski<br/>repository<br/>operator execution, repo work, review gates"]
-        repo_heimgewebe_katalog["Heimgewebe-Systemkatalog<br/>id: repo:heimgewebe-katalog<br/>repository<br/>app-independent system catalog for purpose, truth ownership, stable relations and entrypoints"]
         repo_heimlern["heimlern<br/>id: repo:heimlern<br/>repository<br/>offline operator-learning and proposal generation"]
         repo_infra["Infra<br/>id: repo:infra<br/>repository<br/>host, network, cockpit and operational runbooks"]
         repo_leitstand["Leitstand<br/>id: repo:leitstand<br/>repository<br/>read-only ecosystem observability and status projection"]
@@ -22,6 +21,7 @@ flowchart TD
         repo_plexer["Plexer<br/>id: repo:plexer<br/>repository<br/>bounded event delivery and queueing gateway"]
         repo_schauwerk["Schauwerk<br/>id: repo:schauwerk<br/>repository<br/>visual surface and projection layer"]
         repo_steuerboard["Steuerboard<br/>id: repo:steuerboard<br/>repository<br/>read-only repo-state signal"]
+        repo_systemkatalog["Systemkatalog<br/>id: repo:systemkatalog<br/>repository<br/>app-independent catalog for system purposes, truth ownership, stable relations and entrypoints"]
         repo_vibe_lab["Vibe-Lab<br/>id: repo:vibe-lab<br/>repository<br/>method lab and evidence experiments"]
         repo_weltgewebe["Weltgewebe<br/>id: repo:weltgewebe<br/>repository<br/>product and domain core"]
     end
@@ -39,26 +39,26 @@ flowchart TD
         service_github["GitHub<br/>id: service:github<br/>service<br/>repository, PR, issue and review state"]
     end
 
-    actor_alexander -->|steers / stable| repo_heimgewebe_katalog
-    concept_repobrief -->|provides / stable| repo_heimgewebe_katalog
+    actor_alexander -->|steers / stable| repo_systemkatalog
+    concept_repobrief -->|provides / stable| repo_systemkatalog
     repo_bureau -->|delegates_to / stable| repo_grabowski
     repo_bureau -->|provides / stable| repo_leitstand
     repo_chronik -->|evidence_for / bounded| repo_bureau
-    repo_chronik -->|provides / stable| repo_heimgewebe_katalog
     repo_chronik -->|learning_input_for / stable| repo_heimlern
     repo_chronik -->|displayed_by / stable| repo_leitstand
     repo_chronik -->|provides / stable| repo_leitstand
+    repo_chronik -->|provides / stable| repo_systemkatalog
     repo_device_graph -->|scope_boundary / related| artifact_ecosystem_map
     repo_grabowski -->|emits_to / bounded| repo_chronik
     repo_grabowski -->|operates_on / stable| service_github
-    repo_heimgewebe_katalog -->|owns / stable| artifact_ecosystem_map
-    repo_heimgewebe_katalog -->|provides / stable| repo_leitstand
     repo_leitstand -->|observes / stable| artifact_ecosystem_map
     repo_lenskit -->|implements / stable| concept_repobrief
     repo_plexer -->|delivers_to / stable| repo_chronik
     repo_schauwerk -->|renders / stable| artifact_ecosystem_map
-    repo_steuerboard -->|observes / stable| repo_heimgewebe_katalog
-    repo_vibe_lab -->|provides / stable| repo_heimgewebe_katalog
+    repo_steuerboard -->|observes / stable| repo_systemkatalog
+    repo_systemkatalog -->|owns / stable| artifact_ecosystem_map
+    repo_systemkatalog -->|provides / stable| repo_leitstand
+    repo_vibe_lab -->|provides / stable| repo_systemkatalog
     repo_weltgewebe -->|operates_on / stable| service_github
     service_ci -->|provides / stable| repo_leitstand
     service_github -->|provides / stable| repo_leitstand
@@ -66,4 +66,4 @@ flowchart TD
 
     %% Visual anchor only; does not establish canonical truth.
     classDef mapAnchor stroke-width:2px;
-    class repo_heimgewebe_katalog,artifact_ecosystem_map mapAnchor;
+    class repo_systemkatalog,artifact_ecosystem_map mapAnchor;

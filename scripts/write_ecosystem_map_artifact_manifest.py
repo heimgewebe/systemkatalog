@@ -1,11 +1,5 @@
 #!/usr/bin/env python3
-"""Write or validate the Cabinet ecosystem map artifact manifest.
-
-The manifest is a read-only source contract for downstream viewers such as
-Leitstand. It records the Cabinet commit, map artifact paths, digests and
-non-claims. It does not edit the map, render diagrams, update registries,
-dispatch work, or claim runtime truth.
-"""
+"""Build the read-only Systemkatalog map handoff manifest."""
 
 from __future__ import annotations
 
@@ -13,30 +7,27 @@ import argparse
 from datetime import datetime, timezone
 import hashlib
 import json
+from pathlib import Path
 import subprocess
 import sys
-from pathlib import Path
 from typing import Any
 
 CONTRACT_VERSION = "1"
-MANIFEST_KIND = "cabinet_ecosystem_map_artifact_manifest"
-CONTRACT_PATH = "docs/contracts/cabinet-ecosystem-map-artifact-manifest-v1.md"
-SCHEMA_PATH = "docs/contracts/cabinet-ecosystem-map-artifact-manifest-v1.schema.json"
+MANIFEST_KIND = "system_catalog_map_artifact_manifest"
+SCHEMA_PATH = "catalog/ecosystem-map-artifact-manifest.schema.v1.json"
 DEFAULT_OUTPUT = Path("rendered/ecosystem-map-artifact-manifest.json")
-
 DOES_NOT_ESTABLISH = (
     "claim_truth",
     "runtime_correctness",
     "merge_readiness",
-    "cabinet_registry_correctness",
-    "leitstand_view_correctness",
+    "system_catalog_registry_correctness",
+    "consumer_view_correctness",
     "render_success_validates_map",
 )
-
 ARTIFACT_SPECS: tuple[dict[str, str], ...] = (
     {
         "role": "readable_overview_mermaid",
-        "path": "rendered/ecosystem-map.mmd",
+        "path": "rendered/ecosystem-registry-map.mmd",
         "contentType": "text/mermaid",
     },
     {
@@ -45,8 +36,8 @@ ARTIFACT_SPECS: tuple[dict[str, str], ...] = (
         "contentType": "text/mermaid",
     },
     {
-        "role": "map_blueprint",
-        "path": "docs/blueprints/ecosystem-map-v0.md",
+        "role": "rendered_catalog_markdown",
+        "path": "rendered/system-catalog.md",
         "contentType": "text/markdown",
     },
     {
@@ -60,18 +51,28 @@ ARTIFACT_SPECS: tuple[dict[str, str], ...] = (
         "contentType": "application/json",
     },
     {
-        "role": "registry_claims",
-        "path": "registry/ecosystem/claims.jsonl",
-        "contentType": "application/x-ndjson",
+        "role": "authority_matrix",
+        "path": "registry/ecosystem/authority-matrix.v1.json",
+        "contentType": "application/json",
     },
 )
 
 
 class EcosystemMapManifestError(RuntimeError):
-    """Raised when map artifact manifest creation cannot proceed safely."""
+    pass
 
 
-def _sha256_file(path: Path) -> str:
+def _safe_path(root: Path, raw: str | Path, label: str) -> Path:
+    value = Path(raw)
+    resolved = value.resolve() if value.is_absolute() else (root / value).resolve()
+    try:
+        resolved.relative_to(root)
+    except ValueError as exc:
+        raise EcosystemMapManifestError(f"{label} path escapes repository: {resolved}") from exc
+    return resolved
+
+
+def _sha256(path: Path) -> str:
     digest = hashlib.sha256()
     with path.open("rb") as handle:
         for chunk in iter(lambda: handle.read(1024 * 1024), b""):
@@ -79,54 +80,34 @@ def _sha256_file(path: Path) -> str:
     return digest.hexdigest()
 
 
-def _ensure_relative_to_repo(repo_root: Path, raw_path: str | Path, label: str) -> Path:
-    candidate = Path(raw_path)
-    resolved = candidate.resolve() if candidate.is_absolute() else (repo_root / candidate).resolve()
+def _git_commit(root: Path) -> str:
     try:
-        resolved.relative_to(repo_root)
-    except ValueError as exc:
-        raise EcosystemMapManifestError(f"{label} path escapes repository: {resolved}") from exc
-    return resolved
-
-
-def _git_commit(repo_root: Path) -> str:
-    try:
-        result = subprocess.run(
-            ["git", "rev-parse", "HEAD"],
-            cwd=repo_root,
-            check=True,
-            text=True,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-        )
+        value = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip()
     except (OSError, subprocess.CalledProcessError) as exc:
-        raise EcosystemMapManifestError("could not determine git source commit") from exc
-    commit = result.stdout.strip()
-    if not _is_commit_sha(commit):
-        raise EcosystemMapManifestError(f"invalid git source commit: {commit!r}")
-    return commit
+        raise EcosystemMapManifestError("could not determine source commit") from exc
+    if not _is_sha(value):
+        raise EcosystemMapManifestError("invalid source commit")
+    return value
+
+
+def _is_sha(value: object) -> bool:
+    return isinstance(value, str) and len(value) == 40 and all(ch in "0123456789abcdef" for ch in value)
 
 
 def _generated_at() -> str:
     return datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
 
 
-def _is_commit_sha(value: object) -> bool:
-    return isinstance(value, str) and len(value) == 40 and all(ch in "0123456789abcdef" for ch in value)
-
-
-def _artifact_entry(repo_root: Path, spec: dict[str, str]) -> dict[str, Any]:
-    path = _ensure_relative_to_repo(repo_root, spec["path"], spec["role"])
-    if not path.is_file():
-        raise EcosystemMapManifestError(f"missing map artifact: {spec['path']}")
-    if path.stat().st_size == 0:
-        raise EcosystemMapManifestError(f"empty map artifact: {spec['path']}")
+def _artifact(root: Path, spec: dict[str, str]) -> dict[str, Any]:
+    path = _safe_path(root, spec["path"], spec["role"])
+    if not path.is_file() or path.stat().st_size < 1:
+        raise EcosystemMapManifestError(f"missing or empty map artifact: {spec['path']}")
     return {
         "role": spec["role"],
         "path": spec["path"],
         "contentType": spec["contentType"],
         "bytes": path.stat().st_size,
-        "sha256": _sha256_file(path),
+        "sha256": _sha256(path),
     }
 
 
@@ -136,23 +117,21 @@ def build_manifest(
     source_commit: str | None = None,
     generated_at: str | None = None,
 ) -> dict[str, Any]:
-    repo_root = repo_root.resolve()
-    commit = source_commit or _git_commit(repo_root)
-    if not _is_commit_sha(commit):
-        raise EcosystemMapManifestError("source_commit must be a 40 character lowercase git SHA")
-    timestamp = generated_at or _generated_at()
-    artifacts = [_artifact_entry(repo_root, spec) for spec in ARTIFACT_SPECS]
+    root = repo_root.resolve()
+    commit = source_commit or _git_commit(root)
+    if not _is_sha(commit):
+        raise EcosystemMapManifestError("source_commit must be a lowercase 40 character git SHA")
+    artifacts = [_artifact(root, spec) for spec in ARTIFACT_SPECS]
     return {
         "schemaVersion": 1,
         "kind": MANIFEST_KIND,
         "contractVersion": CONTRACT_VERSION,
-        "contractPath": CONTRACT_PATH,
         "schemaPath": SCHEMA_PATH,
         "mode": "read_only_projection_source",
         "source": {
-            "repository": "heimgewebe/heimgewebe-katalog",
+            "repository": "heimgewebe/systemkatalog",
             "commit": commit,
-            "generatedAt": timestamp,
+            "generatedAt": generated_at or _generated_at(),
         },
         "artifactCount": len(artifacts),
         "artifacts": artifacts,
@@ -161,125 +140,80 @@ def build_manifest(
 
 
 def validate_manifest(manifest: dict[str, Any]) -> None:
-    required = {
-        "schemaVersion",
-        "kind",
-        "contractVersion",
-        "contractPath",
-        "schemaPath",
-        "mode",
-        "source",
-        "artifactCount",
-        "artifacts",
-        "doesNotEstablish",
+    expected_fields = {
+        "schemaVersion", "kind", "contractVersion", "schemaPath", "mode",
+        "source", "artifactCount", "artifacts", "doesNotEstablish",
     }
-    missing = sorted(required - set(manifest))
-    extra = sorted(set(manifest) - required)
-    if missing:
-        raise EcosystemMapManifestError(f"manifest missing fields: {', '.join(missing)}")
-    if extra:
-        raise EcosystemMapManifestError(f"manifest has unexpected fields: {', '.join(extra)}")
-    if manifest["schemaVersion"] != 1:
-        raise EcosystemMapManifestError("schemaVersion must be 1")
-    if manifest["kind"] != MANIFEST_KIND:
-        raise EcosystemMapManifestError("kind mismatch")
-    if manifest["contractVersion"] != CONTRACT_VERSION:
-        raise EcosystemMapManifestError("contractVersion mismatch")
-    if manifest["contractPath"] != CONTRACT_PATH:
-        raise EcosystemMapManifestError("contractPath mismatch")
-    if manifest["schemaPath"] != SCHEMA_PATH:
-        raise EcosystemMapManifestError("schemaPath mismatch")
+    if set(manifest) != expected_fields:
+        raise EcosystemMapManifestError("manifest fields mismatch")
+    if manifest["schemaVersion"] != 1 or manifest["kind"] != MANIFEST_KIND:
+        raise EcosystemMapManifestError("manifest identity mismatch")
+    if manifest["contractVersion"] != CONTRACT_VERSION or manifest["schemaPath"] != SCHEMA_PATH:
+        raise EcosystemMapManifestError("manifest contract binding mismatch")
     if manifest["mode"] != "read_only_projection_source":
-        raise EcosystemMapManifestError("mode mismatch")
+        raise EcosystemMapManifestError("manifest mode mismatch")
     source = manifest["source"]
-    if not isinstance(source, dict):
-        raise EcosystemMapManifestError("source must be an object")
-    if source.get("repository") != "heimgewebe/heimgewebe-katalog":
-        raise EcosystemMapManifestError("source.repository mismatch")
-    if not _is_commit_sha(source.get("commit")):
-        raise EcosystemMapManifestError("source.commit must be a 40 character lowercase git SHA")
-    if not isinstance(source.get("generatedAt"), str) or not source["generatedAt"]:
-        raise EcosystemMapManifestError("source.generatedAt must be a non-empty string")
+    if not isinstance(source, dict) or set(source) != {"repository", "commit", "generatedAt"}:
+        raise EcosystemMapManifestError("manifest source fields mismatch")
+    if source["repository"] != "heimgewebe/systemkatalog" or not _is_sha(source["commit"]):
+        raise EcosystemMapManifestError("manifest source identity mismatch")
+    if not isinstance(source["generatedAt"], str) or not source["generatedAt"]:
+        raise EcosystemMapManifestError("manifest generatedAt missing")
     artifacts = manifest["artifacts"]
-    if not isinstance(artifacts, list):
-        raise EcosystemMapManifestError("artifacts must be a list")
-    if manifest["artifactCount"] != len(ARTIFACT_SPECS) or len(artifacts) != len(ARTIFACT_SPECS):
+    if not isinstance(artifacts, list) or len(artifacts) != len(ARTIFACT_SPECS):
         raise EcosystemMapManifestError("artifact count mismatch")
-    expected_roles = [spec["role"] for spec in ARTIFACT_SPECS]
-    roles = [artifact.get("role") if isinstance(artifact, dict) else None for artifact in artifacts]
-    if roles != expected_roles:
-        raise EcosystemMapManifestError("artifact roles are not in contract order")
-    for artifact, spec in zip(artifacts, ARTIFACT_SPECS, strict=True):
-        if not isinstance(artifact, dict):
-            raise EcosystemMapManifestError("artifact entry must be an object")
-        allowed = {"role", "path", "contentType", "bytes", "sha256"}
-        if set(artifact) != allowed:
-            raise EcosystemMapManifestError(f"artifact {spec['role']} has invalid fields")
-        if artifact["path"] != spec["path"]:
-            raise EcosystemMapManifestError(f"artifact {spec['role']} path mismatch")
-        if artifact["contentType"] != spec["contentType"]:
-            raise EcosystemMapManifestError(f"artifact {spec['role']} contentType mismatch")
-        if not isinstance(artifact["bytes"], int) or artifact["bytes"] < 1:
-            raise EcosystemMapManifestError(f"artifact {spec['role']} bytes must be positive")
-        if not isinstance(artifact["sha256"], str) or len(artifact["sha256"]) != 64:
-            raise EcosystemMapManifestError(f"artifact {spec['role']} sha256 must be 64 hex chars")
-    non_claims = manifest["doesNotEstablish"]
-    if not isinstance(non_claims, list) or set(non_claims) != set(DOES_NOT_ESTABLISH):
-        raise EcosystemMapManifestError("doesNotEstablish mismatch")
+    if manifest["artifactCount"] != len(ARTIFACT_SPECS):
+        raise EcosystemMapManifestError("artifactCount mismatch")
+    for item, spec in zip(artifacts, ARTIFACT_SPECS, strict=True):
+        if not isinstance(item, dict) or set(item) != {"role", "path", "contentType", "bytes", "sha256"}:
+            raise EcosystemMapManifestError("artifact fields mismatch")
+        if item["role"] != spec["role"] or item["path"] != spec["path"] or item["contentType"] != spec["contentType"]:
+            raise EcosystemMapManifestError(f"artifact contract mismatch: {spec['role']}")
+        if not isinstance(item["bytes"], int) or item["bytes"] < 1:
+            raise EcosystemMapManifestError(f"artifact byte count invalid: {spec['role']}")
+        if not isinstance(item["sha256"], str) or len(item["sha256"]) != 64:
+            raise EcosystemMapManifestError(f"artifact digest invalid: {spec['role']}")
+    if set(manifest["doesNotEstablish"]) != set(DOES_NOT_ESTABLISH):
+        raise EcosystemMapManifestError("manifest non-claims mismatch")
 
 
 def write_manifest(repo_root: Path, output: Path) -> dict[str, Any]:
-    repo_root = repo_root.resolve()
-    target = _ensure_relative_to_repo(repo_root, output, "output")
-    manifest = build_manifest(repo_root)
+    root = repo_root.resolve()
+    target = _safe_path(root, output, "output")
+    manifest = build_manifest(root)
     validate_manifest(manifest)
     target.parent.mkdir(parents=True, exist_ok=True)
     target.write_text(json.dumps(manifest, indent=2, ensure_ascii=False, sort_keys=True) + "\n", encoding="utf-8")
     return manifest
 
 
-def build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--repo-root", default=".", help="Git repository root")
-    parser.add_argument("--output", default=str(DEFAULT_OUTPUT), help="Manifest output path")
-    parser.add_argument("--check", action="store_true", help="validate manifest contract without writing")
-    parser.add_argument("--json", action="store_true", help="emit machine-readable status")
-    return parser
-
-
 def main(argv: list[str] | None = None) -> int:
-    args = build_parser().parse_args(argv)
-    repo_root = Path(args.repo_root).resolve()
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--repo-root", default=".")
+    parser.add_argument("--output", default=str(DEFAULT_OUTPUT))
+    parser.add_argument("--check", action="store_true")
+    parser.add_argument("--json", action="store_true")
+    args = parser.parse_args(argv)
+    root = Path(args.repo_root).resolve()
     try:
-        if args.check:
-            manifest = build_manifest(repo_root)
-            validate_manifest(manifest)
-            action = "check"
-        else:
-            manifest = write_manifest(repo_root, Path(args.output))
-            action = "write"
+        manifest = build_manifest(root) if args.check else write_manifest(root, Path(args.output))
+        validate_manifest(manifest)
     except (EcosystemMapManifestError, OSError, UnicodeError) as exc:
         if args.json:
             print(json.dumps({"ok": False, "error": str(exc)}, sort_keys=True))
         else:
             print(f"write_ecosystem_map_artifact_manifest: {exc}", file=sys.stderr)
         return 2
-
     result = {
         "ok": True,
-        "action": action,
+        "action": "check" if args.check else "write",
         "kind": manifest["kind"],
         "sourceCommit": manifest["source"]["commit"],
         "artifactCount": manifest["artifactCount"],
-        "output": str(args.output) if not args.check else None,
     }
-    if args.json:
-        print(json.dumps(result, sort_keys=True))
-    else:
-        print(
-            "ecosystemMapArtifactManifest=%s action=%s artifactCount=%s"
-            % (manifest["kind"], action, manifest["artifactCount"])
-        )
+    print(json.dumps(result, sort_keys=True) if args.json else (
+        f"ecosystemMapArtifactManifest={manifest['kind']} action={result['action']} artifactCount={manifest['artifactCount']}"
+    ))
     return 0
 
 

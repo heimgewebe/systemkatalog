@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "kind": "heimgewebe_system_catalog",
+  "kind": "system_catalog",
   "exampleOnly": true,
   "systems": [
     {
-      "id": "heimgewebe_katalog",
-      "name": "Heimgewebe-Systemkatalog",
+      "id": "systemkatalog",
+      "name": "Systemkatalog",
       "type": "repository",
       "purpose": "Beschreibt Systeme, Zwecke, Wahrheitszuständigkeiten, stabile Beziehungen und Einstiegspunkte.",
       "notResponsibleFor": [
@@ -18,7 +18,7 @@
         "ecosystem_semantics"
       ],
       "entrypoints": {
-        "repository": "https://github.com/heimgewebe/heimgewebe-katalog",
+        "repository": "https://github.com/heimgewebe/systemkatalog",
         "readme": "README.md",
         "agentEntry": "AGENTS.md"
       }
@@ -99,7 +99,7 @@
   ],
   "relations": [
     {
-      "from": "heimgewebe_katalog",
+      "from": "systemkatalog",
       "to": "bureau",
       "type": "routes_to",
       "meaning": "Aktuelle Aufgaben- und Queuefragen werden an Bureau verwiesen."
@@ -117,16 +117,16 @@
       "meaning": "Repositoryänderungen werden über GitHub-Branches und Pull Requests veröffentlicht."
     },
     {
-      "from": "heimgewebe_katalog",
+      "from": "systemkatalog",
       "to": "runtime",
       "type": "points_to_truth_owner",
-      "meaning": "Heimgewebe-Systemkatalog verweist für Live-Zustände auf Runtime-Quellen, ohne sie zu kopieren."
+      "meaning": "Systemkatalog verweist für Live-Zustände auf Runtime-Quellen, ohne sie zu kopieren."
     }
   ],
   "truthOwners": [
     {
       "domain": "ecosystem_semantics",
-      "owner": "heimgewebe_katalog"
+      "owner": "systemkatalog"
     },
     {
       "domain": "task_state",

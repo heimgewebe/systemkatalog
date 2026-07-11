@@ -1,14 +1,8 @@
 #!/usr/bin/env python3
-"""Validate the app-independent Cabinet system catalog.
-
-The validator checks the maintained catalog bundle only. Historical Cabinet
-surfaces may remain readable, but they cannot become a competing canon or leak
-operational state into the maintained catalog.
-"""
+"""Validate the active, app-independent Systemkatalog bundle."""
 
 from __future__ import annotations
 
-import hashlib
 import json
 from pathlib import Path
 from typing import Any, Iterable
@@ -22,31 +16,32 @@ EDGES_REL = Path("registry/ecosystem/edges.json")
 CLAIMS_REL = Path("registry/ecosystem/claims.jsonl")
 AUTHORITY_REL = Path("registry/ecosystem/authority-matrix.v1.json")
 VIEW_REL = Path("policy/ecosystem-map-view.v1.json")
-
-POLICY = ROOT / POLICY_REL
-SCHEMA = ROOT / SCHEMA_REL
-EXAMPLE = ROOT / EXAMPLE_REL
-NODES = ROOT / NODES_REL
-EDGES = ROOT / EDGES_REL
-CLAIMS = ROOT / CLAIMS_REL
-AUTHORITY = ROOT / AUTHORITY_REL
-VIEW = ROOT / VIEW_REL
+ARCHIVE_REL = Path("docs/archive/cabinet-era")
 
 NODE_FIELDS = {"id", "kind", "label", "purpose"}
 EDGE_FIELDS = {"from", "to", "type", "stability", "meaning"}
 CLAIM_FIELDS = {"id", "subject", "predicate", "object", "evidence", "does_not_establish"}
 ALLOWED_NODE_KINDS = {"human", "repository", "concept", "artifact", "service"}
-CANON_SCAN_EXCLUDED_PARTS = {
-    ".git",
-    ".agents",
-    "external",
-    "node_modules",
-    "rendered",
-    "pruefung",
+LEGACY_ROOTS = {
+    "bestand", "pruefung", "steuerung", "vorzimmer", "heimgewebe",
+    "weltgewebe", "werkstatt", "labor", "betrieb",
 }
-CANON_SCAN_EXCLUDED_PREFIXES = (
-    Path("docs/archive"),
-)
+LEGACY_ACTIVE_MARKERS = {".cabinet", ".home", ".agents", ".jobs", "Cabinet-Modell.md"}
+CANON_SCAN_EXCLUDED_PARTS = {".git", "node_modules", "__pycache__"}
+CANON_KIND_PATHS = {
+    "system_catalog_policy": POLICY_REL,
+    "system_catalog_authority_matrix": AUTHORITY_REL,
+    "system_catalog_inventory": NODES_REL,
+    "system_catalog_relations": EDGES_REL,
+    "system_catalog": EXAMPLE_REL,
+}
+LEGACY_CATALOG_KINDS = {
+    "heimgewebe_system_catalog_policy",
+    "heimgewebe_system_catalog_authority_matrix",
+    "heimgewebe_system_inventory",
+    "heimgewebe_system_relations",
+    "heimgewebe_system_catalog",
+}
 
 
 def _path(root: Path, relative: Path | str) -> Path:
@@ -58,15 +53,12 @@ def _path(root: Path, relative: Path | str) -> Path:
     return candidate
 
 
-def _load(path: Path) -> dict[str, Any]:
+def _load(root: Path, relative: Path | str) -> dict[str, Any]:
+    path = _path(root, relative)
     value = json.loads(path.read_text(encoding="utf-8"))
     if not isinstance(value, dict):
-        raise ValueError(f"{path}: root must be an object")
+        raise ValueError(f"{relative}: root must be an object")
     return value
-
-
-def _load_rel(root: Path, relative: Path | str) -> dict[str, Any]:
-    return _load(_path(root, relative))
 
 
 def _load_jsonl(root: Path, relative: Path | str) -> list[dict[str, Any]]:
@@ -77,9 +69,25 @@ def _load_jsonl(root: Path, relative: Path | str) -> list[dict[str, Any]]:
             continue
         value = json.loads(line)
         if not isinstance(value, dict):
-            raise ValueError(f"{relative}:{line_no}: claim must be an object")
+            raise ValueError(f"{relative}:{line_no}: entry must be an object")
         result.append(value)
     return result
+
+
+def _require_string(value: Any, label: str) -> str:
+    if not isinstance(value, str) or not value.strip():
+        raise ValueError(f"{label} must be a non-empty string")
+    return value
+
+
+def _require_string_array(value: Any, label: str, *, allow_empty: bool = False) -> list[str]:
+    if not isinstance(value, list) or (not value and not allow_empty):
+        raise ValueError(f"{label} must be a {'possibly empty ' if allow_empty else 'non-empty '}string array")
+    if any(not isinstance(item, str) or not item for item in value):
+        raise ValueError(f"{label} must contain only non-empty strings")
+    if len(value) != len(set(value)):
+        raise ValueError(f"{label} must not contain duplicates")
+    return value
 
 
 def _normalized_key(value: str) -> str:
@@ -96,70 +104,104 @@ def _walk_keys(value: Any) -> Iterable[str]:
             yield from _walk_keys(item)
 
 
-def _require_nonempty_string(value: Any, label: str) -> str:
-    if not isinstance(value, str) or not value.strip():
-        raise ValueError(f"{label} must be a non-empty string")
-    return value
-
-
-def _require_string_array(value: Any, label: str) -> list[str]:
-    if not isinstance(value, list) or not value:
-        raise ValueError(f"{label} must be a non-empty string array")
-    if any(not isinstance(item, str) or not item for item in value):
-        raise ValueError(f"{label} must contain only non-empty strings")
-    if len(value) != len(set(value)):
-        raise ValueError(f"{label} must not contain duplicates")
-    return value
-
-
 def _validate_no_operational_fields(policy: dict[str, Any], label: str, value: Any) -> None:
-    prohibited = {
-        _normalized_key(item)
-        for item in policy.get("prohibitedOperationalFields", [])
-        if isinstance(item, str)
-    }
+    prohibited = {_normalized_key(item) for item in policy.get("prohibitedOperationalFields", [])}
     if not prohibited:
         raise ValueError("policy prohibitedOperationalFields missing")
-    present = {_normalized_key(item) for item in _walk_keys(value)}
-    leaked = sorted(prohibited & present)
+    leaked = sorted(prohibited & {_normalized_key(key) for key in _walk_keys(value)})
     if leaked:
         raise ValueError(f"{label} contains prohibited operational fields: {', '.join(leaked)}")
 
 
-def _validate_example(policy: dict[str, Any], example: dict[str, Any]) -> int:
-    if example.get("schemaVersion") != 1:
-        raise ValueError("example schemaVersion must be 1")
-    if example.get("kind") != "heimgewebe_system_catalog":
-        raise ValueError("example kind mismatch")
-    if example.get("exampleOnly") is not True:
-        raise ValueError("example must remain explicitly non-canonical")
-    _validate_no_operational_fields(policy, "example", example)
+def _validate_active_layout(root: Path) -> None:
+    present_rooms = sorted(name for name in LEGACY_ROOTS if (root / name).exists())
+    if present_rooms:
+        raise ValueError(f"legacy room roots remain active: {', '.join(present_rooms)}")
+    present_markers = sorted(name for name in LEGACY_ACTIVE_MARKERS if (root / name).exists())
+    if present_markers:
+        raise ValueError(f"legacy Cabinet markers remain active: {', '.join(present_markers)}")
+    archive = root / ARCHIVE_REL
+    if not archive.is_dir() or not (archive / "README.md").is_file():
+        raise ValueError("historical Cabinet archive boundary missing")
 
-    required = policy.get("targetFormat", {}).get("requiredSystemFields")
-    if not isinstance(required, list) or not required:
-        raise ValueError("policy targetFormat.requiredSystemFields missing")
+
+def _is_canon_scan_excluded(root: Path, path: Path) -> bool:
+    relative = path.relative_to(root)
+    if relative == ARCHIVE_REL or ARCHIVE_REL in relative.parents:
+        return True
+    return any(part in CANON_SCAN_EXCLUDED_PARTS for part in relative.parts)
+
+
+def _validate_unique_canons(root: Path) -> None:
+    found: dict[str, list[Path]] = {kind: [] for kind in CANON_KIND_PATHS}
+    manual_authority_files: list[Path] = []
+    legacy_kind_files: list[Path] = []
+
+    for path in root.rglob("*.json"):
+        if _is_canon_scan_excluded(root, path):
+            continue
+        try:
+            value = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, UnicodeError, json.JSONDecodeError):
+            continue
+        if not isinstance(value, dict):
+            continue
+        kind = value.get("kind")
+        relative = path.relative_to(root)
+        if kind in found:
+            found[str(kind)].append(relative)
+        if kind in LEGACY_CATALOG_KINDS:
+            legacy_kind_files.append(relative)
+        if "authorities" in value and kind != "system_catalog_authority_matrix":
+            manual_authority_files.append(relative)
+
+    for kind, expected_path in CANON_KIND_PATHS.items():
+        actual = sorted(found[kind])
+        if actual != [expected_path]:
+            rendered = ", ".join(str(item) for item in actual) or "none"
+            raise ValueError(
+                f"exactly one active {kind} is required at {expected_path}; found: {rendered}"
+            )
+    if manual_authority_files:
+        rendered = ", ".join(str(item) for item in sorted(manual_authority_files))
+        raise ValueError(f"manual authority assignments outside the matrix are forbidden: {rendered}")
+    if legacy_kind_files:
+        rendered = ", ".join(str(item) for item in sorted(legacy_kind_files))
+        raise ValueError(f"legacy catalog kinds remain active outside the archive: {rendered}")
+
+
+def _validate_example(policy: dict[str, Any], example: dict[str, Any]) -> int:
+    if example.get("schemaVersion") != 1 or example.get("kind") != "system_catalog":
+        raise ValueError("example contract mismatch")
+    if example.get("exampleOnly") is not True:
+        raise ValueError("example must be explicitly non-canonical")
+    _validate_no_operational_fields(policy, "example", example)
+    required = _require_string_array(
+        policy.get("targetFormat", {}).get("requiredSystemFields"),
+        "targetFormat.requiredSystemFields",
+    )
     systems = example.get("systems")
     if not isinstance(systems, list) or not systems:
-        raise ValueError("example systems must be a non-empty array")
+        raise ValueError("example systems missing")
     ids: list[str] = []
     for index, system in enumerate(systems):
         if not isinstance(system, dict):
-            raise ValueError(f"example systems[{index}] must be an object")
+            raise ValueError(f"systems[{index}] must be an object")
         missing = [field for field in required if field not in system]
         if missing:
-            raise ValueError(f"example systems[{index}] misses: {', '.join(missing)}")
-        system_id = _require_nonempty_string(system.get("id"), f"systems[{index}].id")
+            raise ValueError(f"systems[{index}] misses: {', '.join(missing)}")
+        system_id = _require_string(system.get("id"), f"systems[{index}].id")
         for field in ("name", "type", "purpose"):
-            _require_nonempty_string(system.get(field), f"systems[{index}].{field}")
-        for field in ("notResponsibleFor", "truthOwnership"):
-            if not isinstance(system.get(field), list):
-                raise ValueError(f"systems[{index}].{field} must be an array")
+            _require_string(system.get(field), f"systems[{index}].{field}")
+        if not isinstance(system.get("notResponsibleFor"), list):
+            raise ValueError(f"systems[{index}].notResponsibleFor must be an array")
+        if not isinstance(system.get("truthOwnership"), list):
+            raise ValueError(f"systems[{index}].truthOwnership must be an array")
         if not isinstance(system.get("entrypoints"), dict) or not system["entrypoints"]:
-            raise ValueError(f"systems[{index}].entrypoints must be a non-empty object")
+            raise ValueError(f"systems[{index}].entrypoints must be non-empty")
         ids.append(system_id)
     if len(ids) != len(set(ids)):
         raise ValueError("example system ids must be unique")
-
     known = set(ids)
     relations = example.get("relations")
     if not isinstance(relations, list):
@@ -168,189 +210,72 @@ def _validate_example(policy: dict[str, Any], example: dict[str, Any]) -> int:
         if not isinstance(relation, dict):
             raise ValueError(f"relations[{index}] must be an object")
         if relation.get("from") not in known or relation.get("to") not in known:
-            raise ValueError(f"relations[{index}] references an unknown system")
-        _require_nonempty_string(relation.get("type"), f"relations[{index}].type")
-        _require_nonempty_string(relation.get("meaning"), f"relations[{index}].meaning")
-
+            raise ValueError(f"relations[{index}] references unknown system")
+        _require_string(relation.get("type"), f"relations[{index}].type")
+        _require_string(relation.get("meaning"), f"relations[{index}].meaning")
     truth_owners = example.get("truthOwners")
     if not isinstance(truth_owners, list) or not truth_owners:
         raise ValueError("example truthOwners must be a non-empty array")
     domains: list[str] = []
     for index, item in enumerate(truth_owners):
-        if not isinstance(item, dict):
-            raise ValueError(f"truthOwners[{index}] must be an object")
-        domain = _require_nonempty_string(item.get("domain"), f"truthOwners[{index}].domain")
-        if item.get("owner") not in known:
-            raise ValueError(f"truthOwners[{index}] references an unknown owner")
-        domains.append(domain)
-    if len(domains) != len(set(domains)):
-        raise ValueError("example truth-owner domains must be unique")
+        if not isinstance(item, dict) or item.get("owner") not in known:
+            raise ValueError(f"truthOwners[{index}] invalid")
+        domains.append(_require_string(item.get("domain"), f"truthOwners[{index}].domain"))
+    if not domains or len(domains) != len(set(domains)):
+        raise ValueError("truth-owner domains missing or duplicated")
     return len(systems)
-
-
-def _is_canon_scan_excluded(root: Path, path: Path) -> bool:
-    relative = path.relative_to(root)
-    if any(part in CANON_SCAN_EXCLUDED_PARTS for part in relative.parts):
-        return True
-    return any(relative == prefix or prefix in relative.parents for prefix in CANON_SCAN_EXCLUDED_PREFIXES)
-
-
-def _validate_unique_canons(root: Path) -> None:
-    authority_files: list[Path] = []
-    policy_files: list[Path] = []
-    catalog_docs: list[Path] = []
-    manual_authority_files: list[Path] = []
-    for path in root.rglob("*.json"):
-        if _is_canon_scan_excluded(root, path):
-            continue
-        try:
-            value = _load(path)
-        except (ValueError, json.JSONDecodeError, UnicodeError):
-            continue
-        kind = value.get("kind")
-        if kind == "heimgewebe_system_catalog_authority_matrix":
-            authority_files.append(path)
-        elif kind == "heimgewebe_system_catalog_policy":
-            policy_files.append(path)
-        elif kind == "heimgewebe_system_catalog":
-            catalog_docs.append(path)
-        if "authorities" in value and kind != "heimgewebe_system_catalog_authority_matrix":
-            manual_authority_files.append(path)
-    authority_files.sort()
-    policy_files.sort()
-    catalog_docs.sort()
-    manual_authority_files.sort()
-    if authority_files != [_path(root, AUTHORITY_REL)]:
-        raise ValueError("exactly one maintained authority matrix is required")
-    if policy_files != [_path(root, POLICY_REL)]:
-        raise ValueError("exactly one maintained system catalog policy is required")
-    expected_example = _path(root, EXAMPLE_REL)
-    if catalog_docs != [expected_example]:
-        raise ValueError("stored catalog documents must be limited to the explicit non-canonical example")
-    if manual_authority_files:
-        rendered = ", ".join(str(path.relative_to(root)) for path in manual_authority_files)
-        raise ValueError(f"manual authority assignments outside the matrix are forbidden: {rendered}")
-
-
-def _validate_legacy_automation(root: Path, policy: dict[str, Any]) -> None:
-    automation = policy.get("legacyAutomationPolicy")
-    if not isinstance(automation, dict):
-        raise ValueError("legacyAutomationPolicy missing")
-    for field in ("scheduledExecution", "automaticPushOrPullRequestExecution", "automaticDispatch", "automaticMutation"):
-        if automation.get(field) is not False:
-            raise ValueError(f"legacyAutomationPolicy.{field} must be false")
-    workflows = _require_string_array(automation.get("manualCompatibilityWorkflows"), "legacyAutomationPolicy.manualCompatibilityWorkflows")
-    for relative in workflows:
-        path = _path(root, relative)
-        text = path.read_text(encoding="utf-8")
-        if "workflow_dispatch:" not in text:
-            raise ValueError(f"legacy compatibility workflow is not manually dispatchable: {relative}")
-        for forbidden in ("schedule:", "pull_request:", "push:"):
-            if forbidden in text:
-                raise ValueError(f"legacy compatibility workflow has automatic trigger {forbidden}: {relative}")
-    validation_workflow = automation.get("compatibilityValidationWorkflow")
-    if not isinstance(validation_workflow, str) or not _path(root, validation_workflow).is_file():
-        raise ValueError("legacy compatibility validation workflow missing")
-    bridge_adapter = automation.get("bridgeProbeAdapter")
-    if not isinstance(bridge_adapter, str) or not _path(root, bridge_adapter).is_file():
-        raise ValueError("legacy bridge probe adapter missing")
-    if bridge_adapter not in policy.get("legacyCompatibilitySurfaces", []):
-        raise ValueError("legacy bridge probe adapter must be a compatibility surface")
-    bridge_workflow_name = automation.get("bridgeProbeWorkflow")
-    if not isinstance(bridge_workflow_name, str) or not bridge_workflow_name:
-        raise ValueError("legacy bridge probe workflow missing")
-    bridge_workflow = _path(root, bridge_workflow_name)
-    if not bridge_workflow.is_file():
-        raise ValueError("legacy bridge probe workflow missing")
-    workflow_text = bridge_workflow.read_text(encoding="utf-8")
-    required_fragments = (
-        f"python3 {bridge_adapter} --output bridge-probe-sandbox",
-        "--bridge-policy bridge-probe-sandbox/registry/ecosystem/bureau-bridge.json",
-        "set -o pipefail",
-    )
-    missing = [fragment for fragment in required_fragments if fragment not in workflow_text]
-    if missing:
-        raise ValueError("legacy bridge probe workflow bypasses the isolated adapter")
 
 
 def validate(root: Path = ROOT) -> dict[str, Any]:
     root = root.resolve()
-    policy = _load_rel(root, POLICY_REL)
-    _load_rel(root, SCHEMA_REL)
-    example = _load_rel(root, EXAMPLE_REL)
-    nodes_doc = _load_rel(root, NODES_REL)
-    edges_doc = _load_rel(root, EDGES_REL)
+    _validate_active_layout(root)
+    _validate_unique_canons(root)
+    policy = _load(root, POLICY_REL)
+    _load(root, SCHEMA_REL)
+    example = _load(root, EXAMPLE_REL)
+    nodes_doc = _load(root, NODES_REL)
+    edges_doc = _load(root, EDGES_REL)
     claims = _load_jsonl(root, CLAIMS_REL)
-    authority = _load_rel(root, AUTHORITY_REL)
-    view = _load_rel(root, VIEW_REL)
+    authority = _load(root, AUTHORITY_REL)
+    view = _load(root, VIEW_REL)
 
-    if policy.get("kind") != "heimgewebe_system_catalog_policy":
+    if policy.get("kind") != "system_catalog_policy":
         raise ValueError("system catalog policy kind mismatch")
-    if policy.get("contractState") != "active":
-        raise ValueError("system catalog policy must be active")
-    if policy.get("role") != "app-independent system catalog":
-        raise ValueError("system catalog role mismatch")
+    if policy.get("contractState") != "active" or policy.get("role") != "app-independent system catalog":
+        raise ValueError("system catalog policy role/state mismatch")
+    if policy.get("repository") != "heimgewebe/systemkatalog":
+        raise ValueError("repository identity mismatch")
     expected_inputs = [str(NODES_REL), str(EDGES_REL), str(CLAIMS_REL), str(AUTHORITY_REL)]
-    app = policy.get("externalCabinetApp")
-    if not isinstance(app, dict):
-        raise ValueError("externalCabinetApp policy missing")
-    if app.get("required") is not False or app.get("canonical") is not False:
-        raise ValueError("external Cabinet app must be optional and non-canonical")
-    if app.get("role") != "retired_external_workspace":
-        raise ValueError("external Cabinet app must be marked retired")
-    if app.get("runtimeAuthoritative") is not False or app.get("shutdownAuthorized") is not True:
-        raise ValueError("external Cabinet runtime retirement contract mismatch")
-    if app.get("activeRuntime") is not False or app.get("replacement") != "heimgewebe-systemkatalog.service":
-        raise ValueError("system catalog replacement runtime missing")
+    if policy.get("canonicalInputs") != expected_inputs:
+        raise ValueError("canonicalInputs mismatch")
+    if policy.get("canonicalAuthorityMatrix") != str(AUTHORITY_REL):
+        raise ValueError("canonical authority matrix mismatch")
+    if policy.get("canonicalGeneratedMap") != "rendered/ecosystem-registry-map.mmd":
+        raise ValueError("generated map binding mismatch")
+    if policy.get("canonicalProjectionPolicy") != str(VIEW_REL):
+        raise ValueError("projection policy binding mismatch")
+    archive = policy.get("archiveBoundary")
+    if not isinstance(archive, dict) or archive != {
+        "path": str(ARCHIVE_REL),
+        "role": "historical_noncanonical_material",
+        "activeInput": False,
+        "maintained": False,
+    }:
+        raise ValueError("archive boundary mismatch")
     runtime = policy.get("runtimeProjection")
     if not isinstance(runtime, dict):
-        raise ValueError("runtimeProjection missing")
+        raise ValueError("runtime projection missing")
     if runtime.get("role") != "read_only_catalog_projection" or runtime.get("stateful") is not False:
-        raise ValueError("runtimeProjection must stay read-only and stateless")
-    if runtime.get("service") != "heimgewebe-systemkatalog.service" or "compatibilityAlias" in runtime:
-        raise ValueError("runtimeProjection service binding mismatch")
+        raise ValueError("runtime must be read-only and stateless")
+    if runtime.get("service") != "systemkatalog.service" or runtime.get("bind") != "127.0.0.1" or runtime.get("port") != 4001:
+        raise ValueError("runtime service binding mismatch")
     if runtime.get("canonicalInputs") != expected_inputs:
-        raise ValueError("runtimeProjection canonical inputs mismatch")
-
-    if policy.get("currentCanonicalInputs") != expected_inputs:
-        raise ValueError("currentCanonicalInputs must be the exact maintained catalog inputs")
-    if policy.get("canonicalAuthorityMatrix") != str(AUTHORITY_REL):
-        raise ValueError("canonicalAuthorityMatrix mismatch")
-    if policy.get("canonicalGeneratedMap") != "rendered/ecosystem-registry-map.mmd":
-        raise ValueError("canonicalGeneratedMap mismatch")
-    if policy.get("canonicalProjectionPolicy") != str(VIEW_REL):
-        raise ValueError("canonicalProjectionPolicy mismatch")
-    projection = policy.get("publicProjection")
-    if not isinstance(projection, dict) or set(projection.get("excludedKinds", [])) != {"runtime", "agent"}:
-        raise ValueError("publicProjection must exclude runtime and provider-agent identities")
+        raise ValueError("runtime canonical inputs mismatch")
+    if set(policy.get("publicProjection", {}).get("excludedKinds", [])) != {"runtime", "agent"}:
+        raise ValueError("public projection exclusions mismatch")
     for relative in policy.get("maintainedCatalogSurfaces", []):
         if not isinstance(relative, str) or not _path(root, relative).is_file():
-            raise ValueError(f"maintained catalog surface missing: {relative}")
-    for relative in policy.get("legacyCompatibilitySurfaces", []):
-        if not isinstance(relative, str) or not _path(root, relative).is_file():
-            raise ValueError(f"legacy compatibility surface missing: {relative}")
-
-    archives = policy.get("legacySourceArchives")
-    if not isinstance(archives, list) or not archives:
-        raise ValueError("legacySourceArchives missing")
-    archive_paths: set[str] = set()
-    for index, archive in enumerate(archives):
-        if not isinstance(archive, dict) or set(archive) != {"path", "sha256", "sourceRevision"}:
-            raise ValueError(f"legacySourceArchives[{index}] fields mismatch")
-        relative = _require_nonempty_string(archive.get("path"), f"legacySourceArchives[{index}].path")
-        digest = _require_nonempty_string(archive.get("sha256"), f"legacySourceArchives[{index}].sha256")
-        _require_nonempty_string(archive.get("sourceRevision"), f"legacySourceArchives[{index}].sourceRevision")
-        if len(digest) != 64 or any(char not in "0123456789abcdef" for char in digest):
-            raise ValueError(f"legacySourceArchives[{index}].sha256 malformed")
-        path = _path(root, relative)
-        if not path.is_file():
-            raise ValueError(f"legacy source archive missing: {relative}")
-        actual = hashlib.sha256(path.read_bytes()).hexdigest()
-        if actual != digest:
-            raise ValueError(f"legacy source archive integrity mismatch: {relative}")
-        archive_paths.add(relative)
-    if not archive_paths.issubset(set(policy.get("legacyCompatibilitySurfaces", []))):
-        raise ValueError("legacy source archives must be registered as compatibility surfaces")
+            raise ValueError(f"maintained surface missing: {relative}")
 
     canonical_values = {
         str(POLICY_REL): policy,
@@ -363,10 +288,10 @@ def validate(root: Path = ROOT) -> dict[str, Any]:
     for label, value in canonical_values.items():
         _validate_no_operational_fields(policy, label, value)
 
-    if nodes_doc.get("schemaVersion") != 1 or nodes_doc.get("kind") != "heimgewebe_system_inventory":
-        raise ValueError("node inventory contract mismatch")
+    if nodes_doc.get("kind") != "system_catalog_inventory" or nodes_doc.get("owner") != "repo:systemkatalog":
+        raise ValueError("system inventory contract mismatch")
     if nodes_doc.get("catalogRole") != "canonical_system_inventory":
-        raise ValueError("node inventory catalog role mismatch")
+        raise ValueError("system inventory role mismatch")
     nodes = nodes_doc.get("nodes")
     if not isinstance(nodes, list) or not nodes:
         raise ValueError("registry nodes missing")
@@ -374,24 +299,25 @@ def validate(root: Path = ROOT) -> dict[str, Any]:
     for index, node in enumerate(nodes):
         if not isinstance(node, dict) or set(node) != NODE_FIELDS:
             raise ValueError(f"node {index} fields mismatch")
-        node_ids.append(_require_nonempty_string(node.get("id"), f"node {index}.id"))
-        kind = _require_nonempty_string(node.get("kind"), f"node {index}.kind")
+        node_id = _require_string(node.get("id"), f"node {index}.id")
+        kind = _require_string(node.get("kind"), f"node {index}.kind")
         if kind not in ALLOWED_NODE_KINDS:
             raise ValueError(f"node {index} uses non-catalog kind: {kind}")
-        _require_nonempty_string(node.get("label"), f"node {index}.label")
-        _require_nonempty_string(node.get("purpose"), f"node {index}.purpose")
-    if len(node_ids) != len(set(node_ids)):
-        raise ValueError("registry node ids must be unique")
+        _require_string(node.get("label"), f"node {index}.label")
+        _require_string(node.get("purpose"), f"node {index}.purpose")
+        node_ids.append(node_id)
+    if len(node_ids) != len(set(node_ids)) or "repo:systemkatalog" not in node_ids:
+        raise ValueError("registry node identity mismatch")
+    if any(node_id.startswith(("runtime:", "agent:")) for node_id in node_ids):
+        raise ValueError("runtime and agent identities are not catalog systems")
     known_nodes = set(node_ids)
-    if any(node_id.startswith(("runtime:", "agent:")) for node_id in known_nodes):
-        raise ValueError("runtime and provider-agent identities must not be catalog nodes")
 
-    if edges_doc.get("schemaVersion") != 1 or edges_doc.get("kind") != "heimgewebe_system_relations":
+    if edges_doc.get("kind") != "system_catalog_relations" or edges_doc.get("catalogRole") != "canonical_stable_relations":
         raise ValueError("relation inventory contract mismatch")
     relation_types = set(_require_string_array(edges_doc.get("relationTypes"), "relationTypes"))
     stability_classes = set(_require_string_array(edges_doc.get("stabilityClasses"), "stabilityClasses"))
     if stability_classes != set(policy.get("stableRelationClasses", [])):
-        raise ValueError("edge and policy stability classes differ")
+        raise ValueError("stability classes differ")
     edges = edges_doc.get("edges")
     if not isinstance(edges, list):
         raise ValueError("registry edges missing")
@@ -399,84 +325,66 @@ def validate(root: Path = ROOT) -> dict[str, Any]:
     for index, edge in enumerate(edges):
         if not isinstance(edge, dict) or set(edge) != EDGE_FIELDS:
             raise ValueError(f"edge {index} fields mismatch")
-        source = edge.get("from")
-        target = edge.get("to")
+        source, target = edge.get("from"), edge.get("to")
         if source not in known_nodes or target not in known_nodes:
-            raise ValueError(f"edge {index} references an unknown node")
-        relation_type = _require_nonempty_string(edge.get("type"), f"edge {index}.type")
+            raise ValueError(f"edge {index} references unknown node")
+        relation_type = _require_string(edge.get("type"), f"edge {index}.type")
         if relation_type not in relation_types:
-            raise ValueError(f"edge {index} uses an unknown type")
+            raise ValueError(f"edge {index} relation type mismatch")
         if edge.get("stability") not in stability_classes:
-            raise ValueError(f"edge {index} uses an unknown stability class")
-        _require_nonempty_string(edge.get("meaning"), f"edge {index}.meaning")
-        edge_key = (source, target, relation_type)
-        if edge_key in edge_keys:
-            raise ValueError(f"duplicate edge: {edge_key}")
-        edge_keys.add(edge_key)
+            raise ValueError(f"edge {index} stability mismatch")
+        _require_string(edge.get("meaning"), f"edge {index}.meaning")
+        key = (str(source), str(target), relation_type)
+        if key in edge_keys:
+            raise ValueError(f"duplicate edge: {key}")
+        edge_keys.add(key)
 
     claim_ids: set[str] = set()
     for index, claim in enumerate(claims):
         if set(claim) != CLAIM_FIELDS:
             raise ValueError(f"claim {index} fields mismatch")
-        claim_id = _require_nonempty_string(claim.get("id"), f"claim {index}.id")
-        if claim_id in claim_ids:
-            raise ValueError(f"duplicate claim id: {claim_id}")
+        claim_id = _require_string(claim.get("id"), f"claim {index}.id")
+        if not claim_id.startswith("systemkatalog:") or claim_id in claim_ids:
+            raise ValueError(f"claim id invalid or duplicated: {claim_id}")
         claim_ids.add(claim_id)
         if claim.get("subject") not in known_nodes:
-            raise ValueError(f"claim {claim_id} references an unknown subject")
-        _require_nonempty_string(claim.get("predicate"), f"claim {claim_id}.predicate")
-        _require_nonempty_string(claim.get("object"), f"claim {claim_id}.object")
-        for field in ("evidence", "does_not_establish"):
-            _require_string_array(claim.get(field), f"claim {claim_id}.{field}")
-            if field == "evidence":
-                for evidence in claim[field]:
-                    if not _path(root, evidence).is_file():
-                        raise ValueError(f"claim {claim_id} references missing evidence: {evidence}")
+            raise ValueError(f"claim {claim_id} references unknown subject")
+        _require_string(claim.get("predicate"), f"claim {claim_id}.predicate")
+        _require_string(claim.get("object"), f"claim {claim_id}.object")
+        for evidence in _require_string_array(claim.get("evidence"), f"claim {claim_id}.evidence"):
+            if not _path(root, evidence).is_file():
+                raise ValueError(f"claim {claim_id} evidence missing: {evidence}")
+        _require_string_array(claim.get("does_not_establish"), f"claim {claim_id}.does_not_establish")
 
-    if authority.get("kind") != "heimgewebe_system_catalog_authority_matrix":
+    if authority.get("kind") != "system_catalog_authority_matrix":
         raise ValueError("authority matrix kind mismatch")
     if authority.get("canonicalMap") != policy["canonicalGeneratedMap"]:
-        raise ValueError("authority matrix canonical map mismatch")
+        raise ValueError("authority canonical map mismatch")
     if authority.get("registryInputs") != [str(NODES_REL), str(EDGES_REL), str(CLAIMS_REL)]:
-        raise ValueError("authority matrix registry inputs mismatch")
-    specialized = authority.get("specializedViews")
-    if not isinstance(specialized, list):
-        raise ValueError("specializedViews must be an array")
-    for item in specialized:
-        if not isinstance(item, dict) or item.get("authoritative") is not False:
-            raise ValueError("specialized views must be non-authoritative")
+        raise ValueError("authority registry inputs mismatch")
+    if authority.get("specializedViews") != []:
+        raise ValueError("manual specialized map views are retired")
     authorities = authority.get("authorities")
     if not isinstance(authorities, list) or not authorities:
-        raise ValueError("authority matrix missing")
+        raise ValueError("authority assignments missing")
     domains: list[str] = []
     for index, item in enumerate(authorities):
         if not isinstance(item, dict):
             raise ValueError(f"authority {index} must be an object")
-        domains.append(_require_nonempty_string(item.get("domain"), f"authority {index}.domain"))
-        _require_nonempty_string(item.get("owner"), f"authority {index}.owner")
+        domains.append(_require_string(item.get("domain"), f"authority {index}.domain"))
+        _require_string(item.get("owner"), f"authority {index}.owner")
+        _require_string_array(item.get("projections"), f"authority {index}.projections", allow_empty=True)
     if len(domains) != len(set(domains)):
-        raise ValueError("authority domains must be unique")
+        raise ValueError("authority domains duplicated")
 
-    if view.get("kind") != "heimgewebe_system_catalog_map_projection_policy" or view.get("authoritative") is not False:
-        raise ValueError("map projection policy must be explicitly non-authoritative")
+    if view.get("kind") != "system_catalog_map_projection_policy" or view.get("authoritative") is not False:
+        raise ValueError("map projection policy mismatch")
     if view.get("source") != "registry/ecosystem/nodes.json + registry/ecosystem/edges.json":
         raise ValueError("map projection source mismatch")
+    if view.get("visualAnchorNodeIds") != ["repo:systemkatalog", "artifact:ecosystem-map"]:
+        raise ValueError("map anchor identity mismatch")
 
-    _validate_unique_canons(root)
-    _validate_legacy_automation(root, policy)
     example_count = _validate_example(policy, example)
-    migration = policy.get("migrationCompletion")
-    if not isinstance(migration, dict) or migration.get("task") != "OPERATOR-ECOSYSTEM-REDUNDANCY-V1-T004":
-        raise ValueError("T004 migration completion record missing")
-    if migration.get("runtimeTask") != "OPERATOR-ECOSYSTEM-REDUNDANCY-V1-T013":
-        raise ValueError("T013 runtime cutover completion record missing")
-    if migration.get("state") != "catalog_core_runtime_and_repository_migration_complete":
-        raise ValueError("system catalog migration is not complete")
-    if migration.get("repositoryTask") != "OPERATOR-ECOSYSTEM-REDUNDANCY-V1-T014":
-        raise ValueError("T014 repository migration completion record missing")
-    if migration.get("remainingSeparateTasks") != {}:
-        raise ValueError("completed system catalog migration must not retain separate migration tasks")
-
     return {
         "status": "valid",
         "registrySystems": len(nodes),
@@ -484,11 +392,9 @@ def validate(root: Path = ROOT) -> dict[str, Any]:
         "stableClaims": len(claims),
         "authorityDomains": len(authorities),
         "exampleSystems": example_count,
-        "maintainedCatalogSurfaces": len(policy["maintainedCatalogSurfaces"]),
-        "legacyCompatibilitySurfaces": len(policy["legacyCompatibilitySurfaces"]),
-        "externalAppRequired": False,
-        "externalAppRetired": True,
-        "runtimeService": "heimgewebe-systemkatalog.service",
+        "runtimeService": "systemkatalog.service",
+        "activeLegacyRooms": 0,
+        "archive": str(ARCHIVE_REL),
     }
 
 

@@ -1,19 +1,19 @@
 {
-  "schema": "heimgewebe.system-catalog-runtime.v1",
+  "schema": "systemkatalog.runtime.v1",
   "runtime_version": "1",
-  "repository_root": "~/repos/heimgewebe-katalog",
+  "repository_root": "~/repos/systemkatalog",
   "service": {
-    "name": "heimgewebe-systemkatalog.service",
-    "template": "ops/systemd/heimgewebe-systemkatalog.service.tmpl",
-    "destination": "~/.config/systemd/user/heimgewebe-systemkatalog.service",
+    "name": "systemkatalog.service",
+    "template": "ops/systemd/systemkatalog.service.tmpl",
+    "destination": "~/.config/systemd/user/systemkatalog.service",
     "bind": "127.0.0.1",
     "port": 4001,
     "mode": "0644"
   },
   "executables": [
     {
-      "source": "ops/bin/heimgewebe-systemkatalog",
-      "destination": "~/.local/bin/heimgewebe-systemkatalog",
+      "source": "ops/bin/systemkatalog",
+      "destination": "~/.local/bin/systemkatalog",
       "mode": "0755"
     },
     {
@@ -23,6 +23,8 @@
     }
   ],
   "retired_runtime_paths": [
+    "~/.config/systemd/user/heimgewebe-systemkatalog.service",
+    "~/.local/bin/heimgewebe-systemkatalog",
     "~/.config/systemd/user/cabinet.service",
     "~/.config/systemd/user/cabinet.service.d/",
     "~/.local/bin/cabinet",

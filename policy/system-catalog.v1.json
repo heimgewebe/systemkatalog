@@ -1,41 +1,104 @@
 {
   "schemaVersion": 1,
-  "kind": "heimgewebe_system_catalog_policy",
+  "kind": "system_catalog_policy",
+  "title": "Systemkatalog",
+  "contractState": "active",
   "role": "app-independent system catalog",
-  "answers": [
-    "which_systems_exist",
-    "what_is_each_systems_purpose",
-    "which_truth_source_owns_each_domain",
-    "which_stable_relationships_exist",
-    "where_are_the_entrypoints"
-  ],
-  "doesNotAnswer": [
-    "task_priority",
-    "task_state",
-    "runtime_health",
-    "merge_readiness",
-    "active_execution",
-    "agent_dispatch",
-    "scheduler_state"
-  ],
-  "currentCanonicalInputs": [
+  "repository": "heimgewebe/systemkatalog",
+  "canonicalInputs": [
     "registry/ecosystem/nodes.json",
     "registry/ecosystem/edges.json",
     "registry/ecosystem/claims.jsonl",
     "registry/ecosystem/authority-matrix.v1.json"
   ],
-  "canonicalReadableProjection": "rendered/system-catalog.md",
+  "canonicalAuthorityMatrix": "registry/ecosystem/authority-matrix.v1.json",
+  "canonicalGeneratedMap": "rendered/ecosystem-registry-map.mmd",
+  "canonicalProjectionPolicy": "policy/ecosystem-map-view.v1.json",
+  "maintainedCatalogSurfaces": [
+    "README.md",
+    "AGENTS.md",
+    "index.md",
+    "catalog/system-catalog.schema.v1.json",
+    "catalog/system-catalog.example.v1.json",
+    "policy/system-catalog.v1.json",
+    "policy/ecosystem-map-view.v1.json",
+    "registry/ecosystem/nodes.json",
+    "registry/ecosystem/edges.json",
+    "registry/ecosystem/claims.jsonl",
+    "registry/ecosystem/authority-matrix.v1.json",
+    "rendered/system-catalog.md",
+    "rendered/ecosystem-registry-map.mmd",
+    "catalog/ecosystem-map-artifact-manifest.schema.v1.json"
+  ],
+  "runtimeProjection": {
+    "role": "read_only_catalog_projection",
+    "stateful": false,
+    "service": "systemkatalog.service",
+    "bind": "127.0.0.1",
+    "port": 4001,
+    "canonicalInputs": [
+      "registry/ecosystem/nodes.json",
+      "registry/ecosystem/edges.json",
+      "registry/ecosystem/claims.jsonl",
+      "registry/ecosystem/authority-matrix.v1.json"
+    ]
+  },
+  "archiveBoundary": {
+    "path": "docs/archive/cabinet-era",
+    "role": "historical_noncanonical_material",
+    "activeInput": false,
+    "maintained": false
+  },
   "publicProjection": {
     "excludedKinds": [
       "runtime",
       "agent"
-    ],
-    "reason": "Concrete runtime identities and topology remain in private operator evidence; the public catalog points to the runtime truth domain without duplicating host inventory."
+    ]
   },
+  "stableRelationClasses": [
+    "stable",
+    "bounded",
+    "related"
+  ],
+  "prohibitedOperationalFields": [
+    "taskStatus",
+    "queueLane",
+    "priority",
+    "runtimeHealth",
+    "mergeReady",
+    "mergeable",
+    "ciStatus",
+    "reviewStatus",
+    "activeRun",
+    "schedulerState",
+    "dispatchState",
+    "lastHeartbeat",
+    "processId",
+    "listenerPort",
+    "secret",
+    "token"
+  ],
+  "doesNotAnswer": [
+    "next_task",
+    "task_priority",
+    "task_status",
+    "runtime_health",
+    "merge_readiness",
+    "test_sufficiency",
+    "review_sufficiency",
+    "execution_permission",
+    "scheduler_state"
+  ],
+  "doesNotEstablish": [
+    "claim_truth",
+    "runtime_correctness",
+    "task_eligibility",
+    "merge_readiness",
+    "test_sufficiency",
+    "review_sufficiency",
+    "execution_authority"
+  ],
   "targetFormat": {
-    "schema": "catalog/system-catalog.schema.v1.json",
-    "example": "catalog/system-catalog.example.v1.json",
-    "exampleIsCanonical": false,
     "requiredSystemFields": [
       "id",
       "name",
@@ -48,8 +111,8 @@
   },
   "entrypoints": [
     {
-      "id": "heimgewebe_katalog",
-      "label": "Heimgewebe-Systemkatalog",
+      "id": "systemkatalog",
+      "label": "Systemkatalog",
       "target": "README.md"
     },
     {
@@ -78,146 +141,10 @@
       "target": "https://github.com/heimgewebe"
     }
   ],
-  "externalCabinetApp": {
-    "role": "retired_external_workspace",
-    "required": false,
-    "canonical": false,
-    "runtimeAuthoritative": false,
-    "shutdownAuthorized": true,
-    "activeRuntime": false,
-    "replacement": "heimgewebe-systemkatalog.service"
-  },
-  "prohibitedOperationalFields": [
-    "status",
-    "priority",
-    "taskState",
-    "runtimeHealth",
-    "mergeReadiness",
-    "activeExecution",
-    "agentDispatch",
-    "schedulerState",
-    "confidence",
-    "expiresAt",
-    "nextAction",
-    "responsibleOrgan",
-    "host",
-    "unit",
-    "listener",
-    "port"
-  ],
-  "doesNotEstablish": [
-    "runtime_health",
-    "task_eligibility",
-    "merge_readiness",
-    "claim_truth",
-    "live_runtime_health"
-  ],
-  "contractState": "active",
-  "canonicalAuthorityMatrix": "registry/ecosystem/authority-matrix.v1.json",
-  "canonicalGeneratedMap": "rendered/ecosystem-registry-map.mmd",
-  "canonicalProjectionPolicy": "policy/ecosystem-map-view.v1.json",
-  "stableRelationClasses": [
-    "stable",
-    "bounded",
-    "related"
-  ],
-  "maintainedCatalogSurfaces": [
-    "policy/system-catalog.v1.json",
-    "policy/ecosystem-map-view.v1.json",
-    "registry/ecosystem/nodes.json",
-    "registry/ecosystem/edges.json",
-    "registry/ecosystem/claims.jsonl",
-    "registry/ecosystem/authority-matrix.v1.json",
-    "rendered/system-catalog.md",
-    "rendered/ecosystem-registry-map.mmd"
-  ],
-  "legacyCompatibilitySurfaces": [
-    "docs/archive/cabinet-era/ecosystem-dynamic-claims-v0.jsonl",
-    "docs/archive/cabinet-era/cabinet-role-boundary-v1.superseded.md",
-    "registry/ecosystem/bureau-bridge.json",
-    "registry/ecosystem/operator-redundancy-audit.v1.json",
-    "rendered/ecosystem-map.mmd",
-    "docs/blueprints/o.json",
-    "docs/blueprints/cabinet-role-boundary-v1.md",
-    ".github/workflows/cabinet-maintenance-radar.yml",
-    ".github/workflows/gemini-maintenance-dry-run.yml",
-    "scripts/prepare_legacy_bridge_probe.py"
-  ],
-  "migrationCompletion": {
-    "task": "OPERATOR-ECOSYSTEM-REDUNDANCY-V1-T004",
-    "state": "catalog_core_runtime_and_repository_migration_complete",
-    "completedSurfaces": [
-      "node_operational_status_removed",
-      "edge_status_replaced_by_stability",
-      "dynamic_claims_archived",
-      "canonical_validator_hardened",
-      "legacy_role_decision_superseded",
-      "legacy_automation_manual_only",
-      "legacy_role_decision_archived",
-      "legacy_bridge_probe_isolated_from_catalog_claims",
-      "external_workspace_service_retired",
-      "node_next_daemon_runtime_removed_from_repository",
-      "read_only_system_catalog_service_added",
-      "legacy_daemon_listener_removed",
-      "secret_environment_dependency_removed"
-    ],
-    "remainingSeparateTasks": {},
-    "runtimeTask": "OPERATOR-ECOSYSTEM-REDUNDANCY-V1-T013",
-    "repositoryTask": "OPERATOR-ECOSYSTEM-REDUNDANCY-V1-T014"
-  },
-  "legacyAutomationPolicy": {
-    "scheduledExecution": false,
-    "automaticPushOrPullRequestExecution": false,
-    "automaticDispatch": false,
-    "automaticMutation": false,
-    "manualCompatibilityWorkflows": [
-      ".github/workflows/cabinet-maintenance-radar.yml",
-      ".github/workflows/gemini-maintenance-dry-run.yml"
-    ],
-    "compatibilityValidationWorkflow": ".github/workflows/validate.yml",
-    "bridgeProbeAdapter": "scripts/prepare_legacy_bridge_probe.py",
-    "bridgeProbeWorkflow": ".github/workflows/systemkatalog-bridge-probe.yml"
-  },
-  "legacySourceArchives": [
-    {
-      "path": "docs/archive/cabinet-era/ecosystem-dynamic-claims-v0.jsonl",
-      "sha256": "297fc9e2c7f67513ce225a19b4d425992947133dab2934e888e92e4a28260784",
-      "sourceRevision": "4fe1a90a4064a550384db301038995a40056b8d7:registry/ecosystem/claims.jsonl"
-    },
-    {
-      "path": "docs/archive/cabinet-era/cabinet-role-boundary-v1.superseded.md",
-      "sha256": "2cd05d4a03c71a1dabc53ac25d46f5ba0122419d4b30657c75d8bf758a2d2ed1",
-      "sourceRevision": "4fe1a90a4064a550384db301038995a40056b8d7:docs/blueprints/cabinet-role-boundary-v1.md"
-    }
-  ],
-  "runtimeProjection": {
-    "role": "read_only_catalog_projection",
-    "service": "heimgewebe-systemkatalog.service",
-    "implementation": "python_standard_library",
-    "bindClass": "loopback_only",
-    "stateful": false,
-    "canonicalInputs": [
-      "registry/ecosystem/nodes.json",
-      "registry/ecosystem/edges.json",
-      "registry/ecosystem/claims.jsonl",
-      "registry/ecosystem/authority-matrix.v1.json"
-    ],
-    "endpoints": [
-      "/",
-      "/healthz",
-      "/api/catalog.json",
-      "/api/nodes.json",
-      "/api/edges.json",
-      "/api/authority-matrix.json",
-      "/api/policy.json",
-      "/catalog.md",
-      "/map.mmd"
-    ],
-    "doesNotOwn": [
-      "task_state",
-      "runtime_health",
-      "merge_readiness",
-      "agent_dispatch"
-    ]
+  "migrationHistory": {
+    "cabinetRoleReductionTask": "OPERATOR-ECOSYSTEM-REDUNDANCY-V1-T004",
+    "runtimeCutoverTask": "OPERATOR-ECOSYSTEM-REDUNDANCY-V1-T013",
+    "previousRepositoryRenameTask": "OPERATOR-ECOSYSTEM-REDUNDANCY-V1-T014",
+    "currentIdentityAndRoomRetirementTask": "OPERATOR-ECOSYSTEM-REDUNDANCY-V1-T021"
   }
 }

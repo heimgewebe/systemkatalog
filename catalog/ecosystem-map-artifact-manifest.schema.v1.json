@@ -1,0 +1,255 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/heimgewebe/systemkatalog/catalog/ecosystem-map-artifact-manifest.schema.v1.json",
+  "title": "Systemkatalog Map Artifact Manifest v1",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "kind",
+    "contractVersion",
+    "schemaPath",
+    "mode",
+    "source",
+    "artifactCount",
+    "artifacts",
+    "doesNotEstablish"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "kind": {
+      "const": "system_catalog_map_artifact_manifest"
+    },
+    "contractVersion": {
+      "const": "1"
+    },
+    "schemaPath": {
+      "const": "catalog/ecosystem-map-artifact-manifest.schema.v1.json"
+    },
+    "mode": {
+      "const": "read_only_projection_source"
+    },
+    "source": {
+      "type": "object",
+      "required": [
+        "repository",
+        "commit",
+        "generatedAt"
+      ],
+      "properties": {
+        "repository": {
+          "const": "heimgewebe/systemkatalog"
+        },
+        "commit": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "generatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "additionalProperties": false
+    },
+    "artifactCount": {
+      "const": 6
+    },
+    "artifacts": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "$ref": "#/$defs/readableOverviewMermaid"
+        },
+        {
+          "$ref": "#/$defs/generatedRegistryProjectionMermaid"
+        },
+        {
+          "$ref": "#/$defs/renderedCatalogMarkdown"
+        },
+        {
+          "$ref": "#/$defs/registryNodes"
+        },
+        {
+          "$ref": "#/$defs/registryEdges"
+        },
+        {
+          "$ref": "#/$defs/authorityMatrix"
+        }
+      ],
+      "items": false,
+      "minItems": 6,
+      "maxItems": 6
+    },
+    "doesNotEstablish": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "const": "claim_truth"
+        },
+        {
+          "const": "runtime_correctness"
+        },
+        {
+          "const": "merge_readiness"
+        },
+        {
+          "const": "system_catalog_registry_correctness"
+        },
+        {
+          "const": "consumer_view_correctness"
+        },
+        {
+          "const": "render_success_validates_map"
+        }
+      ],
+      "items": false,
+      "minItems": 6,
+      "maxItems": 6
+    }
+  },
+  "$defs": {
+    "artifactBase": {
+      "type": "object",
+      "required": [
+        "role",
+        "path",
+        "contentType",
+        "bytes",
+        "sha256"
+      ],
+      "properties": {
+        "bytes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "additionalProperties": false
+    },
+    "readableOverviewMermaid": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/artifactBase"
+        },
+        {
+          "properties": {
+            "role": {
+              "const": "readable_overview_mermaid"
+            },
+            "path": {
+              "const": "rendered/ecosystem-registry-map.mmd"
+            },
+            "contentType": {
+              "const": "text/mermaid"
+            }
+          }
+        }
+      ]
+    },
+    "generatedRegistryProjectionMermaid": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/artifactBase"
+        },
+        {
+          "properties": {
+            "role": {
+              "const": "generated_registry_projection_mermaid"
+            },
+            "path": {
+              "const": "rendered/ecosystem-registry-map.mmd"
+            },
+            "contentType": {
+              "const": "text/mermaid"
+            }
+          }
+        }
+      ]
+    },
+    "renderedCatalogMarkdown": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/artifactBase"
+        },
+        {
+          "properties": {
+            "role": {
+              "const": "rendered_catalog_markdown"
+            },
+            "path": {
+              "const": "rendered/system-catalog.md"
+            },
+            "contentType": {
+              "const": "text/markdown"
+            }
+          }
+        }
+      ]
+    },
+    "registryNodes": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/artifactBase"
+        },
+        {
+          "properties": {
+            "role": {
+              "const": "registry_nodes"
+            },
+            "path": {
+              "const": "registry/ecosystem/nodes.json"
+            },
+            "contentType": {
+              "const": "application/json"
+            }
+          }
+        }
+      ]
+    },
+    "registryEdges": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/artifactBase"
+        },
+        {
+          "properties": {
+            "role": {
+              "const": "registry_edges"
+            },
+            "path": {
+              "const": "registry/ecosystem/edges.json"
+            },
+            "contentType": {
+              "const": "application/json"
+            }
+          }
+        }
+      ]
+    },
+    "authorityMatrix": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/artifactBase"
+        },
+        {
+          "properties": {
+            "role": {
+              "const": "authority_matrix"
+            },
+            "path": {
+              "const": "registry/ecosystem/authority-matrix.v1.json"
+            },
+            "contentType": {
+              "const": "application/json"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "additionalProperties": false
+}

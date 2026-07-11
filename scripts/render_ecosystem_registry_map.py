@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Render the Cabinet ecosystem registry as a deterministic Mermaid projection.
+"""Render the Systemkatalog ecosystem registry as a deterministic Mermaid projection.
 
 This is a projection, not a new truth source. The canonical input is the
 versioned registry under ``registry/ecosystem``. GitHub, CI, runtime and human
@@ -29,7 +29,7 @@ GENERATED_FILE_MODE = 0o644
 MERMAID_ID_RE = re.compile(r"[^A-Za-z0-9_]+")
 NODE_REQUIRED_FIELDS = ("id", "kind", "label", "purpose")
 EDGE_REQUIRED_FIELDS = ("from", "to", "type", "stability")
-DEFAULT_VISUAL_ANCHOR_NODE_IDS = ("repo:heimgewebe-katalog", "artifact:ecosystem-map")
+DEFAULT_VISUAL_ANCHOR_NODE_IDS = ("repo:systemkatalog", "artifact:ecosystem-map")
 
 DEFAULT_KIND_ORDER = (
     "human",
@@ -146,7 +146,7 @@ class ProjectionConfigLoader:
             raise RegistryMapError(f"view config file not found: {path}")
 
         doc = load_json(path)
-        if doc.get("kind") != "heimgewebe_system_catalog_map_projection_policy":
+        if doc.get("kind") != "system_catalog_map_projection_policy":
             raise RegistryMapError("view config kind mismatch")
         if doc.get("authoritative") is not False:
             raise RegistryMapError("view config must be explicitly non-authoritative")

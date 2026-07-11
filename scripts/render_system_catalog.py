@@ -48,7 +48,7 @@ def render_text(root: Path = ROOT) -> str:
     entrypoints = [item for item in policy.get("entrypoints", []) if isinstance(item, dict)]
 
     lines = [
-        "# Heimgewebe-Systemkatalog",
+        "# Systemkatalog",
         "",
         "> Automatisch erzeugte, app-unabhängige Leseansicht. Sie beschreibt stabile Rollen und verweist auf Primärquellen; sie enthält keinen Live-, Task- oder Merge-Status.",
         "",
@@ -97,7 +97,7 @@ def render_text(root: Path = ROOT) -> str:
         "- Laufende Dienste: Runtime, Healthchecks, systemd und Logs.",
         "- Lokale und repositorybezogene Ausführung: Grabowski nach Freigabe.",
         "- Konkrete Runtime-Identitäten, Provider-Agenten und Topologie sind keine Katalogsysteme.",
-        "- Die externe Cabinet-App ist retired; die lokale read-only Oberfläche wird vom Heimgewebe-Systemkatalogdienst bereitgestellt.",
+        "- Die frühere Cabinet-Oberfläche ist archiviert; die lokale read-only Oberfläche wird vom Systemkatalogdienst bereitgestellt.",
         "- Frühere dynamische Claims und Radarflächen sind historische Kompatibilität, keine aktuelle Katalogwahrheit.",
         "",
     ])

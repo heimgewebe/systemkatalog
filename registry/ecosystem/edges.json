@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "kind": "heimgewebe_system_relations",
+  "kind": "system_catalog_relations",
   "catalogRole": "canonical_stable_relations",
   "updatedAt": "2026-07-11",
   "relationTypes": [
@@ -31,17 +31,17 @@
   "edges": [
     {
       "from": "actor:alexander",
-      "to": "repo:heimgewebe-katalog",
+      "to": "repo:systemkatalog",
       "type": "steers",
       "stability": "stable",
       "meaning": "Human sense, priority, approval and abort authority stay outside automation."
     },
     {
-      "from": "repo:heimgewebe-katalog",
+      "from": "repo:systemkatalog",
       "to": "artifact:ecosystem-map",
       "type": "owns",
       "stability": "stable",
-      "meaning": "Heimgewebe-Systemkatalog owns the map semantics during v0."
+      "meaning": "Systemkatalog owns the map semantics during v0."
     },
     {
       "from": "repo:bureau",
@@ -73,28 +73,28 @@
     },
     {
       "from": "concept:repobrief",
-      "to": "repo:heimgewebe-katalog",
+      "to": "repo:systemkatalog",
       "type": "provides",
       "stability": "stable",
-      "meaning": "RepoBrief gives Heimgewebe-Systemkatalog citable repository context."
+      "meaning": "RepoBrief gives Systemkatalog citable repository context."
     },
     {
       "from": "repo:steuerboard",
-      "to": "repo:heimgewebe-katalog",
+      "to": "repo:systemkatalog",
       "type": "observes",
       "stability": "stable",
       "meaning": "Steuerboard can provide read-only repo-state signals, not decisions."
     },
     {
       "from": "repo:vibe-lab",
-      "to": "repo:heimgewebe-katalog",
+      "to": "repo:systemkatalog",
       "type": "provides",
       "stability": "stable",
       "meaning": "Vibe-Lab provides method experiments and evidence patterns."
     },
     {
       "from": "repo:chronik",
-      "to": "repo:heimgewebe-katalog",
+      "to": "repo:systemkatalog",
       "type": "provides",
       "stability": "stable",
       "meaning": "Chronik provides event trace and historical continuity."
@@ -121,11 +121,11 @@
       "meaning": "Device Graph may describe infrastructure devices; it is not the ecosystem-governance map canon."
     },
     {
-      "from": "repo:heimgewebe-katalog",
+      "from": "repo:systemkatalog",
       "to": "repo:leitstand",
       "type": "provides",
       "stability": "stable",
-      "meaning": "Heimgewebe-Systemkatalog provides map artifacts for Leitstand display."
+      "meaning": "Systemkatalog provides map artifacts for Leitstand display."
     },
     {
       "from": "repo:leitstand",

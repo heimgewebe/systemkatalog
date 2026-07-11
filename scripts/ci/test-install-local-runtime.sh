@@ -8,7 +8,7 @@ REAL_STATUS_BEFORE="$(git -C "$REAL_REPO" status --porcelain=v1 --untracked-file
 [[ -z "$REAL_STATUS_BEFORE" ]] || { echo "FAIL: Real repository is not clean before test."; exit 1; }
 
 TEMP_ROOT="$(mktemp -d)"
-trap 'rm -rf -- "$TEMP_ROOT"' EXIT
+trap 'rm -rf -- "$TEMP_ROOT" /tmp/systemkatalog-check.out' EXIT
 TEMP_REPO="$TEMP_ROOT/repo"
 TEMP_HOME="$TEMP_ROOT/home"
 STUB_BIN="$TEMP_ROOT/stub-bin"
@@ -52,7 +52,7 @@ for root in (home / ".local/bin", home / ".config/systemd/user"):
                 "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
                 "mode": oct(path.stat().st_mode & 0o777),
             }
-output.write_text(json.dumps(state, sort_keys=True, indent=2))
+output.write_text(json.dumps(state, sort_keys=True, indent=2), encoding="utf-8")
 PY
 }
 
@@ -68,28 +68,28 @@ capture "$TEMP_ROOT/state2.json"
 diff -u "$TEMP_ROOT/state1.json" "$TEMP_ROOT/state2.json"
 
 echo "=== Negative Checker: binary drift ==="
-printf 'drift\n' >> "$TEMP_HOME/.local/bin/heimgewebe-systemkatalog"
-if run_checker 2 >/tmp/catalog-check.out 2>&1; then
+printf 'drift\n' >> "$TEMP_HOME/.local/bin/systemkatalog"
+if run_checker 2 >/tmp/systemkatalog-check.out 2>&1; then
   echo "FAIL: checker accepted binary drift"; exit 1
 fi
-grep -q "content mismatch" /tmp/catalog-check.out
-cp "$TEMP_REPO/ops/bin/heimgewebe-systemkatalog" "$TEMP_HOME/.local/bin/heimgewebe-systemkatalog"
-chmod 0755 "$TEMP_HOME/.local/bin/heimgewebe-systemkatalog"
+grep -q "content mismatch" /tmp/systemkatalog-check.out
+cp "$TEMP_REPO/ops/bin/systemkatalog" "$TEMP_HOME/.local/bin/systemkatalog"
+chmod 0755 "$TEMP_HOME/.local/bin/systemkatalog"
 
-echo "=== Negative Checker: retired service alias ==="
-ln -s wrong.service "$TEMP_HOME/.config/systemd/user/cabinet.service"
-if run_checker 2 >/tmp/catalog-check.out 2>&1; then
-  echo "FAIL: checker accepted retired service alias"; exit 1
+echo "=== Negative Checker: retired old-name service ==="
+ln -s wrong.service "$TEMP_HOME/.config/systemd/user/heimgewebe-systemkatalog.service"
+if run_checker 2 >/tmp/systemkatalog-check.out 2>&1; then
+  echo "FAIL: checker accepted retired old-name service"; exit 1
 fi
-grep -q "retired path exists" /tmp/catalog-check.out
-rm "$TEMP_HOME/.config/systemd/user/cabinet.service"
+grep -q "retired path exists" /tmp/systemkatalog-check.out
+rm "$TEMP_HOME/.config/systemd/user/heimgewebe-systemkatalog.service"
 
-echo "=== Negative Checker: retired binary ==="
+echo "=== Negative Checker: retired Cabinet binary ==="
 touch "$TEMP_HOME/.local/bin/cabinet"
-if run_checker 2 >/tmp/catalog-check.out 2>&1; then
-  echo "FAIL: checker accepted retired binary"; exit 1
+if run_checker 2 >/tmp/systemkatalog-check.out 2>&1; then
+  echo "FAIL: checker accepted retired Cabinet binary"; exit 1
 fi
-grep -q "retired path exists" /tmp/catalog-check.out
+grep -q "retired path exists" /tmp/systemkatalog-check.out
 rm "$TEMP_HOME/.local/bin/cabinet"
 
 REAL_HEAD_AFTER="$(git -C "$REAL_REPO" rev-parse HEAD)"
@@ -98,6 +98,6 @@ REAL_STATUS_AFTER="$(git -C "$REAL_REPO" status --porcelain=v1 --untracked-files
 [[ -z "$REAL_STATUS_AFTER" ]] || { echo "FAIL: Real repository became dirty."; exit 1; }
 
 echo "TARGET-PROOF: SECOND INSTALL IS IDEMPOTENT"
-echo "TARGET-PROOF: SYSTEM CATALOG INSTALL CONTRACT NEGATIVE TESTS PASS"
+echo "TARGET-PROOF: SYSTEMKATALOG INSTALL CONTRACT NEGATIVE TESTS PASS"
 echo "TARGET-PROOF: SOURCE REPOSITORY WAS NOT MODIFIED"
-echo "TARGET-PROOF: SYSTEM CATALOG INSTALLER SHADOW TEST PASS"
+echo "TARGET-PROOF: SYSTEMKATALOG INSTALLER SHADOW TEST PASS"

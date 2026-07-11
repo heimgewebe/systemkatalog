@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Read-only HTTP projection for the Heimgewebe system catalog."""
+"""Read-only HTTP projection for the Systemkatalog."""
 
 from __future__ import annotations
 
@@ -44,8 +44,8 @@ def build_catalog_payload() -> dict[str, Any]:
     policy = _load_json("policy/system-catalog.v1.json")
     return {
         "schemaVersion": 1,
-        "kind": "heimgewebe_system_catalog",
-        "title": "Heimgewebe-Systemkatalog",
+        "kind": "system_catalog",
+        "title": "Systemkatalog",
         "role": policy["role"],
         "systems": nodes["nodes"],
         "relations": edges["edges"],
@@ -110,7 +110,7 @@ def render_html(payload: dict[str, Any]) -> bytes:
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Heimgewebe-Systemkatalog</title>
+<title>Systemkatalog</title>
 <style>
 :root {{ color-scheme: dark; --bg:#111315; --panel:#1a1d21; --line:#343941; --text:#eceff4; --muted:#aeb6c2; --accent:#8bc5ff; }}
 * {{ box-sizing:border-box; }}
@@ -133,7 +133,7 @@ code {{ color:#d6e8ff; }}
 <body><main>
 <header>
 <span class="badge">read-only · app-unabhängig · kein Live-Status</span>
-<h1>Heimgewebe-Systemkatalog</h1>
+<h1>Systemkatalog</h1>
 <p>Stabile Systeme, Zwecke, Wahrheitszuständigkeiten, Beziehungen und Einstiegspunkte.</p>
 </header>
 <nav>
@@ -156,7 +156,7 @@ code {{ color:#d6e8ff; }}
 
 
 class CatalogHandler(BaseHTTPRequestHandler):
-    server_version = "HeimgewebeSystemkatalog/1"
+    server_version = "Systemkatalog/1"
 
     def _send(self, status: HTTPStatus, body: bytes, content_type: str) -> None:
         self.send_response(status)
@@ -242,7 +242,7 @@ def main() -> int:
         return 0
     server = ThreadingHTTPServer((args.bind, args.port), CatalogHandler)
     server.daemon_threads = True
-    print(f"Heimgewebe-Systemkatalog auf http://{args.bind}:{args.port}", file=sys.stderr)
+    print(f"Systemkatalog auf http://{args.bind}:{args.port}", file=sys.stderr)
     try:
         server.serve_forever(poll_interval=0.5)
     except KeyboardInterrupt:

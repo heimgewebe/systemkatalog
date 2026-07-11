@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "kind": "heimgewebe_system_inventory",
-  "owner": "repo:heimgewebe-katalog",
+  "kind": "system_catalog_inventory",
+  "owner": "repo:systemkatalog",
   "catalogRole": "canonical_system_inventory",
   "updatedAt": "2026-07-11",
   "nodes": [
@@ -18,10 +18,10 @@
       "purpose": "machine-readable overview graph and rendered orientation map"
     },
     {
-      "id": "repo:heimgewebe-katalog",
+      "id": "repo:systemkatalog",
       "kind": "repository",
-      "label": "Heimgewebe-Systemkatalog",
-      "purpose": "app-independent system catalog for purpose, truth ownership, stable relations and entrypoints"
+      "label": "Systemkatalog",
+      "purpose": "app-independent catalog for system purposes, truth ownership, stable relations and entrypoints"
     },
     {
       "id": "repo:bureau",
