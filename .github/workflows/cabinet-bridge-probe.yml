@@ -28,7 +28,7 @@ permissions:
 
 env:
   PYTHONDONTWRITEBYTECODE: "1"
-  BUREAU_PROBE_REF: "a265385fcc2365ee9c85e6a04b0ac1d2813cc60a"
+  BUREAU_PROBE_REF: "586791576ba1df650729d08e30aee64d33f05476"
 
 jobs:
   probe:
@@ -82,10 +82,14 @@ jobs:
           ))
           PY
 
+      - name: Prepare isolated legacy bridge probe sandbox
+        run: python3 scripts/prepare_legacy_bridge_probe.py --output bridge-probe-sandbox
+
       - name: Run bridge probe
         run: |
+          set -o pipefail
           bureau --json cabinet-bridge-probe \
-            --bridge-policy registry/ecosystem/bureau-bridge.json \
+            --bridge-policy bridge-probe-sandbox/registry/ecosystem/bureau-bridge.json \
             | tee bridge-probe-report.json
 
       - name: Check and summarize report

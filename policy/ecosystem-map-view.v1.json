@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "kind": "cabinet_ecosystem_map_projection_policy",
+  "authoritative": false,
+  "source": "registry/ecosystem/nodes.json + registry/ecosystem/edges.json",
+  "kindOrder": [
+    "human",
+    "repository",
+    "concept",
+    "artifact",
+    "service"
+  ],
+  "kindTitles": {
+    "human": "Menschen und Entscheidung",
+    "repository": "Repos und Organe",
+    "concept": "Konzepte",
+    "artifact": "Artefakte",
+    "service": "Primäre Dienste"
+  },
+  "visualAnchorNodeIds": [
+    "repo:cabinet",
+    "artifact:ecosystem-map"
+  ],
+  "doesNotEstablish": [
+    "claim_truth",
+    "runtime_correctness",
+    "merge_readiness",
+    "primary_source_freshness"
+  ]
+}

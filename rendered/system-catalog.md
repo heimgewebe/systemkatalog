@@ -10,14 +10,9 @@ Der Katalog beantwortet, welche Systeme existieren, welchem Zweck sie dienen, we
 
 | System | Typ | Zweck |
 |---|---|---|
-| Claude | agent | architecture, large refactors, deep concept review |
-| Codex | agent | code review, logic bugs, invariant checks |
-| Gemini | agent | proposal-only review capacity; no recurring Cabinet maintenance schedule |
-| Jules | agent | small clear patches |
-| Local agents | agent | cheap prechecks and repetitive scans |
 | Ecosystem Map v0 | artifact | machine-readable overview graph and rendered orientation map |
 | RepoBrief | concept | public name for context-view layer |
-| Alexander | human | sensemaking, priority, approval, abort authority |
+| Alexander | human | meaning, approval and abort authority outside automation |
 | Bureau | repository | task cadence, delegation, run reporting |
 | Cabinet | repository | app-independent system catalog for purpose, truth ownership, stable relations and entrypoints |
 | Chronik | repository | append-only event ledger and historical evidence axis |
@@ -56,36 +51,34 @@ Der Katalog beantwortet, welche Systeme existieren, welchem Zweck sie dienen, we
 
 ## Stabile Beziehungen
 
-Nur Beziehungen mit einer stabilen Klasse (`active`, `bounded`, `related`) werden hier angezeigt. Geplante, vorgeschlagene oder rein beobachtete Laufzeitzustände bleiben außerhalb dieser Projektion.
+Nur Beziehungen der Klassen `stable`, `bounded` oder `related` werden angezeigt. Die Klasse beschreibt die Dauerhaftigkeit der Architekturbeziehung, nicht ihren aktuellen Betriebszustand.
 
-| Von | Beziehung | Zu | Bedeutung |
-|---|---|---|---|
-| Alexander | `steers` | Cabinet | Human sense, priority, approval and abort authority stay outside automation. |
-| Claude | `reports_to` | Grabowski | Agent output is a proposal until evidence and review pass. |
-| Codex | `reports_to` | Grabowski | Agent output is a proposal until evidence and review pass. |
-| Jules | `reports_to` | Grabowski | Agent output is a proposal until evidence and review pass. |
-| Local agents | `reports_to` | Grabowski | Agent output is a proposal until evidence and review pass. |
-| RepoBrief | `provides` | Cabinet | RepoBrief gives Cabinet citable repository context. |
-| Bureau | `delegates_to` | Grabowski | Bureau can hand scoped work to the operator layer. |
-| Cabinet | `provides` | Leitstand | Cabinet provides map artifacts for Leitstand display. |
-| Chronik | `evidence_for` | Bureau | Chronik event presence can support evidence references; Bureau still owns task and verification truth. |
-| Chronik | `provides` | Cabinet | Chronik provides event trace and historical continuity. |
-| Chronik | `provides` | Leitstand | Chronik provides event trace artifacts for timelines. |
-| Device Graph | `scope_boundary` | Ecosystem Map v0 | Device Graph may describe infrastructure devices; it is not the ecosystem-governance map canon. |
-| Grabowski | `delegates_to` | Claude | Claude is suited for architecture and heavy conceptual review. |
-| Grabowski | `delegates_to` | Codex | Codex is suited for review, logic bugs and invariants. |
-| Grabowski | `delegates_to` | Jules | Jules is suited for small clear patches. |
-| Grabowski | `delegates_to` | Local agents | Local agents are suited for cheap scans and repetitive checks. |
-| Grabowski | `operates_on` | GitHub | PRs, branches, issues and reviews remain GitHub-owned state. |
-| Leitstand | `observes` | Ecosystem Map v0 | Leitstand observes the map as orientation, not truth. |
-| Lenskit / RepoBrief implementation | `implements` | RepoBrief | RepoBrief is the public context-view name; Lenskit remains an implementation namespace for now. |
-| Plexer | `delivers_to` | Chronik | Plexer delivers bounded operational events to Chronik agent.ledger when configured. |
-| Steuerboard | `observes` | Cabinet | Steuerboard can provide read-only repo-state signals, not decisions. |
-| Vibe-Lab | `provides` | Cabinet | Vibe-Lab provides method experiments and evidence patterns. |
-| Weltgewebe | `operates_on` | GitHub | Weltgewebe product work is still validated through repo, PR and CI state. |
-| CI / Checks | `provides` | Leitstand | Primary check state can be reflected. |
-| GitHub | `provides` | Leitstand | Primary repo state can be reflected. |
-| GitHub | `validated_by` | CI / Checks | Checks and review gates provide hard technical feedback. |
+| Von | Beziehung | Zu | Klasse | Bedeutung |
+|---|---|---|---|---|
+| Alexander | `steers` | Cabinet | `stable` | Human sense, priority, approval and abort authority stay outside automation. |
+| RepoBrief | `provides` | Cabinet | `stable` | RepoBrief gives Cabinet citable repository context. |
+| Bureau | `delegates_to` | Grabowski | `stable` | Bureau can hand scoped work to the operator layer. |
+| Bureau | `provides` | Leitstand | `stable` | Bureau may provide read-only task status artifacts. |
+| Cabinet | `owns` | Ecosystem Map v0 | `stable` | Cabinet owns the map semantics during v0. |
+| Cabinet | `provides` | Leitstand | `stable` | Cabinet provides map artifacts for Leitstand display. |
+| Chronik | `displayed_by` | Leitstand | `stable` | Leitstand may display Chronik state without treating the display as authority. |
+| Chronik | `evidence_for` | Bureau | `bounded` | Chronik event presence can support evidence references; Bureau still owns task and verification truth. |
+| Chronik | `learning_input_for` | heimlern | `stable` | Heimlern may consume historical outcomes offline; no policy is auto-applied. |
+| Chronik | `provides` | Cabinet | `stable` | Chronik provides event trace and historical continuity. |
+| Chronik | `provides` | Leitstand | `stable` | Chronik provides event trace artifacts for timelines. |
+| Device Graph | `scope_boundary` | Ecosystem Map v0 | `related` | Device Graph may describe infrastructure devices; it is not the ecosystem-governance map canon. |
+| Grabowski | `emits_to` | Chronik | `bounded` | Grabowski may write task-local agent-run events through an explicit Chronik outbox path. |
+| Grabowski | `operates_on` | GitHub | `stable` | PRs, branches, issues and reviews remain GitHub-owned state. |
+| Leitstand | `observes` | Ecosystem Map v0 | `stable` | Leitstand observes the map as orientation, not truth. |
+| Lenskit / RepoBrief implementation | `implements` | RepoBrief | `stable` | RepoBrief is the public context-view name; Lenskit remains an implementation namespace for now. |
+| Plexer | `delivers_to` | Chronik | `stable` | Plexer delivers bounded operational events to Chronik agent.ledger when configured. |
+| Schauwerk | `renders` | Ecosystem Map v0 | `stable` | Schauwerk may render map views without owning the map canon. |
+| Steuerboard | `observes` | Cabinet | `stable` | Steuerboard can provide read-only repo-state signals, not decisions. |
+| Vibe-Lab | `provides` | Cabinet | `stable` | Vibe-Lab provides method experiments and evidence patterns. |
+| Weltgewebe | `operates_on` | GitHub | `stable` | Weltgewebe product work is still validated through repo, PR and CI state. |
+| CI / Checks | `provides` | Leitstand | `stable` | Primary check state can be reflected. |
+| GitHub | `provides` | Leitstand | `stable` | Primary repo state can be reflected. |
+| GitHub | `validated_by` | CI / Checks | `stable` | Checks and review gates provide hard technical feedback. |
 
 ## Einstiegspunkte
 
@@ -105,5 +98,6 @@ Nur Beziehungen mit einer stabilen Klasse (`active`, `bounded`, `related`) werde
 - Technische Prüfergebnisse: CI und Review-Gates.
 - Laufende Dienste: Runtime, Healthchecks, systemd und Logs.
 - Lokale und repositorybezogene Ausführung: Grabowski nach Freigabe.
-- Konkrete Runtime-Identitäten und Topologie bleiben in privater Operator-Evidence und werden hier nicht vervielfältigt.
+- Konkrete Runtime-Identitäten, Provider-Agenten und Topologie sind keine Katalogsysteme.
 - Die externe Cabinet-App ist nur ein vorübergehender optionaler Viewer und für diese Datei nicht erforderlich.
+- Frühere dynamische Claims und Radarflächen sind historische Kompatibilität, keine aktuelle Katalogwahrheit.

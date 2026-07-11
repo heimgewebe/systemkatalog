@@ -9,7 +9,7 @@ Cabinet wird zu einem app-unabhängigen Katalog für Systeme, Zwecke, Wahrheitsz
 - [Lesbarer Systemkatalog](rendered/system-catalog.md) — deterministisch erzeugte Katalogansicht ohne Live-, Task- oder Merge-Status.
 - [Systemkatalog-Policy](policy/system-catalog.v1.json) — maschinenlesbare Rollen- und Wirkungsgrenze.
 - [Authority Matrix](registry/ecosystem/authority-matrix.v1.json) — Zuordnung der Wahrheitsdomänen zu ihren Primärquellen.
-- [Knoten](registry/ecosystem/nodes.json) und [Beziehungen](registry/ecosystem/edges.json) — heutige Registry während der Migration.
+- [Knoten](registry/ecosystem/nodes.json) und [Beziehungen](registry/ecosystem/edges.json) — kanonische stabile Katalogregistry.
 - [Migrationsmatrix](docs/migration/cabinet-surface-matrix-v1.md) — Keep/Simplify/Move/Archive/Remove für die bestehende Oberfläche.
 - [Zielformat](catalog/system-catalog.schema.v1.json) und [nichtkanonisches Beispiel](catalog/system-catalog.example.v1.json) — app-unabhängiger Datenvertrag.
 

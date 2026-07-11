@@ -6,90 +6,63 @@ flowchart TD
     %% Boundary: this projection does not establish claim truth, runtime correctness or merge readiness.
 
     subgraph kind_human[Menschen und Entscheidung]
-        actor_alexander["Alexander<br/>id: actor:alexander<br/>human<br/>status: active"]
+        actor_alexander["Alexander<br/>id: actor:alexander<br/>human<br/>meaning, approval and abort authority outside automation"]
     end
 
     subgraph kind_repository[Repos und Organe]
-        repo_bureau["Bureau<br/>id: repo:bureau<br/>repository<br/>status: active"]
-        repo_cabinet["Cabinet<br/>id: repo:cabinet<br/>repository<br/>status: active"]
-        repo_chronik["Chronik<br/>id: repo:chronik<br/>repository<br/>status: active"]
-        repo_device_graph["Device Graph<br/>id: repo:device-graph<br/>repository<br/>status: related"]
-        repo_grabowski["Grabowski<br/>id: repo:grabowski<br/>repository<br/>status: active"]
-        repo_heimlern["heimlern<br/>id: repo:heimlern<br/>repository<br/>status: active"]
-        repo_infra["Infra<br/>id: repo:infra<br/>repository<br/>status: active"]
-        repo_leitstand["Leitstand<br/>id: repo:leitstand<br/>repository<br/>status: active"]
-        repo_lenskit["Lenskit / RepoBrief implementation<br/>id: repo:lenskit<br/>repository<br/>status: legacy_name_active"]
-        repo_plexer["Plexer<br/>id: repo:plexer<br/>repository<br/>status: active"]
-        repo_schauwerk["Schauwerk<br/>id: repo:schauwerk<br/>repository<br/>status: active"]
-        repo_steuerboard["Steuerboard<br/>id: repo:steuerboard<br/>repository<br/>status: active"]
-        repo_vibe_lab["Vibe-Lab<br/>id: repo:vibe-lab<br/>repository<br/>status: active"]
-        repo_weltgewebe["Weltgewebe<br/>id: repo:weltgewebe<br/>repository<br/>status: active"]
+        repo_bureau["Bureau<br/>id: repo:bureau<br/>repository<br/>task cadence, delegation, run reporting"]
+        repo_cabinet["Cabinet<br/>id: repo:cabinet<br/>repository<br/>app-independent system catalog for purpose, truth ownership, stable relations and entrypoints"]
+        repo_chronik["Chronik<br/>id: repo:chronik<br/>repository<br/>append-only event ledger and historical evidence axis"]
+        repo_device_graph["Device Graph<br/>id: repo:device-graph<br/>repository<br/>infrastructure device graph; adjacent but not ecosystem-governance canon"]
+        repo_grabowski["Grabowski<br/>id: repo:grabowski<br/>repository<br/>operator execution, repo work, review gates"]
+        repo_heimlern["heimlern<br/>id: repo:heimlern<br/>repository<br/>offline operator-learning and proposal generation"]
+        repo_infra["Infra<br/>id: repo:infra<br/>repository<br/>host, network, cockpit and operational runbooks"]
+        repo_leitstand["Leitstand<br/>id: repo:leitstand<br/>repository<br/>read-only ecosystem observability and status projection"]
+        repo_lenskit["Lenskit / RepoBrief implementation<br/>id: repo:lenskit<br/>repository<br/>context view and citable repository briefs"]
+        repo_plexer["Plexer<br/>id: repo:plexer<br/>repository<br/>bounded event delivery and queueing gateway"]
+        repo_schauwerk["Schauwerk<br/>id: repo:schauwerk<br/>repository<br/>visual surface and projection layer"]
+        repo_steuerboard["Steuerboard<br/>id: repo:steuerboard<br/>repository<br/>read-only repo-state signal"]
+        repo_vibe_lab["Vibe-Lab<br/>id: repo:vibe-lab<br/>repository<br/>method lab and evidence experiments"]
+        repo_weltgewebe["Weltgewebe<br/>id: repo:weltgewebe<br/>repository<br/>product and domain core"]
     end
 
     subgraph kind_concept[Konzepte]
-        concept_repobrief["RepoBrief<br/>id: concept:repobrief<br/>concept<br/>status: active"]
+        concept_repobrief["RepoBrief<br/>id: concept:repobrief<br/>concept<br/>public name for context-view layer"]
     end
 
     subgraph kind_artifact[Artefakte]
-        artifact_ecosystem_map["Ecosystem Map v0<br/>id: artifact:ecosystem-map<br/>artifact<br/>status: draft"]
+        artifact_ecosystem_map["Ecosystem Map v0<br/>id: artifact:ecosystem-map<br/>artifact<br/>machine-readable overview graph and rendered orientation map"]
     end
 
-    subgraph kind_service[Primaere Dienste]
-        service_ci["CI / Checks<br/>id: service:ci<br/>service<br/>status: primary_truth_for_check_state"]
-        service_github["GitHub<br/>id: service:github<br/>service<br/>status: primary_truth_for_git_state"]
+    subgraph kind_service[Primäre Dienste]
+        service_ci["CI / Checks<br/>id: service:ci<br/>service<br/>automated tests, lint, gates and review signals"]
+        service_github["GitHub<br/>id: service:github<br/>service<br/>repository, PR, issue and review state"]
     end
 
-    subgraph kind_runtime[Runtime]
-        runtime_heim_pc["heim-pc<br/>id: runtime:heim-pc<br/>runtime<br/>status: active"]
-        runtime_heimserver["heimserver<br/>id: runtime:heimserver<br/>runtime<br/>status: active"]
-    end
-
-    subgraph kind_agent[Agenten]
-        agent_claude["Claude<br/>id: agent:claude<br/>agent<br/>status: available_with_quota_limits"]
-        agent_codex["Codex<br/>id: agent:codex<br/>agent<br/>status: available"]
-        agent_gemini["Gemini<br/>id: agent:gemini<br/>agent<br/>status: proposed"]
-        agent_jules["Jules<br/>id: agent:jules<br/>agent<br/>status: available"]
-        agent_local["Local agents<br/>id: agent:local<br/>agent<br/>status: available"]
-    end
-
-    actor_alexander -->|steers / active| repo_cabinet
-    agent_claude -->|reports_to / active| repo_grabowski
-    agent_codex -->|reports_to / active| repo_grabowski
-    agent_gemini -->|reports_to / proposed| repo_grabowski
-    agent_jules -->|reports_to / active| repo_grabowski
-    agent_local -->|reports_to / active| repo_grabowski
-    concept_repobrief -->|provides / active| repo_cabinet
-    repo_bureau -->|delegates_to / active| repo_grabowski
-    repo_bureau -->|provides / planned| repo_leitstand
-    repo_cabinet -->|owns / draft| artifact_ecosystem_map
-    repo_cabinet -->|exports_candidate_to / planned| repo_bureau
-    repo_cabinet -->|provides / active| repo_leitstand
+    actor_alexander -->|steers / stable| repo_cabinet
+    concept_repobrief -->|provides / stable| repo_cabinet
+    repo_bureau -->|delegates_to / stable| repo_grabowski
+    repo_bureau -->|provides / stable| repo_leitstand
+    repo_cabinet -->|owns / stable| artifact_ecosystem_map
+    repo_cabinet -->|provides / stable| repo_leitstand
     repo_chronik -->|evidence_for / bounded| repo_bureau
-    repo_chronik -->|provides / active| repo_cabinet
-    repo_chronik -->|learning_input_for / planned| repo_heimlern
-    repo_chronik -->|displayed_by / planned| repo_leitstand
-    repo_chronik -->|provides / active| repo_leitstand
+    repo_chronik -->|provides / stable| repo_cabinet
+    repo_chronik -->|learning_input_for / stable| repo_heimlern
+    repo_chronik -->|displayed_by / stable| repo_leitstand
+    repo_chronik -->|provides / stable| repo_leitstand
     repo_device_graph -->|scope_boundary / related| artifact_ecosystem_map
-    repo_grabowski -->|delegates_to / active| agent_claude
-    repo_grabowski -->|delegates_to / active| agent_codex
-    repo_grabowski -->|delegates_to / proposed| agent_gemini
-    repo_grabowski -->|delegates_to / active| agent_jules
-    repo_grabowski -->|delegates_to / active| agent_local
-    repo_grabowski -->|emits_to / opt_in| repo_chronik
-    repo_grabowski -->|operates_on / active| service_github
-    repo_infra -->|provides / active| runtime_heim_pc
-    repo_infra -->|provides / active| runtime_heimserver
-    repo_leitstand -->|observes / active| artifact_ecosystem_map
-    repo_lenskit -->|implements / active| concept_repobrief
-    repo_plexer -->|delivers_to / active| repo_chronik
-    repo_schauwerk -->|renders / planned| artifact_ecosystem_map
-    repo_steuerboard -->|observes / active| repo_cabinet
-    repo_vibe_lab -->|provides / active| repo_cabinet
-    repo_weltgewebe -->|operates_on / active| service_github
-    runtime_heim_pc -->|hosts / intended| repo_cabinet
-    service_ci -->|provides / active| repo_leitstand
-    service_github -->|provides / active| repo_leitstand
-    service_github -->|validated_by / active| service_ci
+    repo_grabowski -->|emits_to / bounded| repo_chronik
+    repo_grabowski -->|operates_on / stable| service_github
+    repo_leitstand -->|observes / stable| artifact_ecosystem_map
+    repo_lenskit -->|implements / stable| concept_repobrief
+    repo_plexer -->|delivers_to / stable| repo_chronik
+    repo_schauwerk -->|renders / stable| artifact_ecosystem_map
+    repo_steuerboard -->|observes / stable| repo_cabinet
+    repo_vibe_lab -->|provides / stable| repo_cabinet
+    repo_weltgewebe -->|operates_on / stable| service_github
+    service_ci -->|provides / stable| repo_leitstand
+    service_github -->|provides / stable| repo_leitstand
+    service_github -->|validated_by / stable| service_ci
 
     %% Visual anchor only; does not establish canonical truth.
     classDef mapAnchor stroke-width:2px;

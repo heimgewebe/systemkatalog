@@ -1,8 +1,8 @@
 # Cabinet Surface Migration Matrix v1
 
-Status: active migration plan
+Status: T004 catalog-core consolidation complete; runtime and rename follow-ups remain
 
-Bureau task: `OPERATOR-ECOSYSTEM-REDUNDANCY-V1-T011`
+Bureau tasks: `OPERATOR-ECOSYSTEM-REDUNDANCY-V1-T011`, `T007`, `T004`
 
 ## Ziel
 
@@ -24,14 +24,14 @@ Kategorien:
 | `policy/system-catalog.v1.json` | neuer Zielvertrag | `KEEP` | Maschinenlesbare Rollen- und Wirkungsgrenze | T011 |
 | `catalog/system-catalog.schema.v1.json` | neues Zielformat | `KEEP` | App-unabhängiger Datenvertrag | T011 |
 | `catalog/system-catalog.example.v1.json` | nichtkanonisches Beispiel | `KEEP` | Formatbeispiel; niemals zweite Wahrheit | T011 |
-| `registry/ecosystem/nodes.json` | heutige Systemregistry mit dynamischen `status`-Feldern | `SIMPLIFY` | Systeme, Zweck, Grenzen und Einstiegspunkte; Statusfelder entfernen | T004 |
-| `registry/ecosystem/edges.json` | Beziehungen mit geplanten und laufzeitnahen Klassen | `SIMPLIFY` | nur stabile Architekturbeziehungen | T004 |
-| `registry/ecosystem/claims.jsonl` | gemischte langlebige und statusnahe Claims | `SIMPLIFY` | nur stabile Architektur- und Ownership-Aussagen | T004 |
-| `registry/ecosystem/authority-matrix.v1.json` | Wahrheitszuständigkeiten und Projektionen | `KEEP` | genau eine Authority Matrix; keine Cabinet-Projektion operativer Zustände | T011/T004 |
+| `registry/ecosystem/nodes.json` | kanonisches stabiles Systeminventar ohne Betriebsstatus | `KEEP` | Systeme, Zweck und Identität | T004 abgeschlossen |
+| `registry/ecosystem/edges.json` | kanonische Beziehungen mit `stable`, `bounded` oder `related` | `KEEP` | stabile Architekturbeziehungen, kein Betriebsstatus | T004 abgeschlossen |
+| `registry/ecosystem/claims.jsonl` | langlebige Architektur- und Ownership-Aussagen ohne Status, Confidence oder Ablaufdatum | `KEEP` | stabile Katalogclaims; frühere dynamische Claims archiviert | T004 abgeschlossen |
+| `registry/ecosystem/authority-matrix.v1.json` | einzige gepflegte Wahrheitsmatrix | `KEEP` | keine Cabinet-Projektion operativer Zustände | T004 abgeschlossen |
 | `registry/ecosystem/consumer-usage.v1.json` | datierter, redaktierter Consumer- und Nutzungsmessbeleg | `KEEP` als Entscheidungsbeleg | keine Live-Statusquelle; private Detailbelege bleiben außerhalb des Repositories | T007 |
 | `registry/ecosystem/operator-redundancy-audit.v1.json` | datierter Audit | `ARCHIVE` | Entscheidungsbeleg, keine aktuelle Statusquelle | T004 |
 | `rendered/system-catalog.md` | neue lesbare Projektion | `KEEP` | kanonische menschenlesbare Katalogansicht | T011 |
-| `rendered/ecosystem-registry-map.mmd` | generierte Registry-Karte | `SIMPLIFY` | optionale Katalogprojektion ohne Statusautorität | T004 |
+| `rendered/ecosystem-registry-map.mmd` | einzige kanonisch generierte Registry-Karte | `KEEP` | statusfreie Katalogprojektion; keine Claimautorität | T004 abgeschlossen |
 | `rendered/ecosystem-map.mmd` | handgepflegte Übersicht | `ARCHIVE` oder spezialisierte Projektion | nur behalten, falls klarer zusätzlicher Nutzen besteht | T004/T007 |
 | Registry-, Karten- und Linkvalidatoren | technische Konsistenzprüfung | `SIMPLIFY` | IDs, Beziehungen, Truth Ownership, Links und Render-Drift prüfen | T011/T004 |
 | `scripts/validate_system_catalog.py` | neuer Katalogvalidator | `KEEP` | deterministische Katalogprüfung | T011 |
