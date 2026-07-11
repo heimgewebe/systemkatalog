@@ -1,210 +1,84 @@
-# Cabinet Local Runtime
+# Heimgewebe-Systemkatalog — lokale Runtime
 
-Dieses Verzeichnis beschreibt den reproduzierbaren lokalen
-Betriebsvertrag von Cabinet.
+Dieses Verzeichnis beschreibt die aktive, reproduzierbare Leseoberfläche des Heimgewebe-Systemkatalogs.
 
-## Ebenen
+## Architektur
 
-- `~/repos/cabinet`: versionierte Cabinet-Inhalte und Betriebsdefinitionen
-- `~/.config/cabinet`: lokale Konfiguration und Secrets
-- `~/.local/bin`: installierte Start- und Kontrollwerkzeuge
-- `~/.local/state/cabinet`: Logs und Backups
-- `~/.cabinet`: installierter, versionsgebundener Cabinet-App-Code
+- Canon: versionierte Dateien unter `policy/`, `registry/ecosystem/` und `rendered/`
+- Runtime: `heimgewebe-systemkatalog.service`
+- Kompatibilitätsalias: `cabinet.service`
+- Implementierung: Python-Standardbibliothek
+- Bindung: ausschließlich Loopback
+- sichtbare Oberfläche: `http://127.0.0.1:4001/`
+- alter Daemon-Port: nicht mehr vorhanden
+- persistenter Runtimezustand: keiner
+- Secrets oder Providerzugänge: keine
 
-## Enthalten
+Die Runtime liest den Katalog bei jedem Request neu aus dem Repository. Sie schreibt weder Katalogdaten noch Aufgaben-, Runtime- oder Agentenzustand.
 
-- systemd-Unit und Loopback-Drop-in als Templates
-- Start-, Session-, Control- und Security-Werkzeuge
-- secretfreie Runtime-Environment-Vorlage
-- versionsgebundener Dark-Default-Patch für Cabinet 0.4.4
-- lokaler Installer
-- Drift- und Health-Audit
+## Endpunkte
 
-## Nicht versioniert
+- `/` — HTML-Leseoberfläche
+- `/healthz` — technischer Bereitschaftsendpunkt
+- `/api/catalog.json` — zusammengesetzter Katalog
+- `/api/nodes.json` — kanonische Systeme
+- `/api/edges.json` — kanonische Beziehungen
+- `/api/authority-matrix.json` — Wahrheitszuständigkeiten
+- `/api/policy.json` — Rollenpolicy
+- `/catalog.md` — Markdownprojektion
+- `/map.mmd` — Mermaidprojektion
 
-- `~/.config/cabinet/runtime.env`
-- Passwörter und API-Schlüssel
-- SQLite-Indizes
-- Logs
-- Laufzeitstatus
-- lokale Workspace-Konfiguration unter `.agents/.config/workspace.json`
-- Cabinet-App-Installation
-- Browserpräferenzen
+## Installation und Cutover
 
-## Erstinstallation
+Nur Dateien installieren, Dienstzustand nicht ändern:
 
 ```bash
-cd ~/repos/cabinet
-
-mkdir -p ~/.config/cabinet
-cp ops/env/runtime.env.example ~/.config/cabinet/runtime.env
-chmod 600 ~/.config/cabinet/runtime.env
+ops/install/install-local-runtime.sh
 ```
 
-Danach die leeren Werte ausschließlich lokal ergänzen.
+Alte externe Cabinet-App stoppen und deaktivieren, neue Runtime installieren und aktivieren:
 
 ```bash
-ops/install/install-local-runtime.sh --restart
+ops/install/install-local-runtime.sh --cutover
+```
+
+Vorhandene Units und Bedienwerkzeuge werden vor dem Cutover unter `~/.local/state/cabinet/runtime-cutovers/` gesichert. Private App-, Konfigurations- und Evidence-Bestände werden nicht als Kataloginhalt übernommen und durch den Installer nicht gelöscht.
+
+## Bedienung
+
+```bash
+systemkatalogctl status
+systemkatalogctl url
+systemkatalogctl restart
 ```
 
 ## Audit
 
 ```bash
-cd ~/repos/cabinet
 ops/install/audit-local-runtime.sh
 ```
 
 Erwarteter Abschluss:
 
 ```text
-TARGET-PROOF: CABINET LOCAL RUNTIME MATCHES REPOSITORY
+TARGET-PROOF: HEIMGEWEBE SYSTEM CATALOG RUNTIME MATCHES REPOSITORY
 ```
 
-## Workspace-Default-Cutover
+Der Audit prüft:
 
-Der lokale Workspace ist unversionierter Benutzerzustand. Eine Änderung des
-versionierten Defaults darf ihn deshalb nicht still überschreiben. Der
-Cutover wird auf dem PR-Branch vor dem Merge ausgeführt.
+- Katalogvalidierung und Renderdrift;
+- installierte Unit und Werkzeuge gegen das Repository;
+- aktiven und aktivierten Dienst;
+- `cabinet.service` als Alias der neuen Unit;
+- Abwesenheit der alten App-Starter und Drop-ins;
+- HTML- und JSON-Oberfläche;
+- geschlossenen früheren Daemon-Port.
 
-Prüfen, ohne zu schreiben:
+## Repository- und CI-Vertrag
 
-```bash
-cd ~/repos/cabinet
-python3 scripts/workspace_default_cutover.py check
-```
+- `scripts/ci/check-repository-contract.py` verweigert alte Node-/Next-App-Runtimeflächen.
+- `scripts/ci/test-install-local-runtime.sh` prüft Installation und Idempotenz in einem isolierten Home.
+- `scripts/tests/test_system_catalog_service.py` prüft Payload, HTML-Escaping, Loopback-Gate und read-only HTTP-Verhalten.
+- Secret-Scan und der übrige Cabinet-Testbestand bleiben Bestandteil der CI.
 
-Sichern, auf `steuerung` umstellen und lokal validieren:
-
-```bash
-python3 scripts/workspace_default_cutover.py apply
-```
-
-Erwarteter Abschluss:
-
-```text
-TARGET-PROOF: CABINET WORKSPACE DEFAULT IS STEUERUNG
-```
-
-Das Werkzeug legt pro Änderung ein Verzeichnis unter
-`~/.local/state/cabinet/workspace-cutovers/` an. Es enthält die exakten
-Originalbytes und ein Manifest mit SHA-256, ursprünglichem Dateimodus,
-Quellraum, Zielraum und Status.
-
-Explizit zurückrollen:
-
-```bash
-python3 scripts/workspace_default_cutover.py rollback BACKUP-ID
-```
-
-Die installierte Bedienoberfläche bietet dieselben Operationen:
-
-```bash
-cabinetctl workspace-check
-cabinetctl workspace-apply
-cabinetctl workspace-rollback BACKUP-ID
-```
-
-Verbindliche Reihenfolge:
-
-1. PR-Branch lokal auschecken.
-2. `workspace-apply` erfolgreich ausführen.
-3. Den ausgegebenen Target-Proof sichern.
-4. Erst danach den PR mergen.
-5. `main` aktualisieren und `workspace-check` erneut ausführen.
-
-Scheitert die Validierung nach dem Schreiben, stellt das Werkzeug automatisch
-die gesicherten Originalbytes und den ursprünglichen Dateimodus wieder her.
-Ein expliziter Rollback kann absichtlich Drift zum versionierten Default
-erzeugen; dieser Zustand ist kein erfolgreicher Phase-4-Abschluss.
-
-## Dark-Default
-
-Der Patch ist strikt auf Cabinet `0.4.4` begrenzt.
-
-Prüfen:
-
-```bash
-ops/patches/cabinet-v0.4.4-dark-default.py --check
-```
-
-Anwenden:
-
-```bash
-ops/patches/cabinet-v0.4.4-dark-default.py --apply
-```
-
-Ein Cabinet-Update darf nicht blind mit diesem Patch behandelt werden.
-Für jede neue Version müssen Pfade, Marker und Theme-Vertrag erneut
-geprüft werden.
-
-## Sicherheitsregel
-
-Secrets dürfen nicht versioniert werden. Vor Remote-Pushes werden
-Tree und Historie auf bekannte Secretmuster geprüft.
-
-## CI und Validierung
-
-Dieses Repository trennt strikt zwischen dem versionierten Repository-Vertrag
-und dem lokalen Laufzeitzustand. Die CI prüft ausschließlich den sauberen
-Repository-Zustand und niemals den lokalen Betriebszustand.
-
-### Repositoryvertrag (`repository-contract`)
-
-- Prüft den vollständig materialisierten Git-Baum von HEAD.
-- Erkennt verbotene versionierte Pfade (Datenbanken, Laufzeitzustand,
-  Secrets, Agentenlaufzeitverzeichnisse).
-- Verifiziert das Manifest exakt: Quellenmengen, Feldmengen, Git-Dateimodi
-  und Duplikatfreiheit.
-- Prüft Syntax aller Python- und Bash-Skripte im Snapshot.
-- Der globale `TARGET-PROOF: CABINET REPOSITORY CONTRACT VALID` erscheint
-  ausschließlich nach allen Teilprüfungen.
-
-### Installer-Shadow-Test (`installer-shadow`)
-
-- Führt den Installer aus einem temporären `git archive`-Snapshot aus,
-  nicht aus dem echten Checkout.
-- Installiert in ein temporäres Home-Verzeichnis mit `systemctl`-Stub.
-- Prüft Binaries, Units, Symlink, `runtime.env`-Hash und systemctl-Aufrufe
-  nach Lauf 1 und Lauf 2.
-- Beweist, dass der getrackte Git-Zustand und HEAD des echten Repositorys
-  vor und nach dem Test unverändert bleiben
-  (`TARGET-PROOF: SOURCE REPOSITORY WAS NOT MODIFIED`).
-- Prüft fünf negative Zustandsmutationen gegen den Installationschecker
-  (`check-installed-runtime.py`).
-
-### Secret-Scan (`secret-scan`)
-
-- Scannt den Git-Commit-Baum (`dir`-Modus) und die vollständige
-  Commit-Geschichte (`git`-Modus) mit dem festgepinnten Gitleaks-Image.
-- Ergebnis wird durch `check-gitleaks-result.py` ausgewertet: Returncode,
-  Berichtsexistenz, JSON-Gültigkeit, Array-Typ und Findingzahl.
-- `--ignore-gitleaks-allow` ist gesetzt: gitleaks:allow-Kommentare werden
-  nicht als Ausnahme akzeptiert.
-- Ein erfolgreicher Scan belegt, dass keine bekannten Secretmuster im
-  aktuellen Baum oder der Geschichte enthalten sind. Ein erfolgreicher
-  Scan beweist keine vollständige Secret-Abwesenheit.
-
-### Grenzen der CI-Aussagekraft
-
-Die CI erzwingt die definierten Repositoryverträge und prüft bekannte
-Secretmuster. Sie beweist weder die reale Laufzeitfunktion noch vollständige
-Secret-Abwesenheit.
-
-`audit-local-runtime.sh` bleibt der Beweis für die echte lokale Runtime
-und den echten systemd-Dienst. Dieser Schritt wird bewusst nicht in der
-CI ausgeführt.
-
-### Lokale Validierung
-
-```bash
-cd ~/repos/cabinet
-./scripts/ci/validate-repository.sh
-./scripts/ci/test-validate-repository.sh
-./scripts/ci/test-install-local-runtime.sh
-./scripts/ci/test-gitleaks-contract.sh
-```
-
-GitHub Actions Jobs (siehe `.github/workflows/validate.yml`):
-- `repository-contract`
-- `installer-shadow`
-- `secret-scan`
+Die CI belegt den versionierten Vertrag. Der lokale Audit belegt den tatsächlich installierten Dienst.

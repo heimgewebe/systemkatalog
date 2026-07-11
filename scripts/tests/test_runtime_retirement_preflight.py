@@ -204,10 +204,10 @@ class RuntimeRetirementPreflightTests(unittest.TestCase):
         ).read_text(encoding="utf-8")
         self.assertIn("Validate Runtime Retirement Preflight", workflow)
         self.assertIn("Test Runtime Retirement Preflight", workflow)
-        self.assertIn("keine Live- oder Abschaltautorität", agents)
-        self.assertIn("autorisiert jedoch keine Wirkung", readme)
-        self.assertIn("ohne Abschaltfreigabe", index)
-        self.assertIn("nicht autorisiert und nicht ausgeführt", authorization)
+        self.assertIn("historische Evidence, kein Livezustand", agents)
+        self.assertIn("externe Cabinet-App ist retired", readme)
+        self.assertIn("abgeschlossener Runtimewechsel", index)
+        self.assertIn("T013 Runtime-Cutover umgesetzt", authorization)
 
     def test_projection_redacts_paths_ports_and_process_ids(self) -> None:
         snapshot = WRITER.build_public_snapshot(self.private_path)

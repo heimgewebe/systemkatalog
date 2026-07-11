@@ -39,6 +39,8 @@ class SystemCatalogTests(unittest.TestCase):
                 "maintainedCatalogSurfaces": 8,
                 "legacyCompatibilitySurfaces": 10,
                 "externalAppRequired": False,
+                "externalAppRetired": True,
+                "runtimeService": "heimgewebe-systemkatalog.service",
             },
         )
 
@@ -62,13 +64,18 @@ class SystemCatalogTests(unittest.TestCase):
             "2cd05d4a03c71a1dabc53ac25d46f5ba0122419d4b30657c75d8bf758a2d2ed1",
         )
 
-    def test_external_app_is_optional_noncanonical_and_not_shutdown_authorized(self) -> None:
+    def test_external_app_is_retired_and_replaced_by_catalog_runtime(self) -> None:
         policy = VALIDATOR._load(VALIDATOR.POLICY)
         app = policy["externalCabinetApp"]
         self.assertFalse(app["required"])
         self.assertFalse(app["canonical"])
         self.assertFalse(app["runtimeAuthoritative"])
-        self.assertFalse(app["shutdownAuthorized"])
+        self.assertTrue(app["shutdownAuthorized"])
+        self.assertFalse(app["activeRuntime"])
+        self.assertEqual(app["replacement"], "heimgewebe-systemkatalog.service")
+        runtime = policy["runtimeProjection"]
+        self.assertEqual(runtime["role"], "read_only_catalog_projection")
+        self.assertFalse(runtime["stateful"])
 
     def test_canonical_inputs_reject_operational_fields(self) -> None:
         policy = VALIDATOR._load(VALIDATOR.POLICY)

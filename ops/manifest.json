@@ -1,49 +1,38 @@
 {
-  "schema": "cabinet.local-runtime.v1",
-  "cabinet_version": "0.4.4",
+  "schema": "heimgewebe.system-catalog-runtime.v1",
+  "runtime_version": "1",
   "repository_root": "~/repos/cabinet",
-  "templates": [
-    {
-      "source": "ops/systemd/cabinet.service.tmpl",
-      "destination": "~/.config/systemd/user/cabinet.service",
-      "mode": "0644"
-    },
-    {
-      "source": "ops/systemd/cabinet.service.d/10-loopback-gate.conf.tmpl",
-      "destination": "~/.config/systemd/user/cabinet.service.d/10-loopback-gate.conf",
-      "mode": "0644"
-    }
-  ],
+  "service": {
+    "name": "heimgewebe-systemkatalog.service",
+    "compatibility_alias": "cabinet.service",
+    "template": "ops/systemd/heimgewebe-systemkatalog.service.tmpl",
+    "destination": "~/.config/systemd/user/heimgewebe-systemkatalog.service",
+    "bind": "127.0.0.1",
+    "port": 4001,
+    "mode": "0644"
+  },
   "executables": [
     {
-      "source": "ops/bin/cabinet",
-      "destination": "~/.local/bin/cabinet",
+      "source": "ops/bin/heimgewebe-systemkatalog",
+      "destination": "~/.local/bin/heimgewebe-systemkatalog",
       "mode": "0755"
     },
     {
-      "source": "ops/bin/cabinet-session",
-      "destination": "~/.local/bin/cabinet-session",
-      "mode": "0755"
-    },
-    {
-      "source": "ops/bin/cabinetctl",
-      "destination": "~/.local/bin/cabinetctl",
-      "mode": "0755"
-    },
-    {
-      "source": "ops/bin/cabinet-security-gate",
-      "destination": "~/.local/bin/cabinet-security-gate",
+      "source": "ops/bin/systemkatalogctl",
+      "destination": "~/.local/bin/systemkatalogctl",
       "mode": "0755"
     }
   ],
-  "symlinks": [
-    {
-      "source": "scripts/cabinet-safe-export.sh",
-      "destination": "~/.local/bin/cabinet-safe-export"
-    }
+  "retired_runtime_paths": [
+    "~/.config/systemd/user/cabinet.service",
+    "~/.config/systemd/user/cabinet.service.d/",
+    "~/.local/bin/cabinet",
+    "~/.local/bin/cabinet-session",
+    "~/.local/bin/cabinetctl",
+    "~/.local/bin/cabinet-security-gate"
   ],
-  "local_only": [
-    "~/.config/cabinet/runtime.env",
+  "preserved_private_paths": [
+    "~/.config/cabinet/",
     "~/.local/state/cabinet/",
     "~/.cabinet/",
     ".cabinet-state/"

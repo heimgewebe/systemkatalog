@@ -1,6 +1,6 @@
 # Cabinet Agent Entry
 
-Dieses Dokument ist der kanonische Einstieg für LLMs und Agenten im Cabinet-Repo während der Migration zum Heimgewebe-Systemkatalog.
+Dieses Dokument ist der kanonische Einstieg für LLMs und Agenten im aktiven Heimgewebe-Systemkatalog.
 
 ## Lesereihenfolge
 
@@ -10,7 +10,7 @@ Dieses Dokument ist der kanonische Einstieg für LLMs und Agenten im Cabinet-Rep
 4. [registry/ecosystem/authority-matrix.v1.json](registry/ecosystem/authority-matrix.v1.json) — Wahrheitszuständigkeiten.
 5. [registry/ecosystem/nodes.json](registry/ecosystem/nodes.json) und [registry/ecosystem/edges.json](registry/ecosystem/edges.json) — kanonische stabile Katalogregistry.
 6. [docs/migration/cabinet-surface-matrix-v1.md](docs/migration/cabinet-surface-matrix-v1.md) — Keep/Simplify/Move/Archive/Remove-Zuordnung.
-7. [docs/migration/cabinet-runtime-retirement-preflight-v1.json](docs/migration/cabinet-runtime-retirement-preflight-v1.json) und [docs/migration/cabinet-runtime-retirement-authorization-v1.md](docs/migration/cabinet-runtime-retirement-authorization-v1.md) — datierter T013-Entscheidungsbeleg und nicht ausgeführter Rollbackplan; keine Live- oder Abschaltautorität.
+7. [docs/migration/cabinet-runtime-retirement-preflight-v1.json](docs/migration/cabinet-runtime-retirement-preflight-v1.json) und [docs/migration/cabinet-runtime-retirement-authorization-v1.md](docs/migration/cabinet-runtime-retirement-authorization-v1.md) — historische T013-Ausgangslage und abgeschlossener Cutover-/Rollbackvertrag; keine Live-Statusquelle.
 8. [catalog/system-catalog.schema.v1.json](catalog/system-catalog.schema.v1.json) und [catalog/system-catalog.example.v1.json](catalog/system-catalog.example.v1.json) — Zielformat und ausdrücklich nichtkanonisches Beispiel.
 9. Frühere Role-Boundary-, Radar-, Gemini- und Raumdokumente nur als Migrations- oder historische Quellen lesen, nicht als Zielarchitektur.
 
@@ -26,7 +26,7 @@ Cabinet ist ein app-unabhängiger Systemkatalog. Es beschreibt:
 
 Cabinet pflegt keine Aufgabenpriorität, keinen Taskstatus, keine Runtime-Gesundheit, keine Merge-Reife, keine aktive Agentendisposition und keinen Schedulerzustand.
 
-Die externe Cabinet AI Workspace App ist nur ein vorübergehender optionaler Viewer. Sie ist weder Canon noch Voraussetzung für Validierung, Rendering oder Agentenorientierung.
+Die externe Cabinet AI Workspace App ist retired. Die lokale Oberfläche wird von `heimgewebe-systemkatalog.service` als zustandslose read-only Projektion bereitgestellt; `cabinet.service` ist nur ein Kompatibilitätsalias.
 
 ## Wahrheitsordnung
 
@@ -52,8 +52,8 @@ Die externe Cabinet AI Workspace App ist nur ein vorübergehender optionaler Vie
 9. Kein Merge und kein direkter Main-Eingriff ohne aktuelle Head-Prüfung, Diff-Review, grüne Gates und berücksichtigte Findings.
 10. Erfinde keine Dateiinhalte. Wenn Kontext fehlt, nutze einen extern erzeugten RepoBrief-/Lenskit-Dump oder benenne die Leerstelle ausdrücklich.
 11. Öffentliche Artefakte dürfen keine privaten Host-, Unit-, Listener-, Port-, Journal-, Reachability-, Secret- oder App-Daten enthalten.
-12. Der T013-Runtime-Preflight ist ein datierter Entscheidungsbeleg, kein Livezustand und keine Ausführungserlaubnis.
-13. Runtime-Abschaltung, Datenlöschung und Repository-Rename benötigen jeweils eine separate Bureau-Autorisierung.
+12. T013-Preflight und Cutoverbeleg sind historische Evidence, kein Livezustand.
+13. Weitere Runtime-, Daten-, Retention- oder Rename-Wirkungen benötigen jeweils eine neue, exakt begrenzte Autorisierung.
 
 ## Organrollen
 

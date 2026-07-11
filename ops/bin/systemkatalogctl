@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+SERVICE="heimgewebe-systemkatalog.service"
+case "${1:-status}" in
+  status) exec systemctl --user status "$SERVICE" --no-pager ;;
+  start|stop|restart) exec systemctl --user "$1" "$SERVICE" ;;
+  url) printf '%s\n' 'http://127.0.0.1:4001/' ;;
+  *) echo "Verwendung: systemkatalogctl [status|start|stop|restart|url]" >&2; exit 2 ;;
+esac

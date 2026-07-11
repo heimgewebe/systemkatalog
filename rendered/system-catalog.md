@@ -99,5 +99,5 @@ Nur Beziehungen der Klassen `stable`, `bounded` oder `related` werden angezeigt.
 - Laufende Dienste: Runtime, Healthchecks, systemd und Logs.
 - Lokale und repositorybezogene Ausführung: Grabowski nach Freigabe.
 - Konkrete Runtime-Identitäten, Provider-Agenten und Topologie sind keine Katalogsysteme.
-- Die externe Cabinet-App ist nur ein vorübergehender optionaler Viewer und für diese Datei nicht erforderlich.
+- Die externe Cabinet-App ist retired; die lokale read-only Oberfläche wird vom Heimgewebe-Systemkatalogdienst bereitgestellt.
 - Frühere dynamische Claims und Radarflächen sind historische Kompatibilität, keine aktuelle Katalogwahrheit.

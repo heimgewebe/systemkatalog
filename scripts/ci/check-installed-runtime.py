@@ -1,120 +1,54 @@
 #!/usr/bin/env python3
 import argparse
-import sys
-import hashlib
 from pathlib import Path
-import os
 
-def check_binary(path: Path, expected_mode: str, src_path: Path):
-    if not path.is_file() or path.is_symlink():
-        print(f"FAIL: not a regular file: {path}")
-        sys.exit(1)
-    actual_mode = oct(path.stat().st_mode)[-4:]
-    if actual_mode != expected_mode:
-        print(f"FAIL: mode mismatch for {path}: gefunden={actual_mode}, erwartet={expected_mode}")
-        sys.exit(1)
-    if path.read_bytes() != src_path.read_bytes():
-        print(f"FAIL: content mismatch for {path}")
-        sys.exit(1)
 
-def check_template(path: Path, expected_mode: str, src_path: Path, temp_home: Path, temp_repo: Path):
-    if not path.is_file() or path.is_symlink():
-        print(f"FAIL: not a regular file: {path}")
-        sys.exit(1)
-    actual_mode = oct(path.stat().st_mode)[-4:]
-    if actual_mode != expected_mode:
-        print(f"FAIL: mode mismatch for {path}: gefunden={actual_mode}, erwartet={expected_mode}")
-        sys.exit(1)
+def fail(message: str) -> None:
+    raise SystemExit(f"FAIL: {message}")
 
-    content = src_path.read_text()
-    expected_content = content.replace("@HOME@", str(temp_home)).replace("@CABINET_ROOT@", str(temp_repo))
-    if path.read_text() != expected_content:
-        print(f"FAIL: content mismatch for {path}")
-        sys.exit(1)
 
-def check_symlink(path: Path, target_path: Path):
-    if not path.is_symlink():
-        print(f"FAIL: not a symlink: {path}")
-        sys.exit(1)
-    raw_target = os.readlink(path)
-    if raw_target != str(target_path):
-        print(f"FAIL: symlink raw target mismatch: gefunden={raw_target}, erwartet={target_path}")
-        sys.exit(1)
-    if not path.exists() or not path.resolve().is_file():
-        print(f"FAIL: symlink target is missing or not a regular file: {path}")
-        sys.exit(1)
+def rendered_unit(repo: Path, home: Path) -> bytes:
+    source = repo / "ops/systemd/heimgewebe-systemkatalog.service.tmpl"
+    return source.read_text().replace("@HOME@", str(home)).replace("@CABINET_ROOT@", str(repo)).encode()
 
-def check_env(path: Path, expected_mode: str, expected_hash: str):
-    if not path.is_file() or path.is_symlink():
-        print(f"FAIL: not a regular file: {path}")
-        sys.exit(1)
-    actual_mode = oct(path.stat().st_mode)[-4:]
-    if actual_mode != expected_mode:
-        print(f"FAIL: mode mismatch for {path}: gefunden={actual_mode}, erwartet={expected_mode}")
-        sys.exit(1)
-    h = hashlib.sha256(path.read_bytes()).hexdigest()
-    if h != expected_hash:
-        print(f"FAIL: hash mismatch for {path}: gefunden={h}, erwartet={expected_hash}")
-        sys.exit(1)
 
-def check_systemctl(log_path: Path, expected_calls: int):
-    if not log_path.exists():
-        calls = []
-    else:
-        calls = log_path.read_text().splitlines()
-
-    if len(calls) != expected_calls:
-        print(f"FAIL: systemctl call count: gefunden={len(calls)}, erwartet={expected_calls}")
-        sys.exit(1)
-
-    for call in calls:
-        if call != "--user daemon-reload":
-            print(f"FAIL: invalid systemctl call: {call}")
-            sys.exit(1)
-
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--home", type=Path, required=True)
     parser.add_argument("--repo-root", type=Path, required=True)
     parser.add_argument("--systemctl-log", type=Path, required=True)
     parser.add_argument("--expected-systemctl-calls", type=int, required=True)
-    parser.add_argument("--runtime-env-sha256", type=str, required=True)
     args = parser.parse_args()
+    home, repo = args.home, args.repo_root
+    expected = {
+        home / ".config/systemd/user/heimgewebe-systemkatalog.service": rendered_unit(repo, home),
+        home / ".local/bin/heimgewebe-systemkatalog": (repo / "ops/bin/heimgewebe-systemkatalog").read_bytes(),
+        home / ".local/bin/systemkatalogctl": (repo / "ops/bin/systemkatalogctl").read_bytes(),
+    }
+    for path, content in expected.items():
+        if not path.is_file() or path.is_symlink():
+            fail(f"missing regular file: {path}")
+        if path.read_bytes() != content:
+            fail(f"content mismatch: {path}")
+        actual_mode = path.stat().st_mode & 0o777
+        expected_mode = 0o644 if path.name.endswith(".service") else 0o755
+        if actual_mode != expected_mode:
+            fail(f"mode mismatch: {path}: {actual_mode:o} != {expected_mode:o}")
+    retired = [
+        home / ".config/systemd/user/cabinet.service",
+        home / ".config/systemd/user/cabinet.service.d",
+        *(home / ".local/bin" / name for name in ("cabinet", "cabinet-session", "cabinetctl", "cabinet-security-gate")),
+    ]
+    for path in retired:
+        if path.exists() or path.is_symlink():
+            fail(f"retired path exists: {path}")
+    calls = [line for line in args.systemctl_log.read_text().splitlines() if line.strip()]
+    if len(calls) != args.expected_systemctl_calls:
+        fail(f"systemctl call count: gefunden={len(calls)}, erwartet={args.expected_systemctl_calls}")
+    if any(line != "--user daemon-reload" for line in calls):
+        fail(f"unexpected systemctl call: {calls}")
+    print("INSTALLED-SYSTEM-CATALOG-RUNTIME: PASS")
 
-    binaries = ["cabinet", "cabinet-session", "cabinetctl", "cabinet-security-gate"]
-    for b in binaries:
-        check_binary(args.home / f".local/bin/{b}", "0755", args.repo_root / f"ops/bin/{b}")
-
-    check_template(
-        args.home / ".config/systemd/user/cabinet.service",
-        "0644",
-        args.repo_root / "ops/systemd/cabinet.service.tmpl",
-        args.home,
-        args.repo_root
-    )
-
-    check_template(
-        args.home / ".config/systemd/user/cabinet.service.d/10-loopback-gate.conf",
-        "0644",
-        args.repo_root / "ops/systemd/cabinet.service.d/10-loopback-gate.conf.tmpl",
-        args.home,
-        args.repo_root
-    )
-
-    check_symlink(
-        args.home / ".local/bin/cabinet-safe-export",
-        args.repo_root / "scripts/cabinet-safe-export.sh"
-    )
-
-    check_env(
-        args.home / ".config/cabinet/runtime.env",
-        "0600",
-        args.runtime_env_sha256
-    )
-
-    check_systemctl(args.systemctl_log, args.expected_systemctl_calls)
-
-    print("INSTALLED-RUNTIME-CONTRACT: PASS")
 
 if __name__ == "__main__":
     main()

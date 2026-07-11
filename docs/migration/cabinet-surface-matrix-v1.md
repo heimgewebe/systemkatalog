@@ -1,12 +1,12 @@
 # Cabinet Surface Migration Matrix v1
 
-Status: T004 catalog-core consolidation complete; T013 read-only preflight complete, runtime effect and rename remain unauthorized
+Status: T004-Katalogkern und T013-Runtime-Cutover abgeschlossen; nur T014-Repository- und Referenzumbenennung bleibt offen
 
 Bureau tasks: `OPERATOR-ECOSYSTEM-REDUNDANCY-V1-T011`, `T007`, `T004`, `T013`
 
 ## Ziel
 
-Cabinet wird zu einem app-unabhängigen Heimgewebe-Systemkatalog. Dieser erste Schritt klassifiziert die bestehende Oberfläche, entfernt aber keine Legacy-Inhalte, stoppt keinen Dienst und benennt kein Repository um.
+Cabinet ist der app-unabhängige Heimgewebe-Systemkatalog. Der aktive Runtimevertrag liefert ausschließlich eine read-only Projektion der kanonischen Katalogdaten; die externe Workspace-App ist retired. Das Repository ist noch nicht umbenannt.
 
 Kategorien:
 
@@ -47,10 +47,10 @@ Kategorien:
 | alte Rollen-, Radar- und Experimentdokumente | historische Entscheidungsentwicklung | `ARCHIVE` | `docs/archive/cabinet-era/` oder Git-Historie | T004 |
 | `steuerung/**`, Projektkarten und lokale Prioritätsflächen | Aufgaben- und Reihenfolgemodell | `MOVE` | Bureau | T004 |
 | `pruefung/10 Laeufe/**` | Lauf- und Experimentbelege | `ARCHIVE` | historische Evidence; keine aktuelle Produktfläche | T004 |
-| `ops/manifest.json`, `ops/bin/**`, `ops/install/**` | Installation und Steuerung der externen Cabinet-App | `REMOVE` nach privatem Export | Runtime-Rückbau mit Rollback-Beleg | T012/T013 |
-| `ops/systemd/**` | lokaler Cabinet-Dienst | `REMOVE` nach bewiesener App-Unabhängigkeit | keine Katalogruntime | T012/T013 |
-| `ops/patches/**` | Patch der gepinnten Fremd-App | `REMOVE` | keine fremde App als Katalogfundament | T013 |
-| `.cabinet`-Raumkonfiguration und app-spezifische Räume | Darstellung und Arbeitsfläche der Fremd-App | `ARCHIVE` oder `REMOVE` | optionaler Übergangsviewer, kein Canon | T012/T013 |
+| `ops/manifest.json`, `ops/bin/**`, `ops/install/**` | Installation und Audit der read-only Katalogprojektion | `KEEP` | reproduzierbare Systemkatalog-Runtime ohne Provider, Datenbank oder Secrets | T013 abgeschlossen |
+| `ops/systemd/**` | `heimgewebe-systemkatalog.service` plus Alias `cabinet.service` | `KEEP` | Loopback-only Leseoberfläche; keine Katalogautorität und kein zweiter Daemon | T013 abgeschlossen |
+| frühere `ops/patches/**` | Patch der gepinnten Fremd-App | `REMOVE` | aus dem aktiven Repositoryvertrag entfernt | T013 abgeschlossen |
+| `.cabinet`-Raumkonfiguration und app-spezifische Räume | private Altbestände der Fremd-App | `ARCHIVE` | kein aktiver Viewer und kein Canon; spätere Retention separat | T013 abgeschlossen |
 | lokale App-Daten, Conversations, Memory und Konfiguration | möglicherweise nichtversionierte private Inhalte | `MOVE` in privates Archiv | außerhalb des öffentlichen Repositories | T012 |
 | `scripts/private_cabinet_archive.py` | create-only Sicherungs- und isoliertes Restore-Werkzeug | `ARCHIVE` nach abgeschlossenem Runtime-Rückbau | migrationsgebundener Schutzmechanismus, kein Bestandteil des Systemkatalogs | T012/T013 |
 | `scripts/private_cabinet_restic_handoff.py` | tmpfs-zu-Restic Snapshot- und Restore-Verifier | `ARCHIVE` nach abgeschlossenem Runtime-Rückbau | verschlüsselter migrationsgebundener Handoff; keine Katalogruntime und keine Retentionsteuerung | T012/T013 |
@@ -76,13 +76,13 @@ Kategorien:
 1. Private lokale App-Daten sind inventarisiert, exportiert oder ausdrücklich als entbehrlich klassifiziert.
 2. Ein begrenzter Stopptest wurde separat autorisiert, mit Rollback ausgeführt und zeigt, dass der Katalog ohne laufende externe App validiert und rendert. Der aktuelle Preflight bereitet diesen Test nur vor.
 3. Aktive Consumer sind soweit möglich bekannt; öffentliche Belege enthalten keine privaten Runtime-Details und Restunsicherheit bleibt sichtbar.
-4. Bureau autorisiert Runtime-Rückbau und Repository-Rename jeweils separat.
+4. Der Runtime-Cutover ist autorisiert und umgesetzt; Repository-Rename und private Daten-/Retentionwirkungen bleiben separat.
 5. Jeder destruktive Schritt besitzt Backup, Rollback und Receipt.
 
 ## Nicht-Claims dieser Scheibe
 
-- Die externe Cabinet-App ist noch nicht gestoppt oder entfernt.
-- Lokale App-Daten sind noch nicht vollständig inventarisiert.
-- Legacy-Registry und Statusfelder sind noch nicht vollständig migriert.
+- Die externe Cabinet-App ist aus dem aktiven Dienst- und Repositoryvertrag entfernt.
+- Private Altbestände sind erhalten und nicht endgültig gelöscht.
+- Historische Legacy-Flächen bleiben als Archiv oder Kompatibilität vorhanden.
 - Das Repository ist noch nicht umbenannt.
-- Die Matrix erteilt keine Lösch-, Shutdown-, Rename- oder Merge-Erlaubnis.
+- Die Matrix erteilt keine private Lösch-, Retention- oder Rename-Erlaubnis.

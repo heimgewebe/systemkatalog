@@ -1,119 +1,62 @@
-# Cabinet Runtime Retirement — Autorisierungs- und Rollbackpaket v1
+# Cabinet Runtime Retirement — Cutover- und Rollbackvertrag v1
 
-Status: vorbereitet, **nicht autorisiert und nicht ausgeführt**
+Status: **T013 Runtime-Cutover umgesetzt; externe Workspace-Runtime retired**
 
 Bureau-Task: `OPERATOR-ECOSYSTEM-REDUNDANCY-V1-T013`
 
-Öffentlicher Beleg: [cabinet-runtime-retirement-preflight-v1.json](cabinet-runtime-retirement-preflight-v1.json)
+Ausgangsbeleg: [cabinet-runtime-retirement-preflight-v1.json](cabinet-runtime-retirement-preflight-v1.json)
 
-## Ausgangslage
+## Ergebnis
 
-Der Systemkatalog ist seit T004 von der externen Cabinet-App unabhängig. Katalogdaten, Validatoren und Renderer benötigen keinen App- oder Daemonbetrieb.
+Die externe Cabinet AI Workspace App ist nicht mehr Bestandteil des aktiven Repository- oder Dienstvertrags. An ihre Stelle tritt `heimgewebe-systemkatalog.service`: eine zustandslose, read-only Python-Projektion der versionierten Katalogquellen.
 
-Der datierte Preflight zeigt zugleich:
+Der Cutover umfasst:
 
-- Die externe Runtime lief zum Beobachtungszeitpunkt weiterhin als aktivierter Dienst.
-- Ihr Prozessbaum umfasste acht Prozesse.
-- Zwei Listener waren ausschließlich lokal gebunden.
-- Die externe App belegte rund 1,89 GB.
-- Der private Zustand außerhalb des Belegs umfasste rund 1,38 MB und 77 Dateien.
-- Die tatsächlich beobachtete Runtime war Version 0.5.0.
-- Der versionierte Installations- und Auditvertrag beschreibt noch Version 0.4.4.
-- Der vorhandene Audit stoppte deshalb korrekt bei lokalem Wrapperdrift.
+- alten Node-/Next-App-Dienst stoppen und deaktivieren;
+- alten Daemon und dessen zweiten Listener aus dem aktiven Vertrag entfernen;
+- App-Starter, Session-Wrapper, Security-Gate und Dark-Theme-Patch aus dem Repository entfernen;
+- Secret- und Provider-Environment aus der Katalogruntime entfernen;
+- neue Loopback-Oberfläche auf dem bisherigen sichtbaren Port bereitstellen;
+- `cabinet.service` ausschließlich als Kompatibilitätsalias der neuen Unit erhalten;
+- alte aktive Startflächen vor dem Cutover lokal sichern.
 
-Dieser Drift soll **nicht** durch eine neue Pflegegeneration für die Fremd-App behoben werden. Das würde den bereits app-unabhängigen Katalog erneut an die externe Runtime binden. Der Drift ist stattdessen Teil des kontrollierten Rückbaupfads.
+## Neue Runtime
 
-## Entscheidungsvorschlag
+- Unit: `heimgewebe-systemkatalog.service`
+- Alias: `cabinet.service`
+- Implementierung: Python-Standardbibliothek
+- Zustand: read-only und zustandslos
+- Canon: `policy/system-catalog.v1.json` und `registry/ecosystem/**`
+- HTML: `/`
+- JSON: `/api/catalog.json`
+- Health: `/healthz`
 
-Empfohlen wird ein gestufter, reversibler Rückbau. Jede Phase erhält eine eigene, zielgebundene Autorisierung. Das Freigeben einer Phase autorisiert keine spätere Phase.
+## Erhaltene Altbestände
 
-### Phase A — begrenzter Stopptest
+Der Runtime-Cutover löscht keine privaten App-, Konfigurations-, Evidence-, Backup- oder Restorebestände. Sie bleiben außerhalb des Katalogkanons für Rückfall, Klassifikation oder spätere Retentionentscheidungen erhalten.
 
-**Zweck:** Nachweisen, dass der Katalog und seine CI-/Arbeitswege ohne laufende externe App verwendbar bleiben.
+Insbesondere sind nicht automatisch Teil des Cutovers:
 
-**Wirkung:** Dienst vorübergehend stoppen; keine Datei löschen, verschieben oder deaktivieren.
+- private Konfiguration;
+- private Datenbanken und App-Zustände;
+- verschlüsselte Sicherungs- und Restorebelege;
+- historische Preflight-Evidence;
+- endgültige Löschung externer App-Binaries.
 
-**Vorprüfung:**
+## Rollback
 
-- frischer Dienst- und Prozesssnapshot;
-- unveränderte private Evidence- und Exportbelege;
-- sauberer Cabinet-Checkout;
-- aktuelle Consumer-/Hostunsicherheiten dokumentiert;
-- festgelegtes kurzes Beobachtungsfenster.
+Der Installer sichert vorhandene Units und Bedienwerkzeuge vor dem Cutover unter `~/.local/state/cabinet/runtime-cutovers/`. Der Git-Rückweg ist der Revert des Cutover-Commits. Private Altbestände werden nicht überschrieben.
 
-**Erfolgskriterien:**
+## Noch getrennt
 
-- Systemkatalog validiert und rendert;
-- keine belegte notwendige Consumerfunktion bricht;
-- Dienst bleibt während des Fensters bewusst gestoppt;
-- keine Daten- oder Konfigurationsänderung.
+Die Umbenennung des GitHub-Repositories und aller Referenzen zu `heimgewebe/heimgewebe-katalog` bleibt T014. Der Runtime-Cutover allein ändert weder Repositoryname noch lokalen Checkoutpfad.
 
-**Rollback:** Dienst sofort neu starten und lokalen Loopbackbetrieb sowie Katalogprüfungen verifizieren.
+## Nicht-Claims
 
-**Stop-Kriterien:** unerwarteter Consumerfehler, fehlende Rollbackfähigkeit, veränderte Evidence-Hashes oder unklare Dienstzuordnung.
+Dieser Beleg beweist nicht:
 
-### Phase B — Dienst deaktivieren, Dateien behalten
-
-**Voraussetzung:** Phase A wurde separat autorisiert, erfolgreich durchgeführt und reviewt.
-
-**Wirkung:** Autostart deaktivieren; sämtliche App-, Konfigurations-, Zustands- und Wrapperdateien bleiben erhalten.
-
-**Rollback:** Dienst erneut aktivieren, starten und die vorherigen Prüfungen wiederholen.
-
-### Phase C — versionierte Runtimeflächen entfernen
-
-**Voraussetzung:** Phase B ist stabil, und ein eigener PR zeigt den vollständigen Repository-Diff.
-
-**Zielumfang:**
-
-- `ops/bin/**`
-- `ops/install/**`
-- `ops/systemd/**`
-- `ops/patches/**`
-- Runtime-Manifest und appbezogene Installerprüfungen
-
-Private Konfiguration, privater Zustand, Exportbelege und Restorebelege sind hiervon ausgeschlossen.
-
-**Rollback:** PR-Revert beziehungsweise Wiederherstellung des letzten appgebundenen Repositorystands.
-
-### Phase D — externe App-Binaries quarantänisieren
-
-**Voraussetzung:** separate Retentionentscheidung nach stabiler Phase B/C.
-
-**Wirkung:** externe App- und CLI-Binaries zunächst reversibel in Quarantäne verschieben; keine sofortige endgültige Löschung.
-
-**Rollback:** quarantänisierte Pfade hashgebunden wiederherstellen.
-
-Private Konfiguration und privater Zustand werden nicht automatisch mitbehandelt. Ihre spätere Archivierung oder Löschung benötigt eine eigene Klassifikation und Freigabe.
-
-## Nicht Teil von T013
-
-Die Repository-Umbenennung zu `heimgewebe/heimgewebe-katalog` bleibt T014. Selbst ein vollständig abgeschlossener Runtime-Rückbau benennt weder GitHub-Repository noch lokalen Checkout automatisch um.
-
-## Erforderliche Autorisierungen
-
-Die folgenden Wirkungen sind derzeit **nicht autorisiert**:
-
-- begrenzter Dienst-Stopptest;
-- dauerhafte Dienstdeaktivierung;
-- Quarantäne oder Entfernung lokaler Runtime-Dateien;
-- Entfernung versionierter Runtimeflächen;
-- Änderung von Backup oder Retention;
-- Löschung oder Verschiebung privater Daten;
-- Repository-Rename.
-
-## Muster für eine spätere Phase-A-Autorisierung
-
-Das folgende Muster ist nur ein Formulierungsvorschlag und keine aktuelle Freigabe:
-
-> Ich autorisiere ausschließlich T013 Phase A: einen zeitlich begrenzten Stopptest von `cabinet.service` mit unverändertem Daten- und Dateibestand sowie verpflichtendem Neustart-Rollback bei jedem Fehler. Diese Autorisierung umfasst weder Deaktivierung noch Dateiänderung, Löschung, Retentionänderung oder Repository-Rename.
-
-Vor Ausführung muss dieses Mandat in Bureau ziel-, task- und wirkungsgebunden registriert werden.
-
-## Noch offene Unsicherheit
-
-- Ein registrierter Ort war im Consumer-Audit nicht erreichbar.
-- Ein registrierter Ort war nur teilweise zurechenbar.
-- Menschliche Cabinet-Nutzung wurde nicht direkt gemessen.
-
-Diese Unsicherheit verhindert einen pauschalen Sofortabriss. Sie verhindert nicht die Vorbereitung eines begrenzten und vollständig reversiblen Stopptests.
+- aktuelle Runtime-Gesundheit zu jedem späteren Zeitpunkt;
+- vollständige Abwesenheit unbekannter Remote-Consumer;
+- Erlaubnis zur Löschung privater Daten oder Backups;
+- Retention-, Forget- oder Prune-Erlaubnis;
+- abgeschlossene Repository-Umbenennung.

@@ -2,18 +2,19 @@
 
 Cabinet beschreibt die Systeme des Heimgewebe-Ökosystems, ihre Zwecke, Wahrheitszuständigkeiten, stabilen Beziehungen und Einstiegspunkte.
 
-Das Repository befindet sich in einer kontrollierten Migration weg von der externen Cabinet AI Workspace App. Die App ist nur noch ein vorübergehender optionaler Viewer; Katalogdaten, Validierung und Rendering funktionieren unabhängig von ihr.
+Die externe Cabinet AI Workspace App ist außer Betrieb. Der aktive lokale Viewer ist ein kleiner, read-only Heimgewebe-Systemkatalog ohne Node, Next, KI-Agent, Daemon, Datenbank oder Secret-Konfiguration.
 
 ## Schnellstart
 
-1. **Lesbaren Systemkatalog öffnen:** [rendered/system-catalog.md](rendered/system-catalog.md)
-2. **Agentenregeln lesen:** [AGENTS.md](AGENTS.md)
-3. **Maschinenlesbare Rollenpolicy lesen:** [policy/system-catalog.v1.json](policy/system-catalog.v1.json)
-4. **Wahrheitszuständigkeiten prüfen:** [registry/ecosystem/authority-matrix.v1.json](registry/ecosystem/authority-matrix.v1.json)
-5. **Stabile Katalogregistry prüfen:** [Knoten](registry/ecosystem/nodes.json) und [Beziehungen](registry/ecosystem/edges.json)
-6. **Migrationsmatrix lesen:** [docs/migration/cabinet-surface-matrix-v1.md](docs/migration/cabinet-surface-matrix-v1.md)
-7. **Runtime-Rückbau vorbereiten:** [redaktierter T013-Preflight](docs/migration/cabinet-runtime-retirement-preflight-v1.json) und [Autorisierungs-/Rollbackpaket](docs/migration/cabinet-runtime-retirement-authorization-v1.md)
-8. **Katalogschema ansehen:** [Schema](catalog/system-catalog.schema.v1.json) und [nichtkanonisches Beispiel](catalog/system-catalog.example.v1.json)
+1. **Lokalen Systemkatalog öffnen:** `http://127.0.0.1:4001/`
+2. **Lesbare Repositoryprojektion öffnen:** [rendered/system-catalog.md](rendered/system-catalog.md)
+3. **Agentenregeln lesen:** [AGENTS.md](AGENTS.md)
+4. **Maschinenlesbare Rollenpolicy lesen:** [policy/system-catalog.v1.json](policy/system-catalog.v1.json)
+5. **Wahrheitszuständigkeiten prüfen:** [registry/ecosystem/authority-matrix.v1.json](registry/ecosystem/authority-matrix.v1.json)
+6. **Stabile Katalogregistry prüfen:** [Knoten](registry/ecosystem/nodes.json) und [Beziehungen](registry/ecosystem/edges.json)
+7. **Migrationsmatrix lesen:** [docs/migration/cabinet-surface-matrix-v1.md](docs/migration/cabinet-surface-matrix-v1.md)
+8. **Abgeschlossenen Runtime-Cutover nachvollziehen:** [T013-Preflight](docs/migration/cabinet-runtime-retirement-preflight-v1.json) und [Cutover-/Rollbackbeleg](docs/migration/cabinet-runtime-retirement-authorization-v1.md)
+9. **Katalogschema ansehen:** [Schema](catalog/system-catalog.schema.v1.json) und [nichtkanonisches Beispiel](catalog/system-catalog.example.v1.json)
 
 ## Cabinet beantwortet
 
@@ -57,20 +58,26 @@ Der notwendige Unterbau besteht nur aus:
 - deterministischen Renderern;
 - CI-Prüfungen gegen Inkonsistenzen und private Runtime-Leaks.
 
-Kein Server, Daemon, Scheduler, KI-Agent oder Datenbankdienst ist für den Katalog erforderlich.
+Der Katalogkanon benötigt keinen Server. Für die lokale Leseoberfläche läuft `heimgewebe-systemkatalog.service`: ein zustandsloser Python-HTTP-Dienst auf Loopback. `cabinet.service` ist nur noch dessen Kompatibilitätsalias.
 
-## Migration
+## Runtime und Migration
 
-Die Katalogkonsolidierung ist bewusst nichtdestruktiv. Bestehende Räume, Radar-, Gemini- und Runtime-Flächen bleiben zunächst lesbar, sind aber Migrations- oder Kompatibilitätsflächen und keine Zielarchitektur. Legacy-Radar und Gemini-Dry-Run sind ausschließlich manuell startbar; sie besitzen keine Katalogautorität. Der [T013-Runtime-Preflight](docs/migration/cabinet-runtime-retirement-preflight-v1.json) ist abgeschlossen und empfiehlt einen gestuften, reversiblen Rückbau, er autorisiert jedoch keine Wirkung. Abschaltung der App, Löschung lokaler Daten und Umbenennung des Repositories benötigen eigene Bureau-Autorisierungen und separate Review-Gates.
+Der aktive Dienst liefert den Katalog ausschließlich lesend aus. Seine Inhalte werden bei jedem Request aus den versionierten kanonischen Eingaben zusammengesetzt. Der frühere Node-/Next-App- und Daemon-Unterbau wurde aus dem aktiven Repository- und Dienstvertrag entfernt. Private Altbestände bleiben außerhalb des Katalogkanons als Rückfall- und Archivmaterial erhalten.
 
-Für die vorgelagerte private Datensicherung existiert ein [begrenztes Archiv-, verschlüsseltes Restic-Handoff- und Restore-Verfahren](docs/migration/private-cabinet-archive-v1.md). Seine Dokumentation erteilt keine Ausführungserlaubnis; Werkzeugentwicklung und echter Export benötigen getrennte, zielgebundene Bureau-Autorisierungen.
+Bedienung:
 
-Die geplante Zielidentität nach abgeschlossener Entkopplung lautet `heimgewebe/heimgewebe-katalog`.
+```bash
+systemkatalogctl status
+systemkatalogctl url
+systemkatalogctl restart
+```
+
+Die geplante Zielidentität des Repositories bleibt `heimgewebe/heimgewebe-katalog`; die Umbenennung ist ein eigener Referenzmigrationsschritt.
 
 ## Nicht verwechseln
 
 - Der lesbare Katalog ist eine Projektion, keine Live- oder Merge-Wahrheit.
 - Mermaidkarten sind Orientierung, kein Wahrheitsbeweis.
 - Das öffentliche Consumer-Usage-Artefakt enthält nur redaktierte Aggregataussagen; Runtime-Details bleiben privat.
-- Die externe Cabinet-App ist weder Canon noch notwendiger Runtime-Unterbau.
+- Die externe Cabinet-App ist retired und kein aktiver Runtime-Unterbau.
 - Ein wiederkehrender Gemini-Maintenance-Scout wird nicht eingerichtet.

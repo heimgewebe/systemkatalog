@@ -290,15 +290,28 @@ def validate(root: Path = ROOT) -> dict[str, Any]:
         raise ValueError("system catalog policy must be active")
     if policy.get("role") != "app-independent system catalog":
         raise ValueError("system catalog role mismatch")
+    expected_inputs = [str(NODES_REL), str(EDGES_REL), str(CLAIMS_REL), str(AUTHORITY_REL)]
     app = policy.get("externalCabinetApp")
     if not isinstance(app, dict):
         raise ValueError("externalCabinetApp policy missing")
     if app.get("required") is not False or app.get("canonical") is not False:
         raise ValueError("external Cabinet app must be optional and non-canonical")
-    if app.get("runtimeAuthoritative") is not False or app.get("shutdownAuthorized") is not False:
-        raise ValueError("external Cabinet runtime must not be authoritative or shutdown-authorized")
+    if app.get("role") != "retired_external_workspace":
+        raise ValueError("external Cabinet app must be marked retired")
+    if app.get("runtimeAuthoritative") is not False or app.get("shutdownAuthorized") is not True:
+        raise ValueError("external Cabinet runtime retirement contract mismatch")
+    if app.get("activeRuntime") is not False or app.get("replacement") != "heimgewebe-systemkatalog.service":
+        raise ValueError("system catalog replacement runtime missing")
+    runtime = policy.get("runtimeProjection")
+    if not isinstance(runtime, dict):
+        raise ValueError("runtimeProjection missing")
+    if runtime.get("role") != "read_only_catalog_projection" or runtime.get("stateful") is not False:
+        raise ValueError("runtimeProjection must stay read-only and stateless")
+    if runtime.get("service") != "heimgewebe-systemkatalog.service" or runtime.get("compatibilityAlias") != "cabinet.service":
+        raise ValueError("runtimeProjection service binding mismatch")
+    if runtime.get("canonicalInputs") != expected_inputs:
+        raise ValueError("runtimeProjection canonical inputs mismatch")
 
-    expected_inputs = [str(NODES_REL), str(EDGES_REL), str(CLAIMS_REL), str(AUTHORITY_REL)]
     if policy.get("currentCanonicalInputs") != expected_inputs:
         raise ValueError("currentCanonicalInputs must be the exact maintained catalog inputs")
     if policy.get("canonicalAuthorityMatrix") != str(AUTHORITY_REL):
@@ -455,6 +468,10 @@ def validate(root: Path = ROOT) -> dict[str, Any]:
     migration = policy.get("migrationCompletion")
     if not isinstance(migration, dict) or migration.get("task") != "OPERATOR-ECOSYSTEM-REDUNDANCY-V1-T004":
         raise ValueError("T004 migration completion record missing")
+    if migration.get("runtimeTask") != "OPERATOR-ECOSYSTEM-REDUNDANCY-V1-T013":
+        raise ValueError("T013 runtime cutover completion record missing")
+    if migration.get("state") != "catalog_core_and_runtime_cutover_complete":
+        raise ValueError("system catalog migration is not complete")
 
     return {
         "status": "valid",
@@ -466,6 +483,8 @@ def validate(root: Path = ROOT) -> dict[str, Any]:
         "maintainedCatalogSurfaces": len(policy["maintainedCatalogSurfaces"]),
         "legacyCompatibilitySurfaces": len(policy["legacyCompatibilitySurfaces"]),
         "externalAppRequired": False,
+        "externalAppRetired": True,
+        "runtimeService": "heimgewebe-systemkatalog.service",
     }
 
 

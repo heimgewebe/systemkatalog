@@ -1,6 +1,6 @@
 # Cabinet Home — Heimgewebe-Systemkatalog
 
-Cabinet wird zu einem app-unabhängigen Katalog für Systeme, Zwecke, Wahrheitszuständigkeiten, stabile Beziehungen und Einstiegspunkte.
+Cabinet ist der app-unabhängige Heimgewebe-Systemkatalog für Systeme, Zwecke, Wahrheitszuständigkeiten, stabile Beziehungen und Einstiegspunkte.
 
 ## Aktive Einstiege
 
@@ -11,7 +11,7 @@ Cabinet wird zu einem app-unabhängigen Katalog für Systeme, Zwecke, Wahrheitsz
 - [Authority Matrix](registry/ecosystem/authority-matrix.v1.json) — Zuordnung der Wahrheitsdomänen zu ihren Primärquellen.
 - [Knoten](registry/ecosystem/nodes.json) und [Beziehungen](registry/ecosystem/edges.json) — kanonische stabile Katalogregistry.
 - [Migrationsmatrix](docs/migration/cabinet-surface-matrix-v1.md) — Keep/Simplify/Move/Archive/Remove für die bestehende Oberfläche.
-- [Runtime-Rückbau-Preflight](docs/migration/cabinet-runtime-retirement-preflight-v1.json) und [Autorisierungs-/Rollbackpaket](docs/migration/cabinet-runtime-retirement-authorization-v1.md) — datierter T013-Entscheidungsbeleg ohne Abschaltfreigabe.
+- [Runtime-Ausgangsbeleg](docs/migration/cabinet-runtime-retirement-preflight-v1.json) und [Cutover-/Rollbackvertrag](docs/migration/cabinet-runtime-retirement-authorization-v1.md) — historische T013-Evidence und abgeschlossener Runtimewechsel.
 - [Zielformat](catalog/system-catalog.schema.v1.json) und [nichtkanonisches Beispiel](catalog/system-catalog.example.v1.json) — app-unabhängiger Datenvertrag.
 
 ## Wahrheitsrouting
@@ -30,4 +30,4 @@ Cabinet verweist auf diese Quellen, führt aber keine zweite Kopie ihrer wechsel
 
 Die bisherigen Bereiche [Bestand](bestand/index.md), [Prüfung](pruefung/index.md) und [Steuerung](steuerung/index.md) sowie alte Karten-, Radar-, Gemini- und Runtime-Dokumente bleiben vorerst lesbar. Sie sind jedoch Migrations- oder historische Flächen und nicht automatisch Bestandteil des Zielkatalogs.
 
-Die externe Cabinet-App ist nur noch ein vorübergehender optionaler Viewer. Abschaltung, Datenexport und Repository-Rename werden separat im Bureau gesteuert.
+Die externe Cabinet-App ist retired. Die lokale Oberfläche läuft als zustandslose read-only Python-Projektion; nur Repository- und Referenzumbenennung sowie spätere private Retentionentscheidungen bleiben getrennt.
