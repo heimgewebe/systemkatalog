@@ -37,7 +37,9 @@ done
 echo "=== Bash syntax ==="
 find ops scripts/ci -type f -print0 | while IFS= read -r -d '' file; do
   first="$(head -n 1 "$file" 2>/dev/null || true)"
-  [[ "$first" =~ ^#!(.*)bash ]] && bash -n "$file" || true
+  if [[ "$first" =~ ^#!(.*)bash ]]; then
+    bash -n "$file"
+  fi
 done
 
 echo "=== Catalog contracts ==="
