@@ -138,8 +138,8 @@ def validate_candidate(candidate: dict[str, Any]) -> None:
 
     source = _object(candidate["source"], "source")
     _exact_keys(source, {"repository", "commit", "maintenanceReportStatus", "maintenanceReportRef", "signalRefs"}, "source")
-    if source["repository"] != "heimgewebe/cabinet":
-        raise CabinetFrontierError("source.repository must be heimgewebe/cabinet")
+    if source["repository"] != "heimgewebe/heimgewebe-katalog":
+        raise CabinetFrontierError("source.repository must be heimgewebe/heimgewebe-katalog")
     if not isinstance(source["commit"], str) or not COMMIT_RE.fullmatch(source["commit"]):
         raise CabinetFrontierError("source.commit must be a 40-character lowercase git SHA")
     if source["maintenanceReportStatus"] not in {"pass", "warn", "fail", "unknown"}:

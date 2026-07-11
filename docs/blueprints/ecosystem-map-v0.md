@@ -3,7 +3,7 @@
 Status: draft
 Datum: 2026-07-04
 Owner: Cabinet
-Lokaler Pflegeort: `/home/alex/repos/cabinet`
+Lokaler Pflegeort: `/home/alex/repos/heimgewebe-katalog`
 
 ## Entscheidung
 

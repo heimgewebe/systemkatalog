@@ -50,7 +50,7 @@
       ],
       "properties": {
         "repository": {
-          "const": "heimgewebe/cabinet"
+          "const": "heimgewebe/heimgewebe-katalog"
         },
         "commit": {
           "type": "string",

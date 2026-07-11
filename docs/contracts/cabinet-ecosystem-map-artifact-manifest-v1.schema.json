@@ -28,7 +28,7 @@
       "additionalProperties": false,
       "required": ["repository", "commit", "generatedAt"],
       "properties": {
-        "repository": {"const": "heimgewebe/cabinet"},
+        "repository": {"const": "heimgewebe/heimgewebe-katalog"},
         "commit": {
           "type": "string",
           "pattern": "^[0-9a-f]{40}$"

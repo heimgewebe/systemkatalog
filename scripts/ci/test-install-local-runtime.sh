@@ -76,14 +76,13 @@ grep -q "content mismatch" /tmp/catalog-check.out
 cp "$TEMP_REPO/ops/bin/heimgewebe-systemkatalog" "$TEMP_HOME/.local/bin/heimgewebe-systemkatalog"
 chmod 0755 "$TEMP_HOME/.local/bin/heimgewebe-systemkatalog"
 
-echo "=== Negative Checker: alias drift ==="
-rm "$TEMP_HOME/.config/systemd/user/cabinet.service"
+echo "=== Negative Checker: retired service alias ==="
 ln -s wrong.service "$TEMP_HOME/.config/systemd/user/cabinet.service"
 if run_checker 2 >/tmp/catalog-check.out 2>&1; then
-  echo "FAIL: checker accepted alias drift"; exit 1
+  echo "FAIL: checker accepted retired service alias"; exit 1
 fi
-grep -q "compatibility alias target mismatch" /tmp/catalog-check.out
-ln -sfn heimgewebe-systemkatalog.service "$TEMP_HOME/.config/systemd/user/cabinet.service"
+grep -q "retired path exists" /tmp/catalog-check.out
+rm "$TEMP_HOME/.config/systemd/user/cabinet.service"
 
 echo "=== Negative Checker: retired binary ==="
 touch "$TEMP_HOME/.local/bin/cabinet"

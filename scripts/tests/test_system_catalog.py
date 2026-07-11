@@ -94,7 +94,7 @@ class SystemCatalogTests(unittest.TestCase):
         authority = VALIDATOR._load(VALIDATOR.AUTHORITY)
         by_domain = {item["domain"]: item for item in authority["authorities"]}
         for domain in ("tasks_claims_completion", "branches_prs_reviews", "live_service_state"):
-            self.assertNotIn("cabinet", by_domain[domain]["projections"])
+            self.assertNotIn("heimgewebe_katalog", by_domain[domain]["projections"])
 
     def test_exactly_one_authority_matrix_is_enforced(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:

@@ -6,15 +6,15 @@ StartLimitBurst=5
 
 [Service]
 Type=simple
-WorkingDirectory=@CABINET_ROOT@
+WorkingDirectory=@SYSTEMKATALOG_ROOT@
 Environment=HOME=@HOME@
 Environment=PYTHONDONTWRITEBYTECODE=1
-Environment=SYSTEMKATALOG_ROOT=@CABINET_ROOT@
+Environment=SYSTEMKATALOG_ROOT=@SYSTEMKATALOG_ROOT@
 Environment=SYSTEMKATALOG_BIND=127.0.0.1
 Environment=SYSTEMKATALOG_PORT=4001
-ExecStartPre=/usr/bin/python3 @CABINET_ROOT@/scripts/validate_system_catalog.py
-ExecStartPre=/usr/bin/python3 @CABINET_ROOT@/scripts/render_system_catalog.py --check
-ExecStartPre=/usr/bin/python3 @CABINET_ROOT@/scripts/serve_system_catalog.py --check
+ExecStartPre=/usr/bin/python3 @SYSTEMKATALOG_ROOT@/scripts/validate_system_catalog.py
+ExecStartPre=/usr/bin/python3 @SYSTEMKATALOG_ROOT@/scripts/render_system_catalog.py --check
+ExecStartPre=/usr/bin/python3 @SYSTEMKATALOG_ROOT@/scripts/serve_system_catalog.py --check
 ExecStart=@HOME@/.local/bin/heimgewebe-systemkatalog
 Restart=on-failure
 RestartSec=3
@@ -31,4 +31,3 @@ LockPersonality=true
 
 [Install]
 WantedBy=default.target
-Alias=cabinet.service

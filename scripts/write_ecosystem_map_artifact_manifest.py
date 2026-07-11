@@ -150,7 +150,7 @@ def build_manifest(
         "schemaPath": SCHEMA_PATH,
         "mode": "read_only_projection_source",
         "source": {
-            "repository": "heimgewebe/cabinet",
+            "repository": "heimgewebe/heimgewebe-katalog",
             "commit": commit,
             "generatedAt": timestamp,
         },
@@ -194,7 +194,7 @@ def validate_manifest(manifest: dict[str, Any]) -> None:
     source = manifest["source"]
     if not isinstance(source, dict):
         raise EcosystemMapManifestError("source must be an object")
-    if source.get("repository") != "heimgewebe/cabinet":
+    if source.get("repository") != "heimgewebe/heimgewebe-katalog":
         raise EcosystemMapManifestError("source.repository mismatch")
     if not _is_commit_sha(source.get("commit")):
         raise EcosystemMapManifestError("source.commit must be a 40 character lowercase git SHA")

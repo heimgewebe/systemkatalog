@@ -53,7 +53,7 @@
       "links": [],
       "name": "cabinet",
       "nodeType": "repository",
-      "notes": "origin=github.com:heimgewebe/cabinet.git; default_branch=main; review_head=3ce791b34b1c095afd3ea1c76f7c1461759e26b0; import_head=3ce791b34b1c095afd3ea1c76f7c1461759e26b0; relationship=identisch; import_worktree=clean:0",
+      "notes": "origin=github.com:heimgewebe/heimgewebe-katalog.git; default_branch=main; review_head=3ce791b34b1c095afd3ea1c76f7c1461759e26b0; import_head=3ce791b34b1c095afd3ea1c76f7c1461759e26b0; relationship=identisch; import_worktree=clean:0",
       "roles": [
         "Cabinet soll sich vom lokalen Ordnungsraum zu einer Ecosystem-Intelligence-Schicht entwickeln."
       ],

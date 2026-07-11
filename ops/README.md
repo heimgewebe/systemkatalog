@@ -6,7 +6,6 @@ Dieses Verzeichnis beschreibt die aktive, reproduzierbare Leseoberfläche des He
 
 - Canon: versionierte Dateien unter `policy/`, `registry/ecosystem/` und `rendered/`
 - Runtime: `heimgewebe-systemkatalog.service`
-- Kompatibilitätsalias: `cabinet.service`
 - Implementierung: Python-Standardbibliothek
 - Bindung: ausschließlich Loopback
 - sichtbare Oberfläche: `http://127.0.0.1:4001/`
@@ -69,7 +68,7 @@ Der Audit prüft:
 - Katalogvalidierung und Renderdrift;
 - installierte Unit und Werkzeuge gegen das Repository;
 - aktiven und aktivierten Dienst;
-- `cabinet.service` als Alias der neuen Unit;
+- kein Kompatibilitätsalias unter dem alten Cabinet-Namen;
 - Abwesenheit der alten App-Starter und Drop-ins;
 - HTML- und JSON-Oberfläche;
 - geschlossenen früheren Daemon-Port.

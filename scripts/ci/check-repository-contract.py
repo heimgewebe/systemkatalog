@@ -76,12 +76,11 @@ def check_manifest(tree: dict[str, dict[str, str]], repo: Path, treeish: str) ->
         fail(f"manifest.schema: {manifest['schema']}")
     if manifest["runtime_version"] != "1":
         fail(f"manifest.runtime_version: {manifest['runtime_version']}")
-    if manifest["repository_root"] != "~/repos/cabinet":
+    if manifest["repository_root"] != "~/repos/heimgewebe-katalog":
         fail(f"manifest.repository_root: {manifest['repository_root']}")
     service = manifest["service"]
     expected_service = {
         "name": "heimgewebe-systemkatalog.service",
-        "compatibility_alias": "cabinet.service",
         "template": "ops/systemd/heimgewebe-systemkatalog.service.tmpl",
         "destination": "~/.config/systemd/user/heimgewebe-systemkatalog.service",
         "bind": "127.0.0.1",

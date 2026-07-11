@@ -78,7 +78,7 @@ class EcosystemMapArtifactManifestTests(unittest.TestCase):
         self.assertEqual(manifest["contractPath"], CONTRACT_PATH)
         self.assertEqual(manifest["schemaPath"], SCHEMA_PATH)
         self.assertEqual(manifest["mode"], "read_only_projection_source")
-        self.assertEqual(manifest["source"]["repository"], "heimgewebe/cabinet")
+        self.assertEqual(manifest["source"]["repository"], "heimgewebe/heimgewebe-katalog")
         self.assertEqual(manifest["source"]["commit"], TEST_COMMIT)
         self.assertEqual(manifest["source"]["generatedAt"], TEST_GENERATED_AT)
         self.assertEqual(manifest["artifactCount"], len(ARTIFACT_SPECS))

@@ -34,7 +34,7 @@ Cabinet darf diesen Output als untrusted Artifact lesen und validieren. Bureau d
   "createdAt": "2026-07-08T14:00:00Z",
   "status": "completed",
   "source": {
-    "repository": "heimgewebe/cabinet",
+    "repository": "heimgewebe/heimgewebe-katalog",
     "commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
     "executionManifestRef": "policy/gemini-maintenance-execution-manifest.v1.json",
     "evidenceManifestRef": "pruefung/10 Laeufe/gemini-maintenance-evidence-packet-v1.json",

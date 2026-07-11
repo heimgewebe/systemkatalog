@@ -173,8 +173,8 @@ def validate_scan(scan: dict[str, Any]) -> None:
 
     source = _object(scan["source"], "source")
     _exact_keys(source, {"repository", "commit", "executionManifestRef", "evidenceManifestRef", "inputRefs"}, "source")
-    if source["repository"] != "heimgewebe/cabinet":
-        raise GeminiMaintenanceScanError("source.repository must be heimgewebe/cabinet")
+    if source["repository"] != "heimgewebe/heimgewebe-katalog":
+        raise GeminiMaintenanceScanError("source.repository must be heimgewebe/heimgewebe-katalog")
     if not isinstance(source["commit"], str) or not COMMIT_RE.fullmatch(source["commit"]):
         raise GeminiMaintenanceScanError("source.commit must be a 40-character lowercase git SHA")
     if source["executionManifestRef"] != EXECUTION_MANIFEST_REF:

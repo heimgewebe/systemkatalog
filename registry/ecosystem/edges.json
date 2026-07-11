@@ -31,17 +31,17 @@
   "edges": [
     {
       "from": "actor:alexander",
-      "to": "repo:cabinet",
+      "to": "repo:heimgewebe-katalog",
       "type": "steers",
       "stability": "stable",
       "meaning": "Human sense, priority, approval and abort authority stay outside automation."
     },
     {
-      "from": "repo:cabinet",
+      "from": "repo:heimgewebe-katalog",
       "to": "artifact:ecosystem-map",
       "type": "owns",
       "stability": "stable",
-      "meaning": "Cabinet owns the map semantics during v0."
+      "meaning": "Heimgewebe-Systemkatalog owns the map semantics during v0."
     },
     {
       "from": "repo:bureau",
@@ -73,28 +73,28 @@
     },
     {
       "from": "concept:repobrief",
-      "to": "repo:cabinet",
+      "to": "repo:heimgewebe-katalog",
       "type": "provides",
       "stability": "stable",
-      "meaning": "RepoBrief gives Cabinet citable repository context."
+      "meaning": "RepoBrief gives Heimgewebe-Systemkatalog citable repository context."
     },
     {
       "from": "repo:steuerboard",
-      "to": "repo:cabinet",
+      "to": "repo:heimgewebe-katalog",
       "type": "observes",
       "stability": "stable",
       "meaning": "Steuerboard can provide read-only repo-state signals, not decisions."
     },
     {
       "from": "repo:vibe-lab",
-      "to": "repo:cabinet",
+      "to": "repo:heimgewebe-katalog",
       "type": "provides",
       "stability": "stable",
       "meaning": "Vibe-Lab provides method experiments and evidence patterns."
     },
     {
       "from": "repo:chronik",
-      "to": "repo:cabinet",
+      "to": "repo:heimgewebe-katalog",
       "type": "provides",
       "stability": "stable",
       "meaning": "Chronik provides event trace and historical continuity."
@@ -121,11 +121,11 @@
       "meaning": "Device Graph may describe infrastructure devices; it is not the ecosystem-governance map canon."
     },
     {
-      "from": "repo:cabinet",
+      "from": "repo:heimgewebe-katalog",
       "to": "repo:leitstand",
       "type": "provides",
       "stability": "stable",
-      "meaning": "Cabinet provides map artifacts for Leitstand display."
+      "meaning": "Heimgewebe-Systemkatalog provides map artifacts for Leitstand display."
     },
     {
       "from": "repo:leitstand",

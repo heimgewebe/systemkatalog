@@ -1,4 +1,4 @@
-# Cabinet Agent Entry
+# Heimgewebe-Systemkatalog – Agent Entry
 
 Dieses Dokument ist der kanonische Einstieg für LLMs und Agenten im aktiven Heimgewebe-Systemkatalog.
 
@@ -16,7 +16,7 @@ Dieses Dokument ist der kanonische Einstieg für LLMs und Agenten im aktiven Hei
 
 ## Zielrolle
 
-Cabinet ist ein app-unabhängiger Systemkatalog. Es beschreibt:
+Der Heimgewebe-Systemkatalog ist app-unabhängig. Es beschreibt:
 
 - vorhandene Systeme;
 - Zweck und ausdrückliche Nicht-Zuständigkeit;
@@ -24,9 +24,9 @@ Cabinet ist ein app-unabhängiger Systemkatalog. Es beschreibt:
 - stabile Beziehungen;
 - Einstiegspunkte.
 
-Cabinet pflegt keine Aufgabenpriorität, keinen Taskstatus, keine Runtime-Gesundheit, keine Merge-Reife, keine aktive Agentendisposition und keinen Schedulerzustand.
+Der Systemkatalog pflegt keine Aufgabenpriorität, keinen Taskstatus, keine Runtime-Gesundheit, keine Merge-Reife, keine aktive Agentendisposition und keinen Schedulerzustand.
 
-Die externe Cabinet AI Workspace App ist retired. Die lokale Oberfläche wird von `heimgewebe-systemkatalog.service` als zustandslose read-only Projektion bereitgestellt; `cabinet.service` ist nur ein Kompatibilitätsalias.
+Die externe Cabinet AI Workspace App ist retired. Die lokale Oberfläche wird von `heimgewebe-systemkatalog.service` als zustandslose read-only Projektion bereitgestellt; alte Cabinet-Service-Aliasse sind entfernt.
 
 ## Wahrheitsordnung
 
@@ -37,7 +37,7 @@ Die externe Cabinet AI Workspace App ist retired. Die lokale Oberfläche wird vo
 - Runtime, systemd, Logs und Healthchecks sind primär für laufende Dienste.
 - RepoBrief / Lenskit ist primär für extern erzeugte Snapshots und zitierfähigen Repositorykontext.
 - Leitstand ist die allgemeine Live-Anzeige.
-- Cabinet besitzt nur die stabile Ökosystem-Semantik und die Zuordnung von Wahrheitsdomänen zu ihren Primärquellen.
+- Der Heimgewebe-Systemkatalog besitzt nur die stabile Ökosystem-Semantik und die Zuordnung von Wahrheitsdomänen zu ihren Primärquellen.
 
 ## Arbeitsregel
 
@@ -45,7 +45,7 @@ Die externe Cabinet AI Workspace App ist retired. Die lokale Oberfläche wird vo
 2. Bei Cabinet-Fragen vorhandene Merge-Dumps nur als Snapshot behandeln; aktuelle Repo-/PR-Zustände gegen GitHub oder lokalen Working Tree prüfen.
 3. Sidecars, Health-Berichte und Reading Packs sind Navigation oder Diagnose, keine Inhaltswahrheit.
 4. Keine Claims aus Mermaidkarten als Beweis verwenden. Karten sind Projektionen.
-5. Keine wechselnden Zustände aus GitHub, Bureau, CI oder Runtime in Cabinet kopieren.
+5. Keine wechselnden Zustände aus GitHub, Bureau, CI oder Runtime in den Systemkatalog kopieren.
 6. Neue Katalogfelder müssen stabil, quellengebunden und app-unabhängig sein.
 7. Das nichtkanonische Beispiel unter `catalog/` darf nie als vollständige Registry behandelt werden.
 8. Mutationen eng schneiden und an den aktiven Bureau-Task binden.
@@ -66,7 +66,7 @@ Die externe Cabinet AI Workspace App ist retired. Die lokale Oberfläche wird vo
 - Heimlern: retrospektive Outcome-Auswertung und proposal-only Lernvorschläge.
 - Chronik: append-only Ereigniskontinuität, sofern tatsächlich konsumiert.
 - GitHub / CI / Runtime: harte Primärrealität für ihre jeweiligen Domänen.
-- Externe Agenten: Vorschlag, Review oder Patch; keine unmittelbare Mutationshoheit aus Cabinet heraus.
+- Externe Agenten: Vorschlag, Review oder Patch; keine unmittelbare Mutationshoheit aus dem Systemkatalog heraus.
 
 ## Stop-Kriterien
 

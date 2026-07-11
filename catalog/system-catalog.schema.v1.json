@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/heimgewebe/cabinet/catalog/system-catalog.schema.v1.json",
+  "$id": "https://github.com/heimgewebe/heimgewebe-katalog/catalog/system-catalog.schema.v1.json",
   "title": "Heimgewebe System Catalog v1",
   "type": "object",
   "required": [

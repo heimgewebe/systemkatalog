@@ -10,7 +10,6 @@ esac
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 UNIT="$HOME/.config/systemd/user/heimgewebe-systemkatalog.service"
-ALIAS="$HOME/.config/systemd/user/cabinet.service"
 TMP="$(mktemp -d)"
 trap 'rm -rf -- "$TMP"' EXIT
 
@@ -20,7 +19,7 @@ render() {
 from pathlib import Path
 import sys
 source, destination, home, root = map(Path, sys.argv[1:])
-destination.write_text(source.read_text().replace("@HOME@", str(home)).replace("@CABINET_ROOT@", str(root)))
+destination.write_text(source.read_text().replace("@HOME@", str(home)).replace("@SYSTEMKATALOG_ROOT@", str(root)))
 PY
 }
 
@@ -34,11 +33,9 @@ cmp -s "$TMP/unit" "$UNIT" || die "Installierte Unit driftet"
 for name in heimgewebe-systemkatalog systemkatalogctl; do
   cmp -s "$REPO_ROOT/ops/bin/$name" "$HOME/.local/bin/$name" || die "Installiertes Werkzeug driftet: $name"
 done
-for path in "$HOME/.local/bin/cabinet" "$HOME/.local/bin/cabinet-session" "$HOME/.local/bin/cabinetctl" "$HOME/.local/bin/cabinet-security-gate" "$HOME/.config/systemd/user/cabinet.service.d"; do
+for path in "$HOME/.local/bin/cabinet" "$HOME/.local/bin/cabinet-session" "$HOME/.local/bin/cabinetctl" "$HOME/.local/bin/cabinet-security-gate" "$HOME/.config/systemd/user/cabinet.service" "$HOME/.config/systemd/user/cabinet.service.d"; do
   [[ ! -e "$path" && ! -L "$path" ]] || die "Alte Runtimefläche noch aktiv: $path"
 done
-[[ -L "$ALIAS" ]] || die "Kompatibilitätsalias cabinet.service fehlt"
-[[ "$(readlink -f "$ALIAS")" == "$(readlink -f "$UNIT")" ]] || die "cabinet.service zeigt nicht auf Systemkatalog"
 [[ "$(systemctl --user show heimgewebe-systemkatalog.service -p LoadState --value)" == loaded ]] || die "Unit nicht geladen"
 [[ "$(systemctl --user show heimgewebe-systemkatalog.service -p ActiveState --value)" == active ]] || die "Unit nicht aktiv"
 [[ "$(systemctl --user show heimgewebe-systemkatalog.service -p SubState --value)" == running ]] || die "Unit läuft nicht"

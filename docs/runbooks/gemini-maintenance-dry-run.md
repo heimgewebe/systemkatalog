@@ -83,7 +83,7 @@ RUN_ARTIFACT_ONLY_GEMINI_DRY_RUN
 
 ### Manual GitHub UI path
 
-1. Open GitHub Actions for `heimgewebe/cabinet`.
+1. Open GitHub Actions for `heimgewebe/heimgewebe-katalog`.
 2. Select **Gemini Maintenance Dry Run**.
 3. Use **Run workflow** on `main`.
 4. Enter `RUN_ARTIFACT_ONLY_GEMINI_DRY_RUN` as confirmation.

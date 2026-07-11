@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "kind": "cabinet_ecosystem_authority_matrix",
-  "updatedAt": "2026-07-11T00:00:00+02:00",
+  "kind": "heimgewebe_system_catalog_authority_matrix",
+  "updatedAt": "2026-07-11T15:45:00+02:00",
   "canonicalMap": "rendered/ecosystem-registry-map.mmd",
   "registryInputs": [
     "registry/ecosystem/nodes.json",
@@ -36,12 +36,12 @@
       "owner": "repobrief_lenskit",
       "projections": [
         "rlens",
-        "cabinet"
+        "heimgewebe_katalog"
       ]
     },
     {
       "domain": "ecosystem_semantics",
-      "owner": "cabinet",
+      "owner": "heimgewebe_katalog",
       "projections": [
         "leitstand",
         "schauwerk"
@@ -76,14 +76,14 @@
       "domain": "offline_learning_proposals",
       "owner": "heimlern",
       "projections": [
-        "cabinet"
+        "heimgewebe_katalog"
       ]
     },
     {
       "domain": "bounded_experiments",
       "owner": "vibe_lab",
       "projections": [
-        "cabinet"
+        "heimgewebe_katalog"
       ]
     },
     {

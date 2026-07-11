@@ -1,6 +1,6 @@
-# Cabinet — Heimgewebe-Systemkatalog
+# Heimgewebe-Systemkatalog
 
-Cabinet beschreibt die Systeme des Heimgewebe-Ökosystems, ihre Zwecke, Wahrheitszuständigkeiten, stabilen Beziehungen und Einstiegspunkte.
+Der Heimgewebe-Systemkatalog beschreibt die Systeme des Heimgewebe-Ökosystems, ihre Zwecke, Wahrheitszuständigkeiten, stabilen Beziehungen und Einstiegspunkte.
 
 Die externe Cabinet AI Workspace App ist außer Betrieb. Der aktive lokale Viewer ist ein kleiner, read-only Heimgewebe-Systemkatalog ohne Node, Next, KI-Agent, Daemon, Datenbank oder Secret-Konfiguration.
 
@@ -16,7 +16,7 @@ Die externe Cabinet AI Workspace App ist außer Betrieb. Der aktive lokale Viewe
 8. **Abgeschlossenen Runtime-Cutover nachvollziehen:** [T013-Preflight](docs/migration/cabinet-runtime-retirement-preflight-v1.json) und [Cutover-/Rollbackbeleg](docs/migration/cabinet-runtime-retirement-authorization-v1.md)
 9. **Katalogschema ansehen:** [Schema](catalog/system-catalog.schema.v1.json) und [nichtkanonisches Beispiel](catalog/system-catalog.example.v1.json)
 
-## Cabinet beantwortet
+## Der Systemkatalog beantwortet
 
 - Welche Systeme existieren?
 - Was ist ihr Zweck?
@@ -25,7 +25,7 @@ Die externe Cabinet AI Workspace App ist außer Betrieb. Der aktive lokale Viewe
 - Welche stabilen Beziehungen bestehen?
 - Wo liegen die Einstiegspunkte?
 
-## Cabinet beantwortet nicht
+## Der Systemkatalog beantwortet nicht
 
 - Welche Aufgabe ist als Nächstes dran?
 - Welcher Task ist aktiv oder blockiert?
@@ -47,7 +47,7 @@ Die externe Cabinet AI Workspace App ist außer Betrieb. Der aktive lokale Viewe
 | Repo-Snapshots und zitierfähiger Kontext | RepoBrief / Lenskit |
 | stabile Ökosystem-Semantik und Truth Ownership | dieser Systemkatalog |
 
-Cabinet verweist auf die jeweilige Primärquelle. Es kopiert deren wechselnde Zustände nicht in ein zweites Statusmodell.
+Der Systemkatalog verweist auf die jeweilige Primärquelle. Es kopiert deren wechselnde Zustände nicht in ein zweites Statusmodell.
 
 ## Technischer Kern
 
@@ -58,7 +58,7 @@ Der notwendige Unterbau besteht nur aus:
 - deterministischen Renderern;
 - CI-Prüfungen gegen Inkonsistenzen und private Runtime-Leaks.
 
-Der Katalogkanon benötigt keinen Server. Für die lokale Leseoberfläche läuft `heimgewebe-systemkatalog.service`: ein zustandsloser Python-HTTP-Dienst auf Loopback. `cabinet.service` ist nur noch dessen Kompatibilitätsalias.
+Der Katalogkanon benötigt keinen Server. Für die lokale Leseoberfläche läuft ausschließlich `heimgewebe-systemkatalog.service`: ein zustandsloser Python-HTTP-Dienst auf Loopback. Ein Dienstalias unter dem alten Cabinet-Namen existiert nicht mehr.
 
 ## Runtime und Migration
 
@@ -72,7 +72,7 @@ systemkatalogctl url
 systemkatalogctl restart
 ```
 
-Die geplante Zielidentität des Repositories bleibt `heimgewebe/heimgewebe-katalog`; die Umbenennung ist ein eigener Referenzmigrationsschritt.
+Die kanonische Repositoryidentität ist `heimgewebe/heimgewebe-katalog`. Der frühere Name bleibt ausschließlich in historischen Belegen und im von GitHub verwalteten Weiterleitungsverhalten sichtbar.
 
 ## Nicht verwechseln
 

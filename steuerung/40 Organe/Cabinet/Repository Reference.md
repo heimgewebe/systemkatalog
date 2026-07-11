@@ -17,8 +17,8 @@
 | Feld | Wert |
 |---|---|
 | Repository | `cabinet` |
-| Pfad | `/home/alex/repos/cabinet` |
-| Origin | `github.com:heimgewebe/cabinet.git` |
+| Pfad | `/home/alex/repos/heimgewebe-katalog` |
+| Origin | `github.com:heimgewebe/heimgewebe-katalog.git` |
 | Branch | `main` |
 | HEAD | `3ce791b34b1c095afd3ea1c76f7c1461759e26b0` |
 | Working Tree | `clean:0` |
@@ -28,8 +28,8 @@
 | Feld | Wert |
 |---|---|
 | Erfasst | `2026-07-02T12:54:24Z` |
-| Pfad | `/home/alex/repos/cabinet` |
-| Origin | `github.com:heimgewebe/cabinet.git` |
+| Pfad | `/home/alex/repos/heimgewebe-katalog` |
+| Origin | `github.com:heimgewebe/heimgewebe-katalog.git` |
 | Branch | `main` |
 | HEAD | `3ce791b34b1c095afd3ea1c76f7c1461759e26b0` |
 | Working Tree | `clean:0` |
@@ -42,8 +42,8 @@
 
 | Feld | Wert |
 |---|---|
-| Kanonischer Pfad | `/home/alex/repos/cabinet` |
-| Remote | `github.com:heimgewebe/cabinet.git` |
+| Kanonischer Pfad | `/home/alex/repos/heimgewebe-katalog` |
+| Remote | `github.com:heimgewebe/heimgewebe-katalog.git` |
 | Default-Branch | `main` |
 | Aktueller Branch | `main` |
 | HEAD | `3ce791b34b1c095afd3ea1c76f7c1461759e26b0` |

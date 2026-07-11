@@ -208,13 +208,13 @@ def _validate_unique_canons(root: Path) -> None:
         except (ValueError, json.JSONDecodeError, UnicodeError):
             continue
         kind = value.get("kind")
-        if kind == "cabinet_ecosystem_authority_matrix":
+        if kind == "heimgewebe_system_catalog_authority_matrix":
             authority_files.append(path)
         elif kind == "heimgewebe_system_catalog_policy":
             policy_files.append(path)
         elif kind == "heimgewebe_system_catalog":
             catalog_docs.append(path)
-        if "authorities" in value and kind != "cabinet_ecosystem_authority_matrix":
+        if "authorities" in value and kind != "heimgewebe_system_catalog_authority_matrix":
             manual_authority_files.append(path)
     authority_files.sort()
     policy_files.sort()
@@ -307,7 +307,7 @@ def validate(root: Path = ROOT) -> dict[str, Any]:
         raise ValueError("runtimeProjection missing")
     if runtime.get("role") != "read_only_catalog_projection" or runtime.get("stateful") is not False:
         raise ValueError("runtimeProjection must stay read-only and stateless")
-    if runtime.get("service") != "heimgewebe-systemkatalog.service" or runtime.get("compatibilityAlias") != "cabinet.service":
+    if runtime.get("service") != "heimgewebe-systemkatalog.service" or "compatibilityAlias" in runtime:
         raise ValueError("runtimeProjection service binding mismatch")
     if runtime.get("canonicalInputs") != expected_inputs:
         raise ValueError("runtimeProjection canonical inputs mismatch")
@@ -433,7 +433,7 @@ def validate(root: Path = ROOT) -> dict[str, Any]:
                     if not _path(root, evidence).is_file():
                         raise ValueError(f"claim {claim_id} references missing evidence: {evidence}")
 
-    if authority.get("kind") != "cabinet_ecosystem_authority_matrix":
+    if authority.get("kind") != "heimgewebe_system_catalog_authority_matrix":
         raise ValueError("authority matrix kind mismatch")
     if authority.get("canonicalMap") != policy["canonicalGeneratedMap"]:
         raise ValueError("authority matrix canonical map mismatch")
@@ -457,7 +457,7 @@ def validate(root: Path = ROOT) -> dict[str, Any]:
     if len(domains) != len(set(domains)):
         raise ValueError("authority domains must be unique")
 
-    if view.get("kind") != "cabinet_ecosystem_map_projection_policy" or view.get("authoritative") is not False:
+    if view.get("kind") != "heimgewebe_system_catalog_map_projection_policy" or view.get("authoritative") is not False:
         raise ValueError("map projection policy must be explicitly non-authoritative")
     if view.get("source") != "registry/ecosystem/nodes.json + registry/ecosystem/edges.json":
         raise ValueError("map projection source mismatch")
@@ -470,8 +470,12 @@ def validate(root: Path = ROOT) -> dict[str, Any]:
         raise ValueError("T004 migration completion record missing")
     if migration.get("runtimeTask") != "OPERATOR-ECOSYSTEM-REDUNDANCY-V1-T013":
         raise ValueError("T013 runtime cutover completion record missing")
-    if migration.get("state") != "catalog_core_and_runtime_cutover_complete":
+    if migration.get("state") != "catalog_core_runtime_and_repository_migration_complete":
         raise ValueError("system catalog migration is not complete")
+    if migration.get("repositoryTask") != "OPERATOR-ECOSYSTEM-REDUNDANCY-V1-T014":
+        raise ValueError("T014 repository migration completion record missing")
+    if migration.get("remainingSeparateTasks") != {}:
+        raise ValueError("completed system catalog migration must not retain separate migration tasks")
 
     return {
         "status": "valid",

@@ -130,7 +130,7 @@ def _blocked_scan(*, created_at: str, source_commit: str, evidence_manifest_ref:
         "createdAt": created_at,
         "status": "blocked",
         "source": {
-            "repository": "heimgewebe/cabinet",
+            "repository": "heimgewebe/heimgewebe-katalog",
             "commit": source_commit,
             "executionManifestRef": EXECUTION_MANIFEST_REF,
             "evidenceManifestRef": evidence_manifest_ref,

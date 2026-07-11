@@ -41,14 +41,14 @@ Cabinet erzeugt nur proposal-only Frontier-Kandidaten. Bureau entscheidet spaete
   "id": "frontier:cabinet:claim.example:0123456789ab",
   "createdAt": "2026-07-08T04:00:00Z",
   "source": {
-    "repository": "heimgewebe/cabinet",
+    "repository": "heimgewebe/heimgewebe-katalog",
     "commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
     "maintenanceReportStatus": "pass",
     "maintenanceReportRef": "scripts/write_cabinet_maintenance_report.py",
     "signalRefs": ["signal:local_git:cabinet:maintenance-report:status:pass:aaaaaaaaaaaa"]
   },
   "target": {
-    "repository": "heimgewebe/cabinet",
+    "repository": "heimgewebe/heimgewebe-katalog",
     "organ": "cabinet"
   },
   "proposal": {

@@ -4,8 +4,8 @@
   "exampleOnly": true,
   "systems": [
     {
-      "id": "cabinet",
-      "name": "Cabinet / Heimgewebe-Systemkatalog",
+      "id": "heimgewebe_katalog",
+      "name": "Heimgewebe-Systemkatalog",
       "type": "repository",
       "purpose": "Beschreibt Systeme, Zwecke, Wahrheitszuständigkeiten, stabile Beziehungen und Einstiegspunkte.",
       "notResponsibleFor": [
@@ -18,7 +18,7 @@
         "ecosystem_semantics"
       ],
       "entrypoints": {
-        "repository": "https://github.com/heimgewebe/cabinet",
+        "repository": "https://github.com/heimgewebe/heimgewebe-katalog",
         "readme": "README.md",
         "agentEntry": "AGENTS.md"
       }
@@ -99,7 +99,7 @@
   ],
   "relations": [
     {
-      "from": "cabinet",
+      "from": "heimgewebe_katalog",
       "to": "bureau",
       "type": "routes_to",
       "meaning": "Aktuelle Aufgaben- und Queuefragen werden an Bureau verwiesen."
@@ -117,17 +117,32 @@
       "meaning": "Repositoryänderungen werden über GitHub-Branches und Pull Requests veröffentlicht."
     },
     {
-      "from": "cabinet",
+      "from": "heimgewebe_katalog",
       "to": "runtime",
       "type": "points_to_truth_owner",
-      "meaning": "Cabinet verweist für Live-Zustände auf Runtime-Quellen, ohne sie zu kopieren."
+      "meaning": "Heimgewebe-Systemkatalog verweist für Live-Zustände auf Runtime-Quellen, ohne sie zu kopieren."
     }
   ],
   "truthOwners": [
-    {"domain": "ecosystem_semantics", "owner": "cabinet"},
-    {"domain": "task_state", "owner": "bureau"},
-    {"domain": "local_fleet_execution", "owner": "grabowski"},
-    {"domain": "branches_prs_reviews", "owner": "github"},
-    {"domain": "live_service_state", "owner": "runtime"}
+    {
+      "domain": "ecosystem_semantics",
+      "owner": "heimgewebe_katalog"
+    },
+    {
+      "domain": "task_state",
+      "owner": "bureau"
+    },
+    {
+      "domain": "local_fleet_execution",
+      "owner": "grabowski"
+    },
+    {
+      "domain": "branches_prs_reviews",
+      "owner": "github"
+    },
+    {
+      "domain": "live_service_state",
+      "owner": "runtime"
+    }
   ]
 }
