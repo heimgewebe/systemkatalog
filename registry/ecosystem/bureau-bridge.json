@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "status": "draft",
+  "status": "legacy_compatibility_only",
   "updated_at": "2026-07-05",
   "id": "cabinet_bureau_bridge_v0",
   "direction": "cabinet_to_bureau_read_only_candidate_signal",
@@ -8,7 +8,7 @@
   "target_consumer": "repo:bureau",
   "canonical_doc": "docs/blueprints/cabinet-bureau-bridge-v0.md",
   "allowed_sources": [
-    "registry/ecosystem/claims.jsonl",
+    "docs/archive/cabinet-era/ecosystem-dynamic-claims-v0.jsonl",
     "registry/ecosystem/nodes.json",
     "registry/ecosystem/edges.json",
     "docs/blueprints/o.json",
@@ -55,7 +55,7 @@
     "authority_inference_from_map"
   ],
   "organ_roles": {
-    "cabinet": "semantic_owner_and_candidate_prioritizer",
+    "cabinet": "legacy_proposal_source_not_task_or_queue_authority",
     "bureau": "read_only_consumer_and_later_task_cadence_owner",
     "grabowski_operator": "execution_after_task_or_operator_release",
     "repobrief": "citable_context_and_snapshot_boundary",
@@ -72,5 +72,6 @@
     "claim_truth",
     "bureau_import_implemented",
     "autonomous_dispatch"
-  ]
+  ],
+  "catalog_authoritative": false
 }

@@ -1,7 +1,6 @@
 {
   "schemaVersion": 1,
   "kind": "heimgewebe_system_catalog_policy",
-  "status": "migration_target",
   "role": "app-independent system catalog",
   "answers": [
     "which_systems_exist",
@@ -22,12 +21,14 @@
   "currentCanonicalInputs": [
     "registry/ecosystem/nodes.json",
     "registry/ecosystem/edges.json",
+    "registry/ecosystem/claims.jsonl",
     "registry/ecosystem/authority-matrix.v1.json"
   ],
   "canonicalReadableProjection": "rendered/system-catalog.md",
   "publicProjection": {
     "excludedKinds": [
-      "runtime"
+      "runtime",
+      "agent"
     ],
     "reason": "Concrete runtime identities and topology remain in private operator evidence; the public catalog points to the runtime truth domain without duplicating host inventory."
   },
@@ -46,12 +47,36 @@
     ]
   },
   "entrypoints": [
-    {"id": "cabinet", "label": "Cabinet / Systemkatalog", "target": "README.md"},
-    {"id": "bureau", "label": "Bureau", "target": "https://github.com/heimgewebe/bureau"},
-    {"id": "grabowski", "label": "Grabowski", "target": "https://github.com/heimgewebe/grabowski"},
-    {"id": "repobrief_lenskit", "label": "RepoBrief / Lenskit", "target": "https://github.com/heimgewebe/lenskit"},
-    {"id": "leitstand", "label": "Leitstand", "target": "https://github.com/heimgewebe/leitstand"},
-    {"id": "github", "label": "GitHub", "target": "https://github.com/heimgewebe"}
+    {
+      "id": "cabinet",
+      "label": "Cabinet / Systemkatalog",
+      "target": "README.md"
+    },
+    {
+      "id": "bureau",
+      "label": "Bureau",
+      "target": "https://github.com/heimgewebe/bureau"
+    },
+    {
+      "id": "grabowski",
+      "label": "Grabowski",
+      "target": "https://github.com/heimgewebe/grabowski"
+    },
+    {
+      "id": "repobrief_lenskit",
+      "label": "RepoBrief / Lenskit",
+      "target": "https://github.com/heimgewebe/lenskit"
+    },
+    {
+      "id": "leitstand",
+      "label": "Leitstand",
+      "target": "https://github.com/heimgewebe/leitstand"
+    },
+    {
+      "id": "github",
+      "label": "GitHub",
+      "target": "https://github.com/heimgewebe"
+    }
   ],
   "externalCabinetApp": {
     "role": "temporary_optional_viewer",
@@ -60,36 +85,23 @@
     "runtimeAuthoritative": false,
     "shutdownAuthorized": false
   },
-  "stableRelationStatuses": [
-    "active",
-    "bounded",
-    "related"
-  ],
   "prohibitedOperationalFields": [
+    "status",
     "priority",
     "taskState",
     "runtimeHealth",
     "mergeReadiness",
     "activeExecution",
     "agentDispatch",
-    "schedulerState"
-  ],
-  "legacyMigrationDebt": [
-    {
-      "surface": "registry/ecosystem/nodes.json",
-      "field": "status",
-      "disposition": "remove_or_replace_during_T004"
-    },
-    {
-      "surface": "registry/ecosystem/edges.json",
-      "field": "status",
-      "disposition": "replace_with_stability_class_during_T004"
-    },
-    {
-      "surface": "registry/ecosystem/claims.jsonl",
-      "field": "dynamic_claim_state",
-      "disposition": "retain_only_stable_architecture_claims_during_T004"
-    }
+    "schedulerState",
+    "confidence",
+    "expiresAt",
+    "nextAction",
+    "responsibleOrgan",
+    "host",
+    "unit",
+    "listener",
+    "port"
   ],
   "doesNotEstablish": [
     "repository_rename_completion",
@@ -98,5 +110,79 @@
     "task_eligibility",
     "merge_readiness",
     "claim_truth"
+  ],
+  "contractState": "active",
+  "canonicalAuthorityMatrix": "registry/ecosystem/authority-matrix.v1.json",
+  "canonicalGeneratedMap": "rendered/ecosystem-registry-map.mmd",
+  "canonicalProjectionPolicy": "policy/ecosystem-map-view.v1.json",
+  "stableRelationClasses": [
+    "stable",
+    "bounded",
+    "related"
+  ],
+  "maintainedCatalogSurfaces": [
+    "policy/system-catalog.v1.json",
+    "policy/ecosystem-map-view.v1.json",
+    "registry/ecosystem/nodes.json",
+    "registry/ecosystem/edges.json",
+    "registry/ecosystem/claims.jsonl",
+    "registry/ecosystem/authority-matrix.v1.json",
+    "rendered/system-catalog.md",
+    "rendered/ecosystem-registry-map.mmd"
+  ],
+  "legacyCompatibilitySurfaces": [
+    "docs/archive/cabinet-era/ecosystem-dynamic-claims-v0.jsonl",
+    "docs/archive/cabinet-era/cabinet-role-boundary-v1.superseded.md",
+    "registry/ecosystem/bureau-bridge.json",
+    "registry/ecosystem/operator-redundancy-audit.v1.json",
+    "rendered/ecosystem-map.mmd",
+    "docs/blueprints/o.json",
+    "docs/blueprints/cabinet-role-boundary-v1.md",
+    ".github/workflows/cabinet-maintenance-radar.yml",
+    ".github/workflows/gemini-maintenance-dry-run.yml",
+    "scripts/prepare_legacy_bridge_probe.py"
+  ],
+  "migrationCompletion": {
+    "task": "OPERATOR-ECOSYSTEM-REDUNDANCY-V1-T004",
+    "state": "catalog_core_consolidated",
+    "completedSurfaces": [
+      "node_operational_status_removed",
+      "edge_status_replaced_by_stability",
+      "dynamic_claims_archived",
+      "canonical_validator_hardened",
+      "legacy_role_decision_superseded",
+      "legacy_automation_manual_only",
+      "legacy_role_decision_archived",
+      "legacy_bridge_probe_isolated_from_catalog_claims"
+    ],
+    "remainingSeparateTasks": {
+      "runtime_decoupling": "OPERATOR-ECOSYSTEM-REDUNDANCY-V1-T013",
+      "repository_rename": "OPERATOR-ECOSYSTEM-REDUNDANCY-V1-T014"
+    }
+  },
+  "legacyAutomationPolicy": {
+    "scheduledExecution": false,
+    "automaticPushOrPullRequestExecution": false,
+    "automaticDispatch": false,
+    "automaticMutation": false,
+    "manualCompatibilityWorkflows": [
+      ".github/workflows/cabinet-maintenance-radar.yml",
+      ".github/workflows/gemini-maintenance-dry-run.yml"
+    ],
+    "compatibilityValidationWorkflow": ".github/workflows/validate.yml",
+    "bridgeProbeAdapter": "scripts/prepare_legacy_bridge_probe.py",
+    "bridgeProbeWorkflow": ".github/workflows/cabinet-bridge-probe.yml"
+  },
+  "legacySourceArchives": [
+    {
+      "path": "docs/archive/cabinet-era/ecosystem-dynamic-claims-v0.jsonl",
+      "sha256": "297fc9e2c7f67513ce225a19b4d425992947133dab2934e888e92e4a28260784",
+      "sourceRevision": "4fe1a90a4064a550384db301038995a40056b8d7:registry/ecosystem/claims.jsonl"
+    },
+    {
+      "path": "docs/archive/cabinet-era/cabinet-role-boundary-v1.superseded.md",
+      "sha256": "2cd05d4a03c71a1dabc53ac25d46f5ba0122419d4b30657c75d8bf758a2d2ed1",
+      "sourceRevision": "4fe1a90a4064a550384db301038995a40056b8d7:docs/blueprints/cabinet-role-boundary-v1.md"
+    }
   ]
 }

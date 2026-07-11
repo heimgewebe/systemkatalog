@@ -42,7 +42,7 @@ Die Karte darf diese Quellen verknuepfen. Sie darf sie nicht ersetzen.
 ```text
 registry/ecosystem/nodes.json             # Organe, Repos, Services, Agenten, Artefakte
 registry/ecosystem/edges.json             # Beziehungen zwischen Knoten
-registry/ecosystem/claims.jsonl           # Aussagen mit Status, Konfidenz und Ablaufdatum
+registry/ecosystem/claims.jsonl           # langlebige Architektur- und Ownership-Aussagen
 docs/blueprints/o.json                    # kompakter Seed und View-Konfiguration der Projektion
 rendered/ecosystem-map.mmd                # lesbare Uebersichtskarte; Einstieg, kein Canon
 rendered/ecosystem-registry-map.mmd       # generierte Registry-Projektion aus Knoten und Kanten

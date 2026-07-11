@@ -24,7 +24,7 @@ EXTERNAL_DUMP_REGISTRY = "registry/ecosystem/external-dump-sources.json"
 REGISTRY_ROOT = Path("registry/ecosystem")
 NODES_PATH = REGISTRY_ROOT / "nodes.json"
 EDGES_PATH = REGISTRY_ROOT / "edges.json"
-CLAIMS_PATH = REGISTRY_ROOT / "claims.jsonl"
+CLAIMS_PATH = Path("docs/archive/cabinet-era/ecosystem-dynamic-claims-v0.jsonl")
 BUREAU_BRIDGE_PATH = REGISTRY_ROOT / "bureau-bridge.json"
 
 EFFECT_FLAGS = (

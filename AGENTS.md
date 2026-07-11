@@ -8,7 +8,7 @@ Dieses Dokument ist der kanonische Einstieg für LLMs und Agenten im Cabinet-Rep
 2. [policy/system-catalog.v1.json](policy/system-catalog.v1.json) — maschinenlesbare Rollen- und Wirkungsgrenze.
 3. [rendered/system-catalog.md](rendered/system-catalog.md) — deterministisch erzeugte Leseansicht.
 4. [registry/ecosystem/authority-matrix.v1.json](registry/ecosystem/authority-matrix.v1.json) — Wahrheitszuständigkeiten.
-5. [registry/ecosystem/nodes.json](registry/ecosystem/nodes.json) und [registry/ecosystem/edges.json](registry/ecosystem/edges.json) — aktuelle Registry während der Migration.
+5. [registry/ecosystem/nodes.json](registry/ecosystem/nodes.json) und [registry/ecosystem/edges.json](registry/ecosystem/edges.json) — kanonische stabile Katalogregistry.
 6. [docs/migration/cabinet-surface-matrix-v1.md](docs/migration/cabinet-surface-matrix-v1.md) — Keep/Simplify/Move/Archive/Remove-Zuordnung.
 7. [catalog/system-catalog.schema.v1.json](catalog/system-catalog.schema.v1.json) und [catalog/system-catalog.example.v1.json](catalog/system-catalog.example.v1.json) — Zielformat und ausdrücklich nichtkanonisches Beispiel.
 8. Frühere Role-Boundary-, Radar-, Gemini- und Raumdokumente nur als Migrations- oder historische Quellen lesen, nicht als Zielarchitektur.

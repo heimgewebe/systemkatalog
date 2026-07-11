@@ -23,12 +23,12 @@ from types import MappingProxyType
 from typing import Any, Literal, Mapping
 
 DEFAULT_OUTPUT = Path("rendered/ecosystem-registry-map.mmd")
-DEFAULT_VIEW_CONFIG = Path("docs/blueprints/o.json")
+DEFAULT_VIEW_CONFIG = Path("policy/ecosystem-map-view.v1.json")
 GENERATOR = "scripts/render_ecosystem_registry_map.py"
 GENERATED_FILE_MODE = 0o644
 MERMAID_ID_RE = re.compile(r"[^A-Za-z0-9_]+")
-NODE_REQUIRED_FIELDS = ("id", "kind", "label", "status")
-EDGE_REQUIRED_FIELDS = ("from", "to", "type", "status")
+NODE_REQUIRED_FIELDS = ("id", "kind", "label", "purpose")
+EDGE_REQUIRED_FIELDS = ("from", "to", "type", "stability")
 DEFAULT_VISUAL_ANCHOR_NODE_IDS = ("repo:cabinet", "artifact:ecosystem-map")
 
 DEFAULT_KIND_ORDER = (
@@ -37,8 +37,6 @@ DEFAULT_KIND_ORDER = (
     "concept",
     "artifact",
     "service",
-    "runtime",
-    "agent",
 )
 DEFAULT_KIND_TITLES = {
     "human": "Menschen und Entscheidung",
@@ -46,8 +44,6 @@ DEFAULT_KIND_TITLES = {
     "concept": "Konzepte",
     "artifact": "Artefakte",
     "service": "Primaere Dienste",
-    "runtime": "Runtime",
-    "agent": "Agenten",
 }
 
 
@@ -150,23 +146,16 @@ class ProjectionConfigLoader:
             raise RegistryMapError(f"view config file not found: {path}")
 
         doc = load_json(path)
-        ecosystem_map = doc.get("ecosystem_map_v0", {})
-        if ecosystem_map is None:
-            ecosystem_map = {}
-        if not isinstance(ecosystem_map, dict):
-            raise RegistryMapError("ecosystem_map_v0 must be an object")
-
-        raw_config = ecosystem_map.get("registry_projection_view", {})
-        if raw_config is None or raw_config == {}:
-            return ProjectionViewConfig()
-        if not isinstance(raw_config, dict):
-            raise RegistryMapError("registry_projection_view must be an object")
+        if doc.get("kind") != "cabinet_ecosystem_map_projection_policy":
+            raise RegistryMapError("view config kind mismatch")
+        if doc.get("authoritative") is not False:
+            raise RegistryMapError("view config must be explicitly non-authoritative")
         return ProjectionViewConfig(
-            kind_order=load_string_tuple(raw_config.get("kind_order"), "registry_projection_view.kind_order", DEFAULT_KIND_ORDER),
-            kind_titles=load_string_dict(raw_config.get("kind_titles"), "registry_projection_view.kind_titles"),
+            kind_order=load_string_tuple(doc.get("kindOrder"), "kindOrder", DEFAULT_KIND_ORDER),
+            kind_titles=load_string_dict(doc.get("kindTitles"), "kindTitles"),
             visual_anchor_node_ids=load_string_tuple(
-                raw_config.get("visual_anchor_node_ids"),
-                "registry_projection_view.visual_anchor_node_ids",
+                doc.get("visualAnchorNodeIds"),
+                "visualAnchorNodeIds",
                 DEFAULT_VISUAL_ANCHOR_NODE_IDS,
             ),
         )
@@ -256,8 +245,8 @@ class MermaidRenderer:
             if target not in node_ids:
                 raise RegistryMapError(f"edge {index} references unknown to node: {target}")
             edge_type = escape_label(edge["type"])
-            status = escape_label(edge["status"])
-            lines.append(f"    {node_ids[source]} -->|{edge_type} / {status}| {node_ids[target]}")
+            stability = escape_label(edge["stability"])
+            lines.append(f"    {node_ids[source]} -->|{edge_type} / {stability}| {node_ids[target]}")
         return lines
 
     def _render_visual_anchors(self, node_ids: dict[str, str]) -> list[str]:
@@ -362,8 +351,8 @@ def node_label(node: dict[str, Any]) -> str:
     label = escape_label(node["label"])
     node_id = escape_label(node["id"])
     kind = escape_label(node["kind"])
-    status = escape_label(node["status"])
-    return f"{label}<br/>id: {node_id}<br/>{kind}<br/>status: {status}"
+    purpose = escape_label(node["purpose"])
+    return f"{label}<br/>id: {node_id}<br/>{kind}<br/>{purpose}"
 
 
 def ordered_kinds(nodes: list[dict[str, Any]]) -> list[str]:

@@ -151,7 +151,9 @@ def make_repo(root: Path, *, agents_content: str = "# Agents\n") -> None:
         "next_action": "build_curated_gemini_evidence_packet",
         "responsible_organ": "cabinet",
     }
-    (root / "registry/ecosystem/claims.jsonl").write_text(json.dumps(claim, sort_keys=True) + "\n", encoding="utf-8")
+    legacy_claims = json.dumps(claim, sort_keys=True) + "\n"
+    (root / "registry/ecosystem/claims.jsonl").write_text(legacy_claims, encoding="utf-8")
+    write_text(root / "docs/archive/cabinet-era/ecosystem-dynamic-claims-v0.jsonl", legacy_claims)
 
 
 class GeminiMaintenanceEvidencePacketTests(unittest.TestCase):

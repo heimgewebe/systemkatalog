@@ -146,7 +146,7 @@ def make_repo(root: Path, claim_overrides: dict[str, Any] | None = None, *, with
     write_json(root / "registry/ecosystem/edges.json", {"edge_types": ["depends_on"], "edges": []})
     bridge = {
         "allowed_sources": [
-            "registry/ecosystem/claims.jsonl",
+            "docs/archive/cabinet-era/ecosystem-dynamic-claims-v0.jsonl",
             "registry/ecosystem/nodes.json",
             "registry/ecosystem/edges.json",
             "docs/blueprints/o.json",
@@ -181,13 +181,20 @@ def make_repo(root: Path, claim_overrides: dict[str, Any] | None = None, *, with
     }
     if claim_overrides:
         claim.update(claim_overrides)
-    (root / "registry/ecosystem/claims.jsonl").write_text(json.dumps(claim) + "\n", encoding="utf-8")
+    claims_path = root / "docs/archive/cabinet-era/ecosystem-dynamic-claims-v0.jsonl"
+    claims_path.parent.mkdir(parents=True, exist_ok=True)
+    claims_path.write_text(json.dumps(claim) + "\n", encoding="utf-8")
     for evidence in bridge["allowed_sources"] + claim["evidence"]:
         if isinstance(evidence, dict):
             evidence_ref = evidence.get("sourcePath") or evidence.get("ref") or ""
         else:
             evidence_ref = evidence
-        if not isinstance(evidence_ref, str) or not evidence_ref or evidence_ref.startswith("registry/"):
+        if (
+            not isinstance(evidence_ref, str)
+            or not evidence_ref
+            or evidence_ref.startswith("registry/")
+            or evidence_ref == "docs/archive/cabinet-era/ecosystem-dynamic-claims-v0.jsonl"
+        ):
             continue
         write_text(root / evidence_ref)
     if with_external_dump_registry:

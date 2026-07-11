@@ -139,7 +139,9 @@ def make_repo(root: Path) -> None:
         "next_action": "build_curated_gemini_evidence_packet",
         "responsible_organ": "cabinet",
     }
-    (root / "registry/ecosystem/claims.jsonl").write_text(json.dumps(claim, sort_keys=True) + "\n", encoding="utf-8")
+    legacy_claims = json.dumps(claim, sort_keys=True) + "\n"
+    (root / "registry/ecosystem/claims.jsonl").write_text(legacy_claims, encoding="utf-8")
+    write_text(root / "docs/archive/cabinet-era/ecosystem-dynamic-claims-v0.jsonl", legacy_claims)
     subprocess.run(["git", "init"], cwd=root, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     subprocess.run(["git", "config", "user.email", "test@example.invalid"], cwd=root, check=True)
     subprocess.run(["git", "config", "user.name", "Test"], cwd=root, check=True)
