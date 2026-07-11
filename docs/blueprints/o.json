@@ -3,8 +3,8 @@
   "status": "draft",
   "updated_at": "2026-07-04",
   "owner": {
-    "canonical_repo": "heimgewebe/cabinet",
-    "local_worktree_intent": "/home/alex/repos/cabinet"
+    "canonical_repo": "heimgewebe/heimgewebe-katalog",
+    "local_worktree_intent": "/home/alex/repos/heimgewebe-katalog"
   },
   "ecosystem_map_v0": {
     "decision": "Cabinet owns the v0 map semantics; no separate ecosystem-map repository yet.",

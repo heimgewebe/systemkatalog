@@ -34,7 +34,7 @@
       "additionalProperties": false,
       "required": ["repository", "commit", "maintenanceReportStatus", "maintenanceReportRef", "signalRefs"],
       "properties": {
-        "repository": {"const": "heimgewebe/cabinet"},
+        "repository": {"const": "heimgewebe/heimgewebe-katalog"},
         "commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
         "maintenanceReportStatus": {"enum": ["pass", "warn", "fail", "unknown"]},
         "maintenanceReportRef": {"type": "string", "minLength": 1},

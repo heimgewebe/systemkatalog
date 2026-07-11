@@ -28,7 +28,7 @@ from render_ecosystem_registry_map import (  # noqa: E402
 )
 
 
-def node(node_id: str, kind: str = "repository", label: str = "Cabinet", purpose: str = "stable purpose") -> dict:
+def node(node_id: str, kind: str = "repository", label: str = "Heimgewebe-Systemkatalog", purpose: str = "stable purpose") -> dict:
     return {"id": node_id, "kind": kind, "label": label, "purpose": purpose}
 
 
@@ -38,22 +38,22 @@ def edge(source: str, target: str, relation: str = "owns", stability: str = "sta
 
 class EcosystemRegistryMapRenderTests(unittest.TestCase):
     def test_mermaid_id_normalizes_registry_ids(self) -> None:
-        self.assertEqual(mermaid_id("repo:cabinet"), "repo_cabinet")
+        self.assertEqual(mermaid_id("repo:heimgewebe-katalog"), "repo_heimgewebe_katalog")
         self.assertEqual(mermaid_id("123:node"), "n_123_node")
 
     def test_render_mermaid_preserves_boundary_and_stability_class(self) -> None:
-        nodes = [node("actor:alexander", "human", "Alexander", "approval and abort authority"), node("repo:cabinet"), node("artifact:ecosystem-map", "artifact", "Ecosystem Map")]
-        edges = [edge("actor:alexander", "repo:cabinet", "steers"), edge("repo:cabinet", "artifact:ecosystem-map", "owns", "bounded")]
+        nodes = [node("actor:alexander", "human", "Alexander", "approval and abort authority"), node("repo:heimgewebe-katalog"), node("artifact:ecosystem-map", "artifact", "Ecosystem Map")]
+        edges = [edge("actor:alexander", "repo:heimgewebe-katalog", "steers"), edge("repo:heimgewebe-katalog", "artifact:ecosystem-map", "owns", "bounded")]
         rendered = render_mermaid(nodes, edges)
         self.assertTrue(rendered.startswith("flowchart TD\n"))
         self.assertIn("does not establish claim truth", rendered)
-        self.assertIn("actor_alexander -->|steers / stable| repo_cabinet", rendered)
-        self.assertIn("repo_cabinet -->|owns / bounded| artifact_ecosystem_map", rendered)
+        self.assertIn("actor_alexander -->|steers / stable| repo_heimgewebe_katalog", rendered)
+        self.assertIn("repo_heimgewebe_katalog -->|owns / bounded| artifact_ecosystem_map", rendered)
         self.assertNotIn("status:", rendered)
 
     def test_render_mermaid_rejects_edges_to_unknown_nodes(self) -> None:
         with self.assertRaisesRegex(RegistryMapError, "unknown to node"):
-            render_mermaid([node("repo:cabinet")], [edge("repo:cabinet", "repo:missing")])
+            render_mermaid([node("repo:heimgewebe-katalog")], [edge("repo:heimgewebe-katalog", "repo:missing")])
 
     def test_check_mode_accepts_tracked_generated_projection(self) -> None:
         self.assertEqual(render_main(["--repo-root", str(ROOT), "--check"]), 0)
@@ -69,8 +69,8 @@ class EcosystemRegistryMapRenderTests(unittest.TestCase):
             self.assertIn("output path escapes repository", stderr.getvalue())
 
     def test_node_label_contains_purpose_not_operational_status(self) -> None:
-        rendered = render_mermaid([node("repo:cabinet", purpose="app-independent catalog")], [])
-        self.assertIn("Cabinet<br/>id: repo:cabinet<br/>repository<br/>app-independent catalog", rendered)
+        rendered = render_mermaid([node("repo:heimgewebe-katalog", purpose="app-independent catalog")], [])
+        self.assertIn("Heimgewebe-Systemkatalog<br/>id: repo:heimgewebe-katalog<br/>repository<br/>app-independent catalog", rendered)
         self.assertNotIn("status:", rendered)
 
     def test_non_object_nodes_fail_closed(self) -> None:
@@ -79,15 +79,15 @@ class EcosystemRegistryMapRenderTests(unittest.TestCase):
 
     def test_missing_purpose_fails_closed(self) -> None:
         with self.assertRaisesRegex(RegistryMapError, "missing required string field: purpose"):
-            render_mermaid([{"id": "repo:cabinet", "kind": "repository", "label": "Cabinet"}], [])
+            render_mermaid([{"id": "repo:heimgewebe-katalog", "kind": "repository", "label": "Heimgewebe-Systemkatalog"}], [])
 
     def test_non_object_edges_fail_closed_before_sorting(self) -> None:
         with self.assertRaisesRegex(RegistryMapError, r"edge \d+ must be an object"):
-            render_mermaid([node("repo:cabinet")], ["not-an-object"])
+            render_mermaid([node("repo:heimgewebe-katalog")], ["not-an-object"])
 
     def test_missing_edge_source_fails_closed(self) -> None:
         with self.assertRaisesRegex(RegistryMapError, "missing required string field: from"):
-            render_mermaid([node("repo:cabinet")], [{"to": "repo:cabinet", "type": "owns", "stability": "stable"}])
+            render_mermaid([node("repo:heimgewebe-katalog")], [{"to": "repo:heimgewebe-katalog", "type": "owns", "stability": "stable"}])
 
     def test_missing_visual_anchor_nodes_do_not_raise(self) -> None:
         rendered = render_mermaid([node("repo:other", label="Other")], [])
@@ -95,19 +95,19 @@ class EcosystemRegistryMapRenderTests(unittest.TestCase):
         self.assertIn("repo_other", rendered)
 
     def test_visual_anchor_is_explicitly_noncanonical(self) -> None:
-        rendered = render_mermaid([node("repo:cabinet")], [])
+        rendered = render_mermaid([node("repo:heimgewebe-katalog")], [])
         self.assertIn("Visual anchor only; does not establish canonical truth.", rendered)
         self.assertIn("classDef mapAnchor", rendered)
         self.assertNotIn("classDef canon", rendered)
 
     def test_generated_comment_marks_manual_edit_boundary(self) -> None:
-        rendered = render_mermaid([node("repo:cabinet")], [])
+        rendered = render_mermaid([node("repo:heimgewebe-katalog")], [])
         self.assertIn("GENERATED FILE", rendered)
         self.assertIn("Do not edit manually", rendered)
 
     def test_projection_policy_can_reorder_groups(self) -> None:
         config = ProjectionViewConfig(kind_order=("artifact", "repository"), kind_titles={"artifact": "Artefakte", "repository": "Repos"}, visual_anchor_node_ids=())
-        rendered = MermaidRenderer(config).render(RegistryData(nodes=[node("repo:cabinet"), node("artifact:map", "artifact", "Map")], edges=[]))
+        rendered = MermaidRenderer(config).render(RegistryData(nodes=[node("repo:heimgewebe-katalog"), node("artifact:map", "artifact", "Map")], edges=[]))
         self.assertLess(rendered.index("kind_artifact[Artefakte]"), rendered.index("kind_repository[Repos]"))
 
     def test_partial_kind_title_override_preserves_default_titles(self) -> None:
@@ -119,12 +119,12 @@ class EcosystemRegistryMapRenderTests(unittest.TestCase):
         config = ProjectionConfigLoader(ROOT, Path("policy/ecosystem-map-view.v1.json")).load()
         self.assertEqual(config.kind_order, ("human", "repository", "concept", "artifact", "service"))
         self.assertEqual(config.title_for("repository"), "Repos und Organe")
-        self.assertIn("repo:cabinet", config.visual_anchor_node_ids)
+        self.assertIn("repo:heimgewebe-katalog", config.visual_anchor_node_ids)
 
     def test_projection_config_must_be_non_authoritative(self) -> None:
         with tempfile.TemporaryDirectory(dir=ROOT / "scripts/tests") as temporary:
             config = Path(temporary) / "bad-config.json"
-            config.write_text(json.dumps({"kind": "cabinet_ecosystem_map_projection_policy", "authoritative": True}), encoding="utf-8")
+            config.write_text(json.dumps({"kind": "heimgewebe_system_catalog_map_projection_policy", "authoritative": True}), encoding="utf-8")
             stdout = StringIO()
             with redirect_stdout(stdout), redirect_stderr(StringIO()):
                 result = render_main(["--repo-root", str(ROOT), "--check", "--json", "--view-config", str(config.relative_to(ROOT))])

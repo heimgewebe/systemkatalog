@@ -14,7 +14,7 @@ Eine eigene Karte als eigenes Repository waere im Moment verfrueht. Sie wuerde e
 
 ## Synthese
 
-Die Ecosystem Map v0 wird in Cabinet gepflegt. Der intendierte lokale Pflegeort ist `/home/alex/repos/cabinet`. Ein eigenes Map-Repo bleibt eine spaetere Reifeentscheidung.
+Die Ecosystem Map v0 wird in Cabinet gepflegt. Der intendierte lokale Pflegeort ist `/home/alex/repos/heimgewebe-katalog`. Ein eigenes Map-Repo bleibt eine spaetere Reifeentscheidung.
 
 ## Rollen
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Create and verify a bounded private archive for the external Cabinet app.
 
-The tool is deliberately separate from ``cabinet-safe-export.sh``.  The safe
+The tool is deliberately separate from ``systemkatalog-safe-export.sh``.  The safe
 export is portable and excludes private runtime data; this archive is private,
 create-only and designed for preservation before runtime retirement.
 """

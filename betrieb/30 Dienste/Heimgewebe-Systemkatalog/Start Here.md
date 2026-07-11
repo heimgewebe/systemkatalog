@@ -6,7 +6,7 @@ Lokale read-only Projektion des versionierten Systemkatalogs.
 - Oberfläche: `http://127.0.0.1:4001/`
 - JSON: `http://127.0.0.1:4001/api/catalog.json`
 - systemd: `heimgewebe-systemkatalog.service`
-- Kompatibilitätsalias: `cabinet.service`
+- alter Cabinet-Dienstalias: entfernt
 - Implementierung: Python-Standardbibliothek
 - persistenter Dienstzustand: keiner
 - externer Cabinet-Daemon: retired

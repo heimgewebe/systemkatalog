@@ -1070,7 +1070,7 @@ def build_report(
         "schemaPath": SCHEMA_PATH,
         "mode": "read_only_coherence_scan",
         "source": {
-            "repository": "heimgewebe/cabinet",
+            "repository": "heimgewebe/heimgewebe-katalog",
             "commit": commit,
             "generatedAt": generated_at_value,
             "scanDate": date_value.isoformat(),
@@ -1104,7 +1104,7 @@ def validate_report(report: dict[str, Any]) -> None:
     source = report["source"]
     if not isinstance(source, dict) or set(source) != {"repository", "commit", "generatedAt", "scanDate"}:
         raise MaintenanceReportError("source fields mismatch")
-    if source["repository"] != "heimgewebe/cabinet" or not _is_commit_sha(source["commit"]):
+    if source["repository"] != "heimgewebe/heimgewebe-katalog" or not _is_commit_sha(source["commit"]):
         raise MaintenanceReportError("source mismatch")
     if not isinstance(source["generatedAt"], str) or not source["generatedAt"]:
         raise MaintenanceReportError("source.generatedAt must be a non-empty string")

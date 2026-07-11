@@ -275,7 +275,7 @@ def build_packet(repo_root: Path, *, source_commit: str | None = None, generated
         "schemaPath": SCHEMA_PATH,
         "generator": GENERATOR_PATH,
         "source": {
-            "repository": "heimgewebe/cabinet",
+            "repository": "heimgewebe/heimgewebe-katalog",
             "commit": commit,
             "generatedAt": generated_at_value,
             "mode": "curated_allowlist_only",
@@ -334,7 +334,7 @@ def validate_packet(packet: dict[str, Any]) -> None:
     source = _object(packet["source"], "source")
     if set(source) != {"repository", "commit", "generatedAt", "mode"}:
         raise EvidencePacketError("source fields mismatch")
-    if source["repository"] != "heimgewebe/cabinet" or not _is_commit_sha(source["commit"]):
+    if source["repository"] != "heimgewebe/heimgewebe-katalog" or not _is_commit_sha(source["commit"]):
         raise EvidencePacketError("source repository or commit mismatch")
     _parse_timestamp(_string(source["generatedAt"], "source.generatedAt"), "source.generatedAt")
     if source["mode"] != "curated_allowlist_only":

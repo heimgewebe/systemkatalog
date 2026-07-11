@@ -48,8 +48,8 @@
   },
   "entrypoints": [
     {
-      "id": "cabinet",
-      "label": "Cabinet / Systemkatalog",
+      "id": "heimgewebe_katalog",
+      "label": "Heimgewebe-Systemkatalog",
       "target": "README.md"
     },
     {
@@ -106,7 +106,6 @@
     "port"
   ],
   "doesNotEstablish": [
-    "repository_rename_completion",
     "runtime_health",
     "task_eligibility",
     "merge_readiness",
@@ -146,7 +145,7 @@
   ],
   "migrationCompletion": {
     "task": "OPERATOR-ECOSYSTEM-REDUNDANCY-V1-T004",
-    "state": "catalog_core_and_runtime_cutover_complete",
+    "state": "catalog_core_runtime_and_repository_migration_complete",
     "completedSurfaces": [
       "node_operational_status_removed",
       "edge_status_replaced_by_stability",
@@ -162,10 +161,9 @@
       "legacy_daemon_listener_removed",
       "secret_environment_dependency_removed"
     ],
-    "remainingSeparateTasks": {
-      "repository_rename": "OPERATOR-ECOSYSTEM-REDUNDANCY-V1-T014"
-    },
-    "runtimeTask": "OPERATOR-ECOSYSTEM-REDUNDANCY-V1-T013"
+    "remainingSeparateTasks": {},
+    "runtimeTask": "OPERATOR-ECOSYSTEM-REDUNDANCY-V1-T013",
+    "repositoryTask": "OPERATOR-ECOSYSTEM-REDUNDANCY-V1-T014"
   },
   "legacyAutomationPolicy": {
     "scheduledExecution": false,
@@ -195,7 +193,6 @@
   "runtimeProjection": {
     "role": "read_only_catalog_projection",
     "service": "heimgewebe-systemkatalog.service",
-    "compatibilityAlias": "cabinet.service",
     "implementation": "python_standard_library",
     "bindClass": "loopback_only",
     "stateful": false,

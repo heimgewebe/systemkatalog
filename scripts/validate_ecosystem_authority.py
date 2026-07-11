@@ -220,7 +220,7 @@ def _validate_public_usage(usage: dict[str, Any]) -> None:
 def validate() -> dict:
     matrix = _load(MATRIX)
     usage = _load(USAGE)
-    if matrix.get("kind") != "cabinet_ecosystem_authority_matrix":
+    if matrix.get("kind") != "heimgewebe_system_catalog_authority_matrix":
         raise ValueError("authority matrix kind mismatch")
     canonical = matrix.get("canonicalMap")
     if canonical != "rendered/ecosystem-registry-map.mmd":

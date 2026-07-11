@@ -5,7 +5,7 @@ umask 077
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 UNIT_DIR="$HOME/.config/systemd/user"
 BIN_DIR="$HOME/.local/bin"
-STATE_DIR="$HOME/.local/state/cabinet"
+STATE_DIR="$HOME/.local/state/heimgewebe-systemkatalog"
 NEW_UNIT="$UNIT_DIR/heimgewebe-systemkatalog.service"
 OLD_UNIT="$UNIT_DIR/cabinet.service"
 OLD_DROPIN="$UNIT_DIR/cabinet.service.d"
@@ -24,7 +24,7 @@ render() {
 from pathlib import Path
 import sys
 source, destination, home, root = map(Path, sys.argv[1:])
-text = source.read_text(encoding="utf-8").replace("@HOME@", str(home)).replace("@CABINET_ROOT@", str(root))
+text = source.read_text(encoding="utf-8").replace("@HOME@", str(home)).replace("@SYSTEMKATALOG_ROOT@", str(root))
 destination.write_text(text, encoding="utf-8")
 PY
 }
@@ -32,7 +32,7 @@ PY
 for tool in cp date find git install ln mkdir mktemp python3 readlink rmdir sed seq sleep systemctl; do
   command -v "$tool" >/dev/null || die "Werkzeug fehlt: $tool"
 done
-git -C "$REPO_ROOT" rev-parse --git-dir >/dev/null 2>&1 || die "Kein Cabinet-Repository: $REPO_ROOT"
+git -C "$REPO_ROOT" rev-parse --git-dir >/dev/null 2>&1 || die "Kein Heimgewebe-Systemkatalog-Repository: $REPO_ROOT"
 python3 "$REPO_ROOT/scripts/validate_system_catalog.py" >/dev/null
 python3 "$REPO_ROOT/scripts/render_system_catalog.py" --check >/dev/null
 python3 "$REPO_ROOT/scripts/serve_system_catalog.py" --check >/dev/null
@@ -58,13 +58,9 @@ do
   backup_one "$path"
 done
 
-was_active=0
-was_enabled=0
 if (( CUTOVER )); then
-  systemctl --user is-active --quiet cabinet.service && was_active=1 || true
-  systemctl --user is-enabled --quiet cabinet.service && was_enabled=1 || true
-  systemctl --user stop cabinet.service || true
-  systemctl --user disable cabinet.service || true
+  systemctl --user stop heimgewebe-systemkatalog.service || true
+  systemctl --user disable heimgewebe-systemkatalog.service || true
 fi
 
 install -m 0644 "$TMP/heimgewebe-systemkatalog.service" "$NEW_UNIT"
@@ -77,7 +73,6 @@ if [[ -d "$OLD_DROPIN" ]]; then
 fi
 rm -f -- "$OLD_UNIT" \
   "$BIN_DIR/cabinet" "$BIN_DIR/cabinet-session" "$BIN_DIR/cabinetctl" "$BIN_DIR/cabinet-security-gate"
-ln -sfn heimgewebe-systemkatalog.service "$OLD_UNIT"
 
 systemctl --user daemon-reload
 

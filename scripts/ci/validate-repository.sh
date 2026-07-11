@@ -61,7 +61,7 @@ find . -type f -print0 | while IFS= read -r -d '' f; do
     fi
 done
 
-for f in ops/bin/* ops/install/*.sh scripts/cabinet-safe-export.sh scripts/ci/*.sh; do
+for f in ops/bin/* ops/install/*.sh scripts/systemkatalog-safe-export.sh scripts/ci/*.sh; do
     if [[ -f "$f" ]]; then
         bash -n "$f"
     fi

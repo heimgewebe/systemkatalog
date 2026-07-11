@@ -93,7 +93,7 @@ Fixed values:
 - contractVersion: "1"
 - contractPath: docs/contracts/cabinet-gemini-maintenance-scan-v1.md
 - schemaPath: docs/contracts/cabinet-gemini-maintenance-scan-v1.schema.json
-- source.repository: heimgewebe/cabinet
+- source.repository: heimgewebe/heimgewebe-katalog
 - source.commit: use the current commit SHA printed in the evidence packet source.commit
 - source.executionManifestRef: policy/gemini-maintenance-execution-manifest.v1.json
 - source.evidenceManifestRef: {evidence_packet.as_posix()}

@@ -9,7 +9,7 @@ def fail(message: str) -> None:
 
 def rendered_unit(repo: Path, home: Path) -> bytes:
     source = repo / "ops/systemd/heimgewebe-systemkatalog.service.tmpl"
-    return source.read_text().replace("@HOME@", str(home)).replace("@CABINET_ROOT@", str(repo)).encode()
+    return source.read_text().replace("@HOME@", str(home)).replace("@SYSTEMKATALOG_ROOT@", str(repo)).encode()
 
 
 def main() -> None:
@@ -35,17 +35,13 @@ def main() -> None:
         if actual_mode != expected_mode:
             fail(f"mode mismatch: {path}: {actual_mode:o} != {expected_mode:o}")
     retired = [
+        home / ".config/systemd/user/cabinet.service",
         home / ".config/systemd/user/cabinet.service.d",
         *(home / ".local/bin" / name for name in ("cabinet", "cabinet-session", "cabinetctl", "cabinet-security-gate")),
     ]
     for path in retired:
         if path.exists() or path.is_symlink():
             fail(f"retired path exists: {path}")
-    alias = home / ".config/systemd/user/cabinet.service"
-    if not alias.is_symlink():
-        fail(f"compatibility alias missing: {alias}")
-    if alias.readlink() != Path("heimgewebe-systemkatalog.service"):
-        fail(f"compatibility alias target mismatch: {alias.readlink()}")
     calls = [line for line in args.systemctl_log.read_text().splitlines() if line.strip()]
     if len(calls) != args.expected_systemctl_calls:
         fail(f"systemctl call count: gefunden={len(calls)}, erwartet={args.expected_systemctl_calls}")

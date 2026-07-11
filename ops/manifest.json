@@ -1,10 +1,9 @@
 {
   "schema": "heimgewebe.system-catalog-runtime.v1",
   "runtime_version": "1",
-  "repository_root": "~/repos/cabinet",
+  "repository_root": "~/repos/heimgewebe-katalog",
   "service": {
     "name": "heimgewebe-systemkatalog.service",
-    "compatibility_alias": "cabinet.service",
     "template": "ops/systemd/heimgewebe-systemkatalog.service.tmpl",
     "destination": "~/.config/systemd/user/heimgewebe-systemkatalog.service",
     "bind": "127.0.0.1",

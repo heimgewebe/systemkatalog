@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "kind": "cabinet_ecosystem_map_projection_policy",
+  "kind": "heimgewebe_system_catalog_map_projection_policy",
   "authoritative": false,
   "source": "registry/ecosystem/nodes.json + registry/ecosystem/edges.json",
   "kindOrder": [
@@ -18,7 +18,7 @@
     "service": "Primäre Dienste"
   },
   "visualAnchorNodeIds": [
-    "repo:cabinet",
+    "repo:heimgewebe-katalog",
     "artifact:ecosystem-map"
   ],
   "doesNotEstablish": [

@@ -43,7 +43,7 @@ def valid_scan() -> dict[str, Any]:
         "createdAt": "2026-07-08T14:00:00Z",
         "status": "completed",
         "source": {
-            "repository": "heimgewebe/cabinet",
+            "repository": "heimgewebe/heimgewebe-katalog",
             "commit": "a" * 40,
             "executionManifestRef": "policy/gemini-maintenance-execution-manifest.v1.json",
             "evidenceManifestRef": "pruefung/10 Laeufe/gemini-maintenance-evidence-packet-v1.json",

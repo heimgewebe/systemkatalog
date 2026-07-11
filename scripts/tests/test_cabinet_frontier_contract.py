@@ -40,7 +40,7 @@ from write_cabinet_frontier import (  # noqa: E402
 def maintenance_report() -> dict[str, Any]:
     return {
         "source": {
-            "repository": "heimgewebe/cabinet",
+            "repository": "heimgewebe/heimgewebe-katalog",
             "commit": "a" * 40,
         },
         "summary": {
@@ -92,7 +92,7 @@ class CabinetFrontierContractTests(unittest.TestCase):
     def test_build_frontier_candidates_translates_report_candidates(self) -> None:
         rows = build_frontier_candidates(maintenance_report(), signals(), created_at="2026-07-08T04:00:00Z")
         self.assertEqual(len(rows), 1)
-        self.assertEqual(rows[0]["target"]["repository"], "heimgewebe/cabinet")
+        self.assertEqual(rows[0]["target"]["repository"], "heimgewebe/heimgewebe-katalog")
         self.assertEqual(rows[0]["proposal"]["priorityHint"], "later")
 
     def test_effect_flag_true_blocks_candidate(self) -> None:

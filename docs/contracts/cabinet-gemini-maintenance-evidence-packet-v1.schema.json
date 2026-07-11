@@ -32,7 +32,7 @@
       "additionalProperties": false,
       "required": ["repository", "commit", "generatedAt", "mode"],
       "properties": {
-        "repository": {"const": "heimgewebe/cabinet"},
+        "repository": {"const": "heimgewebe/heimgewebe-katalog"},
         "commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
         "generatedAt": {"type": "string", "minLength": 1},
         "mode": {"const": "curated_allowlist_only"}

@@ -48,7 +48,7 @@ Kategorien:
 | `steuerung/**`, Projektkarten und lokale Prioritätsflächen | Aufgaben- und Reihenfolgemodell | `MOVE` | Bureau | T004 |
 | `pruefung/10 Laeufe/**` | Lauf- und Experimentbelege | `ARCHIVE` | historische Evidence; keine aktuelle Produktfläche | T004 |
 | `ops/manifest.json`, `ops/bin/**`, `ops/install/**` | Installation und Audit der read-only Katalogprojektion | `KEEP` | reproduzierbare Systemkatalog-Runtime ohne Provider, Datenbank oder Secrets | T013 abgeschlossen |
-| `ops/systemd/**` | `heimgewebe-systemkatalog.service` plus Alias `cabinet.service` | `KEEP` | Loopback-only Leseoberfläche; keine Katalogautorität und kein zweiter Daemon | T013 abgeschlossen |
+| `ops/systemd/**` | `heimgewebe-systemkatalog.service` ohne Cabinet-Alias | `KEEP` | Loopback-only Leseoberfläche; keine Katalogautorität und kein zweiter Daemon | T013 abgeschlossen |
 | frühere `ops/patches/**` | Patch der gepinnten Fremd-App | `REMOVE` | aus dem aktiven Repositoryvertrag entfernt | T013 abgeschlossen |
 | `.cabinet`-Raumkonfiguration und app-spezifische Räume | private Altbestände der Fremd-App | `ARCHIVE` | kein aktiver Viewer und kein Canon; spätere Retention separat | T013 abgeschlossen |
 | lokale App-Daten, Conversations, Memory und Konfiguration | möglicherweise nichtversionierte private Inhalte | `MOVE` in privates Archiv | außerhalb des öffentlichen Repositories | T012 |
@@ -56,7 +56,7 @@ Kategorien:
 | `scripts/private_cabinet_restic_handoff.py` | tmpfs-zu-Restic Snapshot- und Restore-Verifier | `ARCHIVE` nach abgeschlossenem Runtime-Rückbau | verschlüsselter migrationsgebundener Handoff; keine Katalogruntime und keine Retentionsteuerung | T012/T013 |
 | `docs/migration/cabinet-runtime-retirement-preflight-v1.json` | redaktierter, datierter Runtime-Entscheidungsbeleg | `KEEP` bis T013-Abschluss, danach `ARCHIVE` | bindet privaten Livebeleg per Hash; keine Live-Status- oder Abschaltautorität | T013 Preflight abgeschlossen |
 | `docs/migration/cabinet-runtime-retirement-authorization-v1.md` | gestufter Rückbau- und Rollbackplan | `KEEP` bis T013-Abschluss, danach `ARCHIVE` | Phase-A–D-Gates; jede Wirkung benötigt eigene Autorisierung | T013 Preflight abgeschlossen |
-| Repositoryname `heimgewebe/cabinet` | mit Fremdprodukt verwechselbare Identität | `MOVE` | `heimgewebe/heimgewebe-katalog` erst nach Runtime-Rückbau | T014 |
+| Repositoryname `heimgewebe/heimgewebe-katalog` | mit Fremdprodukt verwechselbare Identität | `MOVE` | `heimgewebe/heimgewebe-katalog` erst nach Runtime-Rückbau | T014 |
 
 ## Organrouting
 

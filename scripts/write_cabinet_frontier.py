@@ -42,14 +42,14 @@ def _flags() -> dict[str, bool]:
 
 def _repo_for_organ(organ: str) -> str:
     mapping = {
-        "cabinet": "heimgewebe/cabinet",
+        "cabinet": "heimgewebe/heimgewebe-katalog",
         "bureau": "heimgewebe/bureau",
         "grabowski": "heimgewebe/grabowski",
         "repobrief_lenskit": "heimgewebe/lenskit",
         "heimlern": "heimgewebe/heimlern",
         "leitstand": "heimgewebe/leitstand",
     }
-    return mapping.get(organ, "heimgewebe/cabinet")
+    return mapping.get(organ, "heimgewebe/heimgewebe-katalog")
 
 
 def _risk_for_status(status: str) -> str:
@@ -87,7 +87,7 @@ def candidate_from_bureau_candidate(
         "id": f"frontier:cabinet:{_hash_id(candidate_id, next_action, source.get('commit'))}",
         "createdAt": created_at,
         "source": {
-            "repository": "heimgewebe/cabinet",
+            "repository": "heimgewebe/heimgewebe-katalog",
             "commit": str(source.get("commit") or "0" * 40),
             "maintenanceReportStatus": str(summary.get("status") or "unknown"),
             "maintenanceReportRef": "scripts/write_cabinet_maintenance_report.py",

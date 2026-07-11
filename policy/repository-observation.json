@@ -8,9 +8,9 @@
       "reference": "steuerung/40 Organe/Bureau/Repository Reference.md"
     },
     {
-      "id": "cabinet",
-      "directory": "cabinet",
-      "expected_remote": "github.com:heimgewebe/cabinet.git",
+      "id": "heimgewebe-katalog",
+      "directory": "heimgewebe-katalog",
+      "expected_remote": "github.com:heimgewebe/heimgewebe-katalog.git",
       "reference": "steuerung/40 Organe/Cabinet/Repository Reference.md"
     },
     {
