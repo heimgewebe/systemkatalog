@@ -1,4 +1,4 @@
-# Cabinet — Repository Reference
+# Heimgewebe-Systemkatalog — Repository Reference
 
 > Datierter Systemorgan-Snapshot. Git bleibt kanonisch; diese Karte ist keine Live-Anzeige und keine Ausführungsfreigabe.
 
@@ -16,7 +16,7 @@
 
 | Feld | Wert |
 |---|---|
-| Repository | `cabinet` |
+| Repository | `heimgewebe-katalog` |
 | Pfad | `/home/alex/repos/heimgewebe-katalog` |
 | Origin | `github.com:heimgewebe/heimgewebe-katalog.git` |
 | Branch | `main` |
@@ -52,7 +52,7 @@
 
 ## Kanonische Systemrolle
 
-> Cabinet soll sich vom lokalen Ordnungsraum zu einer Ecosystem-Intelligence-Schicht entwickeln.
+> Der Heimgewebe-Systemkatalog beschreibt stabile Systeme, Zuständigkeiten, Beziehungen und Einstiegspunkte; er ist keine operative Steuerungsschicht.
 
 ## Abgrenzung
 
