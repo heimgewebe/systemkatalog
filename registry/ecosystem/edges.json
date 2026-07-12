@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "kind": "system_catalog_relations",
   "catalogRole": "canonical_stable_relations",
-  "updatedAt": "2026-07-11",
+  "updatedAt": "2026-07-12",
   "relationTypes": [
     "owns",
     "steers",
@@ -196,6 +196,104 @@
       "type": "learning_input_for",
       "stability": "stable",
       "meaning": "Heimlern may consume historical outcomes offline; no policy is auto-applied."
+    },
+    {
+      "from": "repo:metarepo",
+      "to": "repo:systemkatalog",
+      "type": "provides",
+      "stability": "stable",
+      "meaning": "Metarepo provides Fleet membership; Systemkatalog remains authority for purpose, relations and entrypoints."
+    },
+    {
+      "from": "repo:metarepo",
+      "to": "repo:contracts-mirror",
+      "type": "provides",
+      "stability": "stable",
+      "meaning": "Canonical contracts originate in Metarepo and are mirrored for validation and publication."
+    },
+    {
+      "from": "repo:wgx",
+      "to": "service:ci",
+      "type": "provides",
+      "stability": "stable",
+      "meaning": "WGX provides reusable Fleet checks and repository workflow mechanics."
+    },
+    {
+      "from": "repo:contracts-mirror",
+      "to": "service:ci",
+      "type": "validated_by",
+      "stability": "stable",
+      "meaning": "Mirrored contracts are checked against their fixtures and source contract."
+    },
+    {
+      "from": "repo:semantAH",
+      "to": "repo:hausKI",
+      "type": "provides",
+      "stability": "stable",
+      "meaning": "semantAH provides the semantic memory and knowledge-graph layer used by HausKI."
+    },
+    {
+      "from": "repo:hausKI-audio",
+      "to": "repo:hausKI",
+      "type": "provides",
+      "stability": "related",
+      "meaning": "HausKI Audio is the bounded audio and automation surface adjacent to the local AI stack."
+    },
+    {
+      "from": "repo:aussensensor",
+      "to": "repo:chronik",
+      "type": "delivers_to",
+      "stability": "stable",
+      "meaning": "Curated external events are delivered to Chronik as the historical ingest authority."
+    },
+    {
+      "from": "repo:mitschreiber",
+      "to": "repo:chronik",
+      "type": "emits_to",
+      "stability": "stable",
+      "meaning": "Redacted on-device context events are emitted to Chronik."
+    },
+    {
+      "from": "repo:mitschreiber",
+      "to": "repo:semantAH",
+      "type": "provides",
+      "stability": "bounded",
+      "meaning": "Redacted embeddings and context signals can feed semantic indexing without raw-text authority."
+    },
+    {
+      "from": "repo:sichter",
+      "to": "service:github",
+      "type": "operates_on",
+      "stability": "bounded",
+      "meaning": "Sichter reviews repository changes and may prepare pull requests within policy boundaries."
+    },
+    {
+      "from": "repo:heimgeist",
+      "to": "artifact:ecosystem-map",
+      "type": "observes",
+      "stability": "related",
+      "meaning": "Heimgeist may inspect catalog projections for reflection but does not own catalog truth."
+    },
+    {
+      "from": "repo:heim-pc",
+      "to": "artifact:ecosystem-map",
+      "type": "observes",
+      "stability": "stable",
+      "meaning": "The local operator entry points to the canonical ecosystem map without duplicating it."
+    },
+    {
+      "from": "repo:vault-gewebe",
+      "to": "repo:systemkatalog",
+      "type": "scope_boundary",
+      "stability": "related",
+      "meaning": "Vault material may inform catalog edits but is not active catalog canon."
+    },
+    {
+      "from": "repo:commonworld",
+      "to": "service:github",
+      "type": "operates_on",
+      "stability": "stable",
+      "meaning": "Commonworld product work is versioned and validated through repository, pull-request and CI state."
     }
   ]
 }

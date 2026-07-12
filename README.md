@@ -17,7 +17,7 @@ Er ist **kein Steuerungs- oder Statussystem**. Aufgaben, Prioritäten, Laufzust�
 
 ## Was der Systemkatalog beantwortet
 
-- Welche Systeme existieren?
+- Welche stabilen Systeme sind katalogisiert, und welche Metarepo-Fleet-Repositories sind abgedeckt?
 - Welchem Zweck dient jedes System?
 - Wofür ist es ausdrücklich nicht zuständig?
 - Wem gehört welche Wahrheit?
@@ -50,13 +50,17 @@ Dafür gelten die Primärquellen:
 ```text
 catalog/              Schema und nichtkanonisches Beispiel
 policy/               Rollen- und Projektionsgrenzen
-registry/ecosystem/   Kanonische Systeme, Beziehungen, Claims und Zuständigkeiten
+registry/ecosystem/   Kanonische Systeme, Fleet-Abdeckung, Beziehungen, Claims und Zuständigkeiten
 rendered/             Deterministisch erzeugte Leseansicht und Karte
 scripts/              Validatoren, Renderer und read-only Dienst
 ops/                  Reproduzierbare lokale Runtime
 ```
 
 Die frühere Cabinet-Raumstruktur liegt ausschließlich unter `docs/archive/cabinet-era/`. Sie ist historisches Material, keine aktive Navigation, kein zweiter Katalog und keine Wahrheitsquelle.
+
+Die Fleet-Mitgliedschaft selbst gehört Metarepo (`fleet/repos.yml`). Der Systemkatalog gleicht diese Quelle ab, übernimmt daraus aber weder Zweck noch Architektursemantik. Jedes Fleet-Repository muss katalogisiert sein; Quellausschlüsse wie `fleet: false` müssen ausdrücklich dokumentiert bleiben.
+
+Konkrete Coding-Agenten sind keine stabilen Katalogsysteme. Die dauerhafte Zuständigkeit für Agent-Auswahl und Rollenrouting liegt bei Grabowski und wird als Authority-Domäne `agent_routing` referenziert.
 
 ## Lokale Leseoberfläche
 
@@ -74,6 +78,7 @@ Die Runtime enthält keine Datenbank, keinen Scheduler, keinen Agenten und keine
 ```bash
 ./scripts/ci/validate-repository.sh
 python3 -m unittest discover -s scripts/tests -p 'test_*.py'
+python3 scripts/check_fleet_coverage.py --fleet-file /pfad/zu/metarepo/fleet/repos.yml
 ```
 
 Ein grüner Lauf belegt Struktur- und Vertragskonsistenz. Er belegt nicht automatisch Runtime-Korrektheit, fachliche Vollständigkeit oder Merge-Reife.

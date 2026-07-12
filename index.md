@@ -6,6 +6,7 @@ Dies ist der kurze Einstieg in den read-only Systemkatalog.
 - [Systeme](registry/ecosystem/nodes.json)
 - [Beziehungen](registry/ecosystem/edges.json)
 - [Wahrheitszuständigkeiten](registry/ecosystem/authority-matrix.v1.json)
+- [Repository- und Fleet-Abdeckung](registry/ecosystem/fleet-coverage.v1.json)
 - [Architektur](docs/architecture/systemkatalog.md)
 - [Räume-Audit](docs/audits/systemkatalog-room-audit-v1.md)
 

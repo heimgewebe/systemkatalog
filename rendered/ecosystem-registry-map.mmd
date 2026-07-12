@@ -10,20 +10,33 @@ flowchart TD
     end
 
     subgraph kind_repository[Repos und Organe]
+        repo_aussensensor["Außensensor<br/>id: repo:aussensensor<br/>repository<br/>Curated external signals and event feeds for Chronik"]
         repo_bureau["Bureau<br/>id: repo:bureau<br/>repository<br/>task cadence, delegation, run reporting"]
         repo_chronik["Chronik<br/>id: repo:chronik<br/>repository<br/>append-only event ledger and historical evidence axis"]
+        repo_commonworld["Commonworld<br/>id: repo:commonworld<br/>repository<br/>Interactive globe and commons-oriented world exploration"]
+        repo_contracts_mirror["Contracts Mirror<br/>id: repo:contracts-mirror<br/>repository<br/>Validated mirror and publication surface for canonical Metarepo contracts"]
         repo_device_graph["Device Graph<br/>id: repo:device-graph<br/>repository<br/>infrastructure device graph; adjacent but not ecosystem-governance canon"]
         repo_grabowski["Grabowski<br/>id: repo:grabowski<br/>repository<br/>operator execution, repo work, review gates"]
+        repo_hausKI["HausKI<br/>id: repo:hausKI<br/>repository<br/>Local offline-first AI orchestration and policy-controlled memory"]
+        repo_hausKI_audio["HausKI Audio<br/>id: repo:hausKI-audio<br/>repository<br/>Local audio playback, recording and automation"]
+        repo_heim_pc["heim-pc<br/>id: repo:heim-pc<br/>repository<br/>Versioned local operator entry and host orientation"]
+        repo_heimgeist["Heimgeist<br/>id: repo:heimgeist<br/>repository<br/>System self-reflection and meta-agent experimentation"]
         repo_heimlern["heimlern<br/>id: repo:heimlern<br/>repository<br/>offline operator-learning and proposal generation"]
         repo_infra["Infra<br/>id: repo:infra<br/>repository<br/>host, network, cockpit and operational runbooks"]
         repo_leitstand["Leitstand<br/>id: repo:leitstand<br/>repository<br/>read-only ecosystem observability and status projection"]
         repo_lenskit["Lenskit / RepoBrief implementation<br/>id: repo:lenskit<br/>repository<br/>context view and citable repository briefs"]
+        repo_metarepo["Metarepo<br/>id: repo:metarepo<br/>repository<br/>Fleet membership, canonical shared contracts and repository templates"]
+        repo_mitschreiber["Mitschreiber<br/>id: repo:mitschreiber<br/>repository<br/>Privacy-first on-device context capture and redacted event production"]
         repo_plexer["Plexer<br/>id: repo:plexer<br/>repository<br/>bounded event delivery and queueing gateway"]
         repo_schauwerk["Schauwerk<br/>id: repo:schauwerk<br/>repository<br/>visual surface and projection layer"]
+        repo_semantAH["semantAH<br/>id: repo:semantAH<br/>repository<br/>Semantic index, embeddings and knowledge-graph pipeline"]
+        repo_sichter["Sichter<br/>id: repo:sichter<br/>repository<br/>Code-review and pull-request automation prototype"]
         repo_steuerboard["Steuerboard<br/>id: repo:steuerboard<br/>repository<br/>read-only repo-state signal"]
         repo_systemkatalog["Systemkatalog<br/>id: repo:systemkatalog<br/>repository<br/>app-independent catalog for system purposes, truth ownership, stable relations and entrypoints"]
+        repo_vault_gewebe["Vault Gewebe<br/>id: repo:vault-gewebe<br/>repository<br/>Versioned shared knowledge vault and design source material"]
         repo_vibe_lab["Vibe-Lab<br/>id: repo:vibe-lab<br/>repository<br/>method lab and evidence experiments"]
         repo_weltgewebe["Weltgewebe<br/>id: repo:weltgewebe<br/>repository<br/>product and domain core"]
+        repo_wgx["WGX<br/>id: repo:wgx<br/>repository<br/>Fleet CLI and reusable repository workflow engine"]
     end
 
     subgraph kind_concept[Konzepte]
@@ -41,6 +54,7 @@ flowchart TD
 
     actor_alexander -->|steers / stable| repo_systemkatalog
     concept_repobrief -->|provides / stable| repo_systemkatalog
+    repo_aussensensor -->|delivers_to / stable| repo_chronik
     repo_bureau -->|delegates_to / stable| repo_grabowski
     repo_bureau -->|provides / stable| repo_leitstand
     repo_chronik -->|evidence_for / bounded| repo_bureau
@@ -48,18 +62,31 @@ flowchart TD
     repo_chronik -->|displayed_by / stable| repo_leitstand
     repo_chronik -->|provides / stable| repo_leitstand
     repo_chronik -->|provides / stable| repo_systemkatalog
+    repo_commonworld -->|operates_on / stable| service_github
+    repo_contracts_mirror -->|validated_by / stable| service_ci
     repo_device_graph -->|scope_boundary / related| artifact_ecosystem_map
     repo_grabowski -->|emits_to / bounded| repo_chronik
     repo_grabowski -->|operates_on / stable| service_github
+    repo_hausKI_audio -->|provides / related| repo_hausKI
+    repo_heim_pc -->|observes / stable| artifact_ecosystem_map
+    repo_heimgeist -->|observes / related| artifact_ecosystem_map
     repo_leitstand -->|observes / stable| artifact_ecosystem_map
     repo_lenskit -->|implements / stable| concept_repobrief
+    repo_metarepo -->|provides / stable| repo_contracts_mirror
+    repo_metarepo -->|provides / stable| repo_systemkatalog
+    repo_mitschreiber -->|emits_to / stable| repo_chronik
+    repo_mitschreiber -->|provides / bounded| repo_semantAH
     repo_plexer -->|delivers_to / stable| repo_chronik
     repo_schauwerk -->|renders / stable| artifact_ecosystem_map
+    repo_semantAH -->|provides / stable| repo_hausKI
+    repo_sichter -->|operates_on / bounded| service_github
     repo_steuerboard -->|observes / stable| repo_systemkatalog
     repo_systemkatalog -->|owns / stable| artifact_ecosystem_map
     repo_systemkatalog -->|provides / stable| repo_leitstand
+    repo_vault_gewebe -->|scope_boundary / related| repo_systemkatalog
     repo_vibe_lab -->|provides / stable| repo_systemkatalog
     repo_weltgewebe -->|operates_on / stable| service_github
+    repo_wgx -->|provides / stable| service_ci
     service_ci -->|provides / stable| repo_leitstand
     service_github -->|provides / stable| repo_leitstand
     service_github -->|validated_by / stable| service_ci

@@ -9,7 +9,8 @@
     "registry/ecosystem/nodes.json",
     "registry/ecosystem/edges.json",
     "registry/ecosystem/claims.jsonl",
-    "registry/ecosystem/authority-matrix.v1.json"
+    "registry/ecosystem/authority-matrix.v1.json",
+    "registry/ecosystem/fleet-coverage.v1.json"
   ],
   "canonicalAuthorityMatrix": "registry/ecosystem/authority-matrix.v1.json",
   "canonicalGeneratedMap": "rendered/ecosystem-registry-map.mmd",
@@ -26,6 +27,7 @@
     "registry/ecosystem/edges.json",
     "registry/ecosystem/claims.jsonl",
     "registry/ecosystem/authority-matrix.v1.json",
+    "registry/ecosystem/fleet-coverage.v1.json",
     "rendered/system-catalog.md",
     "rendered/ecosystem-registry-map.mmd",
     "catalog/ecosystem-map-artifact-manifest.schema.v1.json"
@@ -139,6 +141,16 @@
       "id": "github",
       "label": "GitHub",
       "target": "https://github.com/heimgewebe"
+    },
+    {
+      "id": "metarepo_fleet",
+      "label": "Metarepo Fleet-Mitgliedschaft",
+      "target": "https://github.com/heimgewebe/metarepo/blob/main/fleet/repos.yml"
+    },
+    {
+      "id": "grabowski_routing_roles",
+      "label": "Grabowski Agent-Routing",
+      "target": "https://github.com/heimgewebe/grabowski/blob/main/docs/generated/operator-context.v1.json"
     }
   ],
   "migrationHistory": {

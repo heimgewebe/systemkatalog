@@ -1,0 +1,192 @@
+{
+  "schemaVersion": 1,
+  "kind": "system_catalog_fleet_coverage",
+  "updatedAt": "2026-07-12",
+  "membershipAuthority": {
+    "repository": "heimgewebe/metarepo",
+    "path": "fleet/repos.yml",
+    "scope": "fleet_membership_only"
+  },
+  "catalogAuthority": {
+    "repository": "heimgewebe/systemkatalog",
+    "inventory": "registry/ecosystem/nodes.json",
+    "scope": "purpose_relations_authority_and_entrypoints"
+  },
+  "repositories": [
+    {
+      "node": "repo:aussensensor",
+      "repository": "heimgewebe/aussensensor",
+      "entrypoint": "https://github.com/heimgewebe/aussensensor",
+      "membership": "fleet"
+    },
+    {
+      "node": "repo:bureau",
+      "repository": "heimgewebe/bureau",
+      "entrypoint": "https://github.com/heimgewebe/bureau",
+      "membership": "catalog-only"
+    },
+    {
+      "node": "repo:chronik",
+      "repository": "heimgewebe/chronik",
+      "entrypoint": "https://github.com/heimgewebe/chronik",
+      "membership": "fleet"
+    },
+    {
+      "node": "repo:commonworld",
+      "repository": "heimgewebe/commonworld",
+      "entrypoint": "https://github.com/heimgewebe/commonworld",
+      "membership": "catalog-only"
+    },
+    {
+      "node": "repo:contracts-mirror",
+      "repository": "heimgewebe/contracts-mirror",
+      "entrypoint": "https://github.com/heimgewebe/contracts-mirror",
+      "membership": "fleet"
+    },
+    {
+      "node": "repo:device-graph",
+      "repository": "heimgewebe/device-graph",
+      "entrypoint": "https://github.com/heimgewebe/device-graph",
+      "membership": "catalog-only"
+    },
+    {
+      "node": "repo:grabowski",
+      "repository": "heimgewebe/grabowski",
+      "entrypoint": "https://github.com/heimgewebe/grabowski",
+      "membership": "catalog-only"
+    },
+    {
+      "node": "repo:hausKI",
+      "repository": "heimgewebe/hausKI",
+      "entrypoint": "https://github.com/heimgewebe/hausKI",
+      "membership": "fleet"
+    },
+    {
+      "node": "repo:hausKI-audio",
+      "repository": "heimgewebe/hausKI-audio",
+      "entrypoint": "https://github.com/heimgewebe/hausKI-audio",
+      "membership": "fleet"
+    },
+    {
+      "node": "repo:heim-pc",
+      "repository": "heimgewebe/heim-pc",
+      "entrypoint": "https://github.com/heimgewebe/heim-pc",
+      "membership": "fleet"
+    },
+    {
+      "node": "repo:heimgeist",
+      "repository": "heimgewebe/heimgeist",
+      "entrypoint": "https://github.com/heimgewebe/heimgeist",
+      "membership": "fleet"
+    },
+    {
+      "node": "repo:heimlern",
+      "repository": "heimgewebe/heimlern",
+      "entrypoint": "https://github.com/heimgewebe/heimlern",
+      "membership": "fleet"
+    },
+    {
+      "node": "repo:infra",
+      "repository": "heimgewebe/infra",
+      "entrypoint": "https://github.com/heimgewebe/infra",
+      "membership": "catalog-only"
+    },
+    {
+      "node": "repo:leitstand",
+      "repository": "heimgewebe/leitstand",
+      "entrypoint": "https://github.com/heimgewebe/leitstand",
+      "membership": "fleet"
+    },
+    {
+      "node": "repo:lenskit",
+      "repository": "heimgewebe/lenskit",
+      "entrypoint": "https://github.com/heimgewebe/lenskit",
+      "membership": "fleet"
+    },
+    {
+      "node": "repo:metarepo",
+      "repository": "heimgewebe/metarepo",
+      "entrypoint": "https://github.com/heimgewebe/metarepo",
+      "membership": "fleet"
+    },
+    {
+      "node": "repo:mitschreiber",
+      "repository": "heimgewebe/mitschreiber",
+      "entrypoint": "https://github.com/heimgewebe/mitschreiber",
+      "membership": "fleet"
+    },
+    {
+      "node": "repo:plexer",
+      "repository": "heimgewebe/plexer",
+      "entrypoint": "https://github.com/heimgewebe/plexer",
+      "membership": "fleet"
+    },
+    {
+      "node": "repo:schauwerk",
+      "repository": "heimgewebe/schauwerk",
+      "entrypoint": "https://github.com/heimgewebe/schauwerk",
+      "membership": "catalog-only"
+    },
+    {
+      "node": "repo:semantAH",
+      "repository": "heimgewebe/semantAH",
+      "entrypoint": "https://github.com/heimgewebe/semantAH",
+      "membership": "fleet"
+    },
+    {
+      "node": "repo:sichter",
+      "repository": "heimgewebe/sichter",
+      "entrypoint": "https://github.com/heimgewebe/sichter",
+      "membership": "fleet"
+    },
+    {
+      "node": "repo:steuerboard",
+      "repository": "heimgewebe/steuerboard",
+      "entrypoint": "https://github.com/heimgewebe/steuerboard",
+      "membership": "catalog-only"
+    },
+    {
+      "node": "repo:systemkatalog",
+      "repository": "heimgewebe/systemkatalog",
+      "entrypoint": "https://github.com/heimgewebe/systemkatalog",
+      "membership": "catalog-only"
+    },
+    {
+      "node": "repo:vault-gewebe",
+      "repository": "heimgewebe/vault-gewebe",
+      "entrypoint": "https://github.com/heimgewebe/vault-gewebe",
+      "membership": "fleet"
+    },
+    {
+      "node": "repo:vibe-lab",
+      "repository": "heimgewebe/vibe-lab",
+      "entrypoint": "https://github.com/heimgewebe/vibe-lab",
+      "membership": "catalog-only"
+    },
+    {
+      "node": "repo:weltgewebe",
+      "repository": "heimgewebe/weltgewebe",
+      "entrypoint": "https://github.com/heimgewebe/weltgewebe",
+      "membership": "related"
+    },
+    {
+      "node": "repo:wgx",
+      "repository": "heimgewebe/wgx",
+      "entrypoint": "https://github.com/heimgewebe/wgx",
+      "membership": "fleet"
+    }
+  ],
+  "sourceExclusions": [
+    {
+      "name": "vault-privat",
+      "reason": "Private related repository explicitly marked fleet: false in Metarepo."
+    }
+  ],
+  "doesNotEstablish": [
+    "repository_health",
+    "checkout_presence",
+    "branch_state",
+    "runtime_state",
+    "task_priority"
+  ]
+}
