@@ -19,16 +19,21 @@ import re
 import sys
 import tempfile
 from pathlib import Path
-from types import MappingProxyType
-from typing import Any, Literal, Mapping
+from typing import Any, Literal
+
+from validate_system_catalog import (
+    RegistryData,
+    RegistryValidationError as RegistryMapError,
+    load_registry as load_registry_data,
+    validate_edge,
+    validate_node,
+)
 
 DEFAULT_OUTPUT = Path("rendered/ecosystem-registry-map.mmd")
 DEFAULT_VIEW_CONFIG = Path("policy/ecosystem-map-view.v1.json")
 GENERATOR = "scripts/render_ecosystem_registry_map.py"
 GENERATED_FILE_MODE = 0o644
 MERMAID_ID_RE = re.compile(r"[^A-Za-z0-9_]+")
-NODE_REQUIRED_FIELDS = ("id", "kind", "label", "purpose")
-EDGE_REQUIRED_FIELDS = ("from", "to", "type", "stability")
 DEFAULT_VISUAL_ANCHOR_NODE_IDS = ("repo:systemkatalog", "artifact:ecosystem-map")
 
 DEFAULT_KIND_ORDER = (
@@ -45,18 +50,6 @@ DEFAULT_KIND_TITLES = {
     "artifact": "Artefakte",
     "service": "Primaere Dienste",
 }
-
-
-class RegistryMapError(RuntimeError):
-    """Raised when registry rendering cannot proceed safely."""
-
-
-@dataclass(frozen=True)
-class RegistryData:
-    """Validated ecosystem registry inputs."""
-
-    nodes: list[dict[str, Any]]
-    edges: list[dict[str, Any]]
 
 
 @dataclass(frozen=True)
@@ -118,17 +111,7 @@ class RegistryLoader:
         self.registry = repo_root / "registry" / "ecosystem"
 
     def load(self) -> RegistryData:
-        nodes_doc = load_json(self.registry / "nodes.json")
-        edges_doc = load_json(self.registry / "edges.json")
-        raw_nodes = nodes_doc.get("nodes")
-        raw_edges = edges_doc.get("edges")
-        if not isinstance(raw_nodes, list):
-            raise RegistryMapError("nodes.json field nodes must be a list")
-        if not isinstance(raw_edges, list):
-            raise RegistryMapError("edges.json field edges must be a list")
-        nodes = [validate_node(node, index) for index, node in enumerate(raw_nodes, start=1)]
-        edges = [validate_edge(edge, index) for index, edge in enumerate(raw_edges, start=1)]
-        return RegistryData(nodes=nodes, edges=edges)
+        return load_registry_data(self.repo_root)
 
 
 class ProjectionConfigLoader:
@@ -301,31 +284,6 @@ def load_string_dict(value: Any, label: str) -> dict[str, str]:
             raise RegistryMapError(f"{label}.{key} must be a non-empty string")
         result[key] = item
     return result
-
-
-def require_text_field(item: dict[str, Any], field: str, label: str) -> str:
-    value = item.get(field)
-    if not isinstance(value, str) or not value:
-        raise RegistryMapError(f"{label} missing required string field: {field}")
-    return value
-
-
-def validate_node(raw_node: Any, index: int) -> dict[str, Any]:
-    label = f"node {index}"
-    if not isinstance(raw_node, dict):
-        raise RegistryMapError(f"{label} must be an object")
-    for field in NODE_REQUIRED_FIELDS:
-        require_text_field(raw_node, field, label)
-    return raw_node
-
-
-def validate_edge(raw_edge: Any, index: int) -> dict[str, Any]:
-    label = f"edge {index}"
-    if not isinstance(raw_edge, dict):
-        raise RegistryMapError(f"{label} must be an object")
-    for field in EDGE_REQUIRED_FIELDS:
-        require_text_field(raw_edge, field, label)
-    return raw_edge
 
 
 def load_registry(repo_root: Path) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:

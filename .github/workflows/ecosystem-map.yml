@@ -6,6 +6,8 @@ on:
   pull_request:
     branches: [main]
   workflow_dispatch:
+  schedule:
+    - cron: "17 4 * * *"
 
 permissions:
   contents: read
@@ -40,3 +42,15 @@ jobs:
 
       - name: Test map projection and manifest
         run: python3 -m unittest discover -s scripts/tests -p 'test_ecosystem_*.py'
+
+      - name: Checkout Metarepo Fleet authority
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          repository: heimgewebe/metarepo
+          path: _fleet-authority
+          persist-credentials: false
+          sparse-checkout: fleet/repos.yml
+          sparse-checkout-cone-mode: false
+
+      - name: Check Fleet coverage against Metarepo
+        run: python3 scripts/check_fleet_coverage.py --fleet-file _fleet-authority/fleet/repos.yml

@@ -12,9 +12,18 @@ Der Systemkatalog ist eine kleine, app-unabhängige Wissensschicht. Er hält nur
 | Beziehungen | `registry/ecosystem/edges.json` |
 | stabile, belegte Aussagen | `registry/ecosystem/claims.jsonl` |
 | Wahrheitszuständigkeiten | `registry/ecosystem/authority-matrix.v1.json` |
+| Repository- und Fleet-Abdeckung | `registry/ecosystem/fleet-coverage.v1.json` |
 | Rollen- und Wirkungsgrenze | `policy/system-catalog.v1.json` |
 
 `rendered/system-catalog.md`, `rendered/ecosystem-registry-map.mmd` und das Karten-Manifest sind deterministische Projektionen. Sie dürfen den Kanon nicht überschreiben.
+
+## Fleet- und Kataloggrenze
+
+Metarepo ist die Primärquelle für die Mitgliedschaft in der Heimgewebe-Fleet. Der Systemkatalog übernimmt daraus keine Zwecke oder Architekturbehauptungen. Er verlangt lediglich, dass jedes Fleet-Repository als Katalogsystem beschrieben oder ein Quellausschluss ausdrücklich dokumentiert ist.
+
+Der Systemkatalog bleibt Primärquelle für Zweck, stabile Beziehungen, Wahrheitszuständigkeiten und Einstiegspunkte. Der Abgleich wird lokal oder in CI mit `scripts/check_fleet_coverage.py` gegen `metarepo/fleet/repos.yml` ausgeführt.
+
+Konkrete Coding-Agenten und Provider sind wechselnde Runtime-Details. Die stabile Zuständigkeit `agent_routing` gehört Grabowski; der Katalog verweist auf dessen Rollenvertrag, statt einzelne Agenten zu spiegeln.
 
 ## Laufzeit
 

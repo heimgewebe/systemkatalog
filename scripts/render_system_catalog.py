@@ -6,6 +6,8 @@ import json
 from pathlib import Path
 from typing import Any
 
+from system_catalog_fleet import validate_coverage
+
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_OUTPUT = Path("rendered/system-catalog.md")
 
@@ -46,6 +48,9 @@ def render_text(root: Path = ROOT) -> str:
     ]
     authorities = [item for item in authority.get("authorities", []) if isinstance(item, dict)]
     entrypoints = [item for item in policy.get("entrypoints", []) if isinstance(item, dict)]
+    repository_nodes = {item["id"] for item in nodes if item.get("kind") == "repository"}
+    fleet_coverage = validate_coverage(root, repository_nodes)
+    repository_refs = {item["node"]: item for item in fleet_coverage["repositories"]}
 
     lines = [
         "# Systemkatalog",
@@ -63,6 +68,22 @@ def render_text(root: Path = ROOT) -> str:
     ]
     for node in sorted(nodes, key=lambda item: (str(item.get("kind", "")).casefold(), str(item.get("label", "")).casefold(), str(item.get("id", "")))):
         lines.append(f"| {_cell(node.get('label'))} | {_cell(node.get('kind'))} | {_cell(node.get('purpose'))} |")
+
+    lines.extend([
+        "", "## Repository-Abdeckung", "",
+        "Metarepo ist Primärquelle für die Fleet-Mitgliedschaft. Der Systemkatalog bleibt Primärquelle für Zweck, Beziehungen, Wahrheitszuständigkeiten und Einstiegspunkte.",
+        "", "| System | Repository | Einordnung | Einstieg |", "|---|---|---|---|",
+    ])
+    for node in sorted((item for item in nodes if item.get("kind") == "repository"), key=lambda item: str(item.get("label", "")).casefold()):
+        reference = repository_refs[node["id"]]
+        entrypoint = _cell(reference["entrypoint"])
+        lines.append(
+            f"| {_cell(node.get('label'))} | `{_cell(reference['repository'])}` | "
+            f"`{_cell(reference['membership'])}` | [{entrypoint}]({entrypoint}) |"
+        )
+    lines.extend(["", "Explizit außerhalb der Fleet:", ""])
+    for item in sorted(fleet_coverage["sourceExclusions"], key=lambda value: str(value.get("name", ""))):
+        lines.append(f"- `{_cell(item.get('name'))}` — {_cell(item.get('reason'))}")
 
     lines.extend(["", "## Wahrheitszuständigkeiten", "", "| Bereich | Primärquelle | Nicht-autoritative Projektionen |", "|---|---|---|"])
     for item in sorted(authorities, key=lambda value: str(value.get("domain", ""))):

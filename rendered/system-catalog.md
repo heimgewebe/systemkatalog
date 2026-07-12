@@ -13,31 +13,84 @@ Der Katalog beantwortet, welche Systeme existieren, welchem Zweck sie dienen, we
 | Ecosystem Map v0 | artifact | machine-readable overview graph and rendered orientation map |
 | RepoBrief | concept | public name for context-view layer |
 | Alexander | human | meaning, approval and abort authority outside automation |
+| Außensensor | repository | Curated external signals and event feeds for Chronik |
 | Bureau | repository | task cadence, delegation, run reporting |
 | Chronik | repository | append-only event ledger and historical evidence axis |
+| Commonworld | repository | Interactive globe and commons-oriented world exploration |
+| Contracts Mirror | repository | Validated mirror and publication surface for canonical Metarepo contracts |
 | Device Graph | repository | infrastructure device graph; adjacent but not ecosystem-governance canon |
 | Grabowski | repository | operator execution, repo work, review gates |
+| HausKI | repository | Local offline-first AI orchestration and policy-controlled memory |
+| HausKI Audio | repository | Local audio playback, recording and automation |
+| heim-pc | repository | Versioned local operator entry and host orientation |
+| Heimgeist | repository | System self-reflection and meta-agent experimentation |
 | heimlern | repository | offline operator-learning and proposal generation |
 | Infra | repository | host, network, cockpit and operational runbooks |
 | Leitstand | repository | read-only ecosystem observability and status projection |
 | Lenskit / RepoBrief implementation | repository | context view and citable repository briefs |
+| Metarepo | repository | Fleet membership, canonical shared contracts and repository templates |
+| Mitschreiber | repository | Privacy-first on-device context capture and redacted event production |
 | Plexer | repository | bounded event delivery and queueing gateway |
 | Schauwerk | repository | visual surface and projection layer |
+| semantAH | repository | Semantic index, embeddings and knowledge-graph pipeline |
+| Sichter | repository | Code-review and pull-request automation prototype |
 | Steuerboard | repository | read-only repo-state signal |
 | Systemkatalog | repository | app-independent catalog for system purposes, truth ownership, stable relations and entrypoints |
+| Vault Gewebe | repository | Versioned shared knowledge vault and design source material |
 | Vibe-Lab | repository | method lab and evidence experiments |
 | Weltgewebe | repository | product and domain core |
+| WGX | repository | Fleet CLI and reusable repository workflow engine |
 | CI / Checks | service | automated tests, lint, gates and review signals |
 | GitHub | service | repository, PR, issue and review state |
+
+## Repository-Abdeckung
+
+Metarepo ist Primärquelle für die Fleet-Mitgliedschaft. Der Systemkatalog bleibt Primärquelle für Zweck, Beziehungen, Wahrheitszuständigkeiten und Einstiegspunkte.
+
+| System | Repository | Einordnung | Einstieg |
+|---|---|---|---|
+| Außensensor | `heimgewebe/aussensensor` | `fleet` | [https://github.com/heimgewebe/aussensensor](https://github.com/heimgewebe/aussensensor) |
+| Bureau | `heimgewebe/bureau` | `catalog-only` | [https://github.com/heimgewebe/bureau](https://github.com/heimgewebe/bureau) |
+| Chronik | `heimgewebe/chronik` | `fleet` | [https://github.com/heimgewebe/chronik](https://github.com/heimgewebe/chronik) |
+| Commonworld | `heimgewebe/commonworld` | `catalog-only` | [https://github.com/heimgewebe/commonworld](https://github.com/heimgewebe/commonworld) |
+| Contracts Mirror | `heimgewebe/contracts-mirror` | `fleet` | [https://github.com/heimgewebe/contracts-mirror](https://github.com/heimgewebe/contracts-mirror) |
+| Device Graph | `heimgewebe/device-graph` | `catalog-only` | [https://github.com/heimgewebe/device-graph](https://github.com/heimgewebe/device-graph) |
+| Grabowski | `heimgewebe/grabowski` | `catalog-only` | [https://github.com/heimgewebe/grabowski](https://github.com/heimgewebe/grabowski) |
+| HausKI | `heimgewebe/hausKI` | `fleet` | [https://github.com/heimgewebe/hausKI](https://github.com/heimgewebe/hausKI) |
+| HausKI Audio | `heimgewebe/hausKI-audio` | `fleet` | [https://github.com/heimgewebe/hausKI-audio](https://github.com/heimgewebe/hausKI-audio) |
+| heim-pc | `heimgewebe/heim-pc` | `fleet` | [https://github.com/heimgewebe/heim-pc](https://github.com/heimgewebe/heim-pc) |
+| Heimgeist | `heimgewebe/heimgeist` | `fleet` | [https://github.com/heimgewebe/heimgeist](https://github.com/heimgewebe/heimgeist) |
+| heimlern | `heimgewebe/heimlern` | `fleet` | [https://github.com/heimgewebe/heimlern](https://github.com/heimgewebe/heimlern) |
+| Infra | `heimgewebe/infra` | `catalog-only` | [https://github.com/heimgewebe/infra](https://github.com/heimgewebe/infra) |
+| Leitstand | `heimgewebe/leitstand` | `fleet` | [https://github.com/heimgewebe/leitstand](https://github.com/heimgewebe/leitstand) |
+| Lenskit / RepoBrief implementation | `heimgewebe/lenskit` | `fleet` | [https://github.com/heimgewebe/lenskit](https://github.com/heimgewebe/lenskit) |
+| Metarepo | `heimgewebe/metarepo` | `fleet` | [https://github.com/heimgewebe/metarepo](https://github.com/heimgewebe/metarepo) |
+| Mitschreiber | `heimgewebe/mitschreiber` | `fleet` | [https://github.com/heimgewebe/mitschreiber](https://github.com/heimgewebe/mitschreiber) |
+| Plexer | `heimgewebe/plexer` | `fleet` | [https://github.com/heimgewebe/plexer](https://github.com/heimgewebe/plexer) |
+| Schauwerk | `heimgewebe/schauwerk` | `catalog-only` | [https://github.com/heimgewebe/schauwerk](https://github.com/heimgewebe/schauwerk) |
+| semantAH | `heimgewebe/semantAH` | `fleet` | [https://github.com/heimgewebe/semantAH](https://github.com/heimgewebe/semantAH) |
+| Sichter | `heimgewebe/sichter` | `fleet` | [https://github.com/heimgewebe/sichter](https://github.com/heimgewebe/sichter) |
+| Steuerboard | `heimgewebe/steuerboard` | `catalog-only` | [https://github.com/heimgewebe/steuerboard](https://github.com/heimgewebe/steuerboard) |
+| Systemkatalog | `heimgewebe/systemkatalog` | `catalog-only` | [https://github.com/heimgewebe/systemkatalog](https://github.com/heimgewebe/systemkatalog) |
+| Vault Gewebe | `heimgewebe/vault-gewebe` | `fleet` | [https://github.com/heimgewebe/vault-gewebe](https://github.com/heimgewebe/vault-gewebe) |
+| Vibe-Lab | `heimgewebe/vibe-lab` | `catalog-only` | [https://github.com/heimgewebe/vibe-lab](https://github.com/heimgewebe/vibe-lab) |
+| Weltgewebe | `heimgewebe/weltgewebe` | `related` | [https://github.com/heimgewebe/weltgewebe](https://github.com/heimgewebe/weltgewebe) |
+| WGX | `heimgewebe/wgx` | `fleet` | [https://github.com/heimgewebe/wgx](https://github.com/heimgewebe/wgx) |
+
+Explizit außerhalb der Fleet:
+
+- `vault-privat` — Private related repository explicitly marked fleet: false in Metarepo.
 
 ## Wahrheitszuständigkeiten
 
 | Bereich | Primärquelle | Nicht-autoritative Projektionen |
 |---|---|---|
+| `agent_routing` | `grabowski` | bureau, systemkatalog |
 | `append_only_history` | `chronik` | leitstand |
 | `bounded_experiments` | `vibe_lab` | systemkatalog |
 | `branches_prs_reviews` | `github` | bureau, leitstand |
 | `ecosystem_semantics` | `systemkatalog` | leitstand, schauwerk |
+| `fleet_membership` | `metarepo` | systemkatalog |
 | `general_operator_display` | `leitstand` | — |
 | `live_service_state` | `runtime` | leitstand |
 | `local_fleet_execution` | `grabowski` | leitstand |
@@ -57,6 +110,7 @@ Nur Beziehungen der Klassen `stable`, `bounded` oder `related` werden angezeigt.
 |---|---|---|---|---|
 | Alexander | `steers` | Systemkatalog | `stable` | Human sense, priority, approval and abort authority stay outside automation. |
 | RepoBrief | `provides` | Systemkatalog | `stable` | RepoBrief gives Systemkatalog citable repository context. |
+| Außensensor | `delivers_to` | Chronik | `stable` | Curated external events are delivered to Chronik as the historical ingest authority. |
 | Bureau | `delegates_to` | Grabowski | `stable` | Bureau can hand scoped work to the operator layer. |
 | Bureau | `provides` | Leitstand | `stable` | Bureau may provide read-only task status artifacts. |
 | Chronik | `displayed_by` | Leitstand | `stable` | Leitstand may display Chronik state without treating the display as authority. |
@@ -64,18 +118,31 @@ Nur Beziehungen der Klassen `stable`, `bounded` oder `related` werden angezeigt.
 | Chronik | `learning_input_for` | heimlern | `stable` | Heimlern may consume historical outcomes offline; no policy is auto-applied. |
 | Chronik | `provides` | Leitstand | `stable` | Chronik provides event trace artifacts for timelines. |
 | Chronik | `provides` | Systemkatalog | `stable` | Chronik provides event trace and historical continuity. |
+| Commonworld | `operates_on` | GitHub | `stable` | Commonworld product work is versioned and validated through repository, pull-request and CI state. |
+| Contracts Mirror | `validated_by` | CI / Checks | `stable` | Mirrored contracts are checked against their fixtures and source contract. |
 | Device Graph | `scope_boundary` | Ecosystem Map v0 | `related` | Device Graph may describe infrastructure devices; it is not the ecosystem-governance map canon. |
 | Grabowski | `emits_to` | Chronik | `bounded` | Grabowski may write task-local agent-run events through an explicit Chronik outbox path. |
 | Grabowski | `operates_on` | GitHub | `stable` | PRs, branches, issues and reviews remain GitHub-owned state. |
+| HausKI Audio | `provides` | HausKI | `related` | HausKI Audio is the bounded audio and automation surface adjacent to the local AI stack. |
+| heim-pc | `observes` | Ecosystem Map v0 | `stable` | The local operator entry points to the canonical ecosystem map without duplicating it. |
+| Heimgeist | `observes` | Ecosystem Map v0 | `related` | Heimgeist may inspect catalog projections for reflection but does not own catalog truth. |
 | Leitstand | `observes` | Ecosystem Map v0 | `stable` | Leitstand observes the map as orientation, not truth. |
 | Lenskit / RepoBrief implementation | `implements` | RepoBrief | `stable` | RepoBrief is the public context-view name; Lenskit remains an implementation namespace for now. |
+| Metarepo | `provides` | Contracts Mirror | `stable` | Canonical contracts originate in Metarepo and are mirrored for validation and publication. |
+| Metarepo | `provides` | Systemkatalog | `stable` | Metarepo provides Fleet membership; Systemkatalog remains authority for purpose, relations and entrypoints. |
+| Mitschreiber | `emits_to` | Chronik | `stable` | Redacted on-device context events are emitted to Chronik. |
+| Mitschreiber | `provides` | semantAH | `bounded` | Redacted embeddings and context signals can feed semantic indexing without raw-text authority. |
 | Plexer | `delivers_to` | Chronik | `stable` | Plexer delivers bounded operational events to Chronik agent.ledger when configured. |
 | Schauwerk | `renders` | Ecosystem Map v0 | `stable` | Schauwerk may render map views without owning the map canon. |
+| semantAH | `provides` | HausKI | `stable` | semantAH provides the semantic memory and knowledge-graph layer used by HausKI. |
+| Sichter | `operates_on` | GitHub | `bounded` | Sichter reviews repository changes and may prepare pull requests within policy boundaries. |
 | Steuerboard | `observes` | Systemkatalog | `stable` | Steuerboard can provide read-only repo-state signals, not decisions. |
 | Systemkatalog | `owns` | Ecosystem Map v0 | `stable` | Systemkatalog owns the map semantics during v0. |
 | Systemkatalog | `provides` | Leitstand | `stable` | Systemkatalog provides map artifacts for Leitstand display. |
+| Vault Gewebe | `scope_boundary` | Systemkatalog | `related` | Vault material may inform catalog edits but is not active catalog canon. |
 | Vibe-Lab | `provides` | Systemkatalog | `stable` | Vibe-Lab provides method experiments and evidence patterns. |
 | Weltgewebe | `operates_on` | GitHub | `stable` | Weltgewebe product work is still validated through repo, PR and CI state. |
+| WGX | `provides` | CI / Checks | `stable` | WGX provides reusable Fleet checks and repository workflow mechanics. |
 | CI / Checks | `provides` | Leitstand | `stable` | Primary check state can be reflected. |
 | GitHub | `provides` | Leitstand | `stable` | Primary repo state can be reflected. |
 | GitHub | `validated_by` | CI / Checks | `stable` | Checks and review gates provide hard technical feedback. |
@@ -87,7 +154,9 @@ Nur Beziehungen der Klassen `stable`, `bounded` oder `related` werden angezeigt.
 | Bureau | [https://github.com/heimgewebe/bureau](https://github.com/heimgewebe/bureau) |
 | GitHub | [https://github.com/heimgewebe](https://github.com/heimgewebe) |
 | Grabowski | [https://github.com/heimgewebe/grabowski](https://github.com/heimgewebe/grabowski) |
+| Grabowski Agent-Routing | [https://github.com/heimgewebe/grabowski/blob/main/docs/generated/operator-context.v1.json](https://github.com/heimgewebe/grabowski/blob/main/docs/generated/operator-context.v1.json) |
 | Leitstand | [https://github.com/heimgewebe/leitstand](https://github.com/heimgewebe/leitstand) |
+| Metarepo Fleet-Mitgliedschaft | [https://github.com/heimgewebe/metarepo/blob/main/fleet/repos.yml](https://github.com/heimgewebe/metarepo/blob/main/fleet/repos.yml) |
 | RepoBrief / Lenskit | [https://github.com/heimgewebe/lenskit](https://github.com/heimgewebe/lenskit) |
 | Systemkatalog | [README.md](../README.md) |
 

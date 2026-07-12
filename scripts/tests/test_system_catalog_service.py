@@ -22,9 +22,9 @@ class SystemCatalogServiceTests(unittest.TestCase):
         payload = build_catalog_payload()
         self.assertEqual(payload["kind"], "system_catalog")
         self.assertEqual(payload["title"], "Systemkatalog")
-        self.assertEqual(len(payload["systems"]), 19)
-        self.assertEqual(len(payload["relations"]), 24)
-        self.assertEqual(len(payload["truthOwnership"]), 14)
+        self.assertEqual(len(payload["systems"]), 32)
+        self.assertEqual(len(payload["relations"]), 38)
+        self.assertEqual(len(payload["truthOwnership"]), 16)
 
     def test_html_is_read_only_catalog(self) -> None:
         rendered = render_html(build_catalog_payload()).decode("utf-8")

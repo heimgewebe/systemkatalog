@@ -25,10 +25,13 @@ class SystemCatalogTests(unittest.TestCase):
     def test_repository_catalog_is_valid_and_roomless(self) -> None:
         result = validate(ROOT)
         self.assertEqual(result["status"], "valid")
-        self.assertEqual(result["registrySystems"], 19)
-        self.assertEqual(result["registryRelations"], 24)
-        self.assertEqual(result["authorityDomains"], 14)
+        self.assertEqual(result["registrySystems"], 32)
+        self.assertEqual(result["registryRelations"], 38)
+        self.assertEqual(result["authorityDomains"], 16)
         self.assertEqual(result["runtimeService"], "systemkatalog.service")
+        self.assertEqual(result["catalogRepositories"], 27)
+        self.assertEqual(result["fleetRepositories"], 18)
+        self.assertEqual(result["fleetExclusions"], 1)
         self.assertEqual(result["activeLegacyRooms"], 0)
         for room in (
             "bestand",
@@ -49,6 +52,9 @@ class SystemCatalogTests(unittest.TestCase):
         self.assertEqual(actual, expected)
         self.assertIn("# Systemkatalog", actual)
         self.assertNotIn("# Heimgewebe-Systemkatalog", actual)
+        self.assertIn("## Repository-Abdeckung", actual)
+        self.assertIn("`heimgewebe/metarepo`", actual)
+        self.assertIn("`vault-privat`", actual)
 
     def test_active_room_fails_closed(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

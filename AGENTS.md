@@ -6,9 +6,10 @@
 2. [policy/system-catalog.v1.json](policy/system-catalog.v1.json)
 3. [rendered/system-catalog.md](rendered/system-catalog.md)
 4. [registry/ecosystem/authority-matrix.v1.json](registry/ecosystem/authority-matrix.v1.json)
-5. [registry/ecosystem/nodes.json](registry/ecosystem/nodes.json)
-6. [registry/ecosystem/edges.json](registry/ecosystem/edges.json)
-7. [docs/architecture/systemkatalog.md](docs/architecture/systemkatalog.md)
+5. [registry/ecosystem/fleet-coverage.v1.json](registry/ecosystem/fleet-coverage.v1.json)
+6. [registry/ecosystem/nodes.json](registry/ecosystem/nodes.json)
+7. [registry/ecosystem/edges.json](registry/ecosystem/edges.json)
+8. [docs/architecture/systemkatalog.md](docs/architecture/systemkatalog.md)
 
 ## Rolle
 
@@ -31,7 +32,8 @@ Er pflegt keine Aufgabenpriorität, keinen Taskstatus, keine Runtime-Gesundheit,
 - Runtime, systemd, Logs und Healthchecks: laufende Dienste.
 - RepoBrief / Lenskit: zitierfähiger Repositorykontext.
 - Leitstand: allgemeine Live-Anzeige.
-- Systemkatalog: stabile Ökosystem-Semantik und Zuordnung der Wahrheitsdomänen.
+- Metarepo: Mitgliedschaft in der Heimgewebe-Fleet.
+- Systemkatalog: stabile Ökosystem-Semantik, Repository-Abdeckung und Zuordnung der Wahrheitsdomänen.
 
 ## Arbeitsregeln
 
@@ -40,10 +42,12 @@ Er pflegt keine Aufgabenpriorität, keinen Taskstatus, keine Runtime-Gesundheit,
 3. Mermaidkarten und Markdownansichten sind Projektionen, keine eigene Wahrheit.
 4. `docs/archive/cabinet-era/` ist historisch und nicht aktiv zu pflegen.
 5. Neue Felder müssen stabil, quellengebunden und app-unabhängig sein.
-6. Keine privaten Host-, Listener-, Journal-, Secret- oder App-Daten in öffentliche Artefakte übernehmen.
-7. Vor Änderungen Livezustand, Branch, Dirty-State, PRs, CI und aktive Leases prüfen.
-8. Vor Merge aktuellen Diff prüfen und grüne Gates verlangen.
-9. Fehlende Belege ausdrücklich als Leerstelle benennen.
+6. Jedes Metarepo-Fleet-Repository muss katalogisiert oder als Quellausschluss erklärt sein.
+7. Agenten- und Providerlisten nicht duplizieren; die Zuständigkeit `agent_routing` verweist auf Grabowski.
+8. Keine privaten Host-, Listener-, Journal-, Secret- oder App-Daten in öffentliche Artefakte übernehmen.
+9. Vor Änderungen Livezustand, Branch, Dirty-State, PRs, CI und aktive Leases prüfen.
+10. Vor Merge aktuellen Diff prüfen und grüne Gates verlangen.
+11. Fehlende Belege ausdrücklich als Leerstelle benennen.
 
 ## Stop-Kriterien
 

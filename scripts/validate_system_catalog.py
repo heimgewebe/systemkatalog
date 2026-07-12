@@ -4,8 +4,11 @@
 from __future__ import annotations
 
 import json
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Iterable
+
+from system_catalog_fleet import COVERAGE_REL, validate_coverage
 
 ROOT = Path(__file__).resolve().parents[1]
 POLICY_REL = Path("policy/system-catalog.v1.json")
@@ -16,6 +19,7 @@ EDGES_REL = Path("registry/ecosystem/edges.json")
 CLAIMS_REL = Path("registry/ecosystem/claims.jsonl")
 AUTHORITY_REL = Path("registry/ecosystem/authority-matrix.v1.json")
 VIEW_REL = Path("policy/ecosystem-map-view.v1.json")
+FLEET_REL = COVERAGE_REL
 ARCHIVE_REL = Path("docs/archive/cabinet-era")
 
 NODE_FIELDS = {"id", "kind", "label", "purpose"}
@@ -33,6 +37,7 @@ CANON_KIND_PATHS = {
     "system_catalog_authority_matrix": AUTHORITY_REL,
     "system_catalog_inventory": NODES_REL,
     "system_catalog_relations": EDGES_REL,
+    "system_catalog_fleet_coverage": FLEET_REL,
     "system_catalog": EXAMPLE_REL,
 }
 LEGACY_CATALOG_KINDS = {
@@ -59,6 +64,65 @@ def _load(root: Path, relative: Path | str) -> dict[str, Any]:
     if not isinstance(value, dict):
         raise ValueError(f"{relative}: root must be an object")
     return value
+
+
+class RegistryValidationError(ValueError):
+    pass
+
+
+@dataclass(frozen=True)
+class RegistryData:
+    nodes: list[dict[str, Any]]
+    edges: list[dict[str, Any]]
+
+
+def validate_node(raw_node: Any, index: int) -> dict[str, Any]:
+    label = f"node {index}"
+    if not isinstance(raw_node, dict) or set(raw_node) != NODE_FIELDS:
+        raise RegistryValidationError(f"{label} fields mismatch")
+    for field in NODE_FIELDS:
+        _require_string(raw_node.get(field), f"{label}.{field}")
+    if raw_node["kind"] not in ALLOWED_NODE_KINDS:
+        raise RegistryValidationError(f"{label} uses non-catalog kind: {raw_node['kind']}")
+    if raw_node["id"].startswith(("runtime:", "agent:")):
+        raise RegistryValidationError("runtime and agent identities are not catalog systems")
+    return raw_node
+
+
+def validate_edge(raw_edge: Any, index: int) -> dict[str, Any]:
+    label = f"edge {index}"
+    if not isinstance(raw_edge, dict) or set(raw_edge) != EDGE_FIELDS:
+        raise RegistryValidationError(f"{label} fields mismatch")
+    for field in EDGE_FIELDS:
+        _require_string(raw_edge.get(field), f"{label}.{field}")
+    return raw_edge
+
+
+def load_registry(root: Path) -> RegistryData:
+    nodes_doc = _load(root, NODES_REL)
+    edges_doc = _load(root, EDGES_REL)
+    raw_nodes, raw_edges = nodes_doc.get("nodes"), edges_doc.get("edges")
+    if not isinstance(raw_nodes, list) or not raw_nodes:
+        raise RegistryValidationError("registry nodes missing")
+    if not isinstance(raw_edges, list):
+        raise RegistryValidationError("registry edges missing")
+    nodes = [validate_node(item, index) for index, item in enumerate(raw_nodes, 1)]
+    node_ids = [item["id"] for item in nodes]
+    if len(node_ids) != len(set(node_ids)):
+        raise RegistryValidationError("registry node identities are duplicated")
+    known = set(node_ids)
+    edges = [validate_edge(item, index) for index, item in enumerate(raw_edges, 1)]
+    seen: set[tuple[str, str, str]] = set()
+    for index, edge in enumerate(edges, 1):
+        if edge["from"] not in known:
+            raise RegistryValidationError(f"edge {index} references unknown from node: {edge['from']}")
+        if edge["to"] not in known:
+            raise RegistryValidationError(f"edge {index} references unknown to node: {edge['to']}")
+        key = (edge["from"], edge["to"], edge["type"])
+        if key in seen:
+            raise RegistryValidationError(f"duplicate edge: {key}")
+        seen.add(key)
+    return RegistryData(nodes=nodes, edges=edges)
 
 
 def _load_jsonl(root: Path, relative: Path | str) -> list[dict[str, Any]]:
@@ -238,6 +302,7 @@ def validate(root: Path = ROOT) -> dict[str, Any]:
     claims = _load_jsonl(root, CLAIMS_REL)
     authority = _load(root, AUTHORITY_REL)
     view = _load(root, VIEW_REL)
+    fleet_coverage = _load(root, FLEET_REL)
 
     if policy.get("kind") != "system_catalog_policy":
         raise ValueError("system catalog policy kind mismatch")
@@ -245,7 +310,8 @@ def validate(root: Path = ROOT) -> dict[str, Any]:
         raise ValueError("system catalog policy role/state mismatch")
     if policy.get("repository") != "heimgewebe/systemkatalog":
         raise ValueError("repository identity mismatch")
-    expected_inputs = [str(NODES_REL), str(EDGES_REL), str(CLAIMS_REL), str(AUTHORITY_REL)]
+    runtime_inputs = [str(NODES_REL), str(EDGES_REL), str(CLAIMS_REL), str(AUTHORITY_REL)]
+    expected_inputs = [*runtime_inputs, str(FLEET_REL)]
     if policy.get("canonicalInputs") != expected_inputs:
         raise ValueError("canonicalInputs mismatch")
     if policy.get("canonicalAuthorityMatrix") != str(AUTHORITY_REL):
@@ -269,7 +335,7 @@ def validate(root: Path = ROOT) -> dict[str, Any]:
         raise ValueError("runtime must be read-only and stateless")
     if runtime.get("service") != "systemkatalog.service" or runtime.get("bind") != "127.0.0.1" or runtime.get("port") != 4001:
         raise ValueError("runtime service binding mismatch")
-    if runtime.get("canonicalInputs") != expected_inputs:
+    if runtime.get("canonicalInputs") != runtime_inputs:
         raise ValueError("runtime canonical inputs mismatch")
     if set(policy.get("publicProjection", {}).get("excludedKinds", [])) != {"runtime", "agent"}:
         raise ValueError("public projection exclusions mismatch")
@@ -284,6 +350,7 @@ def validate(root: Path = ROOT) -> dict[str, Any]:
         str(CLAIMS_REL): claims,
         str(AUTHORITY_REL): authority,
         str(VIEW_REL): view,
+        str(FLEET_REL): fleet_coverage,
     }
     for label, value in canonical_values.items():
         _validate_no_operational_fields(policy, label, value)
@@ -292,24 +359,11 @@ def validate(root: Path = ROOT) -> dict[str, Any]:
         raise ValueError("system inventory contract mismatch")
     if nodes_doc.get("catalogRole") != "canonical_system_inventory":
         raise ValueError("system inventory role mismatch")
-    nodes = nodes_doc.get("nodes")
-    if not isinstance(nodes, list) or not nodes:
-        raise ValueError("registry nodes missing")
-    node_ids: list[str] = []
-    for index, node in enumerate(nodes):
-        if not isinstance(node, dict) or set(node) != NODE_FIELDS:
-            raise ValueError(f"node {index} fields mismatch")
-        node_id = _require_string(node.get("id"), f"node {index}.id")
-        kind = _require_string(node.get("kind"), f"node {index}.kind")
-        if kind not in ALLOWED_NODE_KINDS:
-            raise ValueError(f"node {index} uses non-catalog kind: {kind}")
-        _require_string(node.get("label"), f"node {index}.label")
-        _require_string(node.get("purpose"), f"node {index}.purpose")
-        node_ids.append(node_id)
-    if len(node_ids) != len(set(node_ids)) or "repo:systemkatalog" not in node_ids:
+    registry = load_registry(root)
+    nodes = registry.nodes
+    node_ids = [node["id"] for node in nodes]
+    if "repo:systemkatalog" not in node_ids:
         raise ValueError("registry node identity mismatch")
-    if any(node_id.startswith(("runtime:", "agent:")) for node_id in node_ids):
-        raise ValueError("runtime and agent identities are not catalog systems")
     known_nodes = set(node_ids)
 
     if edges_doc.get("kind") != "system_catalog_relations" or edges_doc.get("catalogRole") != "canonical_stable_relations":
@@ -318,26 +372,15 @@ def validate(root: Path = ROOT) -> dict[str, Any]:
     stability_classes = set(_require_string_array(edges_doc.get("stabilityClasses"), "stabilityClasses"))
     if stability_classes != set(policy.get("stableRelationClasses", [])):
         raise ValueError("stability classes differ")
-    edges = edges_doc.get("edges")
-    if not isinstance(edges, list):
-        raise ValueError("registry edges missing")
-    edge_keys: set[tuple[str, str, str]] = set()
+    edges = registry.edges
     for index, edge in enumerate(edges):
-        if not isinstance(edge, dict) or set(edge) != EDGE_FIELDS:
-            raise ValueError(f"edge {index} fields mismatch")
-        source, target = edge.get("from"), edge.get("to")
-        if source not in known_nodes or target not in known_nodes:
-            raise ValueError(f"edge {index} references unknown node")
-        relation_type = _require_string(edge.get("type"), f"edge {index}.type")
-        if relation_type not in relation_types:
+        if edge["type"] not in relation_types:
             raise ValueError(f"edge {index} relation type mismatch")
-        if edge.get("stability") not in stability_classes:
+        if edge["stability"] not in stability_classes:
             raise ValueError(f"edge {index} stability mismatch")
-        _require_string(edge.get("meaning"), f"edge {index}.meaning")
-        key = (str(source), str(target), relation_type)
-        if key in edge_keys:
-            raise ValueError(f"duplicate edge: {key}")
-        edge_keys.add(key)
+
+    repository_node_ids = {node["id"] for node in nodes if node["kind"] == "repository"}
+    fleet_coverage = validate_coverage(root, repository_node_ids)
 
     claim_ids: set[str] = set()
     for index, claim in enumerate(claims):
@@ -369,13 +412,18 @@ def validate(root: Path = ROOT) -> dict[str, Any]:
         raise ValueError("authority assignments missing")
     domains: list[str] = []
     for index, item in enumerate(authorities):
-        if not isinstance(item, dict):
-            raise ValueError(f"authority {index} must be an object")
+        if not isinstance(item, dict) or set(item) != {"domain", "owner", "projections"}:
+            raise ValueError(f"authority {index} fields mismatch")
         domains.append(_require_string(item.get("domain"), f"authority {index}.domain"))
         _require_string(item.get("owner"), f"authority {index}.owner")
         _require_string_array(item.get("projections"), f"authority {index}.projections", allow_empty=True)
     if len(domains) != len(set(domains)):
         raise ValueError("authority domains duplicated")
+    authority_by_domain = {item["domain"]: item for item in authorities}
+    if authority_by_domain.get("fleet_membership", {}).get("owner") != "metarepo":
+        raise ValueError("Fleet membership authority must remain Metarepo")
+    if authority_by_domain.get("agent_routing", {}).get("owner") != "grabowski":
+        raise ValueError("agent routing authority must remain Grabowski")
 
     if view.get("kind") != "system_catalog_map_projection_policy" or view.get("authoritative") is not False:
         raise ValueError("map projection policy mismatch")
@@ -392,6 +440,9 @@ def validate(root: Path = ROOT) -> dict[str, Any]:
         "stableClaims": len(claims),
         "authorityDomains": len(authorities),
         "exampleSystems": example_count,
+        "catalogRepositories": len(repository_node_ids),
+        "fleetRepositories": sum(1 for item in fleet_coverage["repositories"] if item["membership"] in {"fleet", "related"}),
+        "fleetExclusions": len(fleet_coverage["sourceExclusions"]),
         "runtimeService": "systemkatalog.service",
         "activeLegacyRooms": 0,
         "archive": str(ARCHIVE_REL),

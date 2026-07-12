@@ -3,7 +3,7 @@
   "kind": "system_catalog_inventory",
   "owner": "repo:systemkatalog",
   "catalogRole": "canonical_system_inventory",
-  "updatedAt": "2026-07-11",
+  "updatedAt": "2026-07-12",
   "nodes": [
     {
       "id": "actor:alexander",
@@ -118,6 +118,84 @@
       "kind": "repository",
       "label": "heimlern",
       "purpose": "offline operator-learning and proposal generation"
+    },
+    {
+      "id": "repo:metarepo",
+      "kind": "repository",
+      "label": "Metarepo",
+      "purpose": "Fleet membership, canonical shared contracts and repository templates"
+    },
+    {
+      "id": "repo:wgx",
+      "kind": "repository",
+      "label": "WGX",
+      "purpose": "Fleet CLI and reusable repository workflow engine"
+    },
+    {
+      "id": "repo:contracts-mirror",
+      "kind": "repository",
+      "label": "Contracts Mirror",
+      "purpose": "Validated mirror and publication surface for canonical Metarepo contracts"
+    },
+    {
+      "id": "repo:hausKI",
+      "kind": "repository",
+      "label": "HausKI",
+      "purpose": "Local offline-first AI orchestration and policy-controlled memory"
+    },
+    {
+      "id": "repo:hausKI-audio",
+      "kind": "repository",
+      "label": "HausKI Audio",
+      "purpose": "Local audio playback, recording and automation"
+    },
+    {
+      "id": "repo:semantAH",
+      "kind": "repository",
+      "label": "semantAH",
+      "purpose": "Semantic index, embeddings and knowledge-graph pipeline"
+    },
+    {
+      "id": "repo:aussensensor",
+      "kind": "repository",
+      "label": "Außensensor",
+      "purpose": "Curated external signals and event feeds for Chronik"
+    },
+    {
+      "id": "repo:mitschreiber",
+      "kind": "repository",
+      "label": "Mitschreiber",
+      "purpose": "Privacy-first on-device context capture and redacted event production"
+    },
+    {
+      "id": "repo:sichter",
+      "kind": "repository",
+      "label": "Sichter",
+      "purpose": "Code-review and pull-request automation prototype"
+    },
+    {
+      "id": "repo:heimgeist",
+      "kind": "repository",
+      "label": "Heimgeist",
+      "purpose": "System self-reflection and meta-agent experimentation"
+    },
+    {
+      "id": "repo:heim-pc",
+      "kind": "repository",
+      "label": "heim-pc",
+      "purpose": "Versioned local operator entry and host orientation"
+    },
+    {
+      "id": "repo:vault-gewebe",
+      "kind": "repository",
+      "label": "Vault Gewebe",
+      "purpose": "Versioned shared knowledge vault and design source material"
+    },
+    {
+      "id": "repo:commonworld",
+      "kind": "repository",
+      "label": "Commonworld",
+      "purpose": "Interactive globe and commons-oriented world exploration"
     }
   ]
 }
