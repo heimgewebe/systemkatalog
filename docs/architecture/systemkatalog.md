@@ -25,9 +25,11 @@ Der Systemkatalog bleibt Primärquelle für Zweck, stabile Beziehungen, Wahrheit
 
 Konkrete Coding-Agenten und Provider sind wechselnde Runtime-Details. Die stabile Zuständigkeit `agent_routing` gehört Grabowski; der Katalog verweist auf dessen Rollenvertrag, statt einzelne Agenten zu spiegeln.
 
-## Laufzeit
+## Projektion und Bereitstellung
 
-`systemkatalog.service` liest ausschließlich versionierte Repositorydateien und bietet sie lokal per HTTP an. Der Dienst ist zustandslos und read-only. Es gibt keine Datenbank, keine Queue und keine Mutationsroute.
+Der Systemkatalog besitzt keine eigene Laufzeit. Markdown, Mermaid, JSON/JSONL und das Map-Artefaktmanifest werden deterministisch aus den versionierten Repositorydateien erzeugt und von Verbrauchern read-only übernommen.
+
+Aktuelle Dienstzustände bleiben außerhalb des Katalogs bei Runtime, systemd, Healthchecks und Logs. Diese Grenze verhindert, dass der Systemkatalog selbst zu einem zweiten Status- oder Betriebsmodell wird.
 
 ## Archivgrenze
 

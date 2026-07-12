@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
-"""Validate the tracked Systemkatalog repository and runtime manifest."""
+"""Validate the tracked static Systemkatalog repository contract."""
 
 from __future__ import annotations
 
 import argparse
 import json
-import posixpath
 import subprocess
 from pathlib import Path
 
@@ -14,6 +13,55 @@ LEGACY_ROOTS = {
     "weltgewebe", "werkstatt", "labor", "betrieb",
 }
 LEGACY_MARKERS = {".cabinet", ".home", ".agents", ".jobs", "Cabinet-Modell.md"}
+REQUIRED_STATIC_SURFACES = {
+    "README.md",
+    "AGENTS.md",
+    "index.md",
+    "catalog/system-catalog.schema.v1.json",
+    "catalog/system-catalog.example.v1.json",
+    "catalog/ecosystem-map-artifact-manifest.schema.v1.json",
+    "policy/system-catalog.v1.json",
+    "policy/ecosystem-map-view.v1.json",
+    "registry/ecosystem/nodes.json",
+    "registry/ecosystem/edges.json",
+    "registry/ecosystem/claims.jsonl",
+    "registry/ecosystem/authority-matrix.v1.json",
+    "registry/ecosystem/fleet-coverage.v1.json",
+    "rendered/system-catalog.md",
+    "rendered/ecosystem-registry-map.mmd",
+    "scripts/validate_system_catalog.py",
+    "scripts/render_system_catalog.py",
+    "scripts/render_ecosystem_registry_map.py",
+    "scripts/write_ecosystem_map_artifact_manifest.py",
+}
+RETIRED_RUNTIME_PATHS = {
+    "ops/README.md",
+    "ops/manifest.json",
+    "ops/bin/systemkatalog",
+    "ops/bin/systemkatalogctl",
+    "ops/install/audit-local-runtime.sh",
+    "ops/install/install-local-runtime.sh",
+    "ops/install/retire-local-runtime.sh",
+    "ops/systemd/systemkatalog.service.tmpl",
+    "scripts/serve_system_catalog.py",
+    "scripts/tests/test_system_catalog_service.py",
+    "scripts/ci/check-installed-runtime.py",
+    "scripts/ci/test-install-local-runtime.sh",
+    "scripts/ci/test-retire-local-runtime.sh",
+}
+RUNTIME_BASENAMES = {
+    "systemkatalog.service",
+    "systemkatalog.service.tmpl",
+    "systemkatalogctl",
+    "serve_system_catalog.py",
+    "test_system_catalog_service.py",
+    "install-local-runtime.sh",
+    "audit-local-runtime.sh",
+    "retire-local-runtime.sh",
+    "test-install-local-runtime.sh",
+    "test-retire-local-runtime.sh",
+    "check-installed-runtime.py",
+}
 
 
 def fail(message: str) -> None:
@@ -69,85 +117,33 @@ def check_layout_and_forbidden_paths(tree: dict[str, dict[str, str]]) -> None:
         fail("forbidden tracked path:\n  " + "\n  ".join(errors))
 
 
-def validate_source(tree: dict[str, dict[str, str]], source: str, expected_mode: str) -> None:
-    if not source or posixpath.isabs(source) or ".." in source.split("/") or "" in source.split("/"):
-        fail(f"invalid manifest source: {source}")
-    if source not in tree or tree[source]["type"] != "blob":
-        fail(f"manifest source not a tracked file: {source}")
-    if tree[source]["mode"] != expected_mode:
-        fail(f"git mode mismatch for {source}: {tree[source]['mode']} != {expected_mode}")
+def check_static_surface(tree: dict[str, dict[str, str]], repo: Path, treeish: str) -> None:
+    missing = sorted(path for path in REQUIRED_STATIC_SURFACES if path not in tree or tree[path]["type"] != "blob")
+    if missing:
+        fail("required static surface missing:\n  " + "\n  ".join(missing))
 
+    runtime_sources = sorted(
+        path
+        for path in tree
+        if active(path)
+        and (path in RETIRED_RUNTIME_PATHS or path.rsplit("/", 1)[-1] in RUNTIME_BASENAMES)
+    )
+    if runtime_sources:
+        fail("retired Systemkatalog runtime source still tracked:\n  " + "\n  ".join(runtime_sources))
 
-def check_manifest(tree: dict[str, dict[str, str]], repo: Path, treeish: str) -> None:
-    path = "ops/manifest.json"
-    if path not in tree:
-        fail(f"{path} missing")
-    manifest = json.loads(git_text(repo, treeish, path))
-    expected_fields = {
-        "schema", "runtime_version", "repository_root", "service",
-        "executables", "retirement", "retired_runtime_paths", "preserved_private_paths",
-    }
-    if set(manifest) != expected_fields:
-        fail("manifest top-level fields mismatch")
-    if manifest["schema"] != "systemkatalog.runtime.v1":
-        fail(f"manifest.schema: {manifest['schema']}")
-    if manifest["runtime_version"] != "1" or manifest["repository_root"] != "~/repos/systemkatalog":
-        fail("manifest runtime identity mismatch")
-    expected_service = {
-        "name": "systemkatalog.service",
-        "template": "ops/systemd/systemkatalog.service.tmpl",
-        "destination": "~/.config/systemd/user/systemkatalog.service",
-        "bind": "127.0.0.1",
-        "port": 4001,
-        "mode": "0644",
-    }
-    if manifest["service"] != expected_service:
-        fail(f"manifest.service mismatch: {manifest['service']}")
-    validate_source(tree, expected_service["template"], "100644")
-    expected_exec = {
-        "ops/bin/systemkatalog": ("~/.local/bin/systemkatalog", "0755"),
-        "ops/bin/systemkatalogctl": ("~/.local/bin/systemkatalogctl", "0755"),
-    }
-    actual_exec = {
-        item.get("source"): (item.get("destination"), item.get("mode"))
-        for item in manifest["executables"] if isinstance(item, dict)
-    }
-    if actual_exec != expected_exec:
-        fail(f"manifest.executables mismatch: {actual_exec}")
-    for source in expected_exec:
-        validate_source(tree, source, "100755")
-    expected_retirement = {
-        "script": "ops/install/retire-local-runtime.sh",
-        "mode": "0755",
-        "backup_root": "~/.local/state/systemkatalog/runtime-retirements/",
-        "requires_authorization_reference": True,
-        "requires_expected_head": True,
-    }
-    if manifest["retirement"] != expected_retirement:
-        fail(f"manifest.retirement mismatch: {manifest['retirement']}")
-    validate_source(tree, expected_retirement["script"], "100755")
-    validate_source(tree, "scripts/ci/test-retire-local-runtime.sh", "100755")
-    expected_retired = {
-        "~/.config/systemd/user/heimgewebe-systemkatalog.service",
-        "~/.local/bin/heimgewebe-systemkatalog",
-        "~/.config/systemd/user/cabinet.service",
-        "~/.config/systemd/user/cabinet.service.d/",
-        "~/.local/bin/cabinet", "~/.local/bin/cabinet-session",
-        "~/.local/bin/cabinetctl", "~/.local/bin/cabinet-security-gate",
-    }
-    if set(manifest["retired_runtime_paths"]) != expected_retired:
-        fail("manifest.retired_runtime_paths mismatch")
-    expected_preserved = {"~/.config/cabinet/", "~/.local/state/cabinet/", "~/.cabinet/", ".cabinet-state/"}
-    if set(manifest["preserved_private_paths"]) != expected_preserved:
-        fail("manifest.preserved_private_paths mismatch")
-    forbidden_sources = {
-        "ops/bin/heimgewebe-systemkatalog", "ops/systemd/heimgewebe-systemkatalog.service.tmpl",
-        "ops/bin/cabinet", "ops/bin/cabinet-session", "ops/bin/cabinetctl",
-        "ops/bin/cabinet-security-gate", "ops/systemd/cabinet.service.tmpl",
-    }
-    present = sorted(forbidden_sources & set(tree))
-    if present:
-        fail(f"retired runtime source still tracked: {present}")
+    policy = json.loads(git_text(repo, treeish, "policy/system-catalog.v1.json"))
+    if "runtimeProjection" in policy:
+        fail("runtimeProjection must remain absent from the static catalog policy")
+    maintained = policy.get("maintainedCatalogSurfaces")
+    if not isinstance(maintained, list) or any(not isinstance(path, str) for path in maintained):
+        fail("maintainedCatalogSurfaces must be a string array")
+    stale = sorted(
+        path
+        for path in maintained
+        if path in RETIRED_RUNTIME_PATHS or path.rsplit("/", 1)[-1] in RUNTIME_BASENAMES
+    )
+    if stale:
+        fail("runtime surface remains in maintainedCatalogSurfaces: " + ", ".join(stale))
 
 
 def main() -> None:
@@ -157,8 +153,8 @@ def main() -> None:
     args = parser.parse_args()
     tree = git_tree(args.repo_root, args.tree_ish)
     check_layout_and_forbidden_paths(tree)
-    check_manifest(tree, args.repo_root, args.tree_ish)
-    print("SYSTEMKATALOG-MANIFEST-AND-PATH-CONTRACT: PASS")
+    check_static_surface(tree, args.repo_root, args.tree_ish)
+    print("SYSTEMKATALOG-STATIC-MANIFEST-AND-PATH-CONTRACT: PASS")
 
 
 if __name__ == "__main__":

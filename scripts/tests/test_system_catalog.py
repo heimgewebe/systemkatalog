@@ -28,7 +28,6 @@ class SystemCatalogTests(unittest.TestCase):
         self.assertEqual(result["registrySystems"], 32)
         self.assertEqual(result["registryRelations"], 38)
         self.assertEqual(result["authorityDomains"], 16)
-        self.assertEqual(result["runtimeService"], "systemkatalog.service")
         self.assertEqual(result["catalogRepositories"], 27)
         self.assertEqual(result["fleetRepositories"], 18)
         self.assertEqual(result["fleetExclusions"], 1)
@@ -72,6 +71,16 @@ class SystemCatalogTests(unittest.TestCase):
             data["nodes"][0]["runtimeHealth"] = "green"
             path.write_text(json.dumps(data), encoding="utf-8")
             with self.assertRaisesRegex(ValueError, "prohibited operational fields"):
+                validate(target)
+
+    def test_runtime_projection_fails_closed(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            target = self._copy_repository(directory)
+            path = target / "policy/system-catalog.v1.json"
+            data = json.loads(path.read_text(encoding="utf-8"))
+            data["runtimeProjection"] = {"service": "systemkatalog.service"}
+            path.write_text(json.dumps(data), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "runtimeProjection must remain absent"):
                 validate(target)
 
     def test_old_repository_identity_fails_closed(self) -> None:

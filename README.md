@@ -52,8 +52,7 @@ catalog/              Schema und nichtkanonisches Beispiel
 policy/               Rollen- und Projektionsgrenzen
 registry/ecosystem/   Kanonische Systeme, Fleet-Abdeckung, Beziehungen, Claims und Zuständigkeiten
 rendered/             Deterministisch erzeugte Leseansicht und Karte
-scripts/              Validatoren, Renderer und read-only Dienst
-ops/                  Reproduzierbare lokale Runtime
+scripts/              Validatoren, Renderer und Artefaktmanifest-Werkzeug
 ```
 
 Die frühere Cabinet-Raumstruktur liegt ausschließlich unter `docs/archive/cabinet-era/`. Sie ist historisches Material, keine aktive Navigation, kein zweiter Katalog und keine Wahrheitsquelle.
@@ -62,16 +61,16 @@ Die Fleet-Mitgliedschaft selbst gehört Metarepo (`fleet/repos.yml`). Der System
 
 Konkrete Coding-Agenten sind keine stabilen Katalogsysteme. Die dauerhafte Zuständigkeit für Agent-Auswahl und Rollenrouting liegt bei Grabowski und wird als Authority-Domäne `agent_routing` referenziert.
 
-## Lokale Leseoberfläche
+## Bereitstellung
 
-Der Katalogkanon benötigt keinen Server. Optional stellt `systemkatalog.service` eine zustandslose, read-only Oberfläche auf Loopback bereit.
+Der Systemkatalog wird ausschließlich als versionierte, statische Repositoryartefakte bereitgestellt:
 
-```bash
-./ops/install/install-local-runtime.sh --cutover
-systemkatalogctl status
-```
+- `rendered/system-catalog.md` als lesbare Katalogansicht;
+- `rendered/ecosystem-registry-map.mmd` als Mermaidkarte;
+- `registry/ecosystem/*.json` und `claims.jsonl` als kanonische Daten;
+- das Map-Artefaktmanifest als Übergabevertrag für Verbraucher wie Leitstand und Schauwerk.
 
-Die Runtime enthält keine Datenbank, keinen Scheduler, keinen Agenten und keine Schreibschnittstelle.
+Eine eigene HTTP-Runtime, Datenbank, Queue oder Schreibschnittstelle gehört nicht zum Produkt. Aktuelle Betriebszustände werden weiterhin an ihren jeweiligen Runtime-Primärquellen geprüft.
 
 ## Validierung
 

@@ -39,45 +39,34 @@ git commit -m forbidden-env >/dev/null
 expect_failure "forbidden env" "env file: runtime.env"
 
 reset_state
-python3 - <<'PY'
-import json
-p='ops/manifest.json'; d=json.load(open(p)); d['schema']='wrong'; json.dump(d,open(p,'w'))
-PY
-git commit -am wrong-schema >/dev/null
-expect_failure "wrong schema" "manifest.schema"
+printf '#!/usr/bin/env python3\n' > scripts/serve_system_catalog.py
+git add scripts/serve_system_catalog.py
+git commit -m restored-server >/dev/null
+expect_failure "HTTP server source restored" "retired Systemkatalog runtime source still tracked"
+
+reset_state
+mkdir -p ops/systemd
+printf '[Service]\nExecStart=/bin/false\n' > ops/systemd/systemkatalog.service.tmpl
+git add ops/systemd/systemkatalog.service.tmpl
+git commit -m restored-unit >/dev/null
+expect_failure "systemd source restored" "retired Systemkatalog runtime source still tracked"
 
 reset_state
 python3 - <<'PY'
 import json
-p='ops/manifest.json'; d=json.load(open(p)); d['service']['port']=4100; json.dump(d,open(p,'w'))
+p='policy/system-catalog.v1.json'; d=json.load(open(p)); d['runtimeProjection']={'service':'systemkatalog.service'}; json.dump(d,open(p,'w'))
 PY
-git commit -am wrong-port >/dev/null
-expect_failure "wrong catalog port" "manifest.service mismatch"
+git commit -am restored-runtime-policy >/dev/null
+expect_failure "runtime policy restored" "runtimeProjection must remain absent"
 
 reset_state
-python3 - <<'PY'
-import json
-p='ops/manifest.json'; d=json.load(open(p)); d['executables'].pop(); json.dump(d,open(p,'w'))
-PY
-git commit -am missing-executable >/dev/null
-expect_failure "missing executable" "manifest.executables mismatch"
+git rm rendered/system-catalog.md >/dev/null
+git commit -m missing-static-surface >/dev/null
+expect_failure "static projection missing" "required static surface missing"
 
 reset_state
-git update-index --chmod=-x ops/bin/systemkatalog
-git commit -m wrong-mode >/dev/null
-git reset --hard HEAD >/dev/null
-expect_failure "wrong executable mode" "git mode mismatch"
-
-reset_state
-printf '#!/usr/bin/env bash\nexit 0\n' > ops/bin/heimgewebe-systemkatalog
-chmod +x ops/bin/heimgewebe-systemkatalog
-git add ops/bin/heimgewebe-systemkatalog
-git commit -m old-runtime >/dev/null
-expect_failure "old-name runtime source restored" "retired runtime source still tracked"
-
-reset_state
-printf '#!/usr/bin/env bash\nif true\n' > ops/install/install-local-runtime.sh
-git add ops/install/install-local-runtime.sh
+printf '#!/usr/bin/env python3\nif True print("broken")\n' > scripts/render_system_catalog.py
+git add scripts/render_system_catalog.py
 git commit -m syntax-error >/dev/null
 out=$(./scripts/ci/validate-repository.sh 2>&1 || true)
 if grep -qF "TARGET-PROOF: SYSTEMKATALOG REPOSITORY CONTRACT VALID" <<<"$out"; then

@@ -32,19 +32,6 @@
     "rendered/ecosystem-registry-map.mmd",
     "catalog/ecosystem-map-artifact-manifest.schema.v1.json"
   ],
-  "runtimeProjection": {
-    "role": "read_only_catalog_projection",
-    "stateful": false,
-    "service": "systemkatalog.service",
-    "bind": "127.0.0.1",
-    "port": 4001,
-    "canonicalInputs": [
-      "registry/ecosystem/nodes.json",
-      "registry/ecosystem/edges.json",
-      "registry/ecosystem/claims.jsonl",
-      "registry/ecosystem/authority-matrix.v1.json"
-    ]
-  },
   "archiveBoundary": {
     "path": "docs/archive/cabinet-era",
     "role": "historical_noncanonical_material",
@@ -157,6 +144,7 @@
     "cabinetRoleReductionTask": "OPERATOR-ECOSYSTEM-REDUNDANCY-V1-T004",
     "runtimeCutoverTask": "OPERATOR-ECOSYSTEM-REDUNDANCY-V1-T013",
     "previousRepositoryRenameTask": "OPERATOR-ECOSYSTEM-REDUNDANCY-V1-T014",
-    "currentIdentityAndRoomRetirementTask": "OPERATOR-ECOSYSTEM-REDUNDANCY-V1-T021"
+    "currentIdentityAndRoomRetirementTask": "OPERATOR-ECOSYSTEM-REDUNDANCY-V1-T021",
+    "httpRuntimeRetirementTask": "OPERATOR-ECOSYSTEM-REDUNDANCY-V1-T023"
   }
 }

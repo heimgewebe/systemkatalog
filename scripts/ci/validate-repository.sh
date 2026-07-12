@@ -2,7 +2,8 @@
 set -Eeuo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-export REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+export REPO_ROOT
 export PYTHONDONTWRITEBYTECODE=1
 cd "$REPO_ROOT"
 
@@ -35,7 +36,7 @@ find . -type f -name '*.py' -not -path './docs/archive/*' -print0 | while IFS= r
 done
 
 echo "=== Bash syntax ==="
-find ops scripts/ci -type f -print0 | while IFS= read -r -d '' file; do
+find scripts/ci -type f -print0 | while IFS= read -r -d '' file; do
   first="$(head -n 1 "$file" 2>/dev/null || true)"
   if [[ "$first" =~ ^#!(.*)bash ]]; then
     bash -n "$file"
@@ -48,7 +49,6 @@ python3 scripts/validate_ecosystem_map.py
 python3 scripts/render_system_catalog.py --check
 python3 scripts/render_ecosystem_registry_map.py --check
 python3 scripts/write_ecosystem_map_artifact_manifest.py --check --source-commit "$SOURCE_COMMIT"
-python3 scripts/serve_system_catalog.py --check
 
 echo "=== Unit tests ==="
 python3 -m unittest discover -s scripts/tests -p 'test_*.py'

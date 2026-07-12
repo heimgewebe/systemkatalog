@@ -310,8 +310,8 @@ def validate(root: Path = ROOT) -> dict[str, Any]:
         raise ValueError("system catalog policy role/state mismatch")
     if policy.get("repository") != "heimgewebe/systemkatalog":
         raise ValueError("repository identity mismatch")
-    runtime_inputs = [str(NODES_REL), str(EDGES_REL), str(CLAIMS_REL), str(AUTHORITY_REL)]
-    expected_inputs = [*runtime_inputs, str(FLEET_REL)]
+    catalog_inputs = [str(NODES_REL), str(EDGES_REL), str(CLAIMS_REL), str(AUTHORITY_REL)]
+    expected_inputs = [*catalog_inputs, str(FLEET_REL)]
     if policy.get("canonicalInputs") != expected_inputs:
         raise ValueError("canonicalInputs mismatch")
     if policy.get("canonicalAuthorityMatrix") != str(AUTHORITY_REL):
@@ -328,15 +328,8 @@ def validate(root: Path = ROOT) -> dict[str, Any]:
         "maintained": False,
     }:
         raise ValueError("archive boundary mismatch")
-    runtime = policy.get("runtimeProjection")
-    if not isinstance(runtime, dict):
-        raise ValueError("runtime projection missing")
-    if runtime.get("role") != "read_only_catalog_projection" or runtime.get("stateful") is not False:
-        raise ValueError("runtime must be read-only and stateless")
-    if runtime.get("service") != "systemkatalog.service" or runtime.get("bind") != "127.0.0.1" or runtime.get("port") != 4001:
-        raise ValueError("runtime service binding mismatch")
-    if runtime.get("canonicalInputs") != runtime_inputs:
-        raise ValueError("runtime canonical inputs mismatch")
+    if "runtimeProjection" in policy:
+        raise ValueError("runtimeProjection must remain absent from the static catalog policy")
     if set(policy.get("publicProjection", {}).get("excludedKinds", [])) != {"runtime", "agent"}:
         raise ValueError("public projection exclusions mismatch")
     for relative in policy.get("maintainedCatalogSurfaces", []):
@@ -443,7 +436,6 @@ def validate(root: Path = ROOT) -> dict[str, Any]:
         "catalogRepositories": len(repository_node_ids),
         "fleetRepositories": sum(1 for item in fleet_coverage["repositories"] if item["membership"] in {"fleet", "related"}),
         "fleetExclusions": len(fleet_coverage["sourceExclusions"]),
-        "runtimeService": "systemkatalog.service",
         "activeLegacyRooms": 0,
         "archive": str(ARCHIVE_REL),
     }

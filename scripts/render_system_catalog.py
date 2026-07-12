@@ -118,7 +118,7 @@ def render_text(root: Path = ROOT) -> str:
         "- Laufende Dienste: Runtime, Healthchecks, systemd und Logs.",
         "- Lokale und repositorybezogene Ausführung: Grabowski nach Freigabe.",
         "- Konkrete Runtime-Identitäten, Provider-Agenten und Topologie sind keine Katalogsysteme.",
-        "- Die frühere Cabinet-Oberfläche ist archiviert; die lokale read-only Oberfläche wird vom Systemkatalogdienst bereitgestellt.",
+        "- Die frühere Cabinet-Oberfläche ist archiviert; der Katalog wird ausschließlich als versionierte Markdown-, Mermaid- und JSON-Artefakte bereitgestellt.",
         "- Frühere dynamische Claims und Radarflächen sind historische Kompatibilität, keine aktuelle Katalogwahrheit.",
         "",
     ])
