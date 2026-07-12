@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 umask 077
+export PYTHONDONTWRITEBYTECODE=1
 ALLOW_DIRTY=0
 case "${1:-}" in
   "") ;;

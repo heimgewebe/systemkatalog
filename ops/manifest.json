@@ -37,5 +37,12 @@
     "~/.local/state/cabinet/",
     "~/.cabinet/",
     ".cabinet-state/"
-  ]
+  ],
+  "retirement": {
+    "script": "ops/install/retire-local-runtime.sh",
+    "mode": "0755",
+    "backup_root": "~/.local/state/systemkatalog/runtime-retirements/",
+    "requires_authorization_reference": true,
+    "requires_expected_head": true
+  }
 }

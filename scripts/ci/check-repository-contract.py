@@ -85,7 +85,7 @@ def check_manifest(tree: dict[str, dict[str, str]], repo: Path, treeish: str) ->
     manifest = json.loads(git_text(repo, treeish, path))
     expected_fields = {
         "schema", "runtime_version", "repository_root", "service",
-        "executables", "retired_runtime_paths", "preserved_private_paths",
+        "executables", "retirement", "retired_runtime_paths", "preserved_private_paths",
     }
     if set(manifest) != expected_fields:
         fail("manifest top-level fields mismatch")
@@ -116,6 +116,17 @@ def check_manifest(tree: dict[str, dict[str, str]], repo: Path, treeish: str) ->
         fail(f"manifest.executables mismatch: {actual_exec}")
     for source in expected_exec:
         validate_source(tree, source, "100755")
+    expected_retirement = {
+        "script": "ops/install/retire-local-runtime.sh",
+        "mode": "0755",
+        "backup_root": "~/.local/state/systemkatalog/runtime-retirements/",
+        "requires_authorization_reference": True,
+        "requires_expected_head": True,
+    }
+    if manifest["retirement"] != expected_retirement:
+        fail(f"manifest.retirement mismatch: {manifest['retirement']}")
+    validate_source(tree, expected_retirement["script"], "100755")
+    validate_source(tree, "scripts/ci/test-retire-local-runtime.sh", "100755")
     expected_retired = {
         "~/.config/systemd/user/heimgewebe-systemkatalog.service",
         "~/.local/bin/heimgewebe-systemkatalog",
