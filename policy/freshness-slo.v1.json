@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "kind": "system_catalog_freshness_policy",
+  "owner": "repo:systemkatalog",
+  "statusProjectionOwner": "repo:leitstand",
+  "proposalOnly": true,
+  "autoMerge": false,
+  "driftCandidateId": "SYSTEMKATALOG-DRIFT-CLOSED-LOOP-V1",
+  "rules": [
+    {
+      "id": "repository_inventory",
+      "authority": "service:github",
+      "detectWithinMinutes": 60,
+      "reviewWithinHours": 24,
+      "effect": "register_bureau_candidate"
+    },
+    {
+      "id": "fleet_membership",
+      "authority": "repo:metarepo",
+      "detectWithinMinutes": 60,
+      "reviewWithinHours": 24,
+      "effect": "register_bureau_candidate"
+    },
+    {
+      "id": "primary_source_document",
+      "authority": "repository_context_citations",
+      "detectWithinMinutes": 360,
+      "reviewWithinHours": 168,
+      "effect": "request_semantic_review"
+    },
+    {
+      "id": "catalog_semantics",
+      "authority": "repo:systemkatalog",
+      "detectWithinMinutes": 1440,
+      "reviewWithinHours": 168,
+      "effect": "request_semantic_review"
+    },
+    {
+      "id": "check_failure",
+      "authority": "service:ci",
+      "detectWithinMinutes": 15,
+      "reviewWithinHours": 4,
+      "effect": "fail_check"
+    }
+  ],
+  "doesNotEstablish": [
+    "current_runtime_health",
+    "semantic_truth",
+    "automatic_merge_authority",
+    "task_priority"
+  ]
+}

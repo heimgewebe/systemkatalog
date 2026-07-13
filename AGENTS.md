@@ -8,9 +8,11 @@
 4. [registry/ecosystem/authority-matrix.v1.json](registry/ecosystem/authority-matrix.v1.json)
 5. [registry/ecosystem/fleet-coverage.v1.json](registry/ecosystem/fleet-coverage.v1.json)
 6. [registry/ecosystem/organization-scope.v1.json](registry/ecosystem/organization-scope.v1.json)
-6. [registry/ecosystem/nodes.json](registry/ecosystem/nodes.json)
-7. [registry/ecosystem/edges.json](registry/ecosystem/edges.json)
-8. [docs/architecture/systemkatalog.md](docs/architecture/systemkatalog.md)
+7. [registry/ecosystem/source-bindings.v1.json](registry/ecosystem/source-bindings.v1.json)
+8. [policy/freshness-slo.v1.json](policy/freshness-slo.v1.json)
+9. [registry/ecosystem/nodes.json](registry/ecosystem/nodes.json)
+10. [registry/ecosystem/edges.json](registry/ecosystem/edges.json)
+11. [docs/architecture/systemkatalog.md](docs/architecture/systemkatalog.md)
 
 ## Rolle
 
@@ -49,6 +51,8 @@ Er pflegt keine Aufgabenpriorität, keinen Taskstatus, keine Runtime-Gesundheit,
 9. Vor Änderungen Livezustand, Branch, Dirty-State, PRs, CI und aktive Leases prüfen.
 10. Vor Merge aktuellen Diff prüfen und grüne Gates verlangen.
 11. Fehlende Belege ausdrücklich als Leerstelle benennen.
+12. Bei systemweiten, repositoryübergreifenden, Zuständigkeits-, Wahrheits- oder Beziehungsfragen die deterministische Abfragefläche `python3 scripts/systemkatalog_query.py` nutzen; bei gewöhnlicher Einzelrepo-Codearbeit den Katalog nicht pauschal laden.
+13. Drift darf Vorschläge und Bureau-Kandidaten erzeugen, aber keine semantischen Änderungen automatisch mergen.
 
 ## Stop-Kriterien
 

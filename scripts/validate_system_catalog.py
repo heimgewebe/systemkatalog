@@ -10,6 +10,12 @@ from typing import Any, Iterable
 
 from system_catalog_fleet import COVERAGE_REL, validate_coverage
 from system_catalog_scope import SCOPE_REL, validate_scope
+from system_catalog_sources import (
+    FRESHNESS_POLICY_REL,
+    SOURCE_BINDINGS_REL,
+    validate_freshness_policy,
+    validate_source_bindings,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 POLICY_REL = Path("policy/system-catalog.v1.json")
@@ -22,6 +28,8 @@ AUTHORITY_REL = Path("registry/ecosystem/authority-matrix.v1.json")
 VIEW_REL = Path("policy/ecosystem-map-view.v1.json")
 FLEET_REL = COVERAGE_REL
 ORGANIZATION_SCOPE_REL = SCOPE_REL
+SOURCE_BINDINGS_PATH_REL = SOURCE_BINDINGS_REL
+FRESHNESS_POLICY_PATH_REL = FRESHNESS_POLICY_REL
 ARCHIVE_REL = Path("docs/archive/cabinet-era")
 
 NODE_FIELDS = {"id", "name", "type", "purpose", "notResponsibleFor", "truthOwnership", "entrypoints"}
@@ -58,6 +66,8 @@ CANON_KIND_PATHS = {
     "system_catalog_relations": EDGES_REL,
     "system_catalog_fleet_coverage": FLEET_REL,
     "system_catalog_organization_scope": ORGANIZATION_SCOPE_REL,
+    "system_catalog_source_bindings": SOURCE_BINDINGS_PATH_REL,
+    "system_catalog_freshness_policy": FRESHNESS_POLICY_PATH_REL,
     "system_catalog": EXAMPLE_REL,
 }
 LEGACY_CATALOG_KINDS = {
@@ -336,6 +346,8 @@ def validate(root: Path = ROOT) -> dict[str, Any]:
     view = _load(root, VIEW_REL)
     fleet_coverage = _load(root, FLEET_REL)
     organization_scope_doc = _load(root, ORGANIZATION_SCOPE_REL)
+    source_bindings_doc = _load(root, SOURCE_BINDINGS_PATH_REL)
+    freshness_policy_doc = _load(root, FRESHNESS_POLICY_PATH_REL)
 
     if policy.get("kind") != "system_catalog_policy":
         raise ValueError("system catalog policy kind mismatch")
@@ -350,7 +362,7 @@ def validate(root: Path = ROOT) -> dict[str, Any]:
     if not isinstance(schema_required, list) or set(schema_required) != NODE_FIELDS:
         raise ValueError("system catalog schema required fields mismatch")
     catalog_inputs = [str(NODES_REL), str(EDGES_REL), str(CLAIMS_REL), str(AUTHORITY_REL)]
-    expected_inputs = [*catalog_inputs, str(FLEET_REL), str(ORGANIZATION_SCOPE_REL)]
+    expected_inputs = [*catalog_inputs, str(FLEET_REL), str(ORGANIZATION_SCOPE_REL), str(SOURCE_BINDINGS_PATH_REL)]
     if policy.get("canonicalInputs") != expected_inputs:
         raise ValueError("canonicalInputs mismatch")
     if policy.get("canonicalAuthorityMatrix") != str(AUTHORITY_REL):
@@ -386,6 +398,8 @@ def validate(root: Path = ROOT) -> dict[str, Any]:
         str(VIEW_REL): view,
         str(FLEET_REL): fleet_coverage,
         str(ORGANIZATION_SCOPE_REL): organization_scope_doc,
+        str(SOURCE_BINDINGS_PATH_REL): source_bindings_doc,
+        str(FRESHNESS_POLICY_PATH_REL): freshness_policy_doc,
     }
     for label, value in canonical_values.items():
         _validate_no_operational_fields(policy, label, value)
@@ -424,6 +438,8 @@ def validate(root: Path = ROOT) -> dict[str, Any]:
         if node["entrypoints"].get("repository") != expected_entrypoint:
             raise ValueError(f"repository entrypoint mismatch: {node['id']}")
     organization_scope = validate_scope(root, repository_node_ids, fleet_coverage)
+    source_bindings = validate_source_bindings(root, nodes, edges)
+    freshness_policy = validate_freshness_policy(root)
 
     claim_ids: set[str] = set()
     for index, claim in enumerate(claims):
@@ -507,6 +523,9 @@ def validate(root: Path = ROOT) -> dict[str, Any]:
             item["classification"] == "excluded"
             for item in organization_scope["repositories"]
         ),
+        "sourceSystemBindings": len(source_bindings["systems"]),
+        "sourceRelationBindings": len(source_bindings["relations"]),
+        "freshnessRules": len(freshness_policy["rules"]),
         "activeLegacyRooms": 0,
         "archive": str(ARCHIVE_REL),
     }

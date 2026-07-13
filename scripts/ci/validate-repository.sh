@@ -51,6 +51,11 @@ python3 scripts/validate_ecosystem_map.py
 python3 scripts/render_system_catalog.py --check
 python3 scripts/render_ecosystem_registry_map.py --check
 
+echo "=== Deterministic query surface ==="
+python3 scripts/systemkatalog_query.py system systemkatalog >/dev/null
+python3 scripts/systemkatalog_query.py truth-owner ecosystem_semantics >/dev/null
+python3 scripts/systemkatalog_query.py relations systemkatalog >/dev/null
+
 echo "=== Unit tests ==="
 python3 -m unittest discover -s scripts/tests -p 'test_*.py'
 

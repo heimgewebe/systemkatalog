@@ -9,6 +9,9 @@ Dies ist der kurze Einstieg in den read-only Systemkatalog.
 - [Wahrheitszuständigkeiten](registry/ecosystem/authority-matrix.v1.json)
 - [Repository- und Fleet-Abdeckung](registry/ecosystem/fleet-coverage.v1.json)
 - [Vollständige Organisationsklassifikation](registry/ecosystem/organization-scope.v1.json)
+- [Quellenbindungen](registry/ecosystem/source-bindings.v1.json)
+- [Frische- und Driftvertrag](policy/freshness-slo.v1.json)
+- [Deterministische Abfrage-CLI](scripts/systemkatalog_query.py)
 - [Architektur](docs/architecture/systemkatalog.md)
 - [Räume-Audit](docs/audits/systemkatalog-room-audit-v1.md)
 

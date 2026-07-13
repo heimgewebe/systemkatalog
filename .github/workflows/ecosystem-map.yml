@@ -19,7 +19,7 @@ jobs:
   validate:
     name: Validate Ecosystem Map
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
     steps:
       - name: Checkout
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
@@ -64,6 +64,7 @@ jobs:
           private-key: ${{ secrets.HEIMGEWEBE_APP_PRIVATE_KEY }}
           owner: heimgewebe
           permission-metadata: read
+          permission-contents: read
 
       - name: Read complete Heimgewebe repository inventory
         env:
@@ -77,3 +78,26 @@ jobs:
         run: |
           python3 scripts/check_organization_scope.py \
             --github-inventory "${RUNNER_TEMP}/heimgewebe-repositories.json"
+
+
+      - name: Read bound source observations
+        if: github.event_name != 'pull_request'
+        env:
+          GH_TOKEN: ${{ steps.organization-token.outputs.token }}
+        run: |
+          python3 scripts/read_github_catalog_observations.py \
+            --output "${RUNNER_TEMP}/systemkatalog-observations.json"
+
+      - name: Check proposal-only catalog drift
+        if: github.event_name != 'pull_request'
+        run: |
+          set +e
+          python3 scripts/system_catalog_drift.py \
+            --github-observations "${RUNNER_TEMP}/systemkatalog-observations.json" \
+            --fleet-file _fleet-authority/fleet/repos.yml \
+            --output "${RUNNER_TEMP}/systemkatalog-drift-report.json" \
+            --proposal-output "${RUNNER_TEMP}/systemkatalog-update-proposal.json" \
+            --check
+          status=$?
+          cat "${RUNNER_TEMP}/systemkatalog-drift-report.json"
+          exit "$status"

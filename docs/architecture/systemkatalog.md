@@ -44,3 +44,16 @@ Eine Information gehört nur dann in den Systemkatalog, wenn sie:
 2. eine benannte Primärquelle besitzt;
 3. keinen aktuellen Betriebs-, Task-, PR- oder Reviewzustand kopiert;
 4. reproduzierbar validiert und projiziert werden kann.
+
+## Auffindbarkeit und Pflegekreislauf
+
+Der Katalog wird nicht ungefragt in jede Agentenaufgabe geladen. Ein Agent soll ihn konsultieren, wenn eine Frage mehrere Repositories, Systemzwecke, Zuständigkeitsgrenzen, Wahrheitsbesitz, stabile Beziehungen oder Einstiegspunkte betrifft. `scripts/systemkatalog_query.py` liefert dafür eine kleine, deterministische Projektion der kanonischen Dateien.
+
+Quellenbindungen und Frische bleiben getrennte Verträge:
+
+- `registry/ecosystem/source-bindings.v1.json` dokumentiert, worauf eine katalogisierte Aussage geprüft wurde;
+- `policy/freshness-slo.v1.json` legt fest, wie schnell unterschiedliche Driftarten erkannt und zur Prüfung vorgelegt werden sollen;
+- `scripts/system_catalog_drift.py` erzeugt einen maschinenlesbaren Bericht und einen proposal-only Änderungsvorschlag;
+- Bureau oder ein unabhängiger Operator-Watchdog kann materielle Drift als deduplizierten Kandidaten sichtbar machen.
+
+Keiner dieser Schritte darf Zwecke, Grenzen, Wahrheitsbesitz oder Beziehungen ungeprüft in `main` schreiben. Erkennung ist automatisierbar; semantische Annahme bleibt reviewpflichtig.

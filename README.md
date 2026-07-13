@@ -60,9 +60,39 @@ Die frühere Cabinet-Raumstruktur liegt ausschließlich unter `docs/archive/cabi
 
 Die Fleet-Mitgliedschaft selbst gehört Metarepo (`fleet/repos.yml`). Der Systemkatalog gleicht diese Quelle ab, übernimmt daraus aber weder Zweck noch Architektursemantik. Jedes Fleet-Repository muss katalogisiert sein; Quellausschlüsse wie `fleet: false` müssen ausdrücklich dokumentiert bleiben.
 
-Der vollständige Organisationsumfang steht separat in `registry/ecosystem/organization-scope.v1.json`. Dort ist jedes aktive, nicht geforkte Heimgewebe-Repository entweder als Katalogsystem oder als begründeter Ausschluss klassifiziert. Der Snapshot umfasst 34 Repositories: 32 Katalogsysteme sowie die Ausschlüsse `demo-repository` und `vault-privat`. CI mintet dafür kurzlebig ein ausschließlich lesendes Heimgewebe-App-Token und gleicht den vollständigen Umfang einschließlich privater Repository-Metadaten live gegen GitHub ab. Es werden keine privaten Inhalte in den öffentlichen Katalog übernommen.
+Der vollständige Organisationsumfang steht separat in `registry/ecosystem/organization-scope.v1.json`. Dort ist jedes aktive, nicht geforkte Heimgewebe-Repository entweder als Katalogsystem oder als begründeter Ausschluss klassifiziert. Die Datei enthält die vollständige aktuelle Klassifikation. CI mintet dafür kurzlebig ein ausschließlich lesendes Heimgewebe-App-Token und gleicht den Umfang einschließlich privater Repository-Metadaten live gegen GitHub ab. Die konkreten Anzahlen werden aus den kanonischen Daten berechnet statt in dieser Dokumentation doppelt gepflegt. Private Commit- und Inhaltsmetadaten werden nicht in den öffentlichen Quellenbindungen veröffentlicht.
 
 Konkrete Coding-Agenten sind keine stabilen Katalogsysteme. Die dauerhafte Zuständigkeit für Agent-Auswahl und Rollenrouting liegt bei Grabowski und wird als Authority-Domäne `agent_routing` referenziert.
+
+## Deterministische Abfragen
+
+Für Agenten und lokale Werkzeuge gibt es eine statusfreie Leseoberfläche über die versionierten JSON-Dateien:
+
+```bash
+python3 scripts/systemkatalog_query.py system grabowski
+python3 scripts/systemkatalog_query.py repository weltgewebe
+python3 scripts/systemkatalog_query.py truth-owner agent_routing
+python3 scripts/systemkatalog_query.py relations bureau
+python3 scripts/systemkatalog_query.py entrypoints leitstand
+```
+
+Jede Ausgabe nennt den gelesenen Katalogcommit, die Quellpfade und – soweit öffentlich zulässig – die zugehörige Quellenbindung. Die CLI besitzt keine Datenbank, keine Schreibschnittstelle und keine Runtime-Autorität.
+
+## Quellenbindungen und Frische
+
+`registry/ecosystem/source-bindings.v1.json` bindet jedes System und jede stabile Beziehung an einen geprüften Quellstand, einen Locator, eine Prüfmethode, ein Prüfdatum und eine Unsicherheit. Öffentliche Repositoryquellen werden an Commit und Inhalts-SHA-256 gebunden. Bei privaten Repositories bleiben Commit und Inhalt redigiert; veröffentlicht wird nur ein Digest nichtvertraulicher Klassifikationsmetadaten.
+
+`policy/freshness-slo.v1.json` definiert Erkennungs- und Reviewziele. GitHub- und Fleet-Abweichungen sowie Änderungen gebundener Primärdokumente erzeugen einen maschinenlesbaren Driftbericht. Der Folgeschritt bleibt ausdrücklich **proposal-only**: Er darf einen deduplizierten Bureau-Kandidaten und einen Änderungsvorschlag erzeugen, aber keine neue Semantik automatisch mergen.
+
+```bash
+python3 scripts/read_github_catalog_observations.py --output /tmp/systemkatalog-observations.json
+python3 scripts/system_catalog_drift.py \
+  --github-observations /tmp/systemkatalog-observations.json \
+  --fleet-file /pfad/zu/metarepo/fleet/repos.yml \
+  --check
+```
+
+Der Systemkatalog bleibt damit statisch. Laufzustand und Alarmanzeige gehören weiterhin in Bureau, Leitstand, CI und die lokale Operatorumgebung.
 
 ## Bereitstellung
 

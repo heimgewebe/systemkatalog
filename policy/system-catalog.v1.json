@@ -11,7 +11,8 @@
     "registry/ecosystem/claims.jsonl",
     "registry/ecosystem/authority-matrix.v1.json",
     "registry/ecosystem/fleet-coverage.v1.json",
-    "registry/ecosystem/organization-scope.v1.json"
+    "registry/ecosystem/organization-scope.v1.json",
+    "registry/ecosystem/source-bindings.v1.json"
   ],
   "canonicalAuthorityMatrix": "registry/ecosystem/authority-matrix.v1.json",
   "canonicalGeneratedMap": "rendered/ecosystem-registry-map.mmd",
@@ -33,7 +34,14 @@
     "rendered/system-catalog.md",
     "rendered/ecosystem-registry-map.mmd",
     "rendered/ecosystem-map-artifact-manifest.json",
-    "catalog/ecosystem-map-artifact-manifest.schema.v1.json"
+    "catalog/ecosystem-map-artifact-manifest.schema.v1.json",
+    "catalog/source-bindings.schema.v1.json",
+    "policy/freshness-slo.v1.json",
+    "registry/ecosystem/source-bindings.v1.json",
+    "scripts/system_catalog_sources.py",
+    "scripts/systemkatalog_query.py",
+    "scripts/read_github_catalog_observations.py",
+    "scripts/system_catalog_drift.py"
   ],
   "archiveBoundary": {
     "path": "docs/archive/cabinet-era",
