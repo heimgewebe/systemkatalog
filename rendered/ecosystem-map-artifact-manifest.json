@@ -1,5 +1,5 @@
 {
-  "artifactCount": 6,
+  "artifactCount": 5,
   "artifacts": [
     {
       "bytes": 8605,
@@ -35,13 +35,6 @@
       "path": "registry/ecosystem/authority-matrix.v1.json",
       "role": "authority_matrix",
       "sha256": "0f9fc02c717cffcf9dd837cf142d617ecdbc2809123e126f71283e361b3a891b"
-    },
-    {
-      "bytes": 9535,
-      "contentType": "application/json",
-      "path": "registry/ecosystem/organization-scope.v1.json",
-      "role": "organization_scope",
-      "sha256": "2596a9d9a44eea639a09620908e0a4fa45af6468dd5ac5ec96416ec317b5d69b"
     }
   ],
   "contractVersion": "1",
@@ -58,8 +51,8 @@
   "schemaPath": "catalog/ecosystem-map-artifact-manifest.schema.v1.json",
   "schemaVersion": 1,
   "source": {
-    "commit": "5eba9d818fbf4c54d8e285cc177555ba2d30db4e",
-    "generatedAt": "2026-07-13T05:21:56Z",
+    "commit": "993f0421a6ae73062674918553be770b91d47ae1",
+    "generatedAt": "2026-07-13T05:23:26Z",
     "repository": "heimgewebe/systemkatalog"
   }
 }
