@@ -55,3 +55,17 @@ jobs:
 
       - name: Check Fleet coverage against Metarepo
         run: python3 scripts/check_fleet_coverage.py --fleet-file _fleet-authority/fleet/repos.yml
+
+      - name: Read public Heimgewebe repository inventory
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh repo list heimgewebe --limit 200 \
+            --json name,nameWithOwner,isArchived,isFork,visibility \
+            > "${RUNNER_TEMP}/heimgewebe-public-repositories.json"
+
+      - name: Check public organization scope against GitHub
+        run: |
+          python3 scripts/check_organization_scope.py \
+            --github-inventory "${RUNNER_TEMP}/heimgewebe-public-repositories.json" \
+            --visibility public

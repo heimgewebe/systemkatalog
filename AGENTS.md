@@ -7,6 +7,7 @@
 3. [rendered/system-catalog.md](rendered/system-catalog.md)
 4. [registry/ecosystem/authority-matrix.v1.json](registry/ecosystem/authority-matrix.v1.json)
 5. [registry/ecosystem/fleet-coverage.v1.json](registry/ecosystem/fleet-coverage.v1.json)
+6. [registry/ecosystem/organization-scope.v1.json](registry/ecosystem/organization-scope.v1.json)
 6. [registry/ecosystem/nodes.json](registry/ecosystem/nodes.json)
 7. [registry/ecosystem/edges.json](registry/ecosystem/edges.json)
 8. [docs/architecture/systemkatalog.md](docs/architecture/systemkatalog.md)

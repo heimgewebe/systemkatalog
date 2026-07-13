@@ -53,6 +53,11 @@ ARTIFACT_SPECS: tuple[dict[str, str], ...] = (
         "path": "registry/ecosystem/authority-matrix.v1.json",
         "contentType": "application/json",
     },
+    {
+        "role": "organization_scope",
+        "path": "registry/ecosystem/organization-scope.v1.json",
+        "contentType": "application/json",
+    },
 )
 
 

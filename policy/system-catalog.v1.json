@@ -10,7 +10,8 @@
     "registry/ecosystem/edges.json",
     "registry/ecosystem/claims.jsonl",
     "registry/ecosystem/authority-matrix.v1.json",
-    "registry/ecosystem/fleet-coverage.v1.json"
+    "registry/ecosystem/fleet-coverage.v1.json",
+    "registry/ecosystem/organization-scope.v1.json"
   ],
   "canonicalAuthorityMatrix": "registry/ecosystem/authority-matrix.v1.json",
   "canonicalGeneratedMap": "rendered/ecosystem-registry-map.mmd",
@@ -28,6 +29,7 @@
     "registry/ecosystem/claims.jsonl",
     "registry/ecosystem/authority-matrix.v1.json",
     "registry/ecosystem/fleet-coverage.v1.json",
+    "registry/ecosystem/organization-scope.v1.json",
     "rendered/system-catalog.md",
     "rendered/ecosystem-registry-map.mmd",
     "rendered/ecosystem-map-artifact-manifest.json",

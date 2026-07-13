@@ -53,7 +53,7 @@
       "additionalProperties": false
     },
     "artifactCount": {
-      "const": 5
+      "const": 6
     },
     "artifacts": {
       "type": "array",
@@ -72,11 +72,14 @@
         },
         {
           "$ref": "#/$defs/authorityMatrix"
+        },
+        {
+          "$ref": "#/$defs/organizationScope"
         }
       ],
       "items": false,
-      "minItems": 5,
-      "maxItems": 5
+      "minItems": 6,
+      "maxItems": 6
     },
     "doesNotEstablish": {
       "type": "array",
@@ -222,6 +225,26 @@
             },
             "contentType": {
               "const": "text/mermaid"
+            }
+          }
+        }
+      ]
+    },
+    "organizationScope": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/artifactBase"
+        },
+        {
+          "properties": {
+            "role": {
+              "const": "organization_scope"
+            },
+            "path": {
+              "const": "registry/ecosystem/organization-scope.v1.json"
+            },
+            "contentType": {
+              "const": "application/json"
             }
           }
         }

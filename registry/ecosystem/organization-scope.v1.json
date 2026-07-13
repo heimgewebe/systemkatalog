@@ -1,0 +1,296 @@
+{
+  "schemaVersion": 1,
+  "kind": "system_catalog_organization_scope",
+  "updatedAt": "2026-07-13",
+  "source": {
+    "provider": "github",
+    "organization": "heimgewebe",
+    "observedAt": "2026-07-13T05:19:09Z",
+    "selection": {
+      "archived": false,
+      "fork": false
+    },
+    "repositoryCount": 34
+  },
+  "repositories": [
+    {
+      "name": "agent-control-surface",
+      "repository": "heimgewebe/agent-control-surface",
+      "visibility": "public",
+      "classification": "catalog",
+      "node": "repo:agent-control-surface",
+      "reason": "local manual control surface for Jules sessions and guarded step-by-step Git workflows"
+    },
+    {
+      "name": "aussensensor",
+      "repository": "heimgewebe/aussensensor",
+      "visibility": "public",
+      "classification": "catalog",
+      "node": "repo:aussensensor",
+      "reason": "Curated external signals and event feeds for Chronik"
+    },
+    {
+      "name": "bureau",
+      "repository": "heimgewebe/bureau",
+      "visibility": "public",
+      "classification": "catalog",
+      "node": "repo:bureau",
+      "reason": "task cadence, delegation, run reporting"
+    },
+    {
+      "name": "chronik",
+      "repository": "heimgewebe/chronik",
+      "visibility": "public",
+      "classification": "catalog",
+      "node": "repo:chronik",
+      "reason": "append-only event ledger and historical evidence axis"
+    },
+    {
+      "name": "commonworld",
+      "repository": "heimgewebe/commonworld",
+      "visibility": "public",
+      "classification": "catalog",
+      "node": "repo:commonworld",
+      "reason": "Interactive globe and commons-oriented world exploration"
+    },
+    {
+      "name": "contracts-mirror",
+      "repository": "heimgewebe/contracts-mirror",
+      "visibility": "public",
+      "classification": "catalog",
+      "node": "repo:contracts-mirror",
+      "reason": "Validated mirror and publication surface for canonical Metarepo contracts"
+    },
+    {
+      "name": "demo-repository",
+      "repository": "heimgewebe/demo-repository",
+      "visibility": "public",
+      "classification": "excluded",
+      "node": null,
+      "reason": "GitHub demonstration scaffold; it is not a Heimgewebe system, authority source or production component."
+    },
+    {
+      "name": "device-graph",
+      "repository": "heimgewebe/device-graph",
+      "visibility": "public",
+      "classification": "catalog",
+      "node": "repo:device-graph",
+      "reason": "infrastructure device graph; adjacent but not ecosystem-governance canon"
+    },
+    {
+      "name": "grabowski",
+      "repository": "heimgewebe/grabowski",
+      "visibility": "public",
+      "classification": "catalog",
+      "node": "repo:grabowski",
+      "reason": "operator execution, repo work, review gates"
+    },
+    {
+      "name": "hausKI",
+      "repository": "heimgewebe/hausKI",
+      "visibility": "public",
+      "classification": "catalog",
+      "node": "repo:hausKI",
+      "reason": "Local offline-first AI orchestration and policy-controlled memory"
+    },
+    {
+      "name": "hausKI-audio",
+      "repository": "heimgewebe/hausKI-audio",
+      "visibility": "public",
+      "classification": "catalog",
+      "node": "repo:hausKI-audio",
+      "reason": "Local audio playback, recording and automation"
+    },
+    {
+      "name": "heim-pc",
+      "repository": "heimgewebe/heim-pc",
+      "visibility": "private",
+      "classification": "catalog",
+      "node": "repo:heim-pc",
+      "reason": "Versioned local operator entry and host orientation"
+    },
+    {
+      "name": "heimgeist",
+      "repository": "heimgewebe/heimgeist",
+      "visibility": "public",
+      "classification": "catalog",
+      "node": "repo:heimgeist",
+      "reason": "System self-reflection and meta-agent experimentation"
+    },
+    {
+      "name": "heimlern",
+      "repository": "heimgewebe/heimlern",
+      "visibility": "public",
+      "classification": "catalog",
+      "node": "repo:heimlern",
+      "reason": "offline operator-learning and proposal generation"
+    },
+    {
+      "name": "heimserver",
+      "repository": "heimgewebe/heimserver",
+      "visibility": "private",
+      "classification": "catalog",
+      "node": "repo:heimserver",
+      "reason": "private operations and contract repository for the home-network service layer, edge gateway, DDNS and Weltgewebe infrastructure"
+    },
+    {
+      "name": "infra",
+      "repository": "heimgewebe/infra",
+      "visibility": "private",
+      "classification": "catalog",
+      "node": "repo:infra",
+      "reason": "host, network, cockpit and operational runbooks"
+    },
+    {
+      "name": "leitstand",
+      "repository": "heimgewebe/leitstand",
+      "visibility": "public",
+      "classification": "catalog",
+      "node": "repo:leitstand",
+      "reason": "read-only ecosystem observability and status projection"
+    },
+    {
+      "name": "leitwerk",
+      "repository": "heimgewebe/leitwerk",
+      "visibility": "public",
+      "classification": "catalog",
+      "node": "repo:leitwerk",
+      "reason": "retained normative coordination-contract reference from the pre-Bureau and pre-Grabowski control model"
+    },
+    {
+      "name": "lenskit",
+      "repository": "heimgewebe/lenskit",
+      "visibility": "public",
+      "classification": "catalog",
+      "node": "repo:lenskit",
+      "reason": "context view and citable repository briefs"
+    },
+    {
+      "name": "metarepo",
+      "repository": "heimgewebe/metarepo",
+      "visibility": "public",
+      "classification": "catalog",
+      "node": "repo:metarepo",
+      "reason": "Fleet membership, canonical shared contracts and repository templates"
+    },
+    {
+      "name": "mitschreiber",
+      "repository": "heimgewebe/mitschreiber",
+      "visibility": "public",
+      "classification": "catalog",
+      "node": "repo:mitschreiber",
+      "reason": "Privacy-first on-device context capture and redacted event production"
+    },
+    {
+      "name": "obsidian-bridge",
+      "repository": "heimgewebe/obsidian-bridge",
+      "visibility": "public",
+      "classification": "catalog",
+      "node": "repo:obsidian-bridge",
+      "reason": "deterministic CLI and artifact bridge for using Obsidian as a projection and observatory interface"
+    },
+    {
+      "name": "plexer",
+      "repository": "heimgewebe/plexer",
+      "visibility": "public",
+      "classification": "catalog",
+      "node": "repo:plexer",
+      "reason": "bounded event delivery and queueing gateway"
+    },
+    {
+      "name": "schauwerk",
+      "repository": "heimgewebe/schauwerk",
+      "visibility": "public",
+      "classification": "catalog",
+      "node": "repo:schauwerk",
+      "reason": "visual surface and projection layer"
+    },
+    {
+      "name": "semantAH",
+      "repository": "heimgewebe/semantAH",
+      "visibility": "public",
+      "classification": "catalog",
+      "node": "repo:semantAH",
+      "reason": "Semantic index, embeddings and knowledge-graph pipeline"
+    },
+    {
+      "name": "sichter",
+      "repository": "heimgewebe/sichter",
+      "visibility": "public",
+      "classification": "catalog",
+      "node": "repo:sichter",
+      "reason": "Code-review and pull-request automation prototype"
+    },
+    {
+      "name": "snippet-engine-control",
+      "repository": "heimgewebe/snippet-engine-control",
+      "visibility": "public",
+      "classification": "catalog",
+      "node": "repo:snippet-engine-control",
+      "reason": "engine-neutral contract, diagnostics and diffable export-planning layer for text-expansion systems"
+    },
+    {
+      "name": "steuerboard",
+      "repository": "heimgewebe/steuerboard",
+      "visibility": "public",
+      "classification": "catalog",
+      "node": "repo:steuerboard",
+      "reason": "read-only repo-state signal"
+    },
+    {
+      "name": "systemkatalog",
+      "repository": "heimgewebe/systemkatalog",
+      "visibility": "public",
+      "classification": "catalog",
+      "node": "repo:systemkatalog",
+      "reason": "app-independent catalog for system purposes, truth ownership, stable relations and entrypoints"
+    },
+    {
+      "name": "vault-gewebe",
+      "repository": "heimgewebe/vault-gewebe",
+      "visibility": "public",
+      "classification": "catalog",
+      "node": "repo:vault-gewebe",
+      "reason": "Versioned shared knowledge vault and design source material"
+    },
+    {
+      "name": "vault-privat",
+      "repository": "heimgewebe/vault-privat",
+      "visibility": "private",
+      "classification": "excluded",
+      "node": null,
+      "reason": "Private content repository; it contains personal and domain material rather than system implementation or canonical ecosystem semantics."
+    },
+    {
+      "name": "vibe-lab",
+      "repository": "heimgewebe/vibe-lab",
+      "visibility": "public",
+      "classification": "catalog",
+      "node": "repo:vibe-lab",
+      "reason": "method lab and evidence experiments"
+    },
+    {
+      "name": "weltgewebe",
+      "repository": "heimgewebe/weltgewebe",
+      "visibility": "public",
+      "classification": "catalog",
+      "node": "repo:weltgewebe",
+      "reason": "product and domain core"
+    },
+    {
+      "name": "wgx",
+      "repository": "heimgewebe/wgx",
+      "visibility": "public",
+      "classification": "catalog",
+      "node": "repo:wgx",
+      "reason": "Fleet CLI and reusable repository workflow engine"
+    }
+  ],
+  "doesNotEstablish": [
+    "repository_health",
+    "runtime_state",
+    "maintenance_activity",
+    "task_priority",
+    "merge_readiness"
+  ]
+}

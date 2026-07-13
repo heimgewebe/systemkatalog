@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "kind": "system_catalog_relations",
   "catalogRole": "canonical_stable_relations",
-  "updatedAt": "2026-07-12",
+  "updatedAt": "2026-07-13",
   "relationTypes": [
     "owns",
     "steers",
@@ -294,6 +294,41 @@
       "type": "operates_on",
       "stability": "stable",
       "meaning": "Commonworld product work is versioned and validated through repository, pull-request and CI state."
+    },
+    {
+      "from": "repo:agent-control-surface",
+      "to": "service:github",
+      "type": "operates_on",
+      "stability": "bounded",
+      "meaning": "The manual local control surface can prepare guarded Git work while GitHub remains primary state."
+    },
+    {
+      "from": "repo:heimserver",
+      "to": "repo:infra",
+      "type": "scope_boundary",
+      "stability": "related",
+      "meaning": "Heimserver retains the private service-layer and edge contracts; Infra remains the broader host and network runbook surface."
+    },
+    {
+      "from": "repo:leitwerk",
+      "to": "repo:bureau",
+      "type": "scope_boundary",
+      "stability": "related",
+      "meaning": "Leitwerk is retained as a normative reference; Bureau owns current task, claim and completion state."
+    },
+    {
+      "from": "repo:obsidian-bridge",
+      "to": "repo:vault-gewebe",
+      "type": "provides",
+      "stability": "bounded",
+      "meaning": "Obsidian Bridge projects machine artifacts into the vault interface without owning vault content."
+    },
+    {
+      "from": "repo:snippet-engine-control",
+      "to": "repo:heim-pc",
+      "type": "provides",
+      "stability": "bounded",
+      "meaning": "Snippet Engine Control provides contract-first diagnostics and export planning for the local interaction layer."
     }
   ]
 }

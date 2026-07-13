@@ -46,6 +46,7 @@ done
 
 echo "=== Catalog contracts ==="
 python3 scripts/validate_system_catalog.py
+python3 scripts/check_organization_scope.py
 python3 scripts/validate_ecosystem_map.py
 python3 scripts/render_system_catalog.py --check
 python3 scripts/render_ecosystem_registry_map.py --check

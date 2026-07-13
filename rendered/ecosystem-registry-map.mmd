@@ -10,6 +10,7 @@ flowchart TD
     end
 
     subgraph kind_repository[Repos und Organe]
+        repo_agent_control_surface["Agent Control Surface<br/>id: repo:agent-control-surface<br/>repository<br/>local manual control surface for Jules sessions and guarded step-by-step Git workflows"]
         repo_aussensensor["Außensensor<br/>id: repo:aussensensor<br/>repository<br/>Curated external signals and event feeds for Chronik"]
         repo_bureau["Bureau<br/>id: repo:bureau<br/>repository<br/>task cadence, delegation, run reporting"]
         repo_chronik["Chronik<br/>id: repo:chronik<br/>repository<br/>append-only event ledger and historical evidence axis"]
@@ -22,15 +23,19 @@ flowchart TD
         repo_heim_pc["heim-pc<br/>id: repo:heim-pc<br/>repository<br/>Versioned local operator entry and host orientation"]
         repo_heimgeist["Heimgeist<br/>id: repo:heimgeist<br/>repository<br/>System self-reflection and meta-agent experimentation"]
         repo_heimlern["heimlern<br/>id: repo:heimlern<br/>repository<br/>offline operator-learning and proposal generation"]
+        repo_heimserver["Heimserver<br/>id: repo:heimserver<br/>repository<br/>private operations and contract repository for the home-network service layer, edge gateway, DDNS and Weltgewebe infrastructure"]
         repo_infra["Infra<br/>id: repo:infra<br/>repository<br/>host, network, cockpit and operational runbooks"]
         repo_leitstand["Leitstand<br/>id: repo:leitstand<br/>repository<br/>read-only ecosystem observability and status projection"]
+        repo_leitwerk["Leitwerk<br/>id: repo:leitwerk<br/>repository<br/>retained normative coordination-contract reference from the pre-Bureau and pre-Grabowski control model"]
         repo_lenskit["Lenskit / RepoBrief implementation<br/>id: repo:lenskit<br/>repository<br/>context view and citable repository briefs"]
         repo_metarepo["Metarepo<br/>id: repo:metarepo<br/>repository<br/>Fleet membership, canonical shared contracts and repository templates"]
         repo_mitschreiber["Mitschreiber<br/>id: repo:mitschreiber<br/>repository<br/>Privacy-first on-device context capture and redacted event production"]
+        repo_obsidian_bridge["Obsidian Bridge<br/>id: repo:obsidian-bridge<br/>repository<br/>deterministic CLI and artifact bridge for using Obsidian as a projection and observatory interface"]
         repo_plexer["Plexer<br/>id: repo:plexer<br/>repository<br/>bounded event delivery and queueing gateway"]
         repo_schauwerk["Schauwerk<br/>id: repo:schauwerk<br/>repository<br/>visual surface and projection layer"]
         repo_semantAH["semantAH<br/>id: repo:semantAH<br/>repository<br/>Semantic index, embeddings and knowledge-graph pipeline"]
         repo_sichter["Sichter<br/>id: repo:sichter<br/>repository<br/>Code-review and pull-request automation prototype"]
+        repo_snippet_engine_control["Snippet Engine Control<br/>id: repo:snippet-engine-control<br/>repository<br/>engine-neutral contract, diagnostics and diffable export-planning layer for text-expansion systems"]
         repo_steuerboard["Steuerboard<br/>id: repo:steuerboard<br/>repository<br/>read-only repo-state signal"]
         repo_systemkatalog["Systemkatalog<br/>id: repo:systemkatalog<br/>repository<br/>app-independent catalog for system purposes, truth ownership, stable relations and entrypoints"]
         repo_vault_gewebe["Vault Gewebe<br/>id: repo:vault-gewebe<br/>repository<br/>Versioned shared knowledge vault and design source material"]
@@ -54,6 +59,7 @@ flowchart TD
 
     actor_alexander -->|steers / stable| repo_systemkatalog
     concept_repobrief -->|provides / stable| repo_systemkatalog
+    repo_agent_control_surface -->|operates_on / bounded| service_github
     repo_aussensensor -->|delivers_to / stable| repo_chronik
     repo_bureau -->|delegates_to / stable| repo_grabowski
     repo_bureau -->|provides / stable| repo_leitstand
@@ -70,16 +76,20 @@ flowchart TD
     repo_hausKI_audio -->|provides / related| repo_hausKI
     repo_heim_pc -->|observes / stable| artifact_ecosystem_map
     repo_heimgeist -->|observes / related| artifact_ecosystem_map
+    repo_heimserver -->|scope_boundary / related| repo_infra
     repo_leitstand -->|observes / stable| artifact_ecosystem_map
+    repo_leitwerk -->|scope_boundary / related| repo_bureau
     repo_lenskit -->|implements / stable| concept_repobrief
     repo_metarepo -->|provides / stable| repo_contracts_mirror
     repo_metarepo -->|provides / stable| repo_systemkatalog
     repo_mitschreiber -->|emits_to / stable| repo_chronik
     repo_mitschreiber -->|provides / bounded| repo_semantAH
+    repo_obsidian_bridge -->|provides / bounded| repo_vault_gewebe
     repo_plexer -->|delivers_to / stable| repo_chronik
     repo_schauwerk -->|renders / stable| artifact_ecosystem_map
     repo_semantAH -->|provides / stable| repo_hausKI
     repo_sichter -->|operates_on / bounded| service_github
+    repo_snippet_engine_control -->|provides / bounded| repo_heim_pc
     repo_steuerboard -->|observes / stable| repo_systemkatalog
     repo_systemkatalog -->|owns / stable| artifact_ecosystem_map
     repo_systemkatalog -->|provides / stable| repo_leitstand
