@@ -56,16 +56,24 @@ jobs:
       - name: Check Fleet coverage against Metarepo
         run: python3 scripts/check_fleet_coverage.py --fleet-file _fleet-authority/fleet/repos.yml
 
-      - name: Read public Heimgewebe repository inventory
+      - name: Mint read-only Heimgewebe inventory token
+        id: organization-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3
+        with:
+          app-id: ${{ secrets.HEIMGEWEBE_APP_ID }}
+          private-key: ${{ secrets.HEIMGEWEBE_APP_PRIVATE_KEY }}
+          owner: heimgewebe
+          permission-metadata: read
+
+      - name: Read complete Heimgewebe repository inventory
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ steps.organization-token.outputs.token }}
         run: |
           gh repo list heimgewebe --limit 200 \
             --json name,nameWithOwner,isArchived,isFork,visibility \
-            > "${RUNNER_TEMP}/heimgewebe-public-repositories.json"
+            > "${RUNNER_TEMP}/heimgewebe-repositories.json"
 
-      - name: Check public organization scope against GitHub
+      - name: Check complete organization scope against GitHub
         run: |
           python3 scripts/check_organization_scope.py \
-            --github-inventory "${RUNNER_TEMP}/heimgewebe-public-repositories.json" \
-            --visibility public
+            --github-inventory "${RUNNER_TEMP}/heimgewebe-repositories.json"
