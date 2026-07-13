@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "kind": "system_catalog_source_bindings",
   "catalogRepository": "heimgewebe/systemkatalog",
-  "observedAt": "2026-07-13T07:55:00+02:00",
+  "observedAt": "2026-07-13T12:20:18+02:00",
   "systems": [
     {
       "system": "actor:alexander",
@@ -476,16 +476,17 @@
       "system": "repo:heim-pc",
       "source": {
         "repository": "heimgewebe/heim-pc",
-        "commit": "redacted",
+        "commit": "a21fff5048a76b32d9ce5d8bf3e9df2f573c5906",
         "locator": {
-          "kind": "private_repository_metadata",
-          "contentSha256": "83fc908a0333c6c920c2e45f9776f84f82388614a42f836ed80c4fad14f58371"
+          "kind": "file",
+          "path": "README.md",
+          "contentSha256": "dcdf6e4808a46a1a2f602b9f33d71ee3428155484e2703ac6db435583c1d0f8b"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-13T07:55:00+02:00",
-      "method": "private_repository_metadata_projection",
-      "uncertainty": 0.25
+      "reviewedAt": "2026-07-13T12:20:18+02:00",
+      "method": "repository_primary_document",
+      "uncertainty": 0.05
     },
     {
       "system": "repo:vault-gewebe",

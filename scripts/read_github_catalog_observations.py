@@ -7,17 +7,61 @@ import argparse
 import hashlib
 import json
 import subprocess
+import time
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
+COMMAND_TIMEOUT_SECONDS = 20
+COMMAND_ATTEMPTS = 3
+
+
+def _error_text(value: str | bytes | None) -> str:
+    if value is None:
+        return ""
+    if isinstance(value, bytes):
+        return value.decode("utf-8", errors="replace").strip()
+    return value.strip()
+
+
+def _run_result(argv: list[str], *, text: bool) -> subprocess.CompletedProcess[Any]:
+    failures: list[str] = []
+    for attempt in range(1, COMMAND_ATTEMPTS + 1):
+        try:
+            result = subprocess.run(
+                argv,
+                text=text,
+                capture_output=True,
+                timeout=COMMAND_TIMEOUT_SECONDS,
+            )
+        except subprocess.TimeoutExpired:
+            failures.append(f"attempt {attempt}: timed out after {COMMAND_TIMEOUT_SECONDS}s")
+        else:
+            if result.returncode == 0:
+                return result
+            failures.append(
+                f"attempt {attempt}: exit {result.returncode}: {_error_text(result.stderr)}"
+            )
+        if attempt < COMMAND_ATTEMPTS:
+            time.sleep(attempt)
+    detail = "; ".join(failures)
+    raise RuntimeError(
+        f"command failed after {COMMAND_ATTEMPTS} attempts: {' '.join(argv)}: {detail}"
+    )
 
 
 def _run(argv: list[str]) -> str:
-    result = subprocess.run(argv, text=True, capture_output=True)
-    if result.returncode != 0:
-        raise RuntimeError(f"command failed ({result.returncode}): {' '.join(argv)}: {result.stderr.strip()}")
+    result = _run_result(argv, text=True)
+    if not isinstance(result.stdout, str):
+        raise RuntimeError(f"command returned non-text output: {' '.join(argv)}")
+    return result.stdout
+
+
+def _run_bytes(argv: list[str]) -> bytes:
+    result = _run_result(argv, text=False)
+    if not isinstance(result.stdout, bytes):
+        raise RuntimeError(f"command returned non-bytes output: {' '.join(argv)}")
     return result.stdout
 
 
@@ -66,13 +110,11 @@ def observe(root: Path, organization: str = "heimgewebe") -> dict[str, Any]:
             commit = _gh_json(f"repos/{repository}/commits/{default_branch}")["sha"]
         kind = locator["kind"]
         if kind == "file":
-            result = subprocess.run([
+            raw = _run_bytes([
                 "gh", "api", "-H", "Accept: application/vnd.github.raw+json",
                 f"repos/{repository}/contents/{locator['path']}?ref={commit}",
-            ], capture_output=True)
-            if result.returncode != 0:
-                continue
-            content_sha = _digest(result.stdout)
+            ])
+            content_sha = _digest(raw)
             observed_commit: str = commit
         elif kind == "repository_metadata":
             safe = {
