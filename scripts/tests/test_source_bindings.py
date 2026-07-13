@@ -13,7 +13,11 @@ SCRIPTS = ROOT / "scripts"
 if str(SCRIPTS) not in sys.path:
     sys.path.insert(0, str(SCRIPTS))
 
-from system_catalog_sources import _validate_local_source_bytes  # noqa: E402
+from system_catalog_sources import (  # noqa: E402
+    _validate_bound_relation_identity,
+    _validate_bound_system_identity,
+    _validate_local_source_bytes,
+)
 from validate_system_catalog import validate  # noqa: E402
 
 
@@ -90,6 +94,50 @@ class SourceBindingTests(unittest.TestCase):
             }
             with self.assertRaisesRegex(ValueError, "differs from the bound catalog bytes"):
                 _validate_local_source_bytes(target, source, "test source")
+
+    def test_json_pointer_must_identify_bound_system(self) -> None:
+        with self.assertRaisesRegex(ValueError, "does not identify the bound system"):
+            _validate_bound_system_identity({"id": "repo:other"}, "repo:systemkatalog", "system binding")
+
+    def test_json_pointer_must_identify_bound_relation(self) -> None:
+        expected = ("repo:systemkatalog", "repo:leitstand", "provides")
+        with self.assertRaisesRegex(ValueError, "does not identify the bound relation"):
+            _validate_bound_relation_identity(
+                {"from": "repo:other", "to": "repo:leitstand", "type": "provides"},
+                expected,
+                "relation binding",
+            )
+
+    def test_local_json_pointer_returns_bound_object(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            target = Path(directory) / "repo"
+            target.mkdir()
+            subprocess.run(["git", "init", "-q", "-b", "main"], cwd=target, check=True)
+            subprocess.run(["git", "config", "user.name", "Systemkatalog Test"], cwd=target, check=True)
+            subprocess.run(["git", "config", "user.email", "systemkatalog@example.invalid"], cwd=target, check=True)
+            payload = {"nodes": [{"id": "repo:first"}, {"id": "repo:second"}]}
+            raw = (json.dumps(payload, indent=2) + "\n").encode("utf-8")
+            path = target / "nodes.json"
+            path.write_bytes(raw)
+            subprocess.run(["git", "add", "nodes.json"], cwd=target, check=True)
+            subprocess.run(["git", "commit", "-q", "-m", "fixture"], cwd=target, check=True)
+            commit = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=target, text=True).strip()
+            import hashlib
+            source = {
+                "repository": "heimgewebe/systemkatalog",
+                "commit": commit,
+                "defaultBranch": "main",
+                "locator": {
+                    "kind": "json_pointer",
+                    "path": "nodes.json",
+                    "pointer": "/nodes/1",
+                    "contentSha256": hashlib.sha256(raw).hexdigest(),
+                },
+            }
+            self.assertEqual(
+                _validate_local_source_bytes(target, source, "test source"),
+                {"id": "repo:second"},
+            )
 
     def test_freshness_policy_cannot_enable_auto_merge(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

@@ -96,12 +96,48 @@ def _source(value: Any, label: str) -> dict[str, Any]:
     return value
 
 
-def _validate_local_source_bytes(root: Path, source: dict[str, Any], label: str) -> None:
+def _decode_json_pointer_token(token: str) -> str:
+    output: list[str] = []
+    index = 0
+    while index < len(token):
+        char = token[index]
+        if char != "~":
+            output.append(char)
+            index += 1
+            continue
+        if index + 1 >= len(token) or token[index + 1] not in {"0", "1"}:
+            raise ValueError("JSON pointer contains an invalid escape")
+        output.append("~" if token[index + 1] == "0" else "/")
+        index += 2
+    return "".join(output)
+
+
+def _resolve_json_pointer(document: Any, pointer: str, label: str) -> Any:
+    current = document
+    for raw_token in pointer.split("/")[1:]:
+        token = _decode_json_pointer_token(raw_token)
+        if isinstance(current, list):
+            if not token.isdigit() or (len(token) > 1 and token.startswith("0")):
+                raise ValueError(f"{label} array index is invalid")
+            index = int(token)
+            if index >= len(current):
+                raise ValueError(f"{label} array index is out of range")
+            current = current[index]
+        elif isinstance(current, dict):
+            if token not in current:
+                raise ValueError(f"{label} object key is missing")
+            current = current[token]
+        else:
+            raise ValueError(f"{label} traverses a scalar value")
+    return current
+
+
+def _validate_local_source_bytes(root: Path, source: dict[str, Any], label: str) -> Any | None:
     locator = source["locator"]
     if source["repository"] != "heimgewebe/systemkatalog" or source["commit"] == "redacted":
-        return
+        return None
     if locator["kind"] not in {"file", "json_pointer"}:
-        return
+        return None
     inside = subprocess.run(
         ["git", "rev-parse", "--is-inside-work-tree"],
         cwd=root,
@@ -109,7 +145,7 @@ def _validate_local_source_bytes(root: Path, source: dict[str, Any], label: str)
         capture_output=True,
     )
     if inside.returncode != 0:
-        return
+        return None
     result = subprocess.run(
         ["git", "show", f"{source['commit']}:{locator['path']}"],
         cwd=root,
@@ -120,6 +156,32 @@ def _validate_local_source_bytes(root: Path, source: dict[str, Any], label: str)
     digest = hashlib.sha256(result.stdout).hexdigest()
     if digest != locator["contentSha256"]:
         raise ValueError(f"{label} contentSha256 differs from the bound catalog bytes")
+    if locator["kind"] != "json_pointer":
+        return None
+    try:
+        document = json.loads(result.stdout)
+    except json.JSONDecodeError as exc:
+        raise ValueError(f"{label} bound JSON file is invalid") from exc
+    return _resolve_json_pointer(document, locator["pointer"], f"{label}.locator.pointer")
+
+
+def _validate_bound_system_identity(bound_value: Any, system_id: str, label: str) -> None:
+    if not isinstance(bound_value, dict) or bound_value.get("id") != system_id:
+        raise ValueError(f"{label} JSON pointer does not identify the bound system")
+
+
+def _validate_bound_relation_identity(
+    bound_value: Any,
+    relation: tuple[str, str, str],
+    label: str,
+) -> None:
+    bound_key = (
+        bound_value.get("from") if isinstance(bound_value, dict) else None,
+        bound_value.get("to") if isinstance(bound_value, dict) else None,
+        bound_value.get("type") if isinstance(bound_value, dict) else None,
+    )
+    if bound_key != relation:
+        raise ValueError(f"{label} JSON pointer does not identify the bound relation")
 
 
 def _review_fields(item: dict[str, Any], label: str) -> None:
@@ -157,7 +219,9 @@ def validate_source_bindings(root: Path, nodes: list[dict[str, Any]], edges: lis
         if system_id not in node_by_id or system_id in by_id:
             raise ValueError(f"{label} identity missing, unknown or duplicated")
         source = _source(item.get("source"), f"{label}.source")
-        _validate_local_source_bytes(root, source, f"{label}.source")
+        bound_value = _validate_local_source_bytes(root, source, f"{label}.source")
+        if source["locator"]["kind"] == "json_pointer" and bound_value is not None:
+            _validate_bound_system_identity(bound_value, system_id, label)
         node = node_by_id[system_id]
         if node["type"] == "repository":
             expected = "/".join(node["entrypoints"]["repository"].rstrip("/").split("/")[-2:])
@@ -188,7 +252,9 @@ def validate_source_bindings(root: Path, nodes: list[dict[str, Any]], edges: lis
         if key not in expected_relations or key in seen_relations:
             raise ValueError(f"{label} identity missing, unknown or duplicated")
         source = _source(item.get("source"), f"{label}.source")
-        _validate_local_source_bytes(root, source, f"{label}.source")
+        bound_value = _validate_local_source_bytes(root, source, f"{label}.source")
+        if source["locator"]["kind"] == "json_pointer" and bound_value is not None:
+            _validate_bound_relation_identity(bound_value, key, label)
         if source["repository"] != "heimgewebe/systemkatalog" or source["locator"]["kind"] != "json_pointer":
             raise ValueError(f"{label} must bind to the curated edge registry")
         _review_fields(item, label)
