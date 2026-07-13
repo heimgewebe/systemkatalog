@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import copy
 import json
 import shutil
 import sys
@@ -12,6 +13,7 @@ SCRIPTS = ROOT / "scripts"
 if str(SCRIPTS) not in sys.path:
     sys.path.insert(0, str(SCRIPTS))
 
+from system_catalog_sources import _validate_local_source_bytes  # noqa: E402
 from validate_system_catalog import validate  # noqa: E402
 
 
@@ -68,6 +70,14 @@ class SourceBindingTests(unittest.TestCase):
             path.write_text(json.dumps(data), encoding="utf-8")
             with self.assertRaisesRegex(ValueError, "defaultBranch"):
                 validate(target)
+
+    def test_local_catalog_binding_must_match_git_bytes(self) -> None:
+        bindings = json.loads((ROOT / "registry/ecosystem/source-bindings.v1.json").read_text(encoding="utf-8"))
+        original = next(item["source"] for item in bindings["systems"] if item["system"] == "repo:systemkatalog")
+        source = copy.deepcopy(original)
+        source["locator"]["contentSha256"] = "f" * 64
+        with self.assertRaisesRegex(ValueError, "differs from the bound catalog bytes"):
+            _validate_local_source_bytes(ROOT, source, "test source")
 
     def test_freshness_policy_cannot_enable_auto_merge(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

@@ -3,8 +3,10 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 import re
+import subprocess
 from datetime import datetime
 from pathlib import Path
 from typing import Any
@@ -94,6 +96,32 @@ def _source(value: Any, label: str) -> dict[str, Any]:
     return value
 
 
+def _validate_local_source_bytes(root: Path, source: dict[str, Any], label: str) -> None:
+    locator = source["locator"]
+    if source["repository"] != "heimgewebe/systemkatalog" or source["commit"] == "redacted":
+        return
+    if locator["kind"] not in {"file", "json_pointer"}:
+        return
+    inside = subprocess.run(
+        ["git", "rev-parse", "--is-inside-work-tree"],
+        cwd=root,
+        text=True,
+        capture_output=True,
+    )
+    if inside.returncode != 0:
+        return
+    result = subprocess.run(
+        ["git", "show", f"{source['commit']}:{locator['path']}"],
+        cwd=root,
+        capture_output=True,
+    )
+    if result.returncode != 0:
+        raise ValueError(f"{label} cannot resolve the bound catalog commit and path")
+    digest = hashlib.sha256(result.stdout).hexdigest()
+    if digest != locator["contentSha256"]:
+        raise ValueError(f"{label} contentSha256 differs from the bound catalog bytes")
+
+
 def _review_fields(item: dict[str, Any], label: str) -> None:
     _timestamp(item.get("reviewedAt"), f"{label}.reviewedAt")
     if item.get("method") not in METHODS:
@@ -129,6 +157,7 @@ def validate_source_bindings(root: Path, nodes: list[dict[str, Any]], edges: lis
         if system_id not in node_by_id or system_id in by_id:
             raise ValueError(f"{label} identity missing, unknown or duplicated")
         source = _source(item.get("source"), f"{label}.source")
+        _validate_local_source_bytes(root, source, f"{label}.source")
         node = node_by_id[system_id]
         if node["type"] == "repository":
             expected = "/".join(node["entrypoints"]["repository"].rstrip("/").split("/")[-2:])
@@ -159,6 +188,7 @@ def validate_source_bindings(root: Path, nodes: list[dict[str, Any]], edges: lis
         if key not in expected_relations or key in seen_relations:
             raise ValueError(f"{label} identity missing, unknown or duplicated")
         source = _source(item.get("source"), f"{label}.source")
+        _validate_local_source_bytes(root, source, f"{label}.source")
         if source["repository"] != "heimgewebe/systemkatalog" or source["locator"]["kind"] != "json_pointer":
             raise ValueError(f"{label} must bind to the curated edge registry")
         _review_fields(item, label)

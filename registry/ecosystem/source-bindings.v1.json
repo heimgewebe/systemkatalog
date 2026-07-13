@@ -42,17 +42,17 @@
       "system": "repo:systemkatalog",
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "3ead205d056ebfb9384ab0811c87b1a4d2214804",
+        "commit": "de1a710168eeec5eed557ec082b4144bd5b5ed30",
         "locator": {
           "kind": "file",
           "path": "README.md",
-          "contentSha256": "5fd79e6a9729daab9f403566f2329f38f3f4bcc3cb9aaf647770b80996bd5d40"
+          "contentSha256": "68b02fef7457bc3f4b8ebf4e35ed4d6b32e58a42af9e4eb1afc57d619bfffecd"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-13T07:55:00+02:00",
+      "reviewedAt": "2026-07-13T08:40:00+02:00",
       "method": "repository_primary_document",
-      "uncertainty": 0.08
+      "uncertainty": 0.05
     },
     {
       "system": "repo:bureau",
