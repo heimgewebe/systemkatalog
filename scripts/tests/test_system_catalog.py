@@ -55,6 +55,14 @@ class SystemCatalogTests(unittest.TestCase):
         self.assertIn("`heimgewebe/metarepo`", actual)
         self.assertIn("`vault-privat`", actual)
 
+    def test_entrypoint_href_uses_raw_target_not_markdown_escape(self) -> None:
+        from render_system_catalog import _entrypoints_cell
+
+        rendered = _entrypoints_cell({"docs": "docs/a|b.md"})
+        self.assertIn("[docs/a\|b.md]", rendered)
+        self.assertIn("(../docs/a%7Cb.md)", rendered)
+        self.assertNotIn("(../docs/a\|b.md)", rendered)
+
     def test_canonical_nodes_implement_the_full_system_contract(self) -> None:
         data = json.loads((ROOT / "registry/ecosystem/nodes.json").read_text(encoding="utf-8"))
         required = {

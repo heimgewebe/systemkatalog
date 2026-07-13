@@ -5,6 +5,7 @@ import argparse
 import json
 from pathlib import Path
 from typing import Any
+from urllib.parse import quote
 
 from system_catalog_fleet import validate_coverage
 
@@ -40,9 +41,13 @@ def _entrypoints_cell(value: Any) -> str:
         return "—"
     rendered: list[str] = []
     for label, target in sorted(value.items(), key=lambda item: str(item[0]).casefold()):
-        target_text = _cell(target)
+        raw_target = str(target)
+        href = quote(
+            _render_href(raw_target),
+            safe="/:#?&=@[]!$'*,;%-._~",
+        )
         rendered.append(
-            f"`{_cell(label)}`: [{target_text}]({_cell(_render_href(target_text))})"
+            f"`{_cell(label)}`: [{_cell(raw_target)}]({href})"
         )
     return "<br>".join(rendered)
 

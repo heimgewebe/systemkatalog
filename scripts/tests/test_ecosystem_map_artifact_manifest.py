@@ -156,6 +156,15 @@ class EcosystemMapManifestTests(unittest.TestCase):
             with self.assertRaisesRegex(EcosystemMapManifestError, "artifact contract mismatch"):
                 validate_manifest(manifest)
 
+    def test_non_hex_artifact_digest_fails_closed(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            commit = initialize_repository(root)
+            manifest = build_manifest(root, source_commit=commit)
+            manifest["artifacts"][0]["sha256"] = "z" * 64
+            with self.assertRaisesRegex(EcosystemMapManifestError, "artifact digest invalid"):
+                validate_manifest(manifest)
+
     def test_output_escape_fails_closed(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

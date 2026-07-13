@@ -142,6 +142,12 @@ def _is_sha(value: object) -> bool:
     return isinstance(value, str) and len(value) == 40 and all(ch in "0123456789abcdef" for ch in value)
 
 
+def _is_sha256(value: object) -> bool:
+    return isinstance(value, str) and len(value) == 64 and all(
+        ch in "0123456789abcdef" for ch in value
+    )
+
+
 def _artifact(root: Path, spec: dict[str, str]) -> dict[str, Any]:
     path = _safe_path(root, spec["path"], spec["role"])
     if not path.is_file() or path.stat().st_size < 1:
@@ -218,7 +224,7 @@ def validate_manifest(manifest: dict[str, Any]) -> None:
             raise EcosystemMapManifestError(f"artifact contract mismatch: {spec['role']}")
         if not isinstance(item["bytes"], int) or item["bytes"] < 1:
             raise EcosystemMapManifestError(f"artifact byte count invalid: {spec['role']}")
-        if not isinstance(item["sha256"], str) or len(item["sha256"]) != 64:
+        if not _is_sha256(item["sha256"]):
             raise EcosystemMapManifestError(f"artifact digest invalid: {spec['role']}")
     if tuple(manifest["doesNotEstablish"]) != DOES_NOT_ESTABLISH:
         raise EcosystemMapManifestError("manifest non-claims mismatch")
