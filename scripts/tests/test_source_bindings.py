@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-import copy
 import json
 import shutil
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -72,12 +72,24 @@ class SourceBindingTests(unittest.TestCase):
                 validate(target)
 
     def test_local_catalog_binding_must_match_git_bytes(self) -> None:
-        bindings = json.loads((ROOT / "registry/ecosystem/source-bindings.v1.json").read_text(encoding="utf-8"))
-        original = next(item["source"] for item in bindings["systems"] if item["system"] == "repo:systemkatalog")
-        source = copy.deepcopy(original)
-        source["locator"]["contentSha256"] = "f" * 64
-        with self.assertRaisesRegex(ValueError, "differs from the bound catalog bytes"):
-            _validate_local_source_bytes(ROOT, source, "test source")
+        with tempfile.TemporaryDirectory() as directory:
+            target = Path(directory) / "repo"
+            target.mkdir()
+            subprocess.run(["git", "init", "-q", "-b", "main"], cwd=target, check=True)
+            subprocess.run(["git", "config", "user.name", "Systemkatalog Test"], cwd=target, check=True)
+            subprocess.run(["git", "config", "user.email", "systemkatalog@example.invalid"], cwd=target, check=True)
+            (target / "README.md").write_text("bound bytes\n", encoding="utf-8")
+            subprocess.run(["git", "add", "README.md"], cwd=target, check=True)
+            subprocess.run(["git", "commit", "-q", "-m", "fixture"], cwd=target, check=True)
+            commit = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=target, text=True).strip()
+            source = {
+                "repository": "heimgewebe/systemkatalog",
+                "commit": commit,
+                "defaultBranch": "main",
+                "locator": {"kind": "file", "path": "README.md", "contentSha256": "f" * 64},
+            }
+            with self.assertRaisesRegex(ValueError, "differs from the bound catalog bytes"):
+                _validate_local_source_bytes(target, source, "test source")
 
     def test_freshness_policy_cannot_enable_auto_merge(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
