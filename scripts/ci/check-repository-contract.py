@@ -13,7 +13,7 @@ LEGACY_ROOTS = {
     "weltgewebe", "werkstatt", "labor", "betrieb",
 }
 LEGACY_MARKERS = {".cabinet", ".home", ".agents", ".global-agents", ".jobs", "Cabinet-Modell.md"}
-LEGACY_RUNTIME_PARTS = {".agents", ".global-agents", ".cabinet-state"}
+LEGACY_RUNTIME_PARTS = {".agents", ".global-agents", ".cabinet", ".cabinet-state"}
 LEGACY_IGNORE_MARKERS = (".cabinet", ".agents", ".global-agents")
 REQUIRED_STATIC_SURFACES = {
     "README.md",
@@ -112,8 +112,6 @@ def check_layout_and_forbidden_paths(tree: dict[str, dict[str, str]]) -> None:
             errors.append(f"database file: {path}")
         elif LEGACY_RUNTIME_PARTS.intersection(parts):
             errors.append(f"legacy agent/runtime state: {path}")
-        elif basename == ".cabinet":
-            errors.append(f"legacy Cabinet marker: {path}")
         elif basename in {".env", ".cabinet.env", "runtime.env"} or basename.startswith(".env."):
             errors.append(f"env file: {path}")
         elif basename.endswith((".pem", ".key")):
@@ -122,7 +120,7 @@ def check_layout_and_forbidden_paths(tree: dict[str, dict[str, str]]) -> None:
         fail("forbidden tracked path:\n  " + "\n  ".join(errors))
 
 
-def check_gitignore_text(text: str) -> None:
+def check_gitignore_text(text: str, *, source: str = ".gitignore") -> None:
     patterns = [
         line.strip()
         for line in text.splitlines()
@@ -136,9 +134,19 @@ def check_gitignore_text(text: str) -> None:
     )
     if stale:
         fail(
-            "legacy runtime path must remain visible instead of ignored: "
+            f"legacy runtime path must remain visible instead of ignored in {source}: "
             + ", ".join(stale)
         )
+
+
+def active_gitignore_paths(tree: dict[str, dict[str, str]]) -> list[str]:
+    return sorted(
+        path
+        for path, entry in tree.items()
+        if active(path)
+        and entry["type"] == "blob"
+        and path.rsplit("/", 1)[-1] == ".gitignore"
+    )
 
 
 def check_static_surface(tree: dict[str, dict[str, str]], repo: Path, treeish: str) -> None:
@@ -155,7 +163,11 @@ def check_static_surface(tree: dict[str, dict[str, str]], repo: Path, treeish: s
     if runtime_sources:
         fail("retired Systemkatalog runtime source still tracked:\n  " + "\n  ".join(runtime_sources))
 
-    check_gitignore_text(git_text(repo, treeish, ".gitignore"))
+    gitignore_paths = active_gitignore_paths(tree)
+    if ".gitignore" not in gitignore_paths:
+        fail("root .gitignore missing")
+    for path in gitignore_paths:
+        check_gitignore_text(git_text(repo, treeish, path), source=path)
 
     policy = json.loads(git_text(repo, treeish, "policy/system-catalog.v1.json"))
     if "runtimeProjection" in policy:

@@ -23,6 +23,26 @@ class RepositoryContractTests(unittest.TestCase):
         with self.assertRaisesRegex(SystemExit, "must remain visible"):
             MODULE.check_gitignore_text(".cabinet.db\n.cabinet-state/\n")
 
+    def test_nested_cabinet_directory_is_forbidden(self) -> None:
+        tree = {
+            "docs/archive/cabinet-era/README.md": {"type": "blob"},
+            "foo/.cabinet/state.txt": {"type": "blob"},
+        }
+        with self.assertRaisesRegex(SystemExit, "legacy agent/runtime state"):
+            MODULE.check_layout_and_forbidden_paths(tree)
+
+    def test_all_active_nested_gitignore_files_are_discovered(self) -> None:
+        tree = {
+            ".gitignore": {"type": "blob"},
+            "docs/.gitignore": {"type": "blob"},
+            "docs/archive/cabinet-era/.gitignore": {"type": "blob"},
+            "README.md": {"type": "blob"},
+        }
+        self.assertEqual(
+            MODULE.active_gitignore_paths(tree),
+            [".gitignore", "docs/.gitignore"],
+        )
+
     def test_agent_runtime_patterns_may_not_be_hidden(self) -> None:
         with self.assertRaisesRegex(SystemExit, "must remain visible"):
             MODULE.check_gitignore_text("**/.agents/.runtime/\n.global-agents/\n")
