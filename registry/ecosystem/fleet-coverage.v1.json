@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "kind": "system_catalog_fleet_coverage",
-  "updatedAt": "2026-07-12",
+  "updatedAt": "2026-07-13",
   "membershipAuthority": {
     "repository": "heimgewebe/metarepo",
     "path": "fleet/repos.yml",
@@ -13,6 +13,12 @@
     "scope": "purpose_relations_authority_and_entrypoints"
   },
   "repositories": [
+    {
+      "node": "repo:agent-control-surface",
+      "repository": "heimgewebe/agent-control-surface",
+      "entrypoint": "https://github.com/heimgewebe/agent-control-surface",
+      "membership": "catalog-only"
+    },
     {
       "node": "repo:aussensensor",
       "repository": "heimgewebe/aussensensor",
@@ -86,6 +92,12 @@
       "membership": "fleet"
     },
     {
+      "node": "repo:heimserver",
+      "repository": "heimgewebe/heimserver",
+      "entrypoint": "https://github.com/heimgewebe/heimserver",
+      "membership": "catalog-only"
+    },
+    {
       "node": "repo:infra",
       "repository": "heimgewebe/infra",
       "entrypoint": "https://github.com/heimgewebe/infra",
@@ -96,6 +108,12 @@
       "repository": "heimgewebe/leitstand",
       "entrypoint": "https://github.com/heimgewebe/leitstand",
       "membership": "fleet"
+    },
+    {
+      "node": "repo:leitwerk",
+      "repository": "heimgewebe/leitwerk",
+      "entrypoint": "https://github.com/heimgewebe/leitwerk",
+      "membership": "catalog-only"
     },
     {
       "node": "repo:lenskit",
@@ -114,6 +132,12 @@
       "repository": "heimgewebe/mitschreiber",
       "entrypoint": "https://github.com/heimgewebe/mitschreiber",
       "membership": "fleet"
+    },
+    {
+      "node": "repo:obsidian-bridge",
+      "repository": "heimgewebe/obsidian-bridge",
+      "entrypoint": "https://github.com/heimgewebe/obsidian-bridge",
+      "membership": "catalog-only"
     },
     {
       "node": "repo:plexer",
@@ -138,6 +162,12 @@
       "repository": "heimgewebe/sichter",
       "entrypoint": "https://github.com/heimgewebe/sichter",
       "membership": "fleet"
+    },
+    {
+      "node": "repo:snippet-engine-control",
+      "repository": "heimgewebe/snippet-engine-control",
+      "entrypoint": "https://github.com/heimgewebe/snippet-engine-control",
+      "membership": "catalog-only"
     },
     {
       "node": "repo:steuerboard",

@@ -514,6 +514,97 @@
       "entrypoints": {
         "repository": "https://github.com/heimgewebe/commonworld"
       }
+    },
+    {
+      "id": "repo:agent-control-surface",
+      "name": "Agent Control Surface",
+      "type": "repository",
+      "purpose": "local manual control surface for Jules sessions and guarded step-by-step Git workflows",
+      "notResponsibleFor": [
+        "autonomous task dispatch",
+        "task priority",
+        "merge authorization",
+        "remote access security"
+      ],
+      "truthOwnership": [],
+      "entrypoints": {
+        "repository": "https://github.com/heimgewebe/agent-control-surface",
+        "readme": "https://github.com/heimgewebe/agent-control-surface/blob/main/README.md",
+        "runbook": "https://github.com/heimgewebe/agent-control-surface/blob/main/RUNBOOK.md"
+      }
+    },
+    {
+      "id": "repo:heimserver",
+      "name": "Heimserver",
+      "type": "repository",
+      "purpose": "private operations and contract repository for the home-network service layer, edge gateway, DDNS and Weltgewebe infrastructure",
+      "notResponsibleFor": [
+        "runtime health claims without live checks",
+        "task state",
+        "ecosystem semantics",
+        "secret storage in Git"
+      ],
+      "truthOwnership": [],
+      "entrypoints": {
+        "repository": "https://github.com/heimgewebe/heimserver",
+        "readme": "https://github.com/heimgewebe/heimserver/blob/main/README.md",
+        "agentEntry": "https://github.com/heimgewebe/heimserver/blob/main/AGENTS.md",
+        "systemMap": "https://github.com/heimgewebe/heimserver/blob/main/SYSTEM_MAP.md"
+      }
+    },
+    {
+      "id": "repo:leitwerk",
+      "name": "Leitwerk",
+      "type": "repository",
+      "purpose": "retained normative coordination-contract reference from the pre-Bureau and pre-Grabowski control model",
+      "notResponsibleFor": [
+        "current task or claim state",
+        "runtime execution",
+        "merge authorization",
+        "agent dispatch"
+      ],
+      "truthOwnership": [],
+      "entrypoints": {
+        "repository": "https://github.com/heimgewebe/leitwerk",
+        "readme": "https://github.com/heimgewebe/leitwerk/blob/main/README.md",
+        "roleBoundary": "https://github.com/heimgewebe/leitwerk/blob/main/docs/leitwerk.md"
+      }
+    },
+    {
+      "id": "repo:obsidian-bridge",
+      "name": "Obsidian Bridge",
+      "type": "repository",
+      "purpose": "deterministic CLI and artifact bridge for using Obsidian as a projection and observatory interface",
+      "notResponsibleFor": [
+        "vault content truth",
+        "personal notes",
+        "task state",
+        "ecosystem semantics"
+      ],
+      "truthOwnership": [],
+      "entrypoints": {
+        "repository": "https://github.com/heimgewebe/obsidian-bridge",
+        "readme": "https://github.com/heimgewebe/obsidian-bridge/blob/main/README.md",
+        "contracts": "https://github.com/heimgewebe/obsidian-bridge/tree/main/contracts"
+      }
+    },
+    {
+      "id": "repo:snippet-engine-control",
+      "name": "Snippet Engine Control",
+      "type": "repository",
+      "purpose": "engine-neutral contract, diagnostics and diffable export-planning layer for text-expansion systems",
+      "notResponsibleFor": [
+        "the text-expansion runtime itself",
+        "automatic writes without explicit apply",
+        "task state",
+        "ecosystem semantics"
+      ],
+      "truthOwnership": [],
+      "entrypoints": {
+        "repository": "https://github.com/heimgewebe/snippet-engine-control",
+        "readme": "https://github.com/heimgewebe/snippet-engine-control/blob/main/README.md",
+        "contracts": "https://github.com/heimgewebe/snippet-engine-control/tree/main/contracts"
+      }
     }
   ]
 }

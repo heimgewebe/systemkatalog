@@ -25,12 +25,15 @@ class SystemCatalogTests(unittest.TestCase):
     def test_repository_catalog_is_valid_and_roomless(self) -> None:
         result = validate(ROOT)
         self.assertEqual(result["status"], "valid")
-        self.assertEqual(result["registrySystems"], 32)
-        self.assertEqual(result["registryRelations"], 38)
+        self.assertEqual(result["registrySystems"], 37)
+        self.assertEqual(result["registryRelations"], 43)
         self.assertEqual(result["authorityDomains"], 16)
-        self.assertEqual(result["catalogRepositories"], 27)
+        self.assertEqual(result["catalogRepositories"], 32)
         self.assertEqual(result["fleetRepositories"], 18)
         self.assertEqual(result["fleetExclusions"], 1)
+        self.assertEqual(result["organizationRepositories"], 34)
+        self.assertEqual(result["organizationCatalogRepositories"], 32)
+        self.assertEqual(result["organizationExclusions"], 2)
         self.assertEqual(result["activeLegacyRooms"], 0)
         for room in (
             "bestand",
@@ -54,6 +57,8 @@ class SystemCatalogTests(unittest.TestCase):
         self.assertIn("## Repository-Abdeckung", actual)
         self.assertIn("`heimgewebe/metarepo`", actual)
         self.assertIn("`vault-privat`", actual)
+        self.assertIn("`heimgewebe/demo-repository`", actual)
+        self.assertIn("## Organisationsumfang", actual)
 
     def test_entrypoint_href_uses_raw_target_not_markdown_escape(self) -> None:
         from render_system_catalog import _entrypoints_cell
@@ -69,7 +74,7 @@ class SystemCatalogTests(unittest.TestCase):
             "id", "name", "type", "purpose",
             "notResponsibleFor", "truthOwnership", "entrypoints",
         }
-        self.assertEqual(len(data["nodes"]), 32)
+        self.assertEqual(len(data["nodes"]), 37)
         for node in data["nodes"]:
             self.assertEqual(set(node), required)
             self.assertTrue(node["notResponsibleFor"])

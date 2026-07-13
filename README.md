@@ -60,6 +60,8 @@ Die frühere Cabinet-Raumstruktur liegt ausschließlich unter `docs/archive/cabi
 
 Die Fleet-Mitgliedschaft selbst gehört Metarepo (`fleet/repos.yml`). Der Systemkatalog gleicht diese Quelle ab, übernimmt daraus aber weder Zweck noch Architektursemantik. Jedes Fleet-Repository muss katalogisiert sein; Quellausschlüsse wie `fleet: false` müssen ausdrücklich dokumentiert bleiben.
 
+Der vollständige Organisationsumfang steht separat in `registry/ecosystem/organization-scope.v1.json`. Dort ist jedes aktive, nicht geforkte Heimgewebe-Repository entweder als Katalogsystem oder als begründeter Ausschluss klassifiziert. Der Snapshot umfasst 34 Repositories: 32 Katalogsysteme sowie die Ausschlüsse `demo-repository` und `vault-privat`. CI mintet dafür kurzlebig ein ausschließlich lesendes Heimgewebe-App-Token und gleicht den vollständigen Umfang einschließlich privater Repository-Metadaten live gegen GitHub ab. Es werden keine privaten Inhalte in den öffentlichen Katalog übernommen.
+
 Konkrete Coding-Agenten sind keine stabilen Katalogsysteme. Die dauerhafte Zuständigkeit für Agent-Auswahl und Rollenrouting liegt bei Grabowski und wird als Authority-Domäne `agent_routing` referenziert.
 
 ## Bereitstellung
@@ -99,6 +101,8 @@ git commit
 ./scripts/ci/validate-repository.sh
 python3 -m unittest discover -s scripts/tests -p 'test_*.py'
 python3 scripts/check_fleet_coverage.py --fleet-file /pfad/zu/metarepo/fleet/repos.yml
+python3 scripts/check_organization_scope.py
+python3 scripts/check_organization_scope.py --github-inventory /pfad/zur/github-inventory.json
 ```
 
 Ein grüner Lauf belegt Struktur- und Vertragskonsistenz. Er belegt nicht automatisch Runtime-Korrektheit, fachliche Vollständigkeit oder Merge-Reife.

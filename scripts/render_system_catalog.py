@@ -8,6 +8,7 @@ from typing import Any
 from urllib.parse import quote
 
 from system_catalog_fleet import validate_coverage
+from system_catalog_scope import validate_scope
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_OUTPUT = Path("rendered/system-catalog.md")
@@ -74,6 +75,7 @@ def render_text(root: Path = ROOT) -> str:
     repository_nodes = {item["id"] for item in nodes if item.get("type") == "repository"}
     fleet_coverage = validate_coverage(root, repository_nodes)
     repository_refs = {item["node"]: item for item in fleet_coverage["repositories"]}
+    organization_scope = validate_scope(root, repository_nodes, fleet_coverage)
 
     lines = [
         "# Systemkatalog",
@@ -109,9 +111,24 @@ def render_text(root: Path = ROOT) -> str:
             f"| {_cell(node.get('name'))} | `{_cell(reference['repository'])}` | "
             f"`{_cell(reference['membership'])}` | [{entrypoint}]({entrypoint}) |"
         )
-    lines.extend(["", "Explizit außerhalb der Fleet:", ""])
+    lines.extend(["", "Explizit außerhalb der Fleet-Quelle:", ""])
     for item in sorted(fleet_coverage["sourceExclusions"], key=lambda value: str(value.get("name", ""))):
         lines.append(f"- `{_cell(item.get('name'))}` — {_cell(item.get('reason'))}")
+
+    organization_rows = organization_scope["repositories"]
+    catalog_count = sum(item["classification"] == "catalog" for item in organization_rows)
+    excluded = [item for item in organization_rows if item["classification"] == "excluded"]
+    lines.extend([
+        "", "## Organisationsumfang", "",
+        f"Der GitHub-Snapshot umfasst {len(organization_rows)} aktive, nicht geforkte Repositories. "
+        f"Davon sind {catalog_count} als Systeme katalogisiert und {len(excluded)} begründet ausgeschlossen.",
+        "", "Begründete Ausschlüsse:", "",
+    ])
+    for item in excluded:
+        lines.append(
+            f"- `{_cell(item['repository'])}` (`{_cell(item['visibility'])}`) — "
+            f"{_cell(item['reason'])}"
+        )
 
     lines.extend(["", "## Wahrheitszuständigkeiten", "", "| Bereich | Primärquelle | Nicht-autoritative Projektionen |", "|---|---|---|"])
     for item in sorted(authorities, key=lambda value: str(value.get("domain", ""))):
