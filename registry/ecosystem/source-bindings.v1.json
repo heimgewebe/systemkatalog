@@ -106,17 +106,17 @@
       "system": "repo:lenskit",
       "source": {
         "repository": "heimgewebe/lenskit",
-        "commit": "456d37bd142349bc0c04925d87934eefbbc546ac",
+        "commit": "a3dcc4e954f3ea60842cb366b499659f40938e0b",
         "locator": {
           "kind": "file",
           "path": "README.md",
-          "contentSha256": "9b661027c5c17d1efa9e444c04bd3b4ebf300a236f916c29bb4cb38ec5ab73d7"
+          "contentSha256": "0a6158cf4215322a5cf5cc1b0c04147685f985736da33283c251f7992d53c481"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-13T07:55:00+02:00",
+      "reviewedAt": "2026-07-13T07:36:46.917877Z",
       "method": "repository_primary_document",
-      "uncertainty": 0.08
+      "uncertainty": 0.04
     },
     {
       "system": "concept:repobrief",

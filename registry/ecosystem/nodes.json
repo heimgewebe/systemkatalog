@@ -107,7 +107,7 @@
       "id": "repo:lenskit",
       "name": "Lenskit / RepoBrief implementation",
       "type": "repository",
-      "purpose": "context view and citable repository briefs",
+      "purpose": "context views, citable repository briefs and read-only agent context serving",
       "notResponsibleFor": [
         "repository operational state",
         "task priority",
@@ -117,7 +117,8 @@
         "repository_context_citations"
       ],
       "entrypoints": {
-        "repository": "https://github.com/heimgewebe/lenskit"
+        "repository": "https://github.com/heimgewebe/lenskit",
+        "mcpServer": "https://github.com/heimgewebe/lenskit/blob/main/docs/usage/repobrief-mcp-stdio.md"
       }
     },
     {
