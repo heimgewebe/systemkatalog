@@ -25,6 +25,7 @@ jobs:
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           persist-credentials: false
+          fetch-depth: 0
 
       - name: Setup Python
         uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
@@ -37,7 +38,7 @@ jobs:
       - name: Check generated Mermaid projection
         run: python3 scripts/render_ecosystem_registry_map.py --check
 
-      - name: Check read-only map manifest
+      - name: Verify published read-only map manifest
         run: python3 scripts/write_ecosystem_map_artifact_manifest.py --check
 
       - name: Test map projection and manifest

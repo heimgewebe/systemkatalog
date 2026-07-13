@@ -11,14 +11,15 @@ if [[ -n "$(git status --porcelain=v1 --untracked-files=all)" ]]; then
   echo "FAIL: Working tree is not clean; commit or stash changes before repository validation."
   exit 1
 fi
-SOURCE_COMMIT="$(git rev-parse HEAD)"
-
 echo "=== Git whitespace ==="
 EMPTY_TREE="$(git hash-object -t tree /dev/null)"
 git diff --check "$EMPTY_TREE" HEAD
 
 echo "=== Tracked repository contract ==="
 python3 scripts/ci/check-repository-contract.py --repo-root "$REPO_ROOT" --tree-ish HEAD
+
+echo "=== Published consumer handoff ==="
+python3 scripts/write_ecosystem_map_artifact_manifest.py --check
 
 SNAPSHOT_ROOT="$(mktemp -d)"
 trap 'rm -rf -- "$SNAPSHOT_ROOT"' EXIT
@@ -48,7 +49,6 @@ python3 scripts/validate_system_catalog.py
 python3 scripts/validate_ecosystem_map.py
 python3 scripts/render_system_catalog.py --check
 python3 scripts/render_ecosystem_registry_map.py --check
-python3 scripts/write_ecosystem_map_artifact_manifest.py --check --source-commit "$SOURCE_COMMIT"
 
 echo "=== Unit tests ==="
 python3 -m unittest discover -s scripts/tests -p 'test_*.py'

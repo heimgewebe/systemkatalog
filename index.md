@@ -3,6 +3,7 @@
 Dies ist der kurze Einstieg in den read-only Systemkatalog.
 
 - [Katalog lesen](rendered/system-catalog.md)
+- [Veröffentlichtes Kartenmanifest](rendered/ecosystem-map-artifact-manifest.json)
 - [Systeme](registry/ecosystem/nodes.json)
 - [Beziehungen](registry/ecosystem/edges.json)
 - [Wahrheitszuständigkeiten](registry/ecosystem/authority-matrix.v1.json)

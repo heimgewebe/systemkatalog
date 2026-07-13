@@ -30,6 +30,7 @@
     "registry/ecosystem/fleet-coverage.v1.json",
     "rendered/system-catalog.md",
     "rendered/ecosystem-registry-map.mmd",
+    "rendered/ecosystem-map-artifact-manifest.json",
     "catalog/ecosystem-map-artifact-manifest.schema.v1.json"
   ],
   "archiveBoundary": {
@@ -146,5 +147,6 @@
     "previousRepositoryRenameTask": "OPERATOR-ECOSYSTEM-REDUNDANCY-V1-T014",
     "currentIdentityAndRoomRetirementTask": "OPERATOR-ECOSYSTEM-REDUNDANCY-V1-T021",
     "httpRuntimeRetirementTask": "OPERATOR-ECOSYSTEM-REDUNDANCY-V1-T023"
-  }
+  },
+  "publishedArtifactManifest": "rendered/ecosystem-map-artifact-manifest.json"
 }

@@ -7,13 +7,14 @@ Er ist **kein Steuerungs- oder Statussystem**. Aufgaben, Prioritäten, Laufzust�
 ## Einstieg
 
 1. [Erzeugte Leseansicht](rendered/system-catalog.md)
-2. [Katalogpolicy](policy/system-catalog.v1.json)
-3. [Systeme](registry/ecosystem/nodes.json)
-4. [Stabile Beziehungen](registry/ecosystem/edges.json)
-5. [Wahrheitszuständigkeiten](registry/ecosystem/authority-matrix.v1.json)
-6. [Agenteneinstieg](AGENTS.md)
-7. [Architektur](docs/architecture/systemkatalog.md)
-8. [Audit der früheren Cabinet-Räume](docs/audits/systemkatalog-room-audit-v1.md)
+2. [Veröffentlichtes Kartenmanifest](rendered/ecosystem-map-artifact-manifest.json)
+3. [Katalogpolicy](policy/system-catalog.v1.json)
+4. [Systeme](registry/ecosystem/nodes.json)
+5. [Stabile Beziehungen](registry/ecosystem/edges.json)
+6. [Wahrheitszuständigkeiten](registry/ecosystem/authority-matrix.v1.json)
+7. [Agenteneinstieg](AGENTS.md)
+8. [Architektur](docs/architecture/systemkatalog.md)
+9. [Audit der früheren Cabinet-Räume](docs/audits/systemkatalog-room-audit-v1.md)
 
 ## Was der Systemkatalog beantwortet
 
@@ -68,9 +69,27 @@ Der Systemkatalog wird ausschließlich als versionierte, statische Repositoryart
 - `rendered/system-catalog.md` als lesbare Katalogansicht;
 - `rendered/ecosystem-registry-map.mmd` als Mermaidkarte;
 - `registry/ecosystem/*.json` und `claims.jsonl` als kanonische Daten;
-- das Map-Artefaktmanifest als Übergabevertrag für Verbraucher wie Leitstand und Schauwerk.
+- `rendered/ecosystem-map-artifact-manifest.json` als veröffentlichter, commit- und hashgebundener Übergabevertrag für Verbraucher wie Leitstand und Schauwerk.
 
 Eine eigene HTTP-Runtime, Datenbank, Queue oder Schreibschnittstelle gehört nicht zum Produkt. Aktuelle Betriebszustände werden weiterhin an ihren jeweiligen Runtime-Primärquellen geprüft.
+
+### Manifest veröffentlichen
+
+Das Manifest wird absichtlich in einem zweiten Commit veröffentlicht: Der erste Commit enthält die Katalogdaten und Projektionen. Danach bindet das Manifest exakt diesen Artefakt-Commit und die SHA-256-Prüfsummen der fünf ausgelieferten Dateien. So entsteht keine unmögliche Selbstreferenz auf den Commit, der das Manifest selbst enthält.
+
+```bash
+# 1. Katalogdaten und Projektionen committen
+python3 scripts/render_system_catalog.py
+python3 scripts/render_ecosystem_registry_map.py
+git commit
+
+# 2. Manifest an diesen Artefakt-Commit binden und separat committen
+python3 scripts/write_ecosystem_map_artifact_manifest.py --source-commit "$(git rev-parse HEAD)"
+git add rendered/ecosystem-map-artifact-manifest.json
+git commit
+```
+
+`--check` liest die tatsächlich veröffentlichte Datei. Es scheitert, wenn das Manifest fehlt, die aktuellen Artefakte abweichen, der gebundene Commit nicht in der Git-Historie liegt oder die dort gespeicherten Bytes nicht zu den Manifest-Hashes passen.
 
 ## Validierung
 

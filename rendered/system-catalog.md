@@ -8,40 +8,40 @@ Der Katalog beantwortet, welche Systeme existieren, welchem Zweck sie dienen, we
 
 ## Systeme
 
-| System | Typ | Zweck |
-|---|---|---|
-| Ecosystem Map v0 | artifact | machine-readable overview graph and rendered orientation map |
-| RepoBrief | concept | public name for context-view layer |
-| Alexander | human | meaning, approval and abort authority outside automation |
-| Außensensor | repository | Curated external signals and event feeds for Chronik |
-| Bureau | repository | task cadence, delegation, run reporting |
-| Chronik | repository | append-only event ledger and historical evidence axis |
-| Commonworld | repository | Interactive globe and commons-oriented world exploration |
-| Contracts Mirror | repository | Validated mirror and publication surface for canonical Metarepo contracts |
-| Device Graph | repository | infrastructure device graph; adjacent but not ecosystem-governance canon |
-| Grabowski | repository | operator execution, repo work, review gates |
-| HausKI | repository | Local offline-first AI orchestration and policy-controlled memory |
-| HausKI Audio | repository | Local audio playback, recording and automation |
-| heim-pc | repository | Versioned local operator entry and host orientation |
-| Heimgeist | repository | System self-reflection and meta-agent experimentation |
-| heimlern | repository | offline operator-learning and proposal generation |
-| Infra | repository | host, network, cockpit and operational runbooks |
-| Leitstand | repository | read-only ecosystem observability and status projection |
-| Lenskit / RepoBrief implementation | repository | context view and citable repository briefs |
-| Metarepo | repository | Fleet membership, canonical shared contracts and repository templates |
-| Mitschreiber | repository | Privacy-first on-device context capture and redacted event production |
-| Plexer | repository | bounded event delivery and queueing gateway |
-| Schauwerk | repository | visual surface and projection layer |
-| semantAH | repository | Semantic index, embeddings and knowledge-graph pipeline |
-| Sichter | repository | Code-review and pull-request automation prototype |
-| Steuerboard | repository | read-only repo-state signal |
-| Systemkatalog | repository | app-independent catalog for system purposes, truth ownership, stable relations and entrypoints |
-| Vault Gewebe | repository | Versioned shared knowledge vault and design source material |
-| Vibe-Lab | repository | method lab and evidence experiments |
-| Weltgewebe | repository | product and domain core |
-| WGX | repository | Fleet CLI and reusable repository workflow engine |
-| CI / Checks | service | automated tests, lint, gates and review signals |
-| GitHub | service | repository, PR, issue and review state |
+| System | Typ | Zweck | Nicht zuständig für | Wahrheitsbesitz | Einstiegspunkte |
+|---|---|---|---|---|---|
+| Ecosystem Map v0 | artifact | machine-readable overview graph and rendered orientation map | claim truth<br>runtime health<br>merge readiness | — | `artifact`: [rendered/ecosystem-registry-map.mmd](../rendered/ecosystem-registry-map.mmd) |
+| RepoBrief | concept | public name for context-view layer | repository mutation<br>runtime health<br>task dispatch | — | `implementation`: [https://github.com/heimgewebe/lenskit](https://github.com/heimgewebe/lenskit) |
+| Alexander | human | meaning, approval and abort authority outside automation | automated execution<br>machine-derived repository or runtime state | — | `authorityPolicy`: [policy/system-catalog.v1.json](../policy/system-catalog.v1.json) |
+| Außensensor | repository | Curated external signals and event feeds for Chronik | task authority<br>canonical event history<br>merge approval | — | `repository`: [https://github.com/heimgewebe/aussensensor](https://github.com/heimgewebe/aussensensor) |
+| Bureau | repository | task cadence, delegation, run reporting | runtime execution<br>Git and review truth<br>ecosystem semantics | tasks_claims_completion | `repository`: [https://github.com/heimgewebe/bureau](https://github.com/heimgewebe/bureau) |
+| Chronik | repository | append-only event ledger and historical evidence axis | task state<br>policy decisions<br>runtime mutation | append_only_history | `repository`: [https://github.com/heimgewebe/chronik](https://github.com/heimgewebe/chronik) |
+| Commonworld | repository | Interactive globe and commons-oriented world exploration | ecosystem governance<br>task state<br>merge authority | — | `repository`: [https://github.com/heimgewebe/commonworld](https://github.com/heimgewebe/commonworld) |
+| Contracts Mirror | repository | Validated mirror and publication surface for canonical Metarepo contracts | canonical contract authorship<br>runtime status<br>task authority | — | `repository`: [https://github.com/heimgewebe/contracts-mirror](https://github.com/heimgewebe/contracts-mirror) |
+| Device Graph | repository | infrastructure device graph; adjacent but not ecosystem-governance canon | ecosystem governance canon<br>task state<br>merge authority | — | `repository`: [https://github.com/heimgewebe/device-graph](https://github.com/heimgewebe/device-graph) |
+| Grabowski | repository | operator execution, repo work, review gates | task priority<br>ecosystem semantics<br>primary Git or runtime truth | agent_routing<br>local_fleet_execution | `repository`: [https://github.com/heimgewebe/grabowski](https://github.com/heimgewebe/grabowski) |
+| HausKI | repository | Local offline-first AI orchestration and policy-controlled memory | fleet task authority<br>ecosystem catalog semantics<br>merge approval | — | `repository`: [https://github.com/heimgewebe/hausKI](https://github.com/heimgewebe/hausKI) |
+| HausKI Audio | repository | Local audio playback, recording and automation | ecosystem catalog semantics<br>task authority<br>merge approval | — | `repository`: [https://github.com/heimgewebe/hausKI-audio](https://github.com/heimgewebe/hausKI-audio) |
+| heim-pc | repository | Versioned local operator entry and host orientation | fleet task authority<br>service runtime truth<br>ecosystem semantics | — | `repository`: [https://github.com/heimgewebe/heim-pc](https://github.com/heimgewebe/heim-pc) |
+| Heimgeist | repository | System self-reflection and meta-agent experimentation | production authority<br>task state<br>merge approval | — | `repository`: [https://github.com/heimgewebe/heimgeist](https://github.com/heimgewebe/heimgeist) |
+| heimlern | repository | offline operator-learning and proposal generation | automatic policy application<br>task dispatch<br>merge authorization | offline_learning_proposals | `repository`: [https://github.com/heimgewebe/heimlern](https://github.com/heimgewebe/heimlern) |
+| Infra | repository | host, network, cockpit and operational runbooks | task state<br>ecosystem semantics<br>product-domain truth | — | `repository`: [https://github.com/heimgewebe/infra](https://github.com/heimgewebe/infra) |
+| Leitstand | repository | read-only ecosystem observability and status projection | canonical truth ownership<br>task authorization<br>runtime mutation | general_operator_display | `repository`: [https://github.com/heimgewebe/leitstand](https://github.com/heimgewebe/leitstand) |
+| Lenskit / RepoBrief implementation | repository | context view and citable repository briefs | repository operational state<br>task priority<br>merge authorization | repository_context_citations | `repository`: [https://github.com/heimgewebe/lenskit](https://github.com/heimgewebe/lenskit) |
+| Metarepo | repository | Fleet membership, canonical shared contracts and repository templates | repository purpose semantics<br>runtime health<br>task state | fleet_membership | `repository`: [https://github.com/heimgewebe/metarepo](https://github.com/heimgewebe/metarepo) |
+| Mitschreiber | repository | Privacy-first on-device context capture and redacted event production | task authority<br>ecosystem semantics<br>merge approval | — | `repository`: [https://github.com/heimgewebe/mitschreiber](https://github.com/heimgewebe/mitschreiber) |
+| Plexer | repository | bounded event delivery and queueing gateway | task prioritization<br>canonical history<br>ecosystem semantics | — | `repository`: [https://github.com/heimgewebe/plexer](https://github.com/heimgewebe/plexer) |
+| Schauwerk | repository | visual surface and projection layer | canonical ecosystem semantics<br>task state<br>execution authority | specialized_visual_rendering | `repository`: [https://github.com/heimgewebe/schauwerk](https://github.com/heimgewebe/schauwerk) |
+| semantAH | repository | Semantic index, embeddings and knowledge-graph pipeline | task authority<br>canonical event history<br>runtime health | — | `repository`: [https://github.com/heimgewebe/semantAH](https://github.com/heimgewebe/semantAH) |
+| Sichter | repository | Code-review and pull-request automation prototype | merge authority<br>task priority<br>runtime truth | — | `repository`: [https://github.com/heimgewebe/sichter](https://github.com/heimgewebe/sichter) |
+| Steuerboard | repository | read-only repo-state signal | task authorization<br>merge approval<br>runtime mutation | repository_observation_readiness | `repository`: [https://github.com/heimgewebe/steuerboard](https://github.com/heimgewebe/steuerboard) |
+| Systemkatalog | repository | app-independent catalog for system purposes, truth ownership, stable relations and entrypoints | task priority or status<br>runtime health<br>merge readiness<br>agent dispatch | ecosystem_semantics | `agentEntry`: [AGENTS.md](../AGENTS.md)<br>`readme`: [README.md](../README.md)<br>`repository`: [https://github.com/heimgewebe/systemkatalog](https://github.com/heimgewebe/systemkatalog) |
+| Vault Gewebe | repository | Versioned shared knowledge vault and design source material | task status<br>runtime truth<br>merge authority | — | `repository`: [https://github.com/heimgewebe/vault-gewebe](https://github.com/heimgewebe/vault-gewebe) |
+| Vibe-Lab | repository | method lab and evidence experiments | production authority<br>task status<br>automatic policy application | bounded_experiments | `repository`: [https://github.com/heimgewebe/vibe-lab](https://github.com/heimgewebe/vibe-lab) |
+| Weltgewebe | repository | product and domain core | ecosystem governance<br>fleet task orchestration | — | `repository`: [https://github.com/heimgewebe/weltgewebe](https://github.com/heimgewebe/weltgewebe) |
+| WGX | repository | Fleet CLI and reusable repository workflow engine | repository purpose semantics<br>runtime truth<br>task priority | shared_fleet_ci_checks | `repository`: [https://github.com/heimgewebe/wgx](https://github.com/heimgewebe/wgx) |
+| CI / Checks | service | automated tests, lint, gates and review signals | merge authorization<br>runtime health<br>task priority | technical_check_results | `checks`: [https://github.com/heimgewebe](https://github.com/heimgewebe) |
+| GitHub | service | repository, PR, issue and review state | local runtime health<br>task priority<br>ecosystem semantics | branches_prs_reviews | `organization`: [https://github.com/heimgewebe](https://github.com/heimgewebe) |
 
 ## Repository-Abdeckung
 

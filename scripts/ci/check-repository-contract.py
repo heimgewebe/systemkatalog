@@ -29,6 +29,7 @@ REQUIRED_STATIC_SURFACES = {
     "registry/ecosystem/fleet-coverage.v1.json",
     "rendered/system-catalog.md",
     "rendered/ecosystem-registry-map.mmd",
+    "rendered/ecosystem-map-artifact-manifest.json",
     "scripts/validate_system_catalog.py",
     "scripts/render_system_catalog.py",
     "scripts/render_ecosystem_registry_map.py",

@@ -27,7 +27,7 @@ class FleetCoverageTests(unittest.TestCase):
         nodes = json.loads(
             (root / "registry/ecosystem/nodes.json").read_text(encoding="utf-8")
         )["nodes"]
-        return {item["id"] for item in nodes if item["kind"] == "repository"}
+        return {item["id"] for item in nodes if item["type"] == "repository"}
 
     def test_repository_coverage_is_complete(self) -> None:
         coverage = validate_coverage(ROOT, self._repository_nodes())

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build the read-only Systemkatalog map handoff manifest."""
+"""Write or verify the published read-only Systemkatalog map handoff manifest."""
 
 from __future__ import annotations
 
@@ -7,15 +7,18 @@ import argparse
 from datetime import datetime, timezone
 import hashlib
 import json
+import os
 from pathlib import Path
 import subprocess
 import sys
+import tempfile
 from typing import Any
 
 CONTRACT_VERSION = "1"
 MANIFEST_KIND = "system_catalog_map_artifact_manifest"
 SCHEMA_PATH = "catalog/ecosystem-map-artifact-manifest.schema.v1.json"
 DEFAULT_OUTPUT = Path("rendered/ecosystem-map-artifact-manifest.json")
+GENERATED_FILE_MODE = 0o644
 DOES_NOT_ESTABLISH = (
     "claim_truth",
     "runtime_correctness",
@@ -67,6 +70,10 @@ def _safe_path(root: Path, raw: str | Path, label: str) -> Path:
     return resolved
 
 
+def _sha256_bytes(content: bytes) -> str:
+    return hashlib.sha256(content).hexdigest()
+
+
 def _sha256(path: Path) -> str:
     digest = hashlib.sha256()
     with path.open("rb") as handle:
@@ -75,13 +82,59 @@ def _sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
-def _git_commit(root: Path) -> str:
+def _git(root: Path, *arguments: str, text: bool = True) -> str | bytes:
     try:
-        value = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip()
+        return subprocess.check_output(
+            ["git", *arguments],
+            cwd=root,
+            text=text,
+            stderr=subprocess.DEVNULL,
+        )
     except (OSError, subprocess.CalledProcessError) as exc:
-        raise EcosystemMapManifestError("could not determine source commit") from exc
+        rendered = " ".join(arguments)
+        raise EcosystemMapManifestError(f"git command failed: {rendered}") from exc
+
+
+def _git_commit(root: Path) -> str:
+    value = str(_git(root, "rev-parse", "HEAD")).strip()
     if not _is_sha(value):
         raise EcosystemMapManifestError("invalid source commit")
+    return value
+
+
+def _git_commit_timestamp(root: Path, commit: str) -> str:
+    if not _is_sha(commit):
+        raise EcosystemMapManifestError("invalid source commit")
+    raw = str(_git(root, "show", "-s", "--format=%cI", commit)).strip()
+    try:
+        parsed = datetime.fromisoformat(raw.replace("Z", "+00:00"))
+    except ValueError as exc:
+        raise EcosystemMapManifestError("invalid source commit timestamp") from exc
+    return parsed.astimezone(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+
+
+def _git_is_ancestor(root: Path, commit: str) -> bool:
+    try:
+        subprocess.run(
+            ["git", "merge-base", "--is-ancestor", commit, "HEAD"],
+            cwd=root,
+            check=True,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
+        return True
+    except subprocess.CalledProcessError as exc:
+        if exc.returncode == 1:
+            return False
+        raise EcosystemMapManifestError("could not verify source commit ancestry") from exc
+    except OSError as exc:
+        raise EcosystemMapManifestError("could not verify source commit ancestry") from exc
+
+
+def _git_artifact(root: Path, commit: str, relative: str) -> bytes:
+    value = _git(root, "show", f"{commit}:{relative}", text=False)
+    if not isinstance(value, bytes):
+        raise EcosystemMapManifestError(f"could not read committed artifact: {relative}")
     return value
 
 
@@ -89,8 +142,10 @@ def _is_sha(value: object) -> bool:
     return isinstance(value, str) and len(value) == 40 and all(ch in "0123456789abcdef" for ch in value)
 
 
-def _generated_at() -> str:
-    return datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+def _is_sha256(value: object) -> bool:
+    return isinstance(value, str) and len(value) == 64 and all(
+        ch in "0123456789abcdef" for ch in value
+    )
 
 
 def _artifact(root: Path, spec: dict[str, str]) -> dict[str, Any]:
@@ -116,6 +171,9 @@ def build_manifest(
     commit = source_commit or _git_commit(root)
     if not _is_sha(commit):
         raise EcosystemMapManifestError("source_commit must be a lowercase 40 character git SHA")
+    deterministic_time = _git_commit_timestamp(root, commit)
+    if generated_at is not None and generated_at != deterministic_time:
+        raise EcosystemMapManifestError("generated_at must equal the source commit timestamp")
     artifacts = [_artifact(root, spec) for spec in ARTIFACT_SPECS]
     return {
         "schemaVersion": 1,
@@ -126,7 +184,7 @@ def build_manifest(
         "source": {
             "repository": "heimgewebe/systemkatalog",
             "commit": commit,
-            "generatedAt": generated_at or _generated_at(),
+            "generatedAt": deterministic_time,
         },
         "artifactCount": len(artifacts),
         "artifacts": artifacts,
@@ -166,10 +224,69 @@ def validate_manifest(manifest: dict[str, Any]) -> None:
             raise EcosystemMapManifestError(f"artifact contract mismatch: {spec['role']}")
         if not isinstance(item["bytes"], int) or item["bytes"] < 1:
             raise EcosystemMapManifestError(f"artifact byte count invalid: {spec['role']}")
-        if not isinstance(item["sha256"], str) or len(item["sha256"]) != 64:
+        if not _is_sha256(item["sha256"]):
             raise EcosystemMapManifestError(f"artifact digest invalid: {spec['role']}")
-    if set(manifest["doesNotEstablish"]) != set(DOES_NOT_ESTABLISH):
+    if tuple(manifest["doesNotEstablish"]) != DOES_NOT_ESTABLISH:
         raise EcosystemMapManifestError("manifest non-claims mismatch")
+
+
+def _load_manifest(path: Path) -> dict[str, Any]:
+    if not path.is_file():
+        raise EcosystemMapManifestError(f"published manifest missing: {path}")
+    try:
+        value = json.loads(path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as exc:
+        raise EcosystemMapManifestError(f"published manifest is invalid JSON: {exc.msg}") from exc
+    if not isinstance(value, dict):
+        raise EcosystemMapManifestError("published manifest root must be an object")
+    return value
+
+
+def _validate_source_binding(root: Path, manifest: dict[str, Any]) -> None:
+    commit = manifest["source"]["commit"]
+    if not _git_is_ancestor(root, commit):
+        raise EcosystemMapManifestError("manifest source commit is not an ancestor of HEAD")
+    for item in manifest["artifacts"]:
+        content = _git_artifact(root, commit, item["path"])
+        if len(content) != item["bytes"] or _sha256_bytes(content) != item["sha256"]:
+            raise EcosystemMapManifestError(
+                f"artifact does not match bound source commit: {item['path']}"
+            )
+
+
+def check_manifest(repo_root: Path, output: Path = DEFAULT_OUTPUT) -> dict[str, Any]:
+    root = repo_root.resolve()
+    target = _safe_path(root, output, "output")
+    manifest = _load_manifest(target)
+    validate_manifest(manifest)
+    source = manifest["source"]
+    expected = build_manifest(
+        root,
+        source_commit=source["commit"],
+        generated_at=source["generatedAt"],
+    )
+    if manifest != expected:
+        raise EcosystemMapManifestError("published manifest is stale for current artifacts")
+    _validate_source_binding(root, manifest)
+    return manifest
+
+
+def _atomic_write(path: Path, content: str) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    descriptor, temporary_name = tempfile.mkstemp(
+        prefix=f".{path.name}.", suffix=".tmp", dir=path.parent
+    )
+    temporary = Path(temporary_name)
+    try:
+        with os.fdopen(descriptor, "w", encoding="utf-8", newline="\n") as handle:
+            os.fchmod(handle.fileno(), GENERATED_FILE_MODE)
+            handle.write(content)
+            handle.flush()
+            os.fsync(handle.fileno())
+        os.replace(temporary, path)
+    except Exception:
+        temporary.unlink(missing_ok=True)
+        raise
 
 
 def write_manifest(
@@ -183,8 +300,11 @@ def write_manifest(
     target = _safe_path(root, output, "output")
     manifest = build_manifest(root, source_commit=source_commit, generated_at=generated_at)
     validate_manifest(manifest)
-    target.parent.mkdir(parents=True, exist_ok=True)
-    target.write_text(json.dumps(manifest, indent=2, ensure_ascii=False, sort_keys=True) + "\n", encoding="utf-8")
+    _validate_source_binding(root, manifest)
+    _atomic_write(
+        target,
+        json.dumps(manifest, indent=2, ensure_ascii=False, sort_keys=True) + "\n",
+    )
     return manifest
 
 
@@ -198,18 +318,21 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--json", action="store_true")
     args = parser.parse_args(argv)
     root = Path(args.repo_root).resolve()
+    output = Path(args.output)
     try:
-        manifest = (
-            build_manifest(root, source_commit=args.source_commit, generated_at=args.generated_at)
-            if args.check
-            else write_manifest(
+        if args.check:
+            if args.source_commit or args.generated_at:
+                raise EcosystemMapManifestError(
+                    "--source-commit and --generated-at are write-only options"
+                )
+            manifest = check_manifest(root, output)
+        else:
+            manifest = write_manifest(
                 root,
-                Path(args.output),
+                output,
                 source_commit=args.source_commit,
                 generated_at=args.generated_at,
             )
-        )
-        validate_manifest(manifest)
     except (EcosystemMapManifestError, OSError, UnicodeError) as exc:
         if args.json:
             print(json.dumps({"ok": False, "error": str(exc)}, sort_keys=True))
@@ -222,9 +345,11 @@ def main(argv: list[str] | None = None) -> int:
         "kind": manifest["kind"],
         "sourceCommit": manifest["source"]["commit"],
         "artifactCount": manifest["artifactCount"],
+        "output": str(output),
     }
     print(json.dumps(result, sort_keys=True) if args.json else (
-        f"ecosystemMapArtifactManifest={manifest['kind']} action={result['action']} artifactCount={manifest['artifactCount']}"
+        f"ecosystemMapArtifactManifest={manifest['kind']} action={result['action']} "
+        f"artifactCount={manifest['artifactCount']} output={result['output']}"
     ))
     return 0
 

@@ -22,10 +22,27 @@ VIEW_REL = Path("policy/ecosystem-map-view.v1.json")
 FLEET_REL = COVERAGE_REL
 ARCHIVE_REL = Path("docs/archive/cabinet-era")
 
-NODE_FIELDS = {"id", "kind", "label", "purpose"}
+NODE_FIELDS = {"id", "name", "type", "purpose", "notResponsibleFor", "truthOwnership", "entrypoints"}
 EDGE_FIELDS = {"from", "to", "type", "stability", "meaning"}
 CLAIM_FIELDS = {"id", "subject", "predicate", "object", "evidence", "does_not_establish"}
-ALLOWED_NODE_KINDS = {"human", "repository", "concept", "artifact", "service"}
+ALLOWED_NODE_TYPES = {"human", "repository", "concept", "artifact", "service"}
+AUTHORITY_OWNER_NODES = {
+    "bureau": "repo:bureau",
+    "grabowski": "repo:grabowski",
+    "repobrief_lenskit": "repo:lenskit",
+    "systemkatalog": "repo:systemkatalog",
+    "steuerboard": "repo:steuerboard",
+    "leitstand": "repo:leitstand",
+    "schauwerk": "repo:schauwerk",
+    "chronik": "repo:chronik",
+    "heimlern": "repo:heimlern",
+    "vibe_lab": "repo:vibe-lab",
+    "wgx": "repo:wgx",
+    "github": "service:github",
+    "ci": "service:ci",
+    "metarepo": "repo:metarepo",
+}
+EXTERNAL_AUTHORITY_OWNERS = {"runtime"}
 LEGACY_ROOTS = {
     "bestand", "pruefung", "steuerung", "vorzimmer", "heimgewebe",
     "weltgewebe", "werkstatt", "labor", "betrieb",
@@ -80,12 +97,24 @@ def validate_node(raw_node: Any, index: int) -> dict[str, Any]:
     label = f"node {index}"
     if not isinstance(raw_node, dict) or set(raw_node) != NODE_FIELDS:
         raise RegistryValidationError(f"{label} fields mismatch")
-    for field in NODE_FIELDS:
+    for field in ("id", "name", "type", "purpose"):
         _require_string(raw_node.get(field), f"{label}.{field}")
-    if raw_node["kind"] not in ALLOWED_NODE_KINDS:
-        raise RegistryValidationError(f"{label} uses non-catalog kind: {raw_node['kind']}")
+    if raw_node["type"] not in ALLOWED_NODE_TYPES:
+        raise RegistryValidationError(f"{label} uses non-catalog type: {raw_node['type']}")
     if raw_node["id"].startswith(("runtime:", "agent:")):
         raise RegistryValidationError("runtime and agent identities are not catalog systems")
+    _require_string_array(raw_node.get("notResponsibleFor"), f"{label}.notResponsibleFor")
+    _require_string_array(
+        raw_node.get("truthOwnership"),
+        f"{label}.truthOwnership",
+        allow_empty=True,
+    )
+    entrypoints = raw_node.get("entrypoints")
+    if not isinstance(entrypoints, dict) or not entrypoints:
+        raise RegistryValidationError(f"{label}.entrypoints must be a non-empty object")
+    for key, value in entrypoints.items():
+        _require_string(key, f"{label}.entrypoints key")
+        _require_string(value, f"{label}.entrypoints.{key}")
     return raw_node
 
 
@@ -295,7 +324,7 @@ def validate(root: Path = ROOT) -> dict[str, Any]:
     _validate_active_layout(root)
     _validate_unique_canons(root)
     policy = _load(root, POLICY_REL)
-    _load(root, SCHEMA_REL)
+    schema = _load(root, SCHEMA_REL)
     example = _load(root, EXAMPLE_REL)
     nodes_doc = _load(root, NODES_REL)
     edges_doc = _load(root, EDGES_REL)
@@ -310,6 +339,12 @@ def validate(root: Path = ROOT) -> dict[str, Any]:
         raise ValueError("system catalog policy role/state mismatch")
     if policy.get("repository") != "heimgewebe/systemkatalog":
         raise ValueError("repository identity mismatch")
+    required_system_fields = policy.get("targetFormat", {}).get("requiredSystemFields")
+    if not isinstance(required_system_fields, list) or set(required_system_fields) != NODE_FIELDS:
+        raise ValueError("targetFormat.requiredSystemFields mismatch")
+    schema_required = schema.get("properties", {}).get("systems", {}).get("items", {}).get("required")
+    if not isinstance(schema_required, list) or set(schema_required) != NODE_FIELDS:
+        raise ValueError("system catalog schema required fields mismatch")
     catalog_inputs = [str(NODES_REL), str(EDGES_REL), str(CLAIMS_REL), str(AUTHORITY_REL)]
     expected_inputs = [*catalog_inputs, str(FLEET_REL)]
     if policy.get("canonicalInputs") != expected_inputs:
@@ -320,6 +355,8 @@ def validate(root: Path = ROOT) -> dict[str, Any]:
         raise ValueError("generated map binding mismatch")
     if policy.get("canonicalProjectionPolicy") != str(VIEW_REL):
         raise ValueError("projection policy binding mismatch")
+    if policy.get("publishedArtifactManifest") != "rendered/ecosystem-map-artifact-manifest.json":
+        raise ValueError("published artifact manifest binding mismatch")
     archive = policy.get("archiveBoundary")
     if not isinstance(archive, dict) or archive != {
         "path": str(ARCHIVE_REL),
@@ -372,8 +409,15 @@ def validate(root: Path = ROOT) -> dict[str, Any]:
         if edge["stability"] not in stability_classes:
             raise ValueError(f"edge {index} stability mismatch")
 
-    repository_node_ids = {node["id"] for node in nodes if node["kind"] == "repository"}
+    repository_node_ids = {node["id"] for node in nodes if node["type"] == "repository"}
     fleet_coverage = validate_coverage(root, repository_node_ids)
+    coverage_by_node = {item["node"]: item for item in fleet_coverage["repositories"]}
+    for node in nodes:
+        if node["type"] != "repository":
+            continue
+        expected_entrypoint = coverage_by_node[node["id"]]["entrypoint"]
+        if node["entrypoints"].get("repository") != expected_entrypoint:
+            raise ValueError(f"repository entrypoint mismatch: {node['id']}")
 
     claim_ids: set[str] = set()
     for index, claim in enumerate(claims):
@@ -404,14 +448,26 @@ def validate(root: Path = ROOT) -> dict[str, Any]:
     if not isinstance(authorities, list) or not authorities:
         raise ValueError("authority assignments missing")
     domains: list[str] = []
+    expected_truth_by_node: dict[str, set[str]] = {node_id: set() for node_id in known_nodes}
     for index, item in enumerate(authorities):
         if not isinstance(item, dict) or set(item) != {"domain", "owner", "projections"}:
             raise ValueError(f"authority {index} fields mismatch")
-        domains.append(_require_string(item.get("domain"), f"authority {index}.domain"))
-        _require_string(item.get("owner"), f"authority {index}.owner")
+        domain = _require_string(item.get("domain"), f"authority {index}.domain")
+        owner = _require_string(item.get("owner"), f"authority {index}.owner")
+        domains.append(domain)
+        owner_node = AUTHORITY_OWNER_NODES.get(owner)
+        if owner_node is None and owner not in EXTERNAL_AUTHORITY_OWNERS:
+            raise ValueError(f"authority {index} owner is neither a catalog system nor an external principal: {owner}")
+        if owner_node is not None:
+            if owner_node not in known_nodes:
+                raise ValueError(f"authority {index} owner node missing: {owner_node}")
+            expected_truth_by_node[owner_node].add(domain)
         _require_string_array(item.get("projections"), f"authority {index}.projections", allow_empty=True)
     if len(domains) != len(set(domains)):
         raise ValueError("authority domains duplicated")
+    for node in nodes:
+        if set(node["truthOwnership"]) != expected_truth_by_node[node["id"]]:
+            raise ValueError(f"truth ownership differs from authority matrix: {node['id']}")
     authority_by_domain = {item["domain"]: item for item in authorities}
     if authority_by_domain.get("fleet_membership", {}).get("owner") != "metarepo":
         raise ValueError("Fleet membership authority must remain Metarepo")

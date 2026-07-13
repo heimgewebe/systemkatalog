@@ -24,8 +24,21 @@ from render_ecosystem_registry_map import (  # noqa: E402
 )
 
 
-def node(node_id: str, kind: str = "repository", label: str = "Systemkatalog", purpose: str = "stable purpose") -> dict[str, str]:
-    return {"id": node_id, "kind": kind, "label": label, "purpose": purpose}
+def node(
+    node_id: str,
+    node_type: str = "repository",
+    name: str = "Systemkatalog",
+    purpose: str = "stable purpose",
+) -> dict[str, object]:
+    return {
+        "id": node_id,
+        "name": name,
+        "type": node_type,
+        "purpose": purpose,
+        "notResponsibleFor": ["runtime state"],
+        "truthOwnership": [],
+        "entrypoints": {"repository": "https://example.invalid/system"},
+    }
 
 
 def edge(source: str, target: str, relation: str = "owns", stability: str = "stable") -> dict[str, str]:

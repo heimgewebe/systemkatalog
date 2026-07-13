@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -15,17 +17,26 @@ if str(SCRIPTS) not in sys.path:
 from write_ecosystem_map_artifact_manifest import (  # noqa: E402
     ARTIFACT_SPECS,
     CONTRACT_VERSION,
+    DEFAULT_OUTPUT,
     DOES_NOT_ESTABLISH,
     MANIFEST_KIND,
     SCHEMA_PATH,
     EcosystemMapManifestError,
     build_manifest,
+    check_manifest,
     validate_manifest,
     write_manifest,
 )
 
-TEST_COMMIT = "a" * 40
-TEST_TIME = "2026-07-11T00:00:00Z"
+COMMIT_TIME = "2026-07-11T00:00:00+00:00"
+EXPECTED_TIME = "2026-07-11T00:00:00Z"
+HAS_GIT_HISTORY = subprocess.run(
+    ["git", "rev-parse", "--is-inside-work-tree"],
+    cwd=ROOT,
+    stdout=subprocess.DEVNULL,
+    stderr=subprocess.DEVNULL,
+    check=False,
+).returncode == 0
 
 
 def populate(root: Path) -> None:
@@ -36,16 +47,50 @@ def populate(root: Path) -> None:
             path.write_text(f"content for {spec['path']}\n", encoding="utf-8")
 
 
+def git(root: Path, *args: str, env: dict[str, str] | None = None) -> str:
+    return subprocess.check_output(
+        ["git", *args],
+        cwd=root,
+        text=True,
+        env=env,
+        stderr=subprocess.DEVNULL,
+    ).strip()
+
+
+def initialize_repository(root: Path) -> str:
+    populate(root)
+    git(root, "init", "-q")
+    git(root, "config", "user.email", "tests@systemkatalog.invalid")
+    git(root, "config", "user.name", "Systemkatalog Tests")
+    git(root, "add", ".")
+    env = os.environ.copy()
+    env["GIT_AUTHOR_DATE"] = COMMIT_TIME
+    env["GIT_COMMITTER_DATE"] = COMMIT_TIME
+    git(root, "commit", "-qm", "catalog artifacts", env=env)
+    return git(root, "rev-parse", "HEAD")
+
+
+def publish_manifest(root: Path, source_commit: str) -> dict[str, object]:
+    manifest = write_manifest(root, DEFAULT_OUTPUT, source_commit=source_commit)
+    git(root, "add", str(DEFAULT_OUTPUT))
+    env = os.environ.copy()
+    env["GIT_AUTHOR_DATE"] = "2026-07-11T00:01:00+00:00"
+    env["GIT_COMMITTER_DATE"] = "2026-07-11T00:01:00+00:00"
+    git(root, "commit", "-qm", "publish manifest", env=env)
+    return manifest
+
+
 class EcosystemMapManifestTests(unittest.TestCase):
     def test_manifest_has_neutral_source_and_digests(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
-            populate(root)
-            manifest = build_manifest(root, source_commit=TEST_COMMIT, generated_at=TEST_TIME)
+            commit = initialize_repository(root)
+            manifest = build_manifest(root, source_commit=commit)
         self.assertEqual(manifest["kind"], MANIFEST_KIND)
         self.assertEqual(manifest["contractVersion"], CONTRACT_VERSION)
         self.assertEqual(manifest["schemaPath"], SCHEMA_PATH)
         self.assertEqual(manifest["source"]["repository"], "heimgewebe/systemkatalog")
+        self.assertEqual(manifest["source"]["generatedAt"], EXPECTED_TIME)
         self.assertEqual(manifest["artifactCount"], len(ARTIFACT_SPECS))
         self.assertEqual(tuple(manifest["doesNotEstablish"]), DOES_NOT_ESTABLISH)
         validate_manifest(manifest)
@@ -97,30 +142,75 @@ class EcosystemMapManifestTests(unittest.TestCase):
     def test_missing_artifact_fails_closed(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
-            populate(root)
+            commit = initialize_repository(root)
             (root / ARTIFACT_SPECS[-1]["path"]).unlink()
             with self.assertRaisesRegex(EcosystemMapManifestError, "missing or empty"):
-                build_manifest(root, source_commit=TEST_COMMIT, generated_at=TEST_TIME)
+                build_manifest(root, source_commit=commit)
 
     def test_manifest_role_drift_fails_closed(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
-            populate(root)
-            manifest = build_manifest(root, source_commit=TEST_COMMIT, generated_at=TEST_TIME)
+            commit = initialize_repository(root)
+            manifest = build_manifest(root, source_commit=commit)
             manifest["artifacts"][0]["role"] = "unbound_role"
             with self.assertRaisesRegex(EcosystemMapManifestError, "artifact contract mismatch"):
+                validate_manifest(manifest)
+
+    def test_non_hex_artifact_digest_fails_closed(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            commit = initialize_repository(root)
+            manifest = build_manifest(root, source_commit=commit)
+            manifest["artifacts"][0]["sha256"] = "z" * 64
+            with self.assertRaisesRegex(EcosystemMapManifestError, "artifact digest invalid"):
                 validate_manifest(manifest)
 
     def test_output_escape_fails_closed(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
-            populate(root)
+            commit = initialize_repository(root)
             with self.assertRaisesRegex(EcosystemMapManifestError, "escapes repository"):
-                write_manifest(root, root.parent / "outside.json")
+                write_manifest(root, root.parent / "outside.json", source_commit=commit)
 
-    def test_repository_manifest_builds(self) -> None:
-        manifest = build_manifest(ROOT, source_commit=TEST_COMMIT, generated_at=TEST_TIME)
-        self.assertEqual(manifest["source"]["repository"], "heimgewebe/systemkatalog")
+    def test_check_requires_published_manifest(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            initialize_repository(root)
+            with self.assertRaisesRegex(EcosystemMapManifestError, "published manifest missing"):
+                check_manifest(root)
+
+    def test_check_accepts_published_commit_bound_manifest(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            commit = initialize_repository(root)
+            published = publish_manifest(root, commit)
+            checked = check_manifest(root)
+        self.assertEqual(checked, published)
+
+    def test_check_rejects_current_artifact_drift(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            commit = initialize_repository(root)
+            publish_manifest(root, commit)
+            artifact = root / ARTIFACT_SPECS[0]["path"]
+            artifact.write_text("changed after publication\n", encoding="utf-8")
+            with self.assertRaisesRegex(EcosystemMapManifestError, "stale for current artifacts"):
+                check_manifest(root)
+
+    def test_check_rejects_source_commit_mismatch(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            old_commit = initialize_repository(root)
+            artifact = root / ARTIFACT_SPECS[0]["path"]
+            artifact.write_text("new committed content\n", encoding="utf-8")
+            git(root, "add", str(artifact.relative_to(root)))
+            git(root, "commit", "-qm", "change artifact")
+            with self.assertRaisesRegex(EcosystemMapManifestError, "bound source commit"):
+                write_manifest(root, DEFAULT_OUTPUT, source_commit=old_commit)
+
+    @unittest.skipUnless(HAS_GIT_HISTORY, "repository Git history is unavailable in archive validation")
+    def test_repository_manifest_is_published_and_current(self) -> None:
+        manifest = check_manifest(ROOT)
         first = ROOT / manifest["artifacts"][0]["path"]
         self.assertEqual(manifest["artifacts"][0]["sha256"], hashlib.sha256(first.read_bytes()).hexdigest())
 

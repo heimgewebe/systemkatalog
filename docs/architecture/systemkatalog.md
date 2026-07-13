@@ -14,6 +14,7 @@ Der Systemkatalog ist eine kleine, app-unabhängige Wissensschicht. Er hält nur
 | Wahrheitszuständigkeiten | `registry/ecosystem/authority-matrix.v1.json` |
 | Repository- und Fleet-Abdeckung | `registry/ecosystem/fleet-coverage.v1.json` |
 | Rollen- und Wirkungsgrenze | `policy/system-catalog.v1.json` |
+| Verbraucherübergabe | `rendered/ecosystem-map-artifact-manifest.json` |
 
 `rendered/system-catalog.md`, `rendered/ecosystem-registry-map.mmd` und das Karten-Manifest sind deterministische Projektionen. Sie dürfen den Kanon nicht überschreiben.
 
@@ -27,7 +28,7 @@ Konkrete Coding-Agenten und Provider sind wechselnde Runtime-Details. Die stabil
 
 ## Projektion und Bereitstellung
 
-Der Systemkatalog besitzt keine eigene Laufzeit. Markdown, Mermaid, JSON/JSONL und das Map-Artefaktmanifest werden deterministisch aus den versionierten Repositorydateien erzeugt und von Verbrauchern read-only übernommen.
+Der Systemkatalog besitzt keine eigene Laufzeit. Markdown, Mermaid, JSON/JSONL und das Map-Artefaktmanifest werden deterministisch aus den versionierten Repositorydateien erzeugt und von Verbrauchern read-only übernommen. Das versionierte Manifest wird in einem zweiten Commit erzeugt und bindet den unmittelbar vorher veröffentlichten Artefakt-Commit. Diese Zweistufigkeit verhindert eine Selbstreferenz des Manifests auf seinen eigenen Commit. `--check` prüft Datei, aktuelle Hashes, Git-Abstammung und die Bytes im gebundenen Commit.
 
 Aktuelle Dienstzustände bleiben außerhalb des Katalogs bei Runtime, systemd, Healthchecks und Logs. Diese Grenze verhindert, dass der Systemkatalog selbst zu einem zweiten Status- oder Betriebsmodell wird.
 

@@ -5,6 +5,7 @@ import argparse
 import json
 from pathlib import Path
 from typing import Any
+from urllib.parse import quote
 
 from system_catalog_fleet import validate_coverage
 
@@ -29,6 +30,28 @@ def _render_href(target: str) -> str:
     return f"../{target.lstrip('/')}"
 
 
+def _string_list_cell(value: Any) -> str:
+    if not isinstance(value, list) or not value:
+        return "—"
+    return "<br>".join(_cell(item) for item in value)
+
+
+def _entrypoints_cell(value: Any) -> str:
+    if not isinstance(value, dict) or not value:
+        return "—"
+    rendered: list[str] = []
+    for label, target in sorted(value.items(), key=lambda item: str(item[0]).casefold()):
+        raw_target = str(target)
+        href = quote(
+            _render_href(raw_target),
+            safe="/:#?&=@[]!$'*,;%-._~",
+        )
+        rendered.append(
+            f"`{_cell(label)}`: [{_cell(raw_target)}]({href})"
+        )
+    return "<br>".join(rendered)
+
+
 def render_text(root: Path = ROOT) -> str:
     root = root.resolve()
     policy = _load(root, "policy/system-catalog.v1.json")
@@ -48,7 +71,7 @@ def render_text(root: Path = ROOT) -> str:
     ]
     authorities = [item for item in authority.get("authorities", []) if isinstance(item, dict)]
     entrypoints = [item for item in policy.get("entrypoints", []) if isinstance(item, dict)]
-    repository_nodes = {item["id"] for item in nodes if item.get("kind") == "repository"}
+    repository_nodes = {item["id"] for item in nodes if item.get("type") == "repository"}
     fleet_coverage = validate_coverage(root, repository_nodes)
     repository_refs = {item["node"]: item for item in fleet_coverage["repositories"]}
 
@@ -63,22 +86,27 @@ def render_text(root: Path = ROOT) -> str:
         "",
         "## Systeme",
         "",
-        "| System | Typ | Zweck |",
-        "|---|---|---|",
+        "| System | Typ | Zweck | Nicht zuständig für | Wahrheitsbesitz | Einstiegspunkte |",
+        "|---|---|---|---|---|---|",
     ]
-    for node in sorted(nodes, key=lambda item: (str(item.get("kind", "")).casefold(), str(item.get("label", "")).casefold(), str(item.get("id", "")))):
-        lines.append(f"| {_cell(node.get('label'))} | {_cell(node.get('kind'))} | {_cell(node.get('purpose'))} |")
+    for node in sorted(nodes, key=lambda item: (str(item.get("type", "")).casefold(), str(item.get("name", "")).casefold(), str(item.get("id", "")))):
+        lines.append(
+            f"| {_cell(node.get('name'))} | {_cell(node.get('type'))} | "
+            f"{_cell(node.get('purpose'))} | {_string_list_cell(node.get('notResponsibleFor'))} | "
+            f"{_string_list_cell(node.get('truthOwnership'))} | "
+            f"{_entrypoints_cell(node.get('entrypoints'))} |"
+        )
 
     lines.extend([
         "", "## Repository-Abdeckung", "",
         "Metarepo ist Primärquelle für die Fleet-Mitgliedschaft. Der Systemkatalog bleibt Primärquelle für Zweck, Beziehungen, Wahrheitszuständigkeiten und Einstiegspunkte.",
         "", "| System | Repository | Einordnung | Einstieg |", "|---|---|---|---|",
     ])
-    for node in sorted((item for item in nodes if item.get("kind") == "repository"), key=lambda item: str(item.get("label", "")).casefold()):
+    for node in sorted((item for item in nodes if item.get("type") == "repository"), key=lambda item: str(item.get("name", "")).casefold()):
         reference = repository_refs[node["id"]]
         entrypoint = _cell(reference["entrypoint"])
         lines.append(
-            f"| {_cell(node.get('label'))} | `{_cell(reference['repository'])}` | "
+            f"| {_cell(node.get('name'))} | `{_cell(reference['repository'])}` | "
             f"`{_cell(reference['membership'])}` | [{entrypoint}]({entrypoint}) |"
         )
     lines.extend(["", "Explizit außerhalb der Fleet:", ""])
@@ -100,8 +128,8 @@ def render_text(root: Path = ROOT) -> str:
         source = node_by_id.get(edge.get("from"), {})
         target = node_by_id.get(edge.get("to"), {})
         lines.append(
-            f"| {_cell(source.get('label') or edge.get('from'))} | `{_cell(edge.get('type'))}` | "
-            f"{_cell(target.get('label') or edge.get('to'))} | `{_cell(edge.get('stability'))}` | {_cell(edge.get('meaning'))} |"
+            f"| {_cell(source.get('name') or edge.get('from'))} | `{_cell(edge.get('type'))}` | "
+            f"{_cell(target.get('name') or edge.get('to'))} | `{_cell(edge.get('stability'))}` | {_cell(edge.get('meaning'))} |"
         )
 
     lines.extend(["", "## Einstiegspunkte", "", "| System | Einstieg |", "|---|---|"])
