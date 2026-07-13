@@ -1,37 +1,4 @@
-# Cabinet: rekonstruierbare SQLite-Indizes
-.cabinet.db
-.cabinet.db-*
-**/.cabinet.db
-**/.cabinet.db-*
-
-# Cabinet: Laufzeitstatus
-.cabinet-state/
-**/.cabinet-state/
-
-# Flüchtige Agentenlaufzeit
-.agents/.runtime/
-.agents/.conversations/
-.agents/.memory/
-.agents/.messages/
-
-**/.agents/.runtime/
-**/.agents/.conversations/
-**/.agents/.memory/
-**/.agents/.messages/
-**/.agents/*/sessions/
-**/.agents/*/workspace/
-
-# Lokale Benutzer- und Providerkonfiguration
-.agents/.config/
-.agents/.config.json
-**/.agents/.config/
-**/.agents/.config.json
-
-# Legacy-/globale Laufzeit
-.global-agents/
-
 # Secrets und lokale Umgebungen
-.cabinet.env
 .env
 .env.*
 *.pem

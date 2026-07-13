@@ -73,6 +73,8 @@ Der Systemkatalog wird ausschließlich als versionierte, statische Repositoryart
 
 Eine eigene HTTP-Runtime, Datenbank, Queue oder Schreibschnittstelle gehört nicht zum Produkt. Aktuelle Betriebszustände werden weiterhin an ihren jeweiligen Runtime-Primärquellen geprüft.
 
+Cabinet- und Agentenlaufzeitpfade werden absichtlich **nicht** durch `.gitignore` verborgen. Falls solche Pfade erneut entstehen, bleiben sie im Working Tree sichtbar; der Repository-Vertrag verhindert zusätzlich, dass sie außerhalb von `docs/archive/cabinet-era/` versioniert werden.
+
 ### Manifest veröffentlichen
 
 Das Manifest wird absichtlich in einem zweiten Commit veröffentlicht: Der erste Commit enthält die Katalogdaten und Projektionen. Danach bindet das Manifest exakt diesen Artefakt-Commit und die SHA-256-Prüfsummen der fünf ausgelieferten Dateien. So entsteht keine unmögliche Selbstreferenz auf den Commit, der das Manifest selbst enthält.
