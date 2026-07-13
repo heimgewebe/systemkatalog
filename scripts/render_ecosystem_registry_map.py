@@ -195,8 +195,8 @@ class MermaidRenderer:
     def _render_nodes(self, nodes: list[dict[str, Any]], node_ids: dict[str, str]) -> list[str]:
         lines: list[str] = []
         nodes_by_kind: dict[str, list[dict[str, Any]]] = defaultdict(list)
-        for node in sorted(nodes, key=lambda item: (item["kind"], item["id"])):
-            nodes_by_kind[node["kind"]].append(node)
+        for node in sorted(nodes, key=lambda item: (item["type"], item["id"])):
+            nodes_by_kind[node["type"]].append(node)
 
         for kind in self._ordered_kinds(nodes):
             title = self.config.title_for(kind)
@@ -209,7 +209,7 @@ class MermaidRenderer:
         return lines
 
     def _ordered_kinds(self, nodes: list[dict[str, Any]]) -> list[str]:
-        present = {node["kind"] for node in nodes}
+        present = {node["type"] for node in nodes}
         ordered = [kind for kind in self.config.kind_order if kind in present]
         extras = sorted(present - set(self.config.kind_order))
         return ordered + extras
@@ -306,11 +306,11 @@ def escape_label(value: object) -> str:
 
 
 def node_label(node: dict[str, Any]) -> str:
-    label = escape_label(node["label"])
+    label = escape_label(node["name"])
     node_id = escape_label(node["id"])
-    kind = escape_label(node["kind"])
+    node_type = escape_label(node["type"])
     purpose = escape_label(node["purpose"])
-    return f"{label}<br/>id: {node_id}<br/>{kind}<br/>{purpose}"
+    return f"{label}<br/>id: {node_id}<br/>{node_type}<br/>{purpose}"
 
 
 def ordered_kinds(nodes: list[dict[str, Any]]) -> list[str]:

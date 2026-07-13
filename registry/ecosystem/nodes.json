@@ -3,199 +3,517 @@
   "kind": "system_catalog_inventory",
   "owner": "repo:systemkatalog",
   "catalogRole": "canonical_system_inventory",
-  "updatedAt": "2026-07-12",
+  "updatedAt": "2026-07-13",
   "nodes": [
     {
       "id": "actor:alexander",
-      "kind": "human",
-      "label": "Alexander",
-      "purpose": "meaning, approval and abort authority outside automation"
+      "name": "Alexander",
+      "type": "human",
+      "purpose": "meaning, approval and abort authority outside automation",
+      "notResponsibleFor": [
+        "automated execution",
+        "machine-derived repository or runtime state"
+      ],
+      "truthOwnership": [],
+      "entrypoints": {
+        "authorityPolicy": "policy/system-catalog.v1.json"
+      }
     },
     {
       "id": "artifact:ecosystem-map",
-      "kind": "artifact",
-      "label": "Ecosystem Map v0",
-      "purpose": "machine-readable overview graph and rendered orientation map"
+      "name": "Ecosystem Map v0",
+      "type": "artifact",
+      "purpose": "machine-readable overview graph and rendered orientation map",
+      "notResponsibleFor": [
+        "claim truth",
+        "runtime health",
+        "merge readiness"
+      ],
+      "truthOwnership": [],
+      "entrypoints": {
+        "artifact": "rendered/ecosystem-registry-map.mmd"
+      }
     },
     {
       "id": "repo:systemkatalog",
-      "kind": "repository",
-      "label": "Systemkatalog",
-      "purpose": "app-independent catalog for system purposes, truth ownership, stable relations and entrypoints"
+      "name": "Systemkatalog",
+      "type": "repository",
+      "purpose": "app-independent catalog for system purposes, truth ownership, stable relations and entrypoints",
+      "notResponsibleFor": [
+        "task priority or status",
+        "runtime health",
+        "merge readiness",
+        "agent dispatch"
+      ],
+      "truthOwnership": [
+        "ecosystem_semantics"
+      ],
+      "entrypoints": {
+        "repository": "https://github.com/heimgewebe/systemkatalog",
+        "readme": "README.md",
+        "agentEntry": "AGENTS.md"
+      }
     },
     {
       "id": "repo:bureau",
-      "kind": "repository",
-      "label": "Bureau",
-      "purpose": "task cadence, delegation, run reporting"
+      "name": "Bureau",
+      "type": "repository",
+      "purpose": "task cadence, delegation, run reporting",
+      "notResponsibleFor": [
+        "runtime execution",
+        "Git and review truth",
+        "ecosystem semantics"
+      ],
+      "truthOwnership": [
+        "tasks_claims_completion"
+      ],
+      "entrypoints": {
+        "repository": "https://github.com/heimgewebe/bureau"
+      }
     },
     {
       "id": "repo:grabowski",
-      "kind": "repository",
-      "label": "Grabowski",
-      "purpose": "operator execution, repo work, review gates"
+      "name": "Grabowski",
+      "type": "repository",
+      "purpose": "operator execution, repo work, review gates",
+      "notResponsibleFor": [
+        "task priority",
+        "ecosystem semantics",
+        "primary Git or runtime truth"
+      ],
+      "truthOwnership": [
+        "agent_routing",
+        "local_fleet_execution"
+      ],
+      "entrypoints": {
+        "repository": "https://github.com/heimgewebe/grabowski"
+      }
     },
     {
       "id": "repo:weltgewebe",
-      "kind": "repository",
-      "label": "Weltgewebe",
-      "purpose": "product and domain core"
+      "name": "Weltgewebe",
+      "type": "repository",
+      "purpose": "product and domain core",
+      "notResponsibleFor": [
+        "ecosystem governance",
+        "fleet task orchestration"
+      ],
+      "truthOwnership": [],
+      "entrypoints": {
+        "repository": "https://github.com/heimgewebe/weltgewebe"
+      }
     },
     {
       "id": "repo:lenskit",
-      "kind": "repository",
-      "label": "Lenskit / RepoBrief implementation",
-      "purpose": "context view and citable repository briefs"
+      "name": "Lenskit / RepoBrief implementation",
+      "type": "repository",
+      "purpose": "context view and citable repository briefs",
+      "notResponsibleFor": [
+        "repository operational state",
+        "task priority",
+        "merge authorization"
+      ],
+      "truthOwnership": [
+        "repository_context_citations"
+      ],
+      "entrypoints": {
+        "repository": "https://github.com/heimgewebe/lenskit"
+      }
     },
     {
       "id": "concept:repobrief",
-      "kind": "concept",
-      "label": "RepoBrief",
-      "purpose": "public name for context-view layer"
+      "name": "RepoBrief",
+      "type": "concept",
+      "purpose": "public name for context-view layer",
+      "notResponsibleFor": [
+        "repository mutation",
+        "runtime health",
+        "task dispatch"
+      ],
+      "truthOwnership": [],
+      "entrypoints": {
+        "implementation": "https://github.com/heimgewebe/lenskit"
+      }
     },
     {
       "id": "repo:steuerboard",
-      "kind": "repository",
-      "label": "Steuerboard",
-      "purpose": "read-only repo-state signal"
+      "name": "Steuerboard",
+      "type": "repository",
+      "purpose": "read-only repo-state signal",
+      "notResponsibleFor": [
+        "task authorization",
+        "merge approval",
+        "runtime mutation"
+      ],
+      "truthOwnership": [
+        "repository_observation_readiness"
+      ],
+      "entrypoints": {
+        "repository": "https://github.com/heimgewebe/steuerboard"
+      }
     },
     {
       "id": "repo:vibe-lab",
-      "kind": "repository",
-      "label": "Vibe-Lab",
-      "purpose": "method lab and evidence experiments"
+      "name": "Vibe-Lab",
+      "type": "repository",
+      "purpose": "method lab and evidence experiments",
+      "notResponsibleFor": [
+        "production authority",
+        "task status",
+        "automatic policy application"
+      ],
+      "truthOwnership": [
+        "bounded_experiments"
+      ],
+      "entrypoints": {
+        "repository": "https://github.com/heimgewebe/vibe-lab"
+      }
     },
     {
       "id": "repo:chronik",
-      "kind": "repository",
-      "label": "Chronik",
-      "purpose": "append-only event ledger and historical evidence axis"
+      "name": "Chronik",
+      "type": "repository",
+      "purpose": "append-only event ledger and historical evidence axis",
+      "notResponsibleFor": [
+        "task state",
+        "policy decisions",
+        "runtime mutation"
+      ],
+      "truthOwnership": [
+        "append_only_history"
+      ],
+      "entrypoints": {
+        "repository": "https://github.com/heimgewebe/chronik"
+      }
     },
     {
       "id": "repo:schauwerk",
-      "kind": "repository",
-      "label": "Schauwerk",
-      "purpose": "visual surface and projection layer"
+      "name": "Schauwerk",
+      "type": "repository",
+      "purpose": "visual surface and projection layer",
+      "notResponsibleFor": [
+        "canonical ecosystem semantics",
+        "task state",
+        "execution authority"
+      ],
+      "truthOwnership": [
+        "specialized_visual_rendering"
+      ],
+      "entrypoints": {
+        "repository": "https://github.com/heimgewebe/schauwerk"
+      }
     },
     {
       "id": "repo:infra",
-      "kind": "repository",
-      "label": "Infra",
-      "purpose": "host, network, cockpit and operational runbooks"
+      "name": "Infra",
+      "type": "repository",
+      "purpose": "host, network, cockpit and operational runbooks",
+      "notResponsibleFor": [
+        "task state",
+        "ecosystem semantics",
+        "product-domain truth"
+      ],
+      "truthOwnership": [],
+      "entrypoints": {
+        "repository": "https://github.com/heimgewebe/infra"
+      }
     },
     {
       "id": "repo:device-graph",
-      "kind": "repository",
-      "label": "Device Graph",
-      "purpose": "infrastructure device graph; adjacent but not ecosystem-governance canon"
+      "name": "Device Graph",
+      "type": "repository",
+      "purpose": "infrastructure device graph; adjacent but not ecosystem-governance canon",
+      "notResponsibleFor": [
+        "ecosystem governance canon",
+        "task state",
+        "merge authority"
+      ],
+      "truthOwnership": [],
+      "entrypoints": {
+        "repository": "https://github.com/heimgewebe/device-graph"
+      }
     },
     {
       "id": "service:github",
-      "kind": "service",
-      "label": "GitHub",
-      "purpose": "repository, PR, issue and review state"
+      "name": "GitHub",
+      "type": "service",
+      "purpose": "repository, PR, issue and review state",
+      "notResponsibleFor": [
+        "local runtime health",
+        "task priority",
+        "ecosystem semantics"
+      ],
+      "truthOwnership": [
+        "branches_prs_reviews"
+      ],
+      "entrypoints": {
+        "organization": "https://github.com/heimgewebe"
+      }
     },
     {
       "id": "service:ci",
-      "kind": "service",
-      "label": "CI / Checks",
-      "purpose": "automated tests, lint, gates and review signals"
+      "name": "CI / Checks",
+      "type": "service",
+      "purpose": "automated tests, lint, gates and review signals",
+      "notResponsibleFor": [
+        "merge authorization",
+        "runtime health",
+        "task priority"
+      ],
+      "truthOwnership": [
+        "technical_check_results"
+      ],
+      "entrypoints": {
+        "checks": "https://github.com/heimgewebe"
+      }
     },
     {
       "id": "repo:leitstand",
-      "kind": "repository",
-      "label": "Leitstand",
-      "purpose": "read-only ecosystem observability and status projection"
+      "name": "Leitstand",
+      "type": "repository",
+      "purpose": "read-only ecosystem observability and status projection",
+      "notResponsibleFor": [
+        "canonical truth ownership",
+        "task authorization",
+        "runtime mutation"
+      ],
+      "truthOwnership": [
+        "general_operator_display"
+      ],
+      "entrypoints": {
+        "repository": "https://github.com/heimgewebe/leitstand"
+      }
     },
     {
       "id": "repo:plexer",
-      "kind": "repository",
-      "label": "Plexer",
-      "purpose": "bounded event delivery and queueing gateway"
+      "name": "Plexer",
+      "type": "repository",
+      "purpose": "bounded event delivery and queueing gateway",
+      "notResponsibleFor": [
+        "task prioritization",
+        "canonical history",
+        "ecosystem semantics"
+      ],
+      "truthOwnership": [],
+      "entrypoints": {
+        "repository": "https://github.com/heimgewebe/plexer"
+      }
     },
     {
       "id": "repo:heimlern",
-      "kind": "repository",
-      "label": "heimlern",
-      "purpose": "offline operator-learning and proposal generation"
+      "name": "heimlern",
+      "type": "repository",
+      "purpose": "offline operator-learning and proposal generation",
+      "notResponsibleFor": [
+        "automatic policy application",
+        "task dispatch",
+        "merge authorization"
+      ],
+      "truthOwnership": [
+        "offline_learning_proposals"
+      ],
+      "entrypoints": {
+        "repository": "https://github.com/heimgewebe/heimlern"
+      }
     },
     {
       "id": "repo:metarepo",
-      "kind": "repository",
-      "label": "Metarepo",
-      "purpose": "Fleet membership, canonical shared contracts and repository templates"
+      "name": "Metarepo",
+      "type": "repository",
+      "purpose": "Fleet membership, canonical shared contracts and repository templates",
+      "notResponsibleFor": [
+        "repository purpose semantics",
+        "runtime health",
+        "task state"
+      ],
+      "truthOwnership": [
+        "fleet_membership"
+      ],
+      "entrypoints": {
+        "repository": "https://github.com/heimgewebe/metarepo"
+      }
     },
     {
       "id": "repo:wgx",
-      "kind": "repository",
-      "label": "WGX",
-      "purpose": "Fleet CLI and reusable repository workflow engine"
+      "name": "WGX",
+      "type": "repository",
+      "purpose": "Fleet CLI and reusable repository workflow engine",
+      "notResponsibleFor": [
+        "repository purpose semantics",
+        "runtime truth",
+        "task priority"
+      ],
+      "truthOwnership": [
+        "shared_fleet_ci_checks"
+      ],
+      "entrypoints": {
+        "repository": "https://github.com/heimgewebe/wgx"
+      }
     },
     {
       "id": "repo:contracts-mirror",
-      "kind": "repository",
-      "label": "Contracts Mirror",
-      "purpose": "Validated mirror and publication surface for canonical Metarepo contracts"
+      "name": "Contracts Mirror",
+      "type": "repository",
+      "purpose": "Validated mirror and publication surface for canonical Metarepo contracts",
+      "notResponsibleFor": [
+        "canonical contract authorship",
+        "runtime status",
+        "task authority"
+      ],
+      "truthOwnership": [],
+      "entrypoints": {
+        "repository": "https://github.com/heimgewebe/contracts-mirror"
+      }
     },
     {
       "id": "repo:hausKI",
-      "kind": "repository",
-      "label": "HausKI",
-      "purpose": "Local offline-first AI orchestration and policy-controlled memory"
+      "name": "HausKI",
+      "type": "repository",
+      "purpose": "Local offline-first AI orchestration and policy-controlled memory",
+      "notResponsibleFor": [
+        "fleet task authority",
+        "ecosystem catalog semantics",
+        "merge approval"
+      ],
+      "truthOwnership": [],
+      "entrypoints": {
+        "repository": "https://github.com/heimgewebe/hausKI"
+      }
     },
     {
       "id": "repo:hausKI-audio",
-      "kind": "repository",
-      "label": "HausKI Audio",
-      "purpose": "Local audio playback, recording and automation"
+      "name": "HausKI Audio",
+      "type": "repository",
+      "purpose": "Local audio playback, recording and automation",
+      "notResponsibleFor": [
+        "ecosystem catalog semantics",
+        "task authority",
+        "merge approval"
+      ],
+      "truthOwnership": [],
+      "entrypoints": {
+        "repository": "https://github.com/heimgewebe/hausKI-audio"
+      }
     },
     {
       "id": "repo:semantAH",
-      "kind": "repository",
-      "label": "semantAH",
-      "purpose": "Semantic index, embeddings and knowledge-graph pipeline"
+      "name": "semantAH",
+      "type": "repository",
+      "purpose": "Semantic index, embeddings and knowledge-graph pipeline",
+      "notResponsibleFor": [
+        "task authority",
+        "canonical event history",
+        "runtime health"
+      ],
+      "truthOwnership": [],
+      "entrypoints": {
+        "repository": "https://github.com/heimgewebe/semantAH"
+      }
     },
     {
       "id": "repo:aussensensor",
-      "kind": "repository",
-      "label": "Außensensor",
-      "purpose": "Curated external signals and event feeds for Chronik"
+      "name": "Außensensor",
+      "type": "repository",
+      "purpose": "Curated external signals and event feeds for Chronik",
+      "notResponsibleFor": [
+        "task authority",
+        "canonical event history",
+        "merge approval"
+      ],
+      "truthOwnership": [],
+      "entrypoints": {
+        "repository": "https://github.com/heimgewebe/aussensensor"
+      }
     },
     {
       "id": "repo:mitschreiber",
-      "kind": "repository",
-      "label": "Mitschreiber",
-      "purpose": "Privacy-first on-device context capture and redacted event production"
+      "name": "Mitschreiber",
+      "type": "repository",
+      "purpose": "Privacy-first on-device context capture and redacted event production",
+      "notResponsibleFor": [
+        "task authority",
+        "ecosystem semantics",
+        "merge approval"
+      ],
+      "truthOwnership": [],
+      "entrypoints": {
+        "repository": "https://github.com/heimgewebe/mitschreiber"
+      }
     },
     {
       "id": "repo:sichter",
-      "kind": "repository",
-      "label": "Sichter",
-      "purpose": "Code-review and pull-request automation prototype"
+      "name": "Sichter",
+      "type": "repository",
+      "purpose": "Code-review and pull-request automation prototype",
+      "notResponsibleFor": [
+        "merge authority",
+        "task priority",
+        "runtime truth"
+      ],
+      "truthOwnership": [],
+      "entrypoints": {
+        "repository": "https://github.com/heimgewebe/sichter"
+      }
     },
     {
       "id": "repo:heimgeist",
-      "kind": "repository",
-      "label": "Heimgeist",
-      "purpose": "System self-reflection and meta-agent experimentation"
+      "name": "Heimgeist",
+      "type": "repository",
+      "purpose": "System self-reflection and meta-agent experimentation",
+      "notResponsibleFor": [
+        "production authority",
+        "task state",
+        "merge approval"
+      ],
+      "truthOwnership": [],
+      "entrypoints": {
+        "repository": "https://github.com/heimgewebe/heimgeist"
+      }
     },
     {
       "id": "repo:heim-pc",
-      "kind": "repository",
-      "label": "heim-pc",
-      "purpose": "Versioned local operator entry and host orientation"
+      "name": "heim-pc",
+      "type": "repository",
+      "purpose": "Versioned local operator entry and host orientation",
+      "notResponsibleFor": [
+        "fleet task authority",
+        "service runtime truth",
+        "ecosystem semantics"
+      ],
+      "truthOwnership": [],
+      "entrypoints": {
+        "repository": "https://github.com/heimgewebe/heim-pc"
+      }
     },
     {
       "id": "repo:vault-gewebe",
-      "kind": "repository",
-      "label": "Vault Gewebe",
-      "purpose": "Versioned shared knowledge vault and design source material"
+      "name": "Vault Gewebe",
+      "type": "repository",
+      "purpose": "Versioned shared knowledge vault and design source material",
+      "notResponsibleFor": [
+        "task status",
+        "runtime truth",
+        "merge authority"
+      ],
+      "truthOwnership": [],
+      "entrypoints": {
+        "repository": "https://github.com/heimgewebe/vault-gewebe"
+      }
     },
     {
       "id": "repo:commonworld",
-      "kind": "repository",
-      "label": "Commonworld",
-      "purpose": "Interactive globe and commons-oriented world exploration"
+      "name": "Commonworld",
+      "type": "repository",
+      "purpose": "Interactive globe and commons-oriented world exploration",
+      "notResponsibleFor": [
+        "ecosystem governance",
+        "task state",
+        "merge authority"
+      ],
+      "truthOwnership": [],
+      "entrypoints": {
+        "repository": "https://github.com/heimgewebe/commonworld"
+      }
     }
   ]
 }

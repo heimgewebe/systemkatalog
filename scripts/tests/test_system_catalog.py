@@ -55,6 +55,62 @@ class SystemCatalogTests(unittest.TestCase):
         self.assertIn("`heimgewebe/metarepo`", actual)
         self.assertIn("`vault-privat`", actual)
 
+    def test_canonical_nodes_implement_the_full_system_contract(self) -> None:
+        data = json.loads((ROOT / "registry/ecosystem/nodes.json").read_text(encoding="utf-8"))
+        required = {
+            "id", "name", "type", "purpose",
+            "notResponsibleFor", "truthOwnership", "entrypoints",
+        }
+        self.assertEqual(len(data["nodes"]), 32)
+        for node in data["nodes"]:
+            self.assertEqual(set(node), required)
+            self.assertTrue(node["notResponsibleFor"])
+            self.assertTrue(node["entrypoints"])
+        self.assertIn("Nicht zuständig für", (ROOT / "rendered/system-catalog.md").read_text(encoding="utf-8"))
+        self.assertIn("Wahrheitsbesitz", (ROOT / "rendered/system-catalog.md").read_text(encoding="utf-8"))
+
+    def test_missing_canonical_system_field_fails_closed(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            target = self._copy_repository(directory)
+            path = target / "registry/ecosystem/nodes.json"
+            data = json.loads(path.read_text(encoding="utf-8"))
+            del data["nodes"][0]["notResponsibleFor"]
+            path.write_text(json.dumps(data), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "node 1 fields mismatch"):
+                validate(target)
+
+    def test_truth_ownership_drift_fails_closed(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            target = self._copy_repository(directory)
+            path = target / "registry/ecosystem/nodes.json"
+            data = json.loads(path.read_text(encoding="utf-8"))
+            systemkatalog = next(node for node in data["nodes"] if node["id"] == "repo:systemkatalog")
+            systemkatalog["truthOwnership"] = []
+            path.write_text(json.dumps(data), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "truth ownership differs from authority matrix"):
+                validate(target)
+
+    def test_unknown_authority_owner_fails_closed(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            target = self._copy_repository(directory)
+            path = target / "registry/ecosystem/authority-matrix.v1.json"
+            data = json.loads(path.read_text(encoding="utf-8"))
+            data["authorities"][0]["owner"] = "unknown_owner"
+            path.write_text(json.dumps(data), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "neither a catalog system nor an external principal"):
+                validate(target)
+
+    def test_repository_entrypoint_drift_fails_closed(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            target = self._copy_repository(directory)
+            path = target / "registry/ecosystem/nodes.json"
+            data = json.loads(path.read_text(encoding="utf-8"))
+            systemkatalog = next(node for node in data["nodes"] if node["id"] == "repo:systemkatalog")
+            systemkatalog["entrypoints"]["repository"] = "https://example.invalid/wrong"
+            path.write_text(json.dumps(data), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "repository entrypoint mismatch"):
+                validate(target)
+
     def test_active_room_fails_closed(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             target = self._copy_repository(directory)
