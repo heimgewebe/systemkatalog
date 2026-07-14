@@ -34,23 +34,35 @@ class SourceBindingTests(unittest.TestCase):
         self.assertEqual(result["sourceRelationBindings"], result["registryRelations"])
         self.assertEqual(result["freshnessRules"], 5)
 
-    def test_normative_contract_method_and_metarepo_binding(self) -> None:
+    def test_normative_contract_bindings(self) -> None:
         self.assertIn("repository_normative_contract", METHODS)
         bindings = json.loads(
             (ROOT / "registry/ecosystem/source-bindings.v1.json").read_text(encoding="utf-8")
         )
-        item = next(value for value in bindings["systems"] if value["system"] == "repo:metarepo")
-        self.assertEqual(item["method"], "repository_normative_contract")
-        self.assertEqual(
-            item["source"]["commit"],
-            "894657cef6734ecaf64813e83fc0433212d8fd5d",
-        )
-        self.assertEqual(item["source"]["locator"]["path"], "system/metarepo-role.v1.json")
-        self.assertEqual(
-            item["source"]["locator"]["contentSha256"],
-            "af62ea59908708c77640162fcf4c2c306ec4e9266bd08800b0756d1510e9c1dd",
-        )
-        self.assertLessEqual(item["uncertainty"], 0.03)
+        expected = {
+            "repo:metarepo": {
+                "commit": "894657cef6734ecaf64813e83fc0433212d8fd5d",
+                "path": "system/metarepo-role.v1.json",
+                "sha256": "af62ea59908708c77640162fcf4c2c306ec4e9266bd08800b0756d1510e9c1dd",
+            },
+            "repo:heim-pc": {
+                "commit": "140e84bc28d3b208a51e2edb1cb27c5946c38d49",
+                "path": "manifest/operator-entry.v1.json",
+                "sha256": "47a4c4312c0469ab1ad7bfd63b7b7391928461115f36d5dda3b3f2354120fe8a",
+            },
+        }
+        for system, source in expected.items():
+            with self.subTest(system=system):
+                item = next(
+                    value for value in bindings["systems"] if value["system"] == system
+                )
+                self.assertEqual(item["method"], "repository_normative_contract")
+                self.assertEqual(item["source"]["commit"], source["commit"])
+                self.assertEqual(item["source"]["locator"]["path"], source["path"])
+                self.assertEqual(
+                    item["source"]["locator"]["contentSha256"], source["sha256"]
+                )
+                self.assertLessEqual(item["uncertainty"], 0.03)
 
     def test_private_repository_bindings_publish_no_commit(self) -> None:
         bindings = json.loads((ROOT / "registry/ecosystem/source-bindings.v1.json").read_text(encoding="utf-8"))

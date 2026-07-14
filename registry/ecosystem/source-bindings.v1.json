@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "kind": "system_catalog_source_bindings",
   "catalogRepository": "heimgewebe/systemkatalog",
-  "observedAt": "2026-07-14T20:33:14+02:00",
+  "observedAt": "2026-07-14T20:49:21+02:00",
   "systems": [
     {
       "system": "actor:alexander",
@@ -155,15 +155,15 @@
       "system": "repo:vibe-lab",
       "source": {
         "repository": "heimgewebe/vibe-lab",
-        "commit": "dbf76080c405fd594be9c773236d8c640b8de994",
+        "commit": "535aa709c24e866991b2200031ff407d28f59896",
         "locator": {
           "kind": "file",
           "path": "README.md",
-          "contentSha256": "70365f4e2bc2c59f92f6510743dc06be3a4a9869c895fd148b743e6dc11687d6"
+          "contentSha256": "f250fb0c9c9a66a20d1514c5e67f572527b2b5fc9d784cd5135fb9f02faaf453"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-13T07:55:00+02:00",
+      "reviewedAt": "2026-07-14T20:49:21+02:00",
       "method": "repository_primary_document",
       "uncertainty": 0.08
     },
@@ -187,15 +187,15 @@
       "system": "repo:schauwerk",
       "source": {
         "repository": "heimgewebe/schauwerk",
-        "commit": "4bf61ade226adb1b5abf578c08d4679700d70eba",
+        "commit": "19b7341742f7a5a4134f65e5335380a16802980a",
         "locator": {
           "kind": "file",
           "path": "README.md",
-          "contentSha256": "197ff210126d2a092983bb4cc580ba00ac2c3d2fa93d5fd466ca419b2bdd7b2d"
+          "contentSha256": "712093396c64ab5763e7ea71da23e9c6dbb4fd5edbfbea93b2fb6713ef840d62"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-13T07:55:00+02:00",
+      "reviewedAt": "2026-07-14T20:49:21+02:00",
       "method": "repository_primary_document",
       "uncertainty": 0.08
     },
@@ -476,17 +476,17 @@
       "system": "repo:heim-pc",
       "source": {
         "repository": "heimgewebe/heim-pc",
-        "commit": "a21fff5048a76b32d9ce5d8bf3e9df2f573c5906",
+        "commit": "140e84bc28d3b208a51e2edb1cb27c5946c38d49",
         "locator": {
           "kind": "file",
-          "path": "README.md",
-          "contentSha256": "dcdf6e4808a46a1a2f602b9f33d71ee3428155484e2703ac6db435583c1d0f8b"
+          "path": "manifest/operator-entry.v1.json",
+          "contentSha256": "47a4c4312c0469ab1ad7bfd63b7b7391928461115f36d5dda3b3f2354120fe8a"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-13T12:20:18+02:00",
-      "method": "repository_primary_document",
-      "uncertainty": 0.05
+      "reviewedAt": "2026-07-14T20:49:21+02:00",
+      "method": "repository_normative_contract",
+      "uncertainty": 0.02
     },
     {
       "system": "repo:vault-gewebe",
@@ -507,15 +507,15 @@
       "system": "repo:commonworld",
       "source": {
         "repository": "heimgewebe/commonworld",
-        "commit": "92c6993b8c1cac07caf0771c6071de9ca4721047",
+        "commit": "face76805c1e7f4c424efc5f1b6ec337831de7ae",
         "locator": {
           "kind": "file",
           "path": "README.md",
-          "contentSha256": "d2b4da8bcb184d40a5398376c051dc4b5d472fae80b9a9060bb9623dded3fd98"
+          "contentSha256": "6d42e4ab9eaa2e68175b7b5204d37bee77a04222f894b5f77c802fd7f6ec277b"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-13T07:55:00+02:00",
+      "reviewedAt": "2026-07-14T20:49:21+02:00",
       "method": "repository_primary_document",
       "uncertainty": 0.08
     },
