@@ -5,9 +5,15 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
+
+# Canonical drift runs execute on the operator host and must not leave local
+# bytecode artifacts in the versioned checkout. This is set before the lazy
+# import of system_catalog_fleet in build_report().
+sys.dont_write_bytecode = True
 
 ROOT = Path(__file__).resolve().parents[1]
 
