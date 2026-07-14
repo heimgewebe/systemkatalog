@@ -147,6 +147,16 @@ def _validate_local_source_bytes(root: Path, source: dict[str, Any], label: str)
     )
     if inside.returncode != 0:
         return None
+    ancestor = subprocess.run(
+        ["git", "merge-base", "--is-ancestor", source["commit"], "HEAD"],
+        cwd=root,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )
+    if ancestor.returncode == 1:
+        raise ValueError(f"{label} commit is not an ancestor of HEAD")
+    if ancestor.returncode != 0:
+        raise ValueError(f"{label} cannot verify bound catalog commit ancestry")
     result = subprocess.run(
         ["git", "show", f"{source['commit']}:{locator['path']}"],
         cwd=root,

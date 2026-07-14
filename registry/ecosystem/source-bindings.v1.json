@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "kind": "system_catalog_source_bindings",
   "catalogRepository": "heimgewebe/systemkatalog",
-  "observedAt": "2026-07-14T20:21:03+02:00",
+  "observedAt": "2026-07-14T20:33:14+02:00",
   "systems": [
     {
       "system": "actor:alexander",
@@ -1091,7 +1091,7 @@
       },
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "717a0d4ad4d40ecdebe6bd10b5f1b5dbaac0b707",
+        "commit": "fe69cec726a9026b15afa1abe66337c20eca4fdb",
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/edges.json",
@@ -1100,7 +1100,7 @@
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-13T13:20:00+02:00",
+      "reviewedAt": "2026-07-14T20:33:14+02:00",
       "method": "catalog_curator_review",
       "uncertainty": 0.08
     },
@@ -1511,7 +1511,7 @@
       },
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "717a0d4ad4d40ecdebe6bd10b5f1b5dbaac0b707",
+        "commit": "fe69cec726a9026b15afa1abe66337c20eca4fdb",
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/edges.json",
@@ -1520,7 +1520,7 @@
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-13T13:20:00+02:00",
+      "reviewedAt": "2026-07-14T20:33:14+02:00",
       "method": "catalog_curator_review",
       "uncertainty": 0.08
     }
