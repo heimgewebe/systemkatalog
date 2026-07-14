@@ -26,7 +26,7 @@ class SystemCatalogTests(unittest.TestCase):
         result = validate(ROOT)
         self.assertEqual(result["status"], "valid")
         self.assertEqual(result["registrySystems"], 37)
-        self.assertEqual(result["registryRelations"], 43)
+        self.assertEqual(result["registryRelations"], 44)
         self.assertEqual(result["authorityDomains"], 16)
         self.assertEqual(result["catalogRepositories"], 32)
         self.assertEqual(result["fleetRepositories"], 18)

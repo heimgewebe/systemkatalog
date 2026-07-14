@@ -25,7 +25,7 @@ Der Katalog beantwortet, welche Systeme existieren, welchem Zweck sie dienen, we
 | HausKI Audio | repository | Local audio playback, recording and automation | ecosystem catalog semantics<br>task authority<br>merge approval | — | `repository`: [https://github.com/heimgewebe/hausKI-audio](https://github.com/heimgewebe/hausKI-audio) |
 | heim-pc | repository | Versioned local operator entry and host orientation | fleet task authority<br>service runtime truth<br>ecosystem semantics | — | `repository`: [https://github.com/heimgewebe/heim-pc](https://github.com/heimgewebe/heim-pc) |
 | Heimgeist | repository | System self-reflection and meta-agent experimentation | production authority<br>task state<br>merge approval | — | `repository`: [https://github.com/heimgewebe/heimgeist](https://github.com/heimgewebe/heimgeist) |
-| heimlern | repository | offline operator-learning and proposal generation | automatic policy application<br>task dispatch<br>merge authorization | offline_learning_proposals | `repository`: [https://github.com/heimgewebe/heimlern](https://github.com/heimgewebe/heimlern) |
+| heimlern | repository | retired reference for the former offline operator-learning implementation | active learning proposals<br>runtime operation<br>automatic policy application<br>task dispatch<br>merge authorization | — | `repository`: [https://github.com/heimgewebe/heimlern](https://github.com/heimgewebe/heimlern) |
 | Heimserver | repository | private operations and contract repository for the home-network service layer, edge gateway, DDNS and Weltgewebe infrastructure | runtime health claims without live checks<br>task state<br>ecosystem semantics<br>secret storage in Git | — | `agentEntry`: [https://github.com/heimgewebe/heimserver/blob/main/AGENTS.md](https://github.com/heimgewebe/heimserver/blob/main/AGENTS.md)<br>`readme`: [https://github.com/heimgewebe/heimserver/blob/main/README.md](https://github.com/heimgewebe/heimserver/blob/main/README.md)<br>`repository`: [https://github.com/heimgewebe/heimserver](https://github.com/heimgewebe/heimserver)<br>`systemMap`: [https://github.com/heimgewebe/heimserver/blob/main/SYSTEM_MAP.md](https://github.com/heimgewebe/heimserver/blob/main/SYSTEM_MAP.md) |
 | Infra | repository | host, network, cockpit and operational runbooks | task state<br>ecosystem semantics<br>product-domain truth | — | `repository`: [https://github.com/heimgewebe/infra](https://github.com/heimgewebe/infra) |
 | Leitstand | repository | read-only ecosystem observability and status projection | canonical truth ownership<br>task authorization<br>runtime mutation | general_operator_display | `repository`: [https://github.com/heimgewebe/leitstand](https://github.com/heimgewebe/leitstand) |
@@ -42,7 +42,7 @@ Der Katalog beantwortet, welche Systeme existieren, welchem Zweck sie dienen, we
 | Steuerboard | repository | read-only repo-state signal | task authorization<br>merge approval<br>runtime mutation | repository_observation_readiness | `repository`: [https://github.com/heimgewebe/steuerboard](https://github.com/heimgewebe/steuerboard) |
 | Systemkatalog | repository | app-independent catalog for system purposes, truth ownership, stable relations and entrypoints | task priority or status<br>runtime health<br>merge readiness<br>agent dispatch | ecosystem_semantics | `agentEntry`: [AGENTS.md](../AGENTS.md)<br>`readme`: [README.md](../README.md)<br>`repository`: [https://github.com/heimgewebe/systemkatalog](https://github.com/heimgewebe/systemkatalog) |
 | Vault Gewebe | repository | Versioned shared knowledge vault and design source material | task status<br>runtime truth<br>merge authority | — | `repository`: [https://github.com/heimgewebe/vault-gewebe](https://github.com/heimgewebe/vault-gewebe) |
-| Vibe-Lab | repository | method lab and evidence experiments | production authority<br>task status<br>automatic policy application | bounded_experiments | `repository`: [https://github.com/heimgewebe/vibe-lab](https://github.com/heimgewebe/vibe-lab) |
+| Vibe-Lab | repository | bounded prospective experiments, evidence review and proposal-ready learning candidates | production authority<br>task status<br>automatic policy or routing application<br>append-only historical truth | bounded_experiments<br>reviewed_learning_proposals | `repository`: [https://github.com/heimgewebe/vibe-lab](https://github.com/heimgewebe/vibe-lab) |
 | Weltgewebe | repository | product and domain core | ecosystem governance<br>fleet task orchestration | — | `repository`: [https://github.com/heimgewebe/weltgewebe](https://github.com/heimgewebe/weltgewebe) |
 | WGX | repository | Fleet CLI and reusable repository workflow engine | repository purpose semantics<br>runtime truth<br>task priority | shared_fleet_ci_checks | `repository`: [https://github.com/heimgewebe/wgx](https://github.com/heimgewebe/wgx) |
 | CI / Checks | service | automated tests, lint, gates and review signals | merge authorization<br>runtime health<br>task priority | technical_check_results | `checks`: [https://github.com/heimgewebe](https://github.com/heimgewebe) |
@@ -113,9 +113,9 @@ Begründete Ausschlüsse:
 | `general_operator_display` | `leitstand` | — |
 | `live_service_state` | `runtime` | leitstand |
 | `local_fleet_execution` | `grabowski` | leitstand |
-| `offline_learning_proposals` | `heimlern` | systemkatalog |
 | `repository_context_citations` | `repobrief_lenskit` | rlens, systemkatalog |
 | `repository_observation_readiness` | `steuerboard` | grabowski, leitstand |
+| `reviewed_learning_proposals` | `vibe_lab` | bureau, systemkatalog |
 | `shared_fleet_ci_checks` | `wgx` | github_ci |
 | `specialized_visual_rendering` | `schauwerk` | — |
 | `tasks_claims_completion` | `bureau` | leitstand |
@@ -135,7 +135,7 @@ Nur Beziehungen der Klassen `stable`, `bounded` oder `related` werden angezeigt.
 | Bureau | `provides` | Leitstand | `stable` | Bureau may provide read-only task status artifacts. |
 | Chronik | `displayed_by` | Leitstand | `stable` | Leitstand may display Chronik state without treating the display as authority. |
 | Chronik | `evidence_for` | Bureau | `bounded` | Chronik event presence can support evidence references; Bureau still owns task and verification truth. |
-| Chronik | `learning_input_for` | heimlern | `stable` | Heimlern may consume historical outcomes offline; no policy is auto-applied. |
+| Chronik | `learning_input_for` | Vibe-Lab | `bounded` | Chronik may supply frozen historical outcome cohorts as evidence for prospectively registered Vibe-Lab experiments; no policy or task is auto-applied. |
 | Chronik | `provides` | Leitstand | `stable` | Chronik provides event trace artifacts for timelines. |
 | Chronik | `provides` | Systemkatalog | `stable` | Chronik provides event trace and historical continuity. |
 | Commonworld | `operates_on` | GitHub | `stable` | Commonworld product work is versioned and validated through repository, pull-request and CI state. |
@@ -164,6 +164,7 @@ Nur Beziehungen der Klassen `stable`, `bounded` oder `related` werden angezeigt.
 | Systemkatalog | `owns` | Ecosystem Map v0 | `stable` | Systemkatalog owns the map semantics during v0. |
 | Systemkatalog | `provides` | Leitstand | `stable` | Systemkatalog provides map artifacts for Leitstand display. |
 | Vault Gewebe | `scope_boundary` | Systemkatalog | `related` | Vault material may inform catalog edits but is not active catalog canon. |
+| Vibe-Lab | `exports_candidate_to` | Bureau | `bounded` | Vibe-Lab may export reviewed proposal-ready candidates; Bureau alone decides whether they become work. |
 | Vibe-Lab | `provides` | Systemkatalog | `stable` | Vibe-Lab provides method experiments and evidence patterns. |
 | Weltgewebe | `operates_on` | GitHub | `stable` | Weltgewebe product work is still validated through repo, PR and CI state. |
 | WGX | `provides` | CI / Checks | `stable` | WGX provides reusable Fleet checks and repository workflow mechanics. |

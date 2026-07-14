@@ -157,14 +157,16 @@
       "id": "repo:vibe-lab",
       "name": "Vibe-Lab",
       "type": "repository",
-      "purpose": "method lab and evidence experiments",
+      "purpose": "bounded prospective experiments, evidence review and proposal-ready learning candidates",
       "notResponsibleFor": [
         "production authority",
         "task status",
-        "automatic policy application"
+        "automatic policy or routing application",
+        "append-only historical truth"
       ],
       "truthOwnership": [
-        "bounded_experiments"
+        "bounded_experiments",
+        "reviewed_learning_proposals"
       ],
       "entrypoints": {
         "repository": "https://github.com/heimgewebe/vibe-lab"
@@ -304,15 +306,15 @@
       "id": "repo:heimlern",
       "name": "heimlern",
       "type": "repository",
-      "purpose": "offline operator-learning and proposal generation",
+      "purpose": "retired reference for the former offline operator-learning implementation",
       "notResponsibleFor": [
+        "active learning proposals",
+        "runtime operation",
         "automatic policy application",
         "task dispatch",
         "merge authorization"
       ],
-      "truthOwnership": [
-        "offline_learning_proposals"
-      ],
+      "truthOwnership": [],
       "entrypoints": {
         "repository": "https://github.com/heimgewebe/heimlern"
       }

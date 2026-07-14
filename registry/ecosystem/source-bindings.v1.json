@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "kind": "system_catalog_source_bindings",
   "catalogRepository": "heimgewebe/systemkatalog",
-  "observedAt": "2026-07-13T12:20:18+02:00",
+  "observedAt": "2026-07-13T13:20:00+02:00",
   "systems": [
     {
       "system": "actor:alexander",
@@ -1086,23 +1086,23 @@
     {
       "relation": {
         "from": "repo:chronik",
-        "to": "repo:heimlern",
+        "to": "repo:vibe-lab",
         "type": "learning_input_for"
       },
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "3ead205d056ebfb9384ab0811c87b1a4d2214804",
+        "commit": "717a0d4ad4d40ecdebe6bd10b5f1b5dbaac0b707",
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/edges.json",
           "pointer": "/edges/23",
-          "contentSha256": "7354e32760af8a2bf03843874b5598edd61e366463770f085aa1017c4c1e6387"
+          "contentSha256": "b6b6c7c72233477ce6d79f3dd6ec2998f69940c8801e4e2bbdbf4793f069303f"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-13T07:55:00+02:00",
+      "reviewedAt": "2026-07-13T13:20:00+02:00",
       "method": "catalog_curator_review",
-      "uncertainty": 0.18
+      "uncertainty": 0.08
     },
     {
       "relation": {
@@ -1502,6 +1502,27 @@
       "reviewedAt": "2026-07-13T07:55:00+02:00",
       "method": "catalog_curator_review",
       "uncertainty": 0.18
+    },
+    {
+      "relation": {
+        "from": "repo:vibe-lab",
+        "to": "repo:bureau",
+        "type": "exports_candidate_to"
+      },
+      "source": {
+        "repository": "heimgewebe/systemkatalog",
+        "commit": "717a0d4ad4d40ecdebe6bd10b5f1b5dbaac0b707",
+        "locator": {
+          "kind": "json_pointer",
+          "path": "registry/ecosystem/edges.json",
+          "pointer": "/edges/43",
+          "contentSha256": "b6b6c7c72233477ce6d79f3dd6ec2998f69940c8801e4e2bbdbf4793f069303f"
+        },
+        "defaultBranch": "main"
+      },
+      "reviewedAt": "2026-07-13T13:20:00+02:00",
+      "method": "catalog_curator_review",
+      "uncertainty": 0.08
     }
   ],
   "doesNotEstablish": [

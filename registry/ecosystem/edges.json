@@ -192,10 +192,10 @@
     },
     {
       "from": "repo:chronik",
-      "to": "repo:heimlern",
+      "to": "repo:vibe-lab",
       "type": "learning_input_for",
-      "stability": "stable",
-      "meaning": "Heimlern may consume historical outcomes offline; no policy is auto-applied."
+      "stability": "bounded",
+      "meaning": "Chronik may supply frozen historical outcome cohorts as evidence for prospectively registered Vibe-Lab experiments; no policy or task is auto-applied."
     },
     {
       "from": "repo:metarepo",
@@ -329,6 +329,13 @@
       "type": "provides",
       "stability": "bounded",
       "meaning": "Snippet Engine Control provides contract-first diagnostics and export planning for the local interaction layer."
+    },
+    {
+      "from": "repo:vibe-lab",
+      "to": "repo:bureau",
+      "type": "exports_candidate_to",
+      "stability": "bounded",
+      "meaning": "Vibe-Lab may export reviewed proposal-ready candidates; Bureau alone decides whether they become work."
     }
   ]
 }

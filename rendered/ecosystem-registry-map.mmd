@@ -22,7 +22,7 @@ flowchart TD
         repo_hausKI_audio["HausKI Audio<br/>id: repo:hausKI-audio<br/>repository<br/>Local audio playback, recording and automation"]
         repo_heim_pc["heim-pc<br/>id: repo:heim-pc<br/>repository<br/>Versioned local operator entry and host orientation"]
         repo_heimgeist["Heimgeist<br/>id: repo:heimgeist<br/>repository<br/>System self-reflection and meta-agent experimentation"]
-        repo_heimlern["heimlern<br/>id: repo:heimlern<br/>repository<br/>offline operator-learning and proposal generation"]
+        repo_heimlern["heimlern<br/>id: repo:heimlern<br/>repository<br/>retired reference for the former offline operator-learning implementation"]
         repo_heimserver["Heimserver<br/>id: repo:heimserver<br/>repository<br/>private operations and contract repository for the home-network service layer, edge gateway, DDNS and Weltgewebe infrastructure"]
         repo_infra["Infra<br/>id: repo:infra<br/>repository<br/>host, network, cockpit and operational runbooks"]
         repo_leitstand["Leitstand<br/>id: repo:leitstand<br/>repository<br/>read-only ecosystem observability and status projection"]
@@ -39,7 +39,7 @@ flowchart TD
         repo_steuerboard["Steuerboard<br/>id: repo:steuerboard<br/>repository<br/>read-only repo-state signal"]
         repo_systemkatalog["Systemkatalog<br/>id: repo:systemkatalog<br/>repository<br/>app-independent catalog for system purposes, truth ownership, stable relations and entrypoints"]
         repo_vault_gewebe["Vault Gewebe<br/>id: repo:vault-gewebe<br/>repository<br/>Versioned shared knowledge vault and design source material"]
-        repo_vibe_lab["Vibe-Lab<br/>id: repo:vibe-lab<br/>repository<br/>method lab and evidence experiments"]
+        repo_vibe_lab["Vibe-Lab<br/>id: repo:vibe-lab<br/>repository<br/>bounded prospective experiments, evidence review and proposal-ready learning candidates"]
         repo_weltgewebe["Weltgewebe<br/>id: repo:weltgewebe<br/>repository<br/>product and domain core"]
         repo_wgx["WGX<br/>id: repo:wgx<br/>repository<br/>Fleet CLI and reusable repository workflow engine"]
     end
@@ -64,10 +64,10 @@ flowchart TD
     repo_bureau -->|delegates_to / stable| repo_grabowski
     repo_bureau -->|provides / stable| repo_leitstand
     repo_chronik -->|evidence_for / bounded| repo_bureau
-    repo_chronik -->|learning_input_for / stable| repo_heimlern
     repo_chronik -->|displayed_by / stable| repo_leitstand
     repo_chronik -->|provides / stable| repo_leitstand
     repo_chronik -->|provides / stable| repo_systemkatalog
+    repo_chronik -->|learning_input_for / bounded| repo_vibe_lab
     repo_commonworld -->|operates_on / stable| service_github
     repo_contracts_mirror -->|validated_by / stable| service_ci
     repo_device_graph -->|scope_boundary / related| artifact_ecosystem_map
@@ -94,6 +94,7 @@ flowchart TD
     repo_systemkatalog -->|owns / stable| artifact_ecosystem_map
     repo_systemkatalog -->|provides / stable| repo_leitstand
     repo_vault_gewebe -->|scope_boundary / related| repo_systemkatalog
+    repo_vibe_lab -->|exports_candidate_to / bounded| repo_bureau
     repo_vibe_lab -->|provides / stable| repo_systemkatalog
     repo_weltgewebe -->|operates_on / stable| service_github
     repo_wgx -->|provides / stable| service_ci

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "kind": "system_catalog_authority_matrix",
-  "updatedAt": "2026-07-12T00:00:00+02:00",
+  "updatedAt": "2026-07-13T13:25:00+02:00",
   "canonicalMap": "rendered/ecosystem-registry-map.mmd",
   "registryInputs": [
     "registry/ecosystem/nodes.json",
@@ -66,9 +66,10 @@
       ]
     },
     {
-      "domain": "offline_learning_proposals",
-      "owner": "heimlern",
+      "domain": "reviewed_learning_proposals",
+      "owner": "vibe_lab",
       "projections": [
+        "bureau",
         "systemkatalog"
       ]
     },
