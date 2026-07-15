@@ -213,6 +213,64 @@ class EcosystemMapManifestTests(unittest.TestCase):
             ):
                 write_manifest(root, DEFAULT_OUTPUT, source_commit=feature_commit)
 
+    def test_write_accepts_source_commit_on_published_remote_feature_ref(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            base_commit = initialize_repository(root)
+            git(root, "update-ref", "refs/remotes/origin/main", base_commit)
+            git(root, "switch", "-qc", "feature")
+            (root / "feature-note.txt").write_text("published feature branch\n", encoding="utf-8")
+            git(root, "add", "feature-note.txt")
+            git(root, "commit", "-qm", "feature-only commit")
+            feature_commit = git(root, "rev-parse", "HEAD")
+            durable_ref = "refs/remotes/pull-request/head"
+            git(root, "update-ref", durable_ref, feature_commit)
+            manifest = write_manifest(
+                root,
+                DEFAULT_OUTPUT,
+                source_commit=feature_commit,
+                durable_source_ref=durable_ref,
+            )
+            checked = check_manifest(
+                root, DEFAULT_OUTPUT, durable_source_ref=durable_ref
+            )
+            with self.assertRaisesRegex(
+                EcosystemMapManifestError,
+                "not an ancestor of durable ref refs/remotes/origin/main",
+            ):
+                check_manifest(root)
+        self.assertEqual(manifest, checked)
+
+    def test_explicit_local_branch_ref_is_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            commit = initialize_repository(root)
+            with self.assertRaisesRegex(
+                EcosystemMapManifestError,
+                "must be a remote-tracking origin or pull-request ref",
+            ):
+                write_manifest(
+                    root,
+                    DEFAULT_OUTPUT,
+                    source_commit=commit,
+                    durable_source_ref="refs/heads/main",
+                )
+
+    def test_missing_explicit_remote_ref_is_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            commit = initialize_repository(root)
+            with self.assertRaisesRegex(
+                EcosystemMapManifestError,
+                "durable source ref is missing or invalid",
+            ):
+                write_manifest(
+                    root,
+                    DEFAULT_OUTPUT,
+                    source_commit=commit,
+                    durable_source_ref="refs/remotes/origin/missing",
+                )
+
     def test_write_accepts_origin_main_commit_from_feature_branch(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -238,7 +296,8 @@ class EcosystemMapManifestTests(unittest.TestCase):
 
     @unittest.skipUnless(HAS_GIT_HISTORY, "repository Git history is unavailable in archive validation")
     def test_repository_manifest_is_published_and_current(self) -> None:
-        manifest = check_manifest(ROOT)
+        durable_ref = os.environ.get("SYSTEMKATALOG_DURABLE_SOURCE_REF")
+        manifest = check_manifest(ROOT, durable_source_ref=durable_ref)
         first = ROOT / manifest["artifacts"][0]["path"]
         self.assertEqual(manifest["artifacts"][0]["sha256"], hashlib.sha256(first.read_bytes()).hexdigest())
 

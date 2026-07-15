@@ -19,7 +19,11 @@ echo "=== Tracked repository contract ==="
 python3 scripts/ci/check-repository-contract.py --repo-root "$REPO_ROOT" --tree-ish HEAD
 
 echo "=== Published consumer handoff ==="
-python3 scripts/write_ecosystem_map_artifact_manifest.py --check
+manifest_args=(--check)
+if [[ -n "${SYSTEMKATALOG_DURABLE_SOURCE_REF:-}" ]]; then
+  manifest_args+=(--durable-source-ref "$SYSTEMKATALOG_DURABLE_SOURCE_REF")
+fi
+python3 scripts/write_ecosystem_map_artifact_manifest.py "${manifest_args[@]}"
 
 SNAPSHOT_ROOT="$(mktemp -d)"
 trap 'rm -rf -- "$SNAPSHOT_ROOT"' EXIT

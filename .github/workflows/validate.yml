@@ -28,6 +28,22 @@ jobs:
         with:
           persist-credentials: false
           fetch-depth: 0
+
+      - name: Bind pull request durability ref
+        if: github.event_name == 'pull_request'
+        env:
+          PR_HEAD_REPOSITORY: ${{ github.event.pull_request.head.repo.clone_url }}
+          PR_HEAD_REF: ${{ github.event.pull_request.head.ref }}
+          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          git fetch --no-tags "$PR_HEAD_REPOSITORY" \
+            "refs/heads/$PR_HEAD_REF:refs/remotes/pull-request/head"
+          observed_head="$(git rev-parse refs/remotes/pull-request/head)"
+          if [[ "$observed_head" != "$PR_HEAD_SHA" ]]; then
+            echo "FAIL: fetched PR head $observed_head does not match event head $PR_HEAD_SHA"
+            exit 1
+          fi
+          echo "SYSTEMKATALOG_DURABLE_SOURCE_REF=refs/remotes/pull-request/head" >> "$GITHUB_ENV"
       - name: Setup Python
         uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
         with:

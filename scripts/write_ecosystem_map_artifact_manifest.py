@@ -19,6 +19,7 @@ MANIFEST_KIND = "system_catalog_map_artifact_manifest"
 SCHEMA_PATH = "catalog/ecosystem-map-artifact-manifest.schema.v1.json"
 DEFAULT_OUTPUT = Path("rendered/ecosystem-map-artifact-manifest.json")
 DEFAULT_BRANCH_REF = "refs/remotes/origin/main"
+ALLOWED_DURABLE_REF_PREFIXES = ("refs/remotes/origin/", "refs/remotes/pull-request/")
 GENERATED_FILE_MODE = 0o644
 DOES_NOT_ESTABLISH = (
     "claim_truth",
@@ -134,6 +135,26 @@ def _git_ref_exists(root: Path, ref: str) -> bool:
 
 def _durable_source_ref(root: Path) -> str:
     return DEFAULT_BRANCH_REF if _git_ref_exists(root, DEFAULT_BRANCH_REF) else "HEAD"
+
+
+def _validate_durable_source_ref(root: Path, ref: str) -> str:
+    if not isinstance(ref, str) or not ref.startswith(ALLOWED_DURABLE_REF_PREFIXES):
+        raise EcosystemMapManifestError(
+            "durable source ref must be a remote-tracking origin or pull-request ref"
+        )
+    try:
+        result = subprocess.run(
+            ["git", "check-ref-format", ref],
+            cwd=root,
+            check=False,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
+    except OSError as exc:
+        raise EcosystemMapManifestError("could not validate durable source ref") from exc
+    if result.returncode != 0 or not _git_ref_exists(root, ref):
+        raise EcosystemMapManifestError(f"durable source ref is missing or invalid: {ref}")
+    return ref
 
 
 def _git_is_ancestor(root: Path, commit: str, descendant: str) -> bool:
@@ -265,9 +286,18 @@ def _load_manifest(path: Path) -> dict[str, Any]:
     return value
 
 
-def _validate_source_binding(root: Path, manifest: dict[str, Any]) -> None:
+def _validate_source_binding(
+    root: Path,
+    manifest: dict[str, Any],
+    *,
+    durable_source_ref: str | None = None,
+) -> None:
     commit = manifest["source"]["commit"]
-    durable_ref = _durable_source_ref(root)
+    durable_ref = (
+        _validate_durable_source_ref(root, durable_source_ref)
+        if durable_source_ref is not None
+        else _durable_source_ref(root)
+    )
     if not _git_is_ancestor(root, commit, durable_ref):
         raise EcosystemMapManifestError(
             f"manifest source commit is not an ancestor of durable ref {durable_ref}"
@@ -280,13 +310,20 @@ def _validate_source_binding(root: Path, manifest: dict[str, Any]) -> None:
             )
 
 
-def check_manifest(repo_root: Path, output: Path = DEFAULT_OUTPUT) -> dict[str, Any]:
+def check_manifest(
+    repo_root: Path,
+    output: Path = DEFAULT_OUTPUT,
+    *,
+    durable_source_ref: str | None = None,
+) -> dict[str, Any]:
     root = repo_root.resolve()
     target = _safe_path(root, output, "output")
     manifest = _load_manifest(target)
     validate_manifest(manifest)
     source = manifest["source"]
-    _validate_source_binding(root, manifest)
+    _validate_source_binding(
+        root, manifest, durable_source_ref=durable_source_ref
+    )
     expected = build_manifest(
         root,
         source_commit=source["commit"],
@@ -321,12 +358,15 @@ def write_manifest(
     *,
     source_commit: str | None = None,
     generated_at: str | None = None,
+    durable_source_ref: str | None = None,
 ) -> dict[str, Any]:
     root = repo_root.resolve()
     target = _safe_path(root, output, "output")
     manifest = build_manifest(root, source_commit=source_commit, generated_at=generated_at)
     validate_manifest(manifest)
-    _validate_source_binding(root, manifest)
+    _validate_source_binding(
+        root, manifest, durable_source_ref=durable_source_ref
+    )
     _atomic_write(
         target,
         json.dumps(manifest, indent=2, ensure_ascii=False, sort_keys=True) + "\n",
@@ -341,6 +381,13 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--check", action="store_true")
     parser.add_argument("--source-commit")
     parser.add_argument("--generated-at")
+    parser.add_argument(
+        "--durable-source-ref",
+        help=(
+            "Published remote-tracking ref used to prove the source commit is durable. "
+            "Defaults to refs/remotes/origin/main."
+        ),
+    )
     parser.add_argument("--json", action="store_true")
     args = parser.parse_args(argv)
     root = Path(args.repo_root).resolve()
@@ -351,13 +398,18 @@ def main(argv: list[str] | None = None) -> int:
                 raise EcosystemMapManifestError(
                     "--source-commit and --generated-at are write-only options"
                 )
-            manifest = check_manifest(root, output)
+            manifest = check_manifest(
+                root,
+                output,
+                durable_source_ref=args.durable_source_ref,
+            )
         else:
             manifest = write_manifest(
                 root,
                 output,
                 source_commit=args.source_commit,
                 generated_at=args.generated_at,
+                durable_source_ref=args.durable_source_ref,
             )
     except (EcosystemMapManifestError, OSError, UnicodeError) as exc:
         if args.json:
