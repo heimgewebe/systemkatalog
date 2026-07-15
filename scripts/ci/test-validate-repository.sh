@@ -13,6 +13,9 @@ cd "$TEMP_REPO"
 git config user.name "Systemkatalog CI"
 git config user.email "systemkatalog-ci@example.invalid"
 BASE="$(git rev-parse HEAD)"
+# The temporary clone owns this ref. Point its default durability baseline at
+# the immutable snapshot under test instead of the outer repository base.
+git update-ref refs/remotes/origin/main "$BASE"
 reset_state() { git reset --hard "$BASE" >/dev/null; git clean -ffdx >/dev/null; }
 expect_failure() {
   local label="$1" expected="$2" out
