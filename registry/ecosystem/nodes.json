@@ -3,7 +3,7 @@
   "kind": "system_catalog_inventory",
   "owner": "repo:systemkatalog",
   "catalogRole": "canonical_system_inventory",
-  "updatedAt": "2026-07-13",
+  "updatedAt": "2026-07-15",
   "nodes": [
     {
       "id": "actor:alexander",
@@ -607,6 +607,34 @@
         "repository": "https://github.com/heimgewebe/snippet-engine-control",
         "readme": "https://github.com/heimgewebe/snippet-engine-control/blob/main/README.md",
         "contracts": "https://github.com/heimgewebe/snippet-engine-control/tree/main/contracts"
+      }
+    },
+    {
+      "id": "repo:konvergenzregelkreis",
+      "name": "Konvergenzregelkreis",
+      "type": "repository",
+      "purpose": "public stateless convergence protocol and conformance core for evidence-bound closure of ecosystem changes",
+      "notResponsibleFor": [
+        "task state",
+        "queue or claims",
+        "execution, leases or recovery",
+        "merge authorization",
+        "deployment state or runtime health",
+        "ecosystem semantics",
+        "fleet membership",
+        "event history",
+        "product telemetry"
+      ],
+      "truthOwnership": [
+        "convergence_protocol"
+      ],
+      "entrypoints": {
+        "repository": "https://github.com/heimgewebe/konvergenzregelkreis",
+        "readme": "https://github.com/heimgewebe/konvergenzregelkreis/blob/main/README.md",
+        "agentEntry": "https://github.com/heimgewebe/konvergenzregelkreis/blob/main/AGENTS.md",
+        "roleBoundary": "https://github.com/heimgewebe/konvergenzregelkreis/blob/main/system/regelkreis-role.v1.json",
+        "protocol": "https://github.com/heimgewebe/konvergenzregelkreis/tree/main/protocol",
+        "profiles": "https://github.com/heimgewebe/konvergenzregelkreis/tree/main/profiles"
       }
     }
   ]

@@ -1,16 +1,16 @@
 {
   "schemaVersion": 1,
   "kind": "system_catalog_organization_scope",
-  "updatedAt": "2026-07-13",
+  "updatedAt": "2026-07-15",
   "source": {
     "provider": "github",
     "organization": "heimgewebe",
-    "observedAt": "2026-07-13T10:20:18Z",
+    "observedAt": "2026-07-15T20:33:38Z",
     "selection": {
       "archived": false,
       "fork": false
     },
-    "repositoryCount": 34
+    "repositoryCount": 35
   },
   "repositories": [
     {
@@ -140,6 +140,14 @@
       "classification": "catalog",
       "node": "repo:infra",
       "reason": "host, network, cockpit and operational runbooks"
+    },
+    {
+      "name": "konvergenzregelkreis",
+      "repository": "heimgewebe/konvergenzregelkreis",
+      "visibility": "public",
+      "classification": "catalog",
+      "node": "repo:konvergenzregelkreis",
+      "reason": "public convergence protocol and evidence conformance core"
     },
     {
       "name": "leitstand",

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "kind": "system_catalog_fleet_coverage",
-  "updatedAt": "2026-07-13",
+  "updatedAt": "2026-07-15",
   "membershipAuthority": {
     "repository": "heimgewebe/metarepo",
     "path": "fleet/repos.yml",
@@ -102,6 +102,12 @@
       "repository": "heimgewebe/infra",
       "entrypoint": "https://github.com/heimgewebe/infra",
       "membership": "catalog-only"
+    },
+    {
+      "node": "repo:konvergenzregelkreis",
+      "repository": "heimgewebe/konvergenzregelkreis",
+      "entrypoint": "https://github.com/heimgewebe/konvergenzregelkreis",
+      "membership": "fleet"
     },
     {
       "node": "repo:leitstand",

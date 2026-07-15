@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "kind": "system_catalog_relations",
   "catalogRole": "canonical_stable_relations",
-  "updatedAt": "2026-07-13",
+  "updatedAt": "2026-07-15",
   "relationTypes": [
     "owns",
     "steers",
@@ -336,6 +336,20 @@
       "type": "exports_candidate_to",
       "stability": "bounded",
       "meaning": "Vibe-Lab may export reviewed proposal-ready candidates; Bureau alone decides whether they become work."
+    },
+    {
+      "from": "repo:konvergenzregelkreis",
+      "to": "repo:bureau",
+      "type": "scope_boundary",
+      "stability": "stable",
+      "meaning": "Konvergenzregelkreis assesses submitted evidence; Bureau remains the sole owner of tasks, claims and completion."
+    },
+    {
+      "from": "repo:leitwerk",
+      "to": "repo:konvergenzregelkreis",
+      "type": "scope_boundary",
+      "stability": "related",
+      "meaning": "Leitwerk remains a historical pre-Bureau reference; Konvergenzregelkreis is an independent public protocol and inherits no Leitwerk authority."
     }
   ]
 }

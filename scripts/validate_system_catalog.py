@@ -51,6 +51,7 @@ AUTHORITY_OWNER_NODES = {
     "github": "service:github",
     "ci": "service:ci",
     "metarepo": "repo:metarepo",
+    "konvergenzregelkreis": "repo:konvergenzregelkreis",
 }
 EXTERNAL_AUTHORITY_OWNERS = {"runtime"}
 LEGACY_ROOTS = {

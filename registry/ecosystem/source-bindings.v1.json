@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "kind": "system_catalog_source_bindings",
   "catalogRepository": "heimgewebe/systemkatalog",
-  "observedAt": "2026-07-14T20:49:21+02:00",
+  "observedAt": "2026-07-15T22:33:38+02:00",
   "systems": [
     {
       "system": "actor:alexander",
@@ -597,6 +597,22 @@
       "reviewedAt": "2026-07-13T07:55:00+02:00",
       "method": "repository_primary_document",
       "uncertainty": 0.08
+    },
+    {
+      "system": "repo:konvergenzregelkreis",
+      "source": {
+        "repository": "heimgewebe/konvergenzregelkreis",
+        "commit": "de8b2733da57a27a94ff55ce79b04fc1dbe7835b",
+        "locator": {
+          "kind": "file",
+          "path": "system/regelkreis-role.v1.json",
+          "contentSha256": "e1c9cf11b18daa85515e37a9f5e0d8e5ee17a84472aab89948f6177731f27e38"
+        },
+        "defaultBranch": "main"
+      },
+      "reviewedAt": "2026-07-15T22:33:38+02:00",
+      "method": "repository_normative_contract",
+      "uncertainty": 0.02
     }
   ],
   "relations": [

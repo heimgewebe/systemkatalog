@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "kind": "system_catalog_authority_matrix",
-  "updatedAt": "2026-07-13T13:25:00+02:00",
+  "updatedAt": "2026-07-15T22:33:38+02:00",
   "canonicalMap": "rendered/ecosystem-registry-map.mmd",
   "registryInputs": [
     "registry/ecosystem/nodes.json",
@@ -124,6 +124,11 @@
         "bureau",
         "systemkatalog"
       ]
+    },
+    {
+      "domain": "convergence_protocol",
+      "owner": "konvergenzregelkreis",
+      "projections": []
     }
   ],
   "doesNotEstablish": [

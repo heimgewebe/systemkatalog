@@ -25,6 +25,7 @@ flowchart TD
         repo_heimlern["heimlern<br/>id: repo:heimlern<br/>repository<br/>retired reference for the former offline operator-learning implementation"]
         repo_heimserver["Heimserver<br/>id: repo:heimserver<br/>repository<br/>private operations and contract repository for the home-network service layer, edge gateway, DDNS and Weltgewebe infrastructure"]
         repo_infra["Infra<br/>id: repo:infra<br/>repository<br/>host, network, cockpit and operational runbooks"]
+        repo_konvergenzregelkreis["Konvergenzregelkreis<br/>id: repo:konvergenzregelkreis<br/>repository<br/>public stateless convergence protocol and conformance core for evidence-bound closure of ecosystem changes"]
         repo_leitstand["Leitstand<br/>id: repo:leitstand<br/>repository<br/>read-only ecosystem observability and status projection"]
         repo_leitwerk["Leitwerk<br/>id: repo:leitwerk<br/>repository<br/>retained normative coordination-contract reference from the pre-Bureau and pre-Grabowski control model"]
         repo_lenskit["Lenskit / RepoBrief implementation<br/>id: repo:lenskit<br/>repository<br/>context views, citable repository briefs and read-only agent context serving"]
@@ -77,8 +78,10 @@ flowchart TD
     repo_heim_pc -->|observes / stable| artifact_ecosystem_map
     repo_heimgeist -->|observes / related| artifact_ecosystem_map
     repo_heimserver -->|scope_boundary / related| repo_infra
+    repo_konvergenzregelkreis -->|scope_boundary / stable| repo_bureau
     repo_leitstand -->|observes / stable| artifact_ecosystem_map
     repo_leitwerk -->|scope_boundary / related| repo_bureau
+    repo_leitwerk -->|scope_boundary / related| repo_konvergenzregelkreis
     repo_lenskit -->|implements / stable| concept_repobrief
     repo_metarepo -->|provides / stable| repo_contracts_mirror
     repo_metarepo -->|provides / stable| repo_systemkatalog
