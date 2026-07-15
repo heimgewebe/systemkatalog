@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "kind": "system_catalog_source_bindings",
   "catalogRepository": "heimgewebe/systemkatalog",
-  "observedAt": "2026-07-15T22:38:20+02:00",
+  "observedAt": "2026-07-15T21:14:35.850745Z",
   "systems": [
     {
       "system": "actor:alexander",
@@ -171,33 +171,33 @@
       "system": "repo:chronik",
       "source": {
         "repository": "heimgewebe/chronik",
-        "commit": "de1287423f3156cfae86c3cae6f4538732356c01",
+        "commit": "ac2d01bdf7a15732c9239c95e715d6bb43cf19c6",
         "locator": {
           "kind": "file",
           "path": "README.md",
-          "contentSha256": "768892f7bed47de7129979bf44e6305f2144a3d205ce992af93f34cc8943fd83"
+          "contentSha256": "dbf0f5c222a083662a4eb14aa4df698078ababd1f14c4bc796e1b17c3c54822e"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-13T07:55:00+02:00",
+      "reviewedAt": "2026-07-15T21:18:00Z",
       "method": "repository_primary_document",
-      "uncertainty": 0.08
+      "uncertainty": 0.01
     },
     {
       "system": "repo:schauwerk",
       "source": {
         "repository": "heimgewebe/schauwerk",
-        "commit": "19b7341742f7a5a4134f65e5335380a16802980a",
+        "commit": "8b36a63efd7779f68d41162f3cfecf7fba36b421",
         "locator": {
           "kind": "file",
           "path": "README.md",
-          "contentSha256": "712093396c64ab5763e7ea71da23e9c6dbb4fd5edbfbea93b2fb6713ef840d62"
+          "contentSha256": "4423dadfc37f8d6e3714b5697a98a4e364aec4b84fd34d8230f8a5aa01e913ae"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-14T20:49:21+02:00",
+      "reviewedAt": "2026-07-15T21:18:00Z",
       "method": "repository_primary_document",
-      "uncertainty": 0.08
+      "uncertainty": 0.02
     },
     {
       "system": "repo:infra",
@@ -268,63 +268,63 @@
       "system": "repo:leitstand",
       "source": {
         "repository": "heimgewebe/leitstand",
-        "commit": "07bb092564ef063b79e06619a9b132032dfb6cc4",
+        "commit": "da4cf5b12ad50d2b1dafbe1883dc3130a3d8a130",
         "locator": {
           "kind": "file",
           "path": "README.md",
-          "contentSha256": "41793e3997b7e6a9acce21a14f3f67b19b8f6c21d1b5107abbb6998c074dd2e1"
+          "contentSha256": "4ee374b07434dcf27a62232ca20058747b3fb42152ce4e85d9c875bff776847e"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-13T07:55:00+02:00",
+      "reviewedAt": "2026-07-15T21:18:00Z",
       "method": "repository_primary_document",
-      "uncertainty": 0.08
+      "uncertainty": 0.01
     },
     {
       "system": "repo:plexer",
       "source": {
         "repository": "heimgewebe/plexer",
-        "commit": "e1099df6ccf1763c7e235d844ff09b2728b24601",
+        "commit": "93fb9aa2451d44eb6b8cff7c7fd054086804049e",
         "locator": {
           "kind": "file",
           "path": "README.md",
-          "contentSha256": "cf751909c16ae39e9bde9b2caf43b6aa227666d7c913bddd141c6edffb62874d"
+          "contentSha256": "9641bc2289e5829b92ac232e456bf6a0b282fc3efb4adf28f02e0a02fe93b3c8"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-13T07:55:00+02:00",
+      "reviewedAt": "2026-07-15T21:18:00Z",
       "method": "repository_primary_document",
-      "uncertainty": 0.08
+      "uncertainty": 0.01
     },
     {
       "system": "repo:heimlern",
       "source": {
         "repository": "heimgewebe/heimlern",
-        "commit": "8dbebea6b253f9d2f41514a15d34e5166602e792",
+        "commit": "d0a5d1bf26c9a5f555b7541d97fadb27a7cf9b31",
         "locator": {
           "kind": "file",
           "path": "README.md",
-          "contentSha256": "2c305a1d18a4dac7497c0335632b82f1d1c7be97c5ca4a5de3f6e10b3b3d0f19"
+          "contentSha256": "5a4f64ccab00b6c31b0817769b53ade5ded61c5927a4bfb5184cfe501e4cc4a8"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-13T07:55:00+02:00",
+      "reviewedAt": "2026-07-15T21:18:00Z",
       "method": "repository_primary_document",
-      "uncertainty": 0.08
+      "uncertainty": 0.01
     },
     {
       "system": "repo:metarepo",
       "source": {
         "repository": "heimgewebe/metarepo",
-        "commit": "894657cef6734ecaf64813e83fc0433212d8fd5d",
+        "commit": "8c6990e024d3e54a0d3dc8f5a0766162d3683497",
         "locator": {
           "kind": "file",
           "path": "system/metarepo-role.v1.json",
-          "contentSha256": "af62ea59908708c77640162fcf4c2c306ec4e9266bd08800b0756d1510e9c1dd"
+          "contentSha256": "9848a87b77aeb58b80a307a0a3dceca320e92c696031547937fe9cfa95f158fd"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-14T20:21:03+02:00",
+      "reviewedAt": "2026-07-15T21:18:00Z",
       "method": "repository_normative_contract",
       "uncertainty": 0.02
     },
@@ -332,17 +332,17 @@
       "system": "repo:wgx",
       "source": {
         "repository": "heimgewebe/wgx",
-        "commit": "a7466bf2c3cb7fa3b261bfb2d008612abc0f85b1",
+        "commit": "01efb27f424466c951a196f095c549d1afdd10da",
         "locator": {
           "kind": "file",
           "path": "README.md",
-          "contentSha256": "17a5e043dfc79eef605d31ebcaa6b36a82482269a766fca3039e02e3f011fca5"
+          "contentSha256": "0a92d8c162a78142f3090bc64c98995e65e015bd9ea33f45b9dc294593993acf"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-13T07:55:00+02:00",
+      "reviewedAt": "2026-07-15T21:18:00Z",
       "method": "repository_primary_document",
-      "uncertainty": 0.08
+      "uncertainty": 0.01
     },
     {
       "system": "repo:contracts-mirror",
@@ -364,17 +364,17 @@
       "system": "repo:hausKI",
       "source": {
         "repository": "heimgewebe/hausKI",
-        "commit": "2b2e4496613c856993e028e360e76abea70c7028",
+        "commit": "7ae329ed5cee56666a9f6571e7ebee1c9df59441",
         "locator": {
           "kind": "file",
           "path": "README.md",
-          "contentSha256": "5ba4c8fd4e2e711a144798c4564d81598e4812c6ffc6b0eeb40480371624f1de"
+          "contentSha256": "9bcb01379557fac7b2274021dc4c16894160849858c405cd861ab3022711d726"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-13T07:55:00+02:00",
+      "reviewedAt": "2026-07-15T21:18:00Z",
       "method": "repository_primary_document",
-      "uncertainty": 0.08
+      "uncertainty": 0.01
     },
     {
       "system": "repo:hausKI-audio",
@@ -396,17 +396,17 @@
       "system": "repo:semantAH",
       "source": {
         "repository": "heimgewebe/semantAH",
-        "commit": "2c627d1ff820212e274f4faaef9d78c31d40b37a",
+        "commit": "b50bd2813b3f146f5cc51bee2ad6887bfb28ce69",
         "locator": {
           "kind": "file",
           "path": "README.md",
-          "contentSha256": "8cf7ec8909b0a9afceff8b87abf65882dc450bc29e6a0d1f7a4431a4e813c916"
+          "contentSha256": "20d28707e1dd8fedebe9c175246fde78bdf3d42d2f7c941ada587d36216a9047"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-13T07:55:00+02:00",
+      "reviewedAt": "2026-07-15T21:18:00Z",
       "method": "repository_primary_document",
-      "uncertainty": 0.08
+      "uncertainty": 0.01
     },
     {
       "system": "repo:aussensensor",
@@ -476,15 +476,15 @@
       "system": "repo:heim-pc",
       "source": {
         "repository": "heimgewebe/heim-pc",
-        "commit": "140e84bc28d3b208a51e2edb1cb27c5946c38d49",
+        "commit": "aabfca5a4b5a0c6aad079148e8e9d2a509b8c8d6",
         "locator": {
           "kind": "file",
           "path": "manifest/operator-entry.v1.json",
-          "contentSha256": "47a4c4312c0469ab1ad7bfd63b7b7391928461115f36d5dda3b3f2354120fe8a"
+          "contentSha256": "6fb53595f41bbb8de8454e346f643ed1bd5b6b8e5dee4bd036d0b9da263165c7"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-14T20:49:21+02:00",
+      "reviewedAt": "2026-07-15T21:18:00Z",
       "method": "repository_normative_contract",
       "uncertainty": 0.02
     },

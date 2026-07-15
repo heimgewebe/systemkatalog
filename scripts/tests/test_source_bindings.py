@@ -41,14 +41,14 @@ class SourceBindingTests(unittest.TestCase):
         )
         expected = {
             "repo:metarepo": {
-                "commit": "894657cef6734ecaf64813e83fc0433212d8fd5d",
+                "commit": "8c6990e024d3e54a0d3dc8f5a0766162d3683497",
                 "path": "system/metarepo-role.v1.json",
-                "sha256": "af62ea59908708c77640162fcf4c2c306ec4e9266bd08800b0756d1510e9c1dd",
+                "sha256": "9848a87b77aeb58b80a307a0a3dceca320e92c696031547937fe9cfa95f158fd",
             },
             "repo:heim-pc": {
-                "commit": "140e84bc28d3b208a51e2edb1cb27c5946c38d49",
+                "commit": "aabfca5a4b5a0c6aad079148e8e9d2a509b8c8d6",
                 "path": "manifest/operator-entry.v1.json",
-                "sha256": "47a4c4312c0469ab1ad7bfd63b7b7391928461115f36d5dda3b3f2354120fe8a",
+                "sha256": "6fb53595f41bbb8de8454e346f643ed1bd5b6b8e5dee4bd036d0b9da263165c7",
             },
         }
         for system, source in expected.items():
