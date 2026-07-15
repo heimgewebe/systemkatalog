@@ -384,7 +384,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--durable-source-ref",
         help=(
-            "Published remote-tracking ref used to prove the source commit is durable. "
+            "Locally fetched remote-tracking ref used for source-commit ancestry. "
+            "The caller must verify its remote identity and expected SHA. "
             "Defaults to refs/remotes/origin/main."
         ),
     )
