@@ -2,25 +2,25 @@
   "artifactCount": 5,
   "artifacts": [
     {
-      "bytes": 9145,
+      "bytes": 9222,
       "contentType": "text/mermaid",
       "path": "rendered/ecosystem-registry-map.mmd",
       "role": "canonical_ecosystem_map_mermaid",
-      "sha256": "a1d478dccafd7637e0fc4e62238aaa50be8ac9239a6a68d536196f4234fa51e1"
+      "sha256": "9c4452b34485b50ac2f6e085b135fe7aa7dda685e6b81ce1c95b7b7006fedc5e"
     },
     {
-      "bytes": 28947,
+      "bytes": 29214,
       "contentType": "text/markdown",
       "path": "rendered/system-catalog.md",
       "role": "rendered_catalog_markdown",
-      "sha256": "a8ad60d517d580c1d056630e1999f00d7ccda22a492b4f47d1dd65770b92ae3a"
+      "sha256": "7a539b9af95dc85f2524fdd213fd351617d90a6fa82ddaf3ec58e743a1973d04"
     },
     {
-      "bytes": 19413,
+      "bytes": 19604,
       "contentType": "application/json",
       "path": "registry/ecosystem/nodes.json",
       "role": "registry_nodes",
-      "sha256": "1325cffc31f3e6850d0af9828c5d421d083b8ced5c3839bf20348b6ae2256461"
+      "sha256": "4352c53d7d5a4de9540a185d82f670fed63104f9b995d1e8ef0d4e6118550946"
     },
     {
       "bytes": 11394,
@@ -51,8 +51,8 @@
   "schemaPath": "catalog/ecosystem-map-artifact-manifest.schema.v1.json",
   "schemaVersion": 1,
   "source": {
-    "commit": "a765da7e1222b435c35b4797adb01dfba5a8b1b8",
-    "generatedAt": "2026-07-15T20:38:43Z",
+    "commit": "069b0c50b4cba00b470e4674c0848def4cd588a0",
+    "generatedAt": "2026-07-16T03:29:31Z",
     "repository": "heimgewebe/systemkatalog"
   }
 }
