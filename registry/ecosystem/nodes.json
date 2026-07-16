@@ -93,14 +93,15 @@
       "id": "repo:weltgewebe",
       "name": "Weltgewebe",
       "type": "repository",
-      "purpose": "product and domain core",
+      "purpose": "federated map and coordination system for collective goods, local relationships and community action",
       "notResponsibleFor": [
         "ecosystem governance",
         "fleet task orchestration"
       ],
       "truthOwnership": [],
       "entrypoints": {
-        "repository": "https://github.com/heimgewebe/weltgewebe"
+        "repository": "https://github.com/heimgewebe/weltgewebe",
+        "targetArchitecture": "https://github.com/heimgewebe/weltgewebe/blob/main/architecture/weltgewebe-os.md"
       }
     },
     {
