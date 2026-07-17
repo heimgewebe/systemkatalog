@@ -166,14 +166,6 @@
       "reason": "retained normative coordination-contract reference from the pre-Bureau and pre-Grabowski control model"
     },
     {
-      "name": "repoground",
-      "repository": "heimgewebe/repoground",
-      "visibility": "public",
-      "classification": "catalog",
-      "node": "repo:repoground",
-      "reason": "verifiable, citable codebase context"
-    },
-    {
       "name": "metarepo",
       "repository": "heimgewebe/metarepo",
       "visibility": "public",
@@ -204,6 +196,14 @@
       "classification": "catalog",
       "node": "repo:plexer",
       "reason": "bounded event delivery and queueing gateway"
+    },
+    {
+      "name": "repoground",
+      "repository": "heimgewebe/repoground",
+      "visibility": "public",
+      "classification": "catalog",
+      "node": "repo:repoground",
+      "reason": "verifiable, citable codebase context"
     },
     {
       "name": "schauwerk",

@@ -11,7 +11,6 @@ Der Katalog beantwortet, welche Systeme existieren, welchem Zweck sie dienen, we
 | System | Typ | Zweck | Nicht zuständig für | Wahrheitsbesitz | Einstiegspunkte |
 |---|---|---|---|---|---|
 | Ecosystem Map v0 | artifact | machine-readable overview graph and rendered orientation map | claim truth<br>runtime health<br>merge readiness | — | `artifact`: [rendered/ecosystem-registry-map.mmd](../rendered/ecosystem-registry-map.mmd) |
-| RepoBrief | concept | public name for context-view layer | repository mutation<br>runtime health<br>task dispatch | — | `implementation`: [https://github.com/heimgewebe/lenskit](https://github.com/heimgewebe/lenskit) |
 | Alexander | human | meaning, approval and abort authority outside automation | automated execution<br>machine-derived repository or runtime state | — | `authorityPolicy`: [policy/system-catalog.v1.json](../policy/system-catalog.v1.json) |
 | Agent Control Surface | repository | local manual control surface for Jules sessions and guarded step-by-step Git workflows | autonomous task dispatch<br>task priority<br>merge authorization<br>remote access security | — | `readme`: [https://github.com/heimgewebe/agent-control-surface/blob/main/README.md](https://github.com/heimgewebe/agent-control-surface/blob/main/README.md)<br>`repository`: [https://github.com/heimgewebe/agent-control-surface](https://github.com/heimgewebe/agent-control-surface)<br>`runbook`: [https://github.com/heimgewebe/agent-control-surface/blob/main/RUNBOOK.md](https://github.com/heimgewebe/agent-control-surface/blob/main/RUNBOOK.md) |
 | Außensensor | repository | Curated external signals and event feeds for Chronik | task authority<br>canonical event history<br>merge approval | — | `repository`: [https://github.com/heimgewebe/aussensensor](https://github.com/heimgewebe/aussensensor) |
@@ -31,11 +30,11 @@ Der Katalog beantwortet, welche Systeme existieren, welchem Zweck sie dienen, we
 | Konvergenzregelkreis | repository | public stateless convergence protocol and conformance core for evidence-bound closure of ecosystem changes | task state<br>queue or claims<br>execution, leases or recovery<br>merge authorization<br>deployment state or runtime health<br>ecosystem semantics<br>fleet membership<br>event history<br>product telemetry | convergence_protocol | `agentEntry`: [https://github.com/heimgewebe/konvergenzregelkreis/blob/main/AGENTS.md](https://github.com/heimgewebe/konvergenzregelkreis/blob/main/AGENTS.md)<br>`profiles`: [https://github.com/heimgewebe/konvergenzregelkreis/tree/main/profiles](https://github.com/heimgewebe/konvergenzregelkreis/tree/main/profiles)<br>`protocol`: [https://github.com/heimgewebe/konvergenzregelkreis/tree/main/protocol](https://github.com/heimgewebe/konvergenzregelkreis/tree/main/protocol)<br>`readme`: [https://github.com/heimgewebe/konvergenzregelkreis/blob/main/README.md](https://github.com/heimgewebe/konvergenzregelkreis/blob/main/README.md)<br>`repository`: [https://github.com/heimgewebe/konvergenzregelkreis](https://github.com/heimgewebe/konvergenzregelkreis)<br>`roleBoundary`: [https://github.com/heimgewebe/konvergenzregelkreis/blob/main/system/regelkreis-role.v1.json](https://github.com/heimgewebe/konvergenzregelkreis/blob/main/system/regelkreis-role.v1.json) |
 | Leitstand | repository | read-only ecosystem observability and status projection | canonical truth ownership<br>task authorization<br>runtime mutation | general_operator_display | `repository`: [https://github.com/heimgewebe/leitstand](https://github.com/heimgewebe/leitstand) |
 | Leitwerk | repository | retained normative coordination-contract reference from the pre-Bureau and pre-Grabowski control model | current task or claim state<br>runtime execution<br>merge authorization<br>agent dispatch | — | `readme`: [https://github.com/heimgewebe/leitwerk/blob/main/README.md](https://github.com/heimgewebe/leitwerk/blob/main/README.md)<br>`repository`: [https://github.com/heimgewebe/leitwerk](https://github.com/heimgewebe/leitwerk)<br>`roleBoundary`: [https://github.com/heimgewebe/leitwerk/blob/main/docs/leitwerk.md](https://github.com/heimgewebe/leitwerk/blob/main/docs/leitwerk.md) |
-| Lenskit / RepoBrief implementation | repository | context views, citable repository briefs and read-only agent context serving | repository operational state<br>task priority<br>merge authorization | repository_context_citations | `mcpServer`: [https://github.com/heimgewebe/lenskit/blob/main/docs/usage/repobrief-mcp-stdio.md](https://github.com/heimgewebe/lenskit/blob/main/docs/usage/repobrief-mcp-stdio.md)<br>`repository`: [https://github.com/heimgewebe/lenskit](https://github.com/heimgewebe/lenskit) |
 | Metarepo | repository | Fleet membership, canonical shared contracts and repository templates | repository purpose semantics<br>runtime health<br>task state | fleet_membership | `repository`: [https://github.com/heimgewebe/metarepo](https://github.com/heimgewebe/metarepo) |
 | Mitschreiber | repository | Privacy-first on-device context capture and redacted event production | task authority<br>ecosystem semantics<br>merge approval | — | `repository`: [https://github.com/heimgewebe/mitschreiber](https://github.com/heimgewebe/mitschreiber) |
 | Obsidian Bridge | repository | deterministic CLI and artifact bridge for using Obsidian as a projection and observatory interface | vault content truth<br>personal notes<br>task state<br>ecosystem semantics | — | `contracts`: [https://github.com/heimgewebe/obsidian-bridge/tree/main/contracts](https://github.com/heimgewebe/obsidian-bridge/tree/main/contracts)<br>`readme`: [https://github.com/heimgewebe/obsidian-bridge/blob/main/README.md](https://github.com/heimgewebe/obsidian-bridge/blob/main/README.md)<br>`repository`: [https://github.com/heimgewebe/obsidian-bridge](https://github.com/heimgewebe/obsidian-bridge) |
 | Plexer | repository | bounded event delivery and queueing gateway | task prioritization<br>canonical history<br>ecosystem semantics | — | `repository`: [https://github.com/heimgewebe/plexer](https://github.com/heimgewebe/plexer) |
+| RepoGround | repository | verifiable, citable codebase context for humans and AI systems | repository operational state<br>task priority<br>merge authorization | repository_context_citations | `mcpServer`: [https://github.com/heimgewebe/repoground/blob/main/docs/usage/repobrief-mcp-stdio.md](https://github.com/heimgewebe/repoground/blob/main/docs/usage/repobrief-mcp-stdio.md)<br>`repository`: [https://github.com/heimgewebe/repoground](https://github.com/heimgewebe/repoground) |
 | Schauwerk | repository | visual surface and projection layer | canonical ecosystem semantics<br>task state<br>execution authority | specialized_visual_rendering | `repository`: [https://github.com/heimgewebe/schauwerk](https://github.com/heimgewebe/schauwerk) |
 | semantAH | repository | Semantic index, embeddings and knowledge-graph pipeline | task authority<br>canonical event history<br>runtime health | — | `repository`: [https://github.com/heimgewebe/semantAH](https://github.com/heimgewebe/semantAH) |
 | Sichter | repository | Code-review and pull-request automation prototype | merge authority<br>task priority<br>runtime truth | — | `repository`: [https://github.com/heimgewebe/sichter](https://github.com/heimgewebe/sichter) |
@@ -73,11 +72,11 @@ Metarepo ist Primärquelle für die Fleet-Mitgliedschaft. Der Systemkatalog blei
 | Konvergenzregelkreis | `heimgewebe/konvergenzregelkreis` | `fleet` | [https://github.com/heimgewebe/konvergenzregelkreis](https://github.com/heimgewebe/konvergenzregelkreis) |
 | Leitstand | `heimgewebe/leitstand` | `fleet` | [https://github.com/heimgewebe/leitstand](https://github.com/heimgewebe/leitstand) |
 | Leitwerk | `heimgewebe/leitwerk` | `catalog-only` | [https://github.com/heimgewebe/leitwerk](https://github.com/heimgewebe/leitwerk) |
-| Lenskit / RepoBrief implementation | `heimgewebe/lenskit` | `fleet` | [https://github.com/heimgewebe/lenskit](https://github.com/heimgewebe/lenskit) |
 | Metarepo | `heimgewebe/metarepo` | `fleet` | [https://github.com/heimgewebe/metarepo](https://github.com/heimgewebe/metarepo) |
 | Mitschreiber | `heimgewebe/mitschreiber` | `fleet` | [https://github.com/heimgewebe/mitschreiber](https://github.com/heimgewebe/mitschreiber) |
 | Obsidian Bridge | `heimgewebe/obsidian-bridge` | `catalog-only` | [https://github.com/heimgewebe/obsidian-bridge](https://github.com/heimgewebe/obsidian-bridge) |
 | Plexer | `heimgewebe/plexer` | `fleet` | [https://github.com/heimgewebe/plexer](https://github.com/heimgewebe/plexer) |
+| RepoGround | `heimgewebe/repoground` | `fleet` | [https://github.com/heimgewebe/repoground](https://github.com/heimgewebe/repoground) |
 | Schauwerk | `heimgewebe/schauwerk` | `catalog-only` | [https://github.com/heimgewebe/schauwerk](https://github.com/heimgewebe/schauwerk) |
 | semantAH | `heimgewebe/semantAH` | `fleet` | [https://github.com/heimgewebe/semantAH](https://github.com/heimgewebe/semantAH) |
 | Sichter | `heimgewebe/sichter` | `fleet` | [https://github.com/heimgewebe/sichter](https://github.com/heimgewebe/sichter) |
@@ -116,7 +115,7 @@ Begründete Ausschlüsse:
 | `general_operator_display` | `leitstand` | — |
 | `live_service_state` | `runtime` | leitstand |
 | `local_fleet_execution` | `grabowski` | leitstand |
-| `repository_context_citations` | `repobrief_lenskit` | rlens, systemkatalog |
+| `repository_context_citations` | `repoground` | repoground, systemkatalog |
 | `repository_observation_readiness` | `steuerboard` | grabowski, leitstand |
 | `reviewed_learning_proposals` | `vibe_lab` | bureau, systemkatalog |
 | `shared_fleet_ci_checks` | `wgx` | github_ci |
@@ -131,7 +130,6 @@ Nur Beziehungen der Klassen `stable`, `bounded` oder `related` werden angezeigt.
 | Von | Beziehung | Zu | Klasse | Bedeutung |
 |---|---|---|---|---|
 | Alexander | `steers` | Systemkatalog | `stable` | Human sense, priority, approval and abort authority stay outside automation. |
-| RepoBrief | `provides` | Systemkatalog | `stable` | RepoBrief gives Systemkatalog citable repository context. |
 | Agent Control Surface | `operates_on` | GitHub | `bounded` | The manual local control surface can prepare guarded Git work while GitHub remains primary state. |
 | Außensensor | `delivers_to` | Chronik | `stable` | Curated external events are delivered to Chronik as the historical ingest authority. |
 | Bureau | `delegates_to` | Grabowski | `stable` | Bureau can hand scoped work to the operator layer. |
@@ -154,13 +152,13 @@ Nur Beziehungen der Klassen `stable`, `bounded` oder `related` werden angezeigt.
 | Leitstand | `observes` | Ecosystem Map v0 | `stable` | Leitstand observes the map as orientation, not truth. |
 | Leitwerk | `scope_boundary` | Bureau | `related` | Leitwerk is retained as a normative reference; Bureau owns current task, claim and completion state. |
 | Leitwerk | `scope_boundary` | Konvergenzregelkreis | `related` | Leitwerk remains a historical pre-Bureau reference; Konvergenzregelkreis is an independent public protocol and inherits no Leitwerk authority. |
-| Lenskit / RepoBrief implementation | `implements` | RepoBrief | `stable` | RepoBrief is the public context-view name; Lenskit remains an implementation namespace for now. |
 | Metarepo | `provides` | Contracts Mirror | `stable` | Canonical contracts originate in Metarepo and are mirrored for validation and publication. |
 | Metarepo | `provides` | Systemkatalog | `stable` | Metarepo provides Fleet membership; Systemkatalog remains authority for purpose, relations and entrypoints. |
 | Mitschreiber | `emits_to` | Chronik | `stable` | Redacted on-device context events are emitted to Chronik. |
 | Mitschreiber | `provides` | semantAH | `bounded` | Redacted embeddings and context signals can feed semantic indexing without raw-text authority. |
 | Obsidian Bridge | `provides` | Vault Gewebe | `bounded` | Obsidian Bridge projects machine artifacts into the vault interface without owning vault content. |
 | Plexer | `delivers_to` | Chronik | `stable` | Plexer delivers bounded operational events to Chronik agent.ledger when configured. |
+| RepoGround | `provides` | Systemkatalog | `stable` | RepoGround provides Systemkatalog with verifiable, citable codebase context. |
 | Schauwerk | `renders` | Ecosystem Map v0 | `stable` | Schauwerk may render map views without owning the map canon. |
 | semantAH | `provides` | HausKI | `stable` | semantAH provides the semantic memory and knowledge-graph layer used by HausKI. |
 | Sichter | `operates_on` | GitHub | `bounded` | Sichter reviews repository changes and may prepare pull requests within policy boundaries. |
@@ -187,7 +185,7 @@ Nur Beziehungen der Klassen `stable`, `bounded` oder `related` werden angezeigt.
 | Grabowski Agent-Routing | [https://github.com/heimgewebe/grabowski/blob/main/docs/generated/operator-context.v1.json](https://github.com/heimgewebe/grabowski/blob/main/docs/generated/operator-context.v1.json) |
 | Leitstand | [https://github.com/heimgewebe/leitstand](https://github.com/heimgewebe/leitstand) |
 | Metarepo Fleet-Mitgliedschaft | [https://github.com/heimgewebe/metarepo/blob/main/fleet/repos.yml](https://github.com/heimgewebe/metarepo/blob/main/fleet/repos.yml) |
-| RepoBrief / Lenskit | [https://github.com/heimgewebe/lenskit](https://github.com/heimgewebe/lenskit) |
+| RepoGround | [https://github.com/heimgewebe/repoground](https://github.com/heimgewebe/repoground) |
 | Systemkatalog | [README.md](../README.md) |
 
 ## Grenzen
