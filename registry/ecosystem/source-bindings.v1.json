@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "kind": "system_catalog_source_bindings",
   "catalogRepository": "heimgewebe/systemkatalog",
-  "observedAt": "2026-07-17T16:24:11Z",
+  "observedAt": "2026-07-17T16:59:07Z",
   "systems": [
     {
       "system": "actor:alexander",
@@ -42,17 +42,17 @@
       "system": "repo:systemkatalog",
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "de1a710168eeec5eed557ec082b4144bd5b5ed30",
+        "commit": "e0e8ae9baf9d93e4792c6acb8e4dbee1e2a9cccd",
         "locator": {
           "kind": "file",
           "path": "README.md",
-          "contentSha256": "68b02fef7457bc3f4b8ebf4e35ed4d6b32e58a42af9e4eb1afc57d619bfffecd"
+          "contentSha256": "644c819b59d75d03c28f5ba88fd498932949fbbae52f36d9d642f3c2fcfcd4ba"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-13T08:40:00+02:00",
+      "reviewedAt": "2026-07-17T16:59:07Z",
       "method": "repository_primary_document",
-      "uncertainty": 0.05
+      "uncertainty": 0.02
     },
     {
       "system": "repo:bureau",
@@ -170,15 +170,15 @@
       "system": "repo:schauwerk",
       "source": {
         "repository": "heimgewebe/schauwerk",
-        "commit": "747070c2c39223f1bee379943becac32729ecb9c",
+        "commit": "a4aca3e22e2cb58f484e428901051309e65522c1",
         "locator": {
           "kind": "file",
           "path": "README.md",
-          "contentSha256": "0fc9a2cfb44b85f5cc09150685af9463b2e0b0a966d151894644f8696cf030c5"
+          "contentSha256": "213cac171ec7eb6d3c49835da1c68b69fd84ea8081d7e93c440e2418a41a9db1"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-16T05:24:00+02:00",
+      "reviewedAt": "2026-07-17T16:59:07Z",
       "method": "repository_primary_document",
       "uncertainty": 0.02
     },
@@ -490,15 +490,15 @@
       "system": "repo:commonworld",
       "source": {
         "repository": "heimgewebe/commonworld",
-        "commit": "face76805c1e7f4c424efc5f1b6ec337831de7ae",
+        "commit": "c0c18c87e034120903f4e6aa7467822e4390e210",
         "locator": {
           "kind": "file",
           "path": "README.md",
-          "contentSha256": "6d42e4ab9eaa2e68175b7b5204d37bee77a04222f894b5f77c802fd7f6ec277b"
+          "contentSha256": "4a860538245912e8980f376dbb5c3499207f21f355fe2b1eb8f6647d6b0ef23f"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-14T20:49:21+02:00",
+      "reviewedAt": "2026-07-17T16:59:07Z",
       "method": "repository_primary_document",
       "uncertainty": 0.08
     },
