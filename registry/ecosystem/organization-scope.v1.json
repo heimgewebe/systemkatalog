@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
   "kind": "system_catalog_organization_scope",
-  "updatedAt": "2026-07-15",
+  "updatedAt": "2026-07-17",
   "source": {
     "provider": "github",
     "organization": "heimgewebe",
-    "observedAt": "2026-07-15T20:33:38Z",
+    "observedAt": "2026-07-17T16:19:35Z",
     "selection": {
       "archived": false,
       "fork": false
@@ -166,12 +166,12 @@
       "reason": "retained normative coordination-contract reference from the pre-Bureau and pre-Grabowski control model"
     },
     {
-      "name": "lenskit",
-      "repository": "heimgewebe/lenskit",
+      "name": "repoground",
+      "repository": "heimgewebe/repoground",
       "visibility": "public",
       "classification": "catalog",
-      "node": "repo:lenskit",
-      "reason": "context view and citable repository briefs"
+      "node": "repo:repoground",
+      "reason": "verifiable, citable codebase context"
     },
     {
       "name": "metarepo",

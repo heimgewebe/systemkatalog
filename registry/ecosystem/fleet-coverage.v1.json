@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "kind": "system_catalog_fleet_coverage",
-  "updatedAt": "2026-07-15",
+  "updatedAt": "2026-07-17",
   "membershipAuthority": {
     "repository": "heimgewebe/metarepo",
     "path": "fleet/repos.yml",
@@ -122,9 +122,9 @@
       "membership": "catalog-only"
     },
     {
-      "node": "repo:lenskit",
-      "repository": "heimgewebe/lenskit",
-      "entrypoint": "https://github.com/heimgewebe/lenskit",
+      "node": "repo:repoground",
+      "repository": "heimgewebe/repoground",
+      "entrypoint": "https://github.com/heimgewebe/repoground",
       "membership": "fleet"
     },
     {

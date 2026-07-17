@@ -126,9 +126,9 @@
       "target": "https://github.com/heimgewebe/grabowski"
     },
     {
-      "id": "repobrief_lenskit",
-      "label": "RepoBrief / Lenskit",
-      "target": "https://github.com/heimgewebe/lenskit"
+      "id": "repoground",
+      "label": "RepoGround",
+      "target": "https://github.com/heimgewebe/repoground"
     },
     {
       "id": "leitstand",

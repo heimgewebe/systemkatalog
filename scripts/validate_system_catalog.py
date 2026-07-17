@@ -39,7 +39,7 @@ ALLOWED_NODE_TYPES = {"human", "repository", "concept", "artifact", "service"}
 AUTHORITY_OWNER_NODES = {
     "bureau": "repo:bureau",
     "grabowski": "repo:grabowski",
-    "repobrief_lenskit": "repo:lenskit",
+    "repoground": "repo:repoground",
     "systemkatalog": "repo:systemkatalog",
     "steuerboard": "repo:steuerboard",
     "leitstand": "repo:leitstand",
