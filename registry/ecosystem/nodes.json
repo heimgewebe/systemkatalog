@@ -3,7 +3,7 @@
   "kind": "system_catalog_inventory",
   "owner": "repo:systemkatalog",
   "catalogRole": "canonical_system_inventory",
-  "updatedAt": "2026-07-15",
+  "updatedAt": "2026-07-17",
   "nodes": [
     {
       "id": "actor:alexander",
@@ -105,10 +105,10 @@
       }
     },
     {
-      "id": "repo:lenskit",
-      "name": "Lenskit / RepoBrief implementation",
+      "id": "repo:repoground",
+      "name": "RepoGround",
       "type": "repository",
-      "purpose": "context views, citable repository briefs and read-only agent context serving",
+      "purpose": "verifiable, citable codebase context for humans and AI systems",
       "notResponsibleFor": [
         "repository operational state",
         "task priority",
@@ -118,23 +118,8 @@
         "repository_context_citations"
       ],
       "entrypoints": {
-        "repository": "https://github.com/heimgewebe/lenskit",
-        "mcpServer": "https://github.com/heimgewebe/lenskit/blob/main/docs/usage/repobrief-mcp-stdio.md"
-      }
-    },
-    {
-      "id": "concept:repobrief",
-      "name": "RepoBrief",
-      "type": "concept",
-      "purpose": "public name for context-view layer",
-      "notResponsibleFor": [
-        "repository mutation",
-        "runtime health",
-        "task dispatch"
-      ],
-      "truthOwnership": [],
-      "entrypoints": {
-        "implementation": "https://github.com/heimgewebe/lenskit"
+        "repository": "https://github.com/heimgewebe/repoground",
+        "mcpServer": "https://github.com/heimgewebe/repoground/blob/main/docs/usage/repobrief-mcp-stdio.md"
       }
     },
     {

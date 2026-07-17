@@ -25,8 +25,8 @@ class SystemCatalogTests(unittest.TestCase):
     def test_repository_catalog_is_valid_and_roomless(self) -> None:
         result = validate(ROOT)
         self.assertEqual(result["status"], "valid")
-        self.assertEqual(result["registrySystems"], 38)
-        self.assertEqual(result["registryRelations"], 46)
+        self.assertEqual(result["registrySystems"], 37)
+        self.assertEqual(result["registryRelations"], 45)
         self.assertEqual(result["authorityDomains"], 17)
         self.assertEqual(result["catalogRepositories"], 33)
         self.assertEqual(result["fleetRepositories"], 19)
@@ -74,7 +74,7 @@ class SystemCatalogTests(unittest.TestCase):
             "id", "name", "type", "purpose",
             "notResponsibleFor", "truthOwnership", "entrypoints",
         }
-        self.assertEqual(len(data["nodes"]), 38)
+        self.assertEqual(len(data["nodes"]), 37)
         for node in data["nodes"]:
             self.assertEqual(set(node), required)
             self.assertTrue(node["notResponsibleFor"])

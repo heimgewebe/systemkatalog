@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "kind": "system_catalog_authority_matrix",
-  "updatedAt": "2026-07-15T22:33:38+02:00",
+  "updatedAt": "2026-07-17T18:19:35+02:00",
   "canonicalMap": "rendered/ecosystem-registry-map.mmd",
   "registryInputs": [
     "registry/ecosystem/nodes.json",
@@ -26,9 +26,9 @@
     },
     {
       "domain": "repository_context_citations",
-      "owner": "repobrief_lenskit",
+      "owner": "repoground",
       "projections": [
-        "rlens",
+        "repoground",
         "systemkatalog"
       ]
     },

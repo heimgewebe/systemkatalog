@@ -43,8 +43,10 @@ Dafür gelten die Primärquellen:
 | Repositories, Branches, PRs, Issues, Reviews | GitHub |
 | Technische Prüfergebnisse | CI und Review-Gates |
 | Laufende Dienste | Runtime, systemd, Healthchecks und Logs |
-| Zitierfähiger Repositorykontext | RepoBrief / Lenskit |
+| Verifizierbarer, zitierfähiger Codebase-Kontext | RepoGround |
 | Allgemeine Live-Anzeige | Leitstand |
+
+Lenskit und RepoBrief bleiben ausschließlich als Legacy-Namen und Kompatibilitätseinstiege erhalten; die kanonische Produkt- und Repositoryidentität ist RepoGround.
 
 ## Aktive Struktur
 

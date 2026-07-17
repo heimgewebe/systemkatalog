@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "kind": "system_catalog_relations",
   "catalogRole": "canonical_stable_relations",
-  "updatedAt": "2026-07-15",
+  "updatedAt": "2026-07-17",
   "relationTypes": [
     "owns",
     "steers",
@@ -65,18 +65,11 @@
       "meaning": "Checks and review gates provide hard technical feedback."
     },
     {
-      "from": "repo:lenskit",
-      "to": "concept:repobrief",
-      "type": "implements",
-      "stability": "stable",
-      "meaning": "RepoBrief is the public context-view name; Lenskit remains an implementation namespace for now."
-    },
-    {
-      "from": "concept:repobrief",
+      "from": "repo:repoground",
       "to": "repo:systemkatalog",
       "type": "provides",
       "stability": "stable",
-      "meaning": "RepoBrief gives Systemkatalog citable repository context."
+      "meaning": "RepoGround provides Systemkatalog with verifiable, citable codebase context."
     },
     {
       "from": "repo:steuerboard",

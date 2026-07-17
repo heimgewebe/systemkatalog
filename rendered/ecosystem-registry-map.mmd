@@ -28,11 +28,11 @@ flowchart TD
         repo_konvergenzregelkreis["Konvergenzregelkreis<br/>id: repo:konvergenzregelkreis<br/>repository<br/>public stateless convergence protocol and conformance core for evidence-bound closure of ecosystem changes"]
         repo_leitstand["Leitstand<br/>id: repo:leitstand<br/>repository<br/>read-only ecosystem observability and status projection"]
         repo_leitwerk["Leitwerk<br/>id: repo:leitwerk<br/>repository<br/>retained normative coordination-contract reference from the pre-Bureau and pre-Grabowski control model"]
-        repo_lenskit["Lenskit / RepoBrief implementation<br/>id: repo:lenskit<br/>repository<br/>context views, citable repository briefs and read-only agent context serving"]
         repo_metarepo["Metarepo<br/>id: repo:metarepo<br/>repository<br/>Fleet membership, canonical shared contracts and repository templates"]
         repo_mitschreiber["Mitschreiber<br/>id: repo:mitschreiber<br/>repository<br/>Privacy-first on-device context capture and redacted event production"]
         repo_obsidian_bridge["Obsidian Bridge<br/>id: repo:obsidian-bridge<br/>repository<br/>deterministic CLI and artifact bridge for using Obsidian as a projection and observatory interface"]
         repo_plexer["Plexer<br/>id: repo:plexer<br/>repository<br/>bounded event delivery and queueing gateway"]
+        repo_repoground["RepoGround<br/>id: repo:repoground<br/>repository<br/>verifiable, citable codebase context for humans and AI systems"]
         repo_schauwerk["Schauwerk<br/>id: repo:schauwerk<br/>repository<br/>visual surface and projection layer"]
         repo_semantAH["semantAH<br/>id: repo:semantAH<br/>repository<br/>Semantic index, embeddings and knowledge-graph pipeline"]
         repo_sichter["Sichter<br/>id: repo:sichter<br/>repository<br/>Code-review and pull-request automation prototype"]
@@ -45,10 +45,6 @@ flowchart TD
         repo_wgx["WGX<br/>id: repo:wgx<br/>repository<br/>Fleet CLI and reusable repository workflow engine"]
     end
 
-    subgraph kind_concept[Konzepte]
-        concept_repobrief["RepoBrief<br/>id: concept:repobrief<br/>concept<br/>public name for context-view layer"]
-    end
-
     subgraph kind_artifact[Artefakte]
         artifact_ecosystem_map["Ecosystem Map v0<br/>id: artifact:ecosystem-map<br/>artifact<br/>machine-readable overview graph and rendered orientation map"]
     end
@@ -59,7 +55,6 @@ flowchart TD
     end
 
     actor_alexander -->|steers / stable| repo_systemkatalog
-    concept_repobrief -->|provides / stable| repo_systemkatalog
     repo_agent_control_surface -->|operates_on / bounded| service_github
     repo_aussensensor -->|delivers_to / stable| repo_chronik
     repo_bureau -->|delegates_to / stable| repo_grabowski
@@ -82,13 +77,13 @@ flowchart TD
     repo_leitstand -->|observes / stable| artifact_ecosystem_map
     repo_leitwerk -->|scope_boundary / related| repo_bureau
     repo_leitwerk -->|scope_boundary / related| repo_konvergenzregelkreis
-    repo_lenskit -->|implements / stable| concept_repobrief
     repo_metarepo -->|provides / stable| repo_contracts_mirror
     repo_metarepo -->|provides / stable| repo_systemkatalog
     repo_mitschreiber -->|emits_to / stable| repo_chronik
     repo_mitschreiber -->|provides / bounded| repo_semantAH
     repo_obsidian_bridge -->|provides / bounded| repo_vault_gewebe
     repo_plexer -->|delivers_to / stable| repo_chronik
+    repo_repoground -->|provides / stable| repo_systemkatalog
     repo_schauwerk -->|renders / stable| artifact_ecosystem_map
     repo_semantAH -->|provides / stable| repo_hausKI
     repo_sichter -->|operates_on / bounded| service_github
