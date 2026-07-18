@@ -1,5 +1,5 @@
 {
-  "artifactCount": 5,
+  "artifactCount": 6,
   "artifacts": [
     {
       "bytes": 8967,
@@ -9,11 +9,11 @@
       "sha256": "702c64d98eca32dc8084c845b9728db17427c5bdc2a5e6514859818d261f5500"
     },
     {
-      "bytes": 28790,
+      "bytes": 36931,
       "contentType": "text/markdown",
       "path": "rendered/system-catalog.md",
       "role": "rendered_catalog_markdown",
-      "sha256": "29faf0bcd2e2201ecfe3d0e743414e48f3b4de5f2817bb380516fbac86c51dec"
+      "sha256": "8354f63d02143077e0f3a58992fb3abfa02e997f60c911779b812717f0468ee5"
     },
     {
       "bytes": 19178,
@@ -35,6 +35,13 @@
       "path": "registry/ecosystem/authority-matrix.v1.json",
       "role": "authority_matrix",
       "sha256": "a44ed4c33258e80257ea3dd6bfd284a6cfcab8fee6db0aefc1ad0458871a0e48"
+    },
+    {
+      "bytes": 35908,
+      "contentType": "application/json",
+      "path": "registry/ecosystem/resilience.v1.json",
+      "role": "resilience_semantics",
+      "sha256": "d4cdef7722fe18cee5401149e9bb54c12d5b9ffbf299a581399a923f108957ed"
     }
   ],
   "contractVersion": "1",
@@ -51,8 +58,8 @@
   "schemaPath": "catalog/ecosystem-map-artifact-manifest.schema.v1.json",
   "schemaVersion": 1,
   "source": {
-    "commit": "84ed3fd0a1dc069a13a9c21f4275f0eb8c325354",
-    "generatedAt": "2026-07-17T16:36:17Z",
+    "commit": "1773bb7275d005b6db36f5681ca6f4722ba4a99e",
+    "generatedAt": "2026-07-18T00:55:12Z",
     "repository": "heimgewebe/systemkatalog"
   }
 }
