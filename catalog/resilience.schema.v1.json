@@ -1,0 +1,370 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/heimgewebe/systemkatalog/catalog/resilience.schema.v1.json",
+  "title": "Systemkatalog Resilience v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "kind",
+    "owner",
+    "catalogRole",
+    "updatedAt",
+    "defaultCriticality",
+    "criticalityClasses",
+    "couplingClasses",
+    "failurePolicies",
+    "authorityDirections",
+    "recoveryIndependenceClasses",
+    "failureDomains",
+    "systems",
+    "relations",
+    "recoveryModes",
+    "doesNotEstablish"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "kind": {
+      "const": "system_catalog_resilience"
+    },
+    "owner": {
+      "const": "repo:systemkatalog"
+    },
+    "catalogRole": {
+      "const": "canonical_stable_resilience_semantics"
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date"
+    },
+    "defaultCriticality": {
+      "enum": [
+        "foundational",
+        "essential",
+        "supporting",
+        "optional",
+        "unknown"
+      ]
+    },
+    "criticalityClasses": {
+      "const": [
+        "foundational",
+        "essential",
+        "supporting",
+        "optional",
+        "unknown"
+      ]
+    },
+    "couplingClasses": {
+      "const": [
+        "synchronous-blocking",
+        "asynchronous-durable",
+        "asynchronous-lossy",
+        "observational",
+        "manual",
+        "unknown"
+      ]
+    },
+    "failurePolicies": {
+      "const": [
+        "block",
+        "queue",
+        "degrade",
+        "fallback",
+        "ignore",
+        "unknown"
+      ]
+    },
+    "authorityDirections": {
+      "const": [
+        "from-to",
+        "to-from",
+        "bidirectional",
+        "none",
+        "unknown"
+      ]
+    },
+    "recoveryIndependenceClasses": {
+      "const": [
+        "independent",
+        "partially-shared",
+        "same-failure-domain",
+        "unknown"
+      ]
+    },
+    "failureDomains": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/failureDomain"
+      }
+    },
+    "systems": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/systemResilience"
+      }
+    },
+    "relations": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/relationResilience"
+      }
+    },
+    "recoveryModes": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/recoveryMode"
+      }
+    },
+    "doesNotEstablish": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  },
+  "$defs": {
+    "stringArray": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "failureDomain": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "kind",
+        "meaning",
+        "doesNotEstablish"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9._-]*:[a-z0-9][a-z0-9._:-]*$"
+        },
+        "kind": {
+          "enum": [
+            "human",
+            "host",
+            "identity",
+            "provider",
+            "network",
+            "credentials",
+            "data",
+            "control",
+            "stream",
+            "runtime"
+          ]
+        },
+        "meaning": {
+          "type": "string",
+          "minLength": 1
+        },
+        "doesNotEstablish": {
+          "$ref": "#/$defs/stringArray"
+        }
+      }
+    },
+    "systemResilience": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "system",
+        "criticality",
+        "failureDomains",
+        "recoveryModeRefs",
+        "acceptedSinglePathRisks",
+        "evidence",
+        "uncertainty"
+      ],
+      "properties": {
+        "system": {
+          "type": "string",
+          "minLength": 1
+        },
+        "criticality": {
+          "enum": [
+            "foundational",
+            "essential",
+            "supporting",
+            "optional",
+            "unknown"
+          ]
+        },
+        "failureDomains": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "recoveryModeRefs": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "acceptedSinglePathRisks": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "evidence": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "uncertainty": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    },
+    "relationIdentity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "from",
+        "to",
+        "type"
+      ],
+      "properties": {
+        "from": {
+          "type": "string",
+          "minLength": 1
+        },
+        "to": {
+          "type": "string",
+          "minLength": 1
+        },
+        "type": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "relationResilience": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "relation",
+        "coupling",
+        "failurePolicy",
+        "authorityDirection",
+        "recoveryModeRef",
+        "evidence",
+        "uncertainty"
+      ],
+      "properties": {
+        "relation": {
+          "$ref": "#/$defs/relationIdentity"
+        },
+        "coupling": {
+          "enum": [
+            "synchronous-blocking",
+            "asynchronous-durable",
+            "asynchronous-lossy",
+            "observational",
+            "manual",
+            "unknown"
+          ]
+        },
+        "failurePolicy": {
+          "enum": [
+            "block",
+            "queue",
+            "degrade",
+            "fallback",
+            "ignore",
+            "unknown"
+          ]
+        },
+        "authorityDirection": {
+          "enum": [
+            "from-to",
+            "to-from",
+            "bidirectional",
+            "none",
+            "unknown"
+          ]
+        },
+        "recoveryModeRef": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "evidence": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "uncertainty": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    },
+    "recoveryMode": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "system",
+        "kind",
+        "failureDomains",
+        "independence",
+        "sharedFailureDomains",
+        "triggerClass",
+        "returnCondition",
+        "evidence",
+        "doesNotEstablish"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9._-]*$"
+        },
+        "system": {
+          "type": "string",
+          "minLength": 1
+        },
+        "kind": {
+          "enum": [
+            "rollback",
+            "restore",
+            "durable-queue",
+            "failover",
+            "manual-recovery"
+          ]
+        },
+        "failureDomains": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "independence": {
+          "enum": [
+            "independent",
+            "partially-shared",
+            "same-failure-domain",
+            "unknown"
+          ]
+        },
+        "sharedFailureDomains": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "triggerClass": {
+          "type": "string",
+          "minLength": 1
+        },
+        "returnCondition": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "doesNotEstablish": {
+          "$ref": "#/$defs/stringArray"
+        }
+      }
+    }
+  }
+}

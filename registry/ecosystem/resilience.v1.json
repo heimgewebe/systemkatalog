@@ -1,0 +1,1273 @@
+{
+  "schemaVersion": 1,
+  "kind": "system_catalog_resilience",
+  "owner": "repo:systemkatalog",
+  "catalogRole": "canonical_stable_resilience_semantics",
+  "updatedAt": "2026-07-18",
+  "defaultCriticality": "unknown",
+  "criticalityClasses": [
+    "foundational",
+    "essential",
+    "supporting",
+    "optional",
+    "unknown"
+  ],
+  "couplingClasses": [
+    "synchronous-blocking",
+    "asynchronous-durable",
+    "asynchronous-lossy",
+    "observational",
+    "manual",
+    "unknown"
+  ],
+  "failurePolicies": [
+    "block",
+    "queue",
+    "degrade",
+    "fallback",
+    "ignore",
+    "unknown"
+  ],
+  "authorityDirections": [
+    "from-to",
+    "to-from",
+    "bidirectional",
+    "none",
+    "unknown"
+  ],
+  "recoveryIndependenceClasses": [
+    "independent",
+    "partially-shared",
+    "same-failure-domain",
+    "unknown"
+  ],
+  "failureDomains": [
+    {
+      "id": "human:alexander",
+      "kind": "human",
+      "meaning": "Human sense, approval and abort authority.",
+      "doesNotEstablish": [
+        "current failure",
+        "current health",
+        "automatic execution authority"
+      ]
+    },
+    {
+      "id": "host:heim-pc",
+      "kind": "host",
+      "meaning": "The primary local operator host and its user-scoped state.",
+      "doesNotEstablish": [
+        "current failure",
+        "current health",
+        "automatic execution authority"
+      ]
+    },
+    {
+      "id": "host:wg-prod-1",
+      "kind": "host",
+      "meaning": "The current Weltgewebe production reference host or cell.",
+      "doesNotEstablish": [
+        "current failure",
+        "current health",
+        "automatic execution authority"
+      ]
+    },
+    {
+      "id": "identity:github",
+      "kind": "identity",
+      "meaning": "GitHub repository, branch, pull-request and review identity.",
+      "doesNotEstablish": [
+        "current failure",
+        "current health",
+        "automatic execution authority"
+      ]
+    },
+    {
+      "id": "provider:github",
+      "kind": "provider",
+      "meaning": "GitHub-hosted collaboration, CI control and repository metadata.",
+      "doesNotEstablish": [
+        "current failure",
+        "current health",
+        "automatic execution authority"
+      ]
+    },
+    {
+      "id": "network:public-internet",
+      "kind": "network",
+      "meaning": "External network reachability required for hosted services and public endpoints.",
+      "doesNotEstablish": [
+        "current failure",
+        "current health",
+        "automatic execution authority"
+      ]
+    },
+    {
+      "id": "credentials:operator",
+      "kind": "credentials",
+      "meaning": "Operator-held credentials required for authenticated mutation or recovery.",
+      "doesNotEstablish": [
+        "current failure",
+        "current health",
+        "automatic execution authority"
+      ]
+    },
+    {
+      "id": "provider:backup-storage",
+      "kind": "provider",
+      "meaning": "Backup storage and restore inputs outside the active primary data path.",
+      "doesNotEstablish": [
+        "current failure",
+        "current health",
+        "automatic execution authority"
+      ]
+    },
+    {
+      "id": "data:bureau-state",
+      "kind": "data",
+      "meaning": "Bureau operational SQLite state, envelopes, claims and receipts.",
+      "doesNotEstablish": [
+        "current failure",
+        "current health",
+        "automatic execution authority"
+      ]
+    },
+    {
+      "id": "control:grabowski-runtime",
+      "kind": "control",
+      "meaning": "Grabowski deployment, operator service, tunnel and typed execution surface.",
+      "doesNotEstablish": [
+        "current failure",
+        "current health",
+        "automatic execution authority"
+      ]
+    },
+    {
+      "id": "data:grabowski-outbox",
+      "kind": "data",
+      "meaning": "Durable local outbox used when downstream event delivery is unavailable.",
+      "doesNotEstablish": [
+        "current failure",
+        "current health",
+        "automatic execution authority"
+      ]
+    },
+    {
+      "id": "data:chronik-store",
+      "kind": "data",
+      "meaning": "Chronik append-only event data and integrity metadata.",
+      "doesNotEstablish": [
+        "current failure",
+        "current health",
+        "automatic execution authority"
+      ]
+    },
+    {
+      "id": "data:weltgewebe-postgresql",
+      "kind": "data",
+      "meaning": "Weltgewebe relational authority stored in PostgreSQL.",
+      "doesNotEstablish": [
+        "current failure",
+        "current health",
+        "automatic execution authority"
+      ]
+    },
+    {
+      "id": "stream:weltgewebe-jetstream",
+      "kind": "stream",
+      "meaning": "Weltgewebe durable event and stream state in JetStream.",
+      "doesNotEstablish": [
+        "current failure",
+        "current health",
+        "automatic execution authority"
+      ]
+    },
+    {
+      "id": "runtime:repoground",
+      "kind": "runtime",
+      "meaning": "The replacement RepoGround runtime and its serving identity.",
+      "doesNotEstablish": [
+        "current failure",
+        "current health",
+        "automatic execution authority"
+      ]
+    },
+    {
+      "id": "runtime:lenskit-legacy",
+      "kind": "runtime",
+      "meaning": "The bounded legacy Lenskit/rLens runtime retained for rollback during cutover.",
+      "doesNotEstablish": [
+        "current failure",
+        "current health",
+        "automatic execution authority"
+      ]
+    }
+  ],
+  "systems": [
+    {
+      "system": "actor:alexander",
+      "criticality": "foundational",
+      "failureDomains": [
+        "human:alexander"
+      ],
+      "recoveryModeRefs": [],
+      "acceptedSinglePathRisks": [
+        "Human meaning, approval and abort authority intentionally have no automatic replacement."
+      ],
+      "evidence": [
+        "docs/audits/heimgewebe-resilience-gap-matrix-v1.md",
+        "registry/ecosystem/authority-matrix.v1.json"
+      ],
+      "uncertainty": 0.18
+    },
+    {
+      "system": "artifact:ecosystem-map",
+      "criticality": "optional",
+      "failureDomains": [],
+      "recoveryModeRefs": [],
+      "acceptedSinglePathRisks": [],
+      "evidence": [
+        "docs/audits/heimgewebe-resilience-gap-matrix-v1.md",
+        "registry/ecosystem/authority-matrix.v1.json"
+      ],
+      "uncertainty": 0.18
+    },
+    {
+      "system": "repo:systemkatalog",
+      "criticality": "essential",
+      "failureDomains": [
+        "identity:github",
+        "provider:github"
+      ],
+      "recoveryModeRefs": [],
+      "acceptedSinglePathRisks": [
+        "The catalog can be reconstructed from verified Git clones, but no system-specific recovery mode is yet catalogued and hosted collaboration still depends on GitHub."
+      ],
+      "evidence": [
+        "docs/audits/heimgewebe-resilience-gap-matrix-v1.md",
+        "registry/ecosystem/authority-matrix.v1.json"
+      ],
+      "uncertainty": 0.18
+    },
+    {
+      "system": "repo:bureau",
+      "criticality": "foundational",
+      "failureDomains": [
+        "host:heim-pc",
+        "data:bureau-state",
+        "identity:github",
+        "credentials:operator",
+        "provider:backup-storage"
+      ],
+      "recoveryModeRefs": [
+        "bureau-state-restore"
+      ],
+      "acceptedSinglePathRisks": [],
+      "evidence": [
+        "docs/audits/heimgewebe-resilience-gap-matrix-v1.md",
+        "registry/ecosystem/authority-matrix.v1.json"
+      ],
+      "uncertainty": 0.18
+    },
+    {
+      "system": "repo:grabowski",
+      "criticality": "foundational",
+      "failureDomains": [
+        "host:heim-pc",
+        "control:grabowski-runtime",
+        "credentials:operator",
+        "network:public-internet",
+        "provider:backup-storage",
+        "data:grabowski-outbox"
+      ],
+      "recoveryModeRefs": [
+        "grabowski-release-rollback",
+        "grabowski-state-restore",
+        "chronik-durable-outbox"
+      ],
+      "acceptedSinglePathRisks": [],
+      "evidence": [
+        "docs/audits/heimgewebe-resilience-gap-matrix-v1.md",
+        "registry/ecosystem/authority-matrix.v1.json"
+      ],
+      "uncertainty": 0.18
+    },
+    {
+      "system": "repo:weltgewebe",
+      "criticality": "essential",
+      "failureDomains": [
+        "host:wg-prod-1",
+        "data:weltgewebe-postgresql",
+        "stream:weltgewebe-jetstream",
+        "network:public-internet",
+        "credentials:operator",
+        "provider:backup-storage"
+      ],
+      "recoveryModeRefs": [
+        "weltgewebe-postgresql-restore",
+        "weltgewebe-jetstream-recovery"
+      ],
+      "acceptedSinglePathRisks": [],
+      "evidence": [
+        "docs/audits/heimgewebe-resilience-gap-matrix-v1.md",
+        "registry/ecosystem/authority-matrix.v1.json"
+      ],
+      "uncertainty": 0.18
+    },
+    {
+      "system": "repo:repoground",
+      "criticality": "supporting",
+      "failureDomains": [
+        "host:heim-pc",
+        "runtime:repoground",
+        "runtime:lenskit-legacy"
+      ],
+      "recoveryModeRefs": [
+        "repoground-legacy-rollback"
+      ],
+      "acceptedSinglePathRisks": [],
+      "evidence": [
+        "docs/audits/heimgewebe-resilience-gap-matrix-v1.md",
+        "registry/ecosystem/authority-matrix.v1.json"
+      ],
+      "uncertainty": 0.18
+    },
+    {
+      "system": "repo:steuerboard",
+      "criticality": "unknown",
+      "failureDomains": [
+        "identity:github",
+        "provider:github"
+      ],
+      "recoveryModeRefs": [],
+      "acceptedSinglePathRisks": [],
+      "evidence": [
+        "docs/audits/heimgewebe-resilience-gap-matrix-v1.md"
+      ],
+      "uncertainty": 1.0
+    },
+    {
+      "system": "repo:vibe-lab",
+      "criticality": "optional",
+      "failureDomains": [
+        "identity:github",
+        "provider:github"
+      ],
+      "recoveryModeRefs": [],
+      "acceptedSinglePathRisks": [],
+      "evidence": [
+        "docs/audits/heimgewebe-resilience-gap-matrix-v1.md",
+        "registry/ecosystem/authority-matrix.v1.json"
+      ],
+      "uncertainty": 0.18
+    },
+    {
+      "system": "repo:chronik",
+      "criticality": "supporting",
+      "failureDomains": [
+        "host:heim-pc",
+        "data:chronik-store",
+        "provider:backup-storage"
+      ],
+      "recoveryModeRefs": [
+        "chronik-state-restore"
+      ],
+      "acceptedSinglePathRisks": [],
+      "evidence": [
+        "docs/audits/heimgewebe-resilience-gap-matrix-v1.md",
+        "registry/ecosystem/authority-matrix.v1.json"
+      ],
+      "uncertainty": 0.18
+    },
+    {
+      "system": "repo:schauwerk",
+      "criticality": "optional",
+      "failureDomains": [
+        "identity:github",
+        "provider:github"
+      ],
+      "recoveryModeRefs": [],
+      "acceptedSinglePathRisks": [],
+      "evidence": [
+        "docs/audits/heimgewebe-resilience-gap-matrix-v1.md",
+        "registry/ecosystem/authority-matrix.v1.json"
+      ],
+      "uncertainty": 0.18
+    },
+    {
+      "system": "repo:infra",
+      "criticality": "unknown",
+      "failureDomains": [
+        "identity:github",
+        "provider:github"
+      ],
+      "recoveryModeRefs": [],
+      "acceptedSinglePathRisks": [],
+      "evidence": [
+        "docs/audits/heimgewebe-resilience-gap-matrix-v1.md"
+      ],
+      "uncertainty": 1.0
+    },
+    {
+      "system": "repo:device-graph",
+      "criticality": "unknown",
+      "failureDomains": [
+        "identity:github",
+        "provider:github"
+      ],
+      "recoveryModeRefs": [],
+      "acceptedSinglePathRisks": [],
+      "evidence": [
+        "docs/audits/heimgewebe-resilience-gap-matrix-v1.md"
+      ],
+      "uncertainty": 1.0
+    },
+    {
+      "system": "service:github",
+      "criticality": "foundational",
+      "failureDomains": [
+        "provider:github",
+        "network:public-internet",
+        "credentials:operator"
+      ],
+      "recoveryModeRefs": [],
+      "acceptedSinglePathRisks": [
+        "Published repository and pull-request truth depends on an external provider; local clones do not replace hosted collaboration state."
+      ],
+      "evidence": [
+        "docs/audits/heimgewebe-resilience-gap-matrix-v1.md",
+        "registry/ecosystem/authority-matrix.v1.json"
+      ],
+      "uncertainty": 0.18
+    },
+    {
+      "system": "service:ci",
+      "criticality": "supporting",
+      "failureDomains": [
+        "provider:github",
+        "network:public-internet"
+      ],
+      "recoveryModeRefs": [],
+      "acceptedSinglePathRisks": [],
+      "evidence": [
+        "docs/audits/heimgewebe-resilience-gap-matrix-v1.md",
+        "registry/ecosystem/authority-matrix.v1.json"
+      ],
+      "uncertainty": 0.18
+    },
+    {
+      "system": "repo:leitstand",
+      "criticality": "supporting",
+      "failureDomains": [
+        "identity:github",
+        "provider:github"
+      ],
+      "recoveryModeRefs": [],
+      "acceptedSinglePathRisks": [],
+      "evidence": [
+        "docs/audits/heimgewebe-resilience-gap-matrix-v1.md",
+        "registry/ecosystem/authority-matrix.v1.json"
+      ],
+      "uncertainty": 0.18
+    },
+    {
+      "system": "repo:plexer",
+      "criticality": "unknown",
+      "failureDomains": [
+        "identity:github",
+        "provider:github"
+      ],
+      "recoveryModeRefs": [],
+      "acceptedSinglePathRisks": [],
+      "evidence": [
+        "docs/audits/heimgewebe-resilience-gap-matrix-v1.md"
+      ],
+      "uncertainty": 1.0
+    },
+    {
+      "system": "repo:heimlern",
+      "criticality": "unknown",
+      "failureDomains": [
+        "identity:github",
+        "provider:github"
+      ],
+      "recoveryModeRefs": [],
+      "acceptedSinglePathRisks": [],
+      "evidence": [
+        "docs/audits/heimgewebe-resilience-gap-matrix-v1.md"
+      ],
+      "uncertainty": 1.0
+    },
+    {
+      "system": "repo:metarepo",
+      "criticality": "essential",
+      "failureDomains": [
+        "identity:github",
+        "provider:github"
+      ],
+      "recoveryModeRefs": [],
+      "acceptedSinglePathRisks": [
+        "Fleet and shared-contract history can be reconstructed from verified Git clones, but no system-specific recovery mode is yet catalogued and hosted collaboration still depends on GitHub."
+      ],
+      "evidence": [
+        "docs/audits/heimgewebe-resilience-gap-matrix-v1.md",
+        "registry/ecosystem/authority-matrix.v1.json"
+      ],
+      "uncertainty": 0.18
+    },
+    {
+      "system": "repo:wgx",
+      "criticality": "unknown",
+      "failureDomains": [
+        "identity:github",
+        "provider:github"
+      ],
+      "recoveryModeRefs": [],
+      "acceptedSinglePathRisks": [],
+      "evidence": [
+        "docs/audits/heimgewebe-resilience-gap-matrix-v1.md"
+      ],
+      "uncertainty": 1.0
+    },
+    {
+      "system": "repo:contracts-mirror",
+      "criticality": "unknown",
+      "failureDomains": [
+        "identity:github",
+        "provider:github"
+      ],
+      "recoveryModeRefs": [],
+      "acceptedSinglePathRisks": [],
+      "evidence": [
+        "docs/audits/heimgewebe-resilience-gap-matrix-v1.md"
+      ],
+      "uncertainty": 1.0
+    },
+    {
+      "system": "repo:hausKI",
+      "criticality": "unknown",
+      "failureDomains": [
+        "identity:github",
+        "provider:github"
+      ],
+      "recoveryModeRefs": [],
+      "acceptedSinglePathRisks": [],
+      "evidence": [
+        "docs/audits/heimgewebe-resilience-gap-matrix-v1.md"
+      ],
+      "uncertainty": 1.0
+    },
+    {
+      "system": "repo:hausKI-audio",
+      "criticality": "unknown",
+      "failureDomains": [
+        "identity:github",
+        "provider:github"
+      ],
+      "recoveryModeRefs": [],
+      "acceptedSinglePathRisks": [],
+      "evidence": [
+        "docs/audits/heimgewebe-resilience-gap-matrix-v1.md"
+      ],
+      "uncertainty": 1.0
+    },
+    {
+      "system": "repo:semantAH",
+      "criticality": "unknown",
+      "failureDomains": [
+        "identity:github",
+        "provider:github"
+      ],
+      "recoveryModeRefs": [],
+      "acceptedSinglePathRisks": [],
+      "evidence": [
+        "docs/audits/heimgewebe-resilience-gap-matrix-v1.md"
+      ],
+      "uncertainty": 1.0
+    },
+    {
+      "system": "repo:aussensensor",
+      "criticality": "unknown",
+      "failureDomains": [
+        "identity:github",
+        "provider:github"
+      ],
+      "recoveryModeRefs": [],
+      "acceptedSinglePathRisks": [],
+      "evidence": [
+        "docs/audits/heimgewebe-resilience-gap-matrix-v1.md"
+      ],
+      "uncertainty": 1.0
+    },
+    {
+      "system": "repo:mitschreiber",
+      "criticality": "unknown",
+      "failureDomains": [
+        "identity:github",
+        "provider:github"
+      ],
+      "recoveryModeRefs": [],
+      "acceptedSinglePathRisks": [],
+      "evidence": [
+        "docs/audits/heimgewebe-resilience-gap-matrix-v1.md"
+      ],
+      "uncertainty": 1.0
+    },
+    {
+      "system": "repo:sichter",
+      "criticality": "unknown",
+      "failureDomains": [
+        "identity:github",
+        "provider:github"
+      ],
+      "recoveryModeRefs": [],
+      "acceptedSinglePathRisks": [],
+      "evidence": [
+        "docs/audits/heimgewebe-resilience-gap-matrix-v1.md"
+      ],
+      "uncertainty": 1.0
+    },
+    {
+      "system": "repo:heimgeist",
+      "criticality": "unknown",
+      "failureDomains": [
+        "identity:github",
+        "provider:github"
+      ],
+      "recoveryModeRefs": [],
+      "acceptedSinglePathRisks": [],
+      "evidence": [
+        "docs/audits/heimgewebe-resilience-gap-matrix-v1.md"
+      ],
+      "uncertainty": 1.0
+    },
+    {
+      "system": "repo:heim-pc",
+      "criticality": "unknown",
+      "failureDomains": [
+        "identity:github",
+        "provider:github"
+      ],
+      "recoveryModeRefs": [],
+      "acceptedSinglePathRisks": [],
+      "evidence": [
+        "docs/audits/heimgewebe-resilience-gap-matrix-v1.md"
+      ],
+      "uncertainty": 1.0
+    },
+    {
+      "system": "repo:vault-gewebe",
+      "criticality": "unknown",
+      "failureDomains": [
+        "identity:github",
+        "provider:github"
+      ],
+      "recoveryModeRefs": [],
+      "acceptedSinglePathRisks": [],
+      "evidence": [
+        "docs/audits/heimgewebe-resilience-gap-matrix-v1.md"
+      ],
+      "uncertainty": 1.0
+    },
+    {
+      "system": "repo:commonworld",
+      "criticality": "unknown",
+      "failureDomains": [
+        "identity:github",
+        "provider:github"
+      ],
+      "recoveryModeRefs": [],
+      "acceptedSinglePathRisks": [],
+      "evidence": [
+        "docs/audits/heimgewebe-resilience-gap-matrix-v1.md"
+      ],
+      "uncertainty": 1.0
+    },
+    {
+      "system": "repo:agent-control-surface",
+      "criticality": "unknown",
+      "failureDomains": [
+        "identity:github",
+        "provider:github"
+      ],
+      "recoveryModeRefs": [],
+      "acceptedSinglePathRisks": [],
+      "evidence": [
+        "docs/audits/heimgewebe-resilience-gap-matrix-v1.md"
+      ],
+      "uncertainty": 1.0
+    },
+    {
+      "system": "repo:heimserver",
+      "criticality": "unknown",
+      "failureDomains": [
+        "identity:github",
+        "provider:github"
+      ],
+      "recoveryModeRefs": [],
+      "acceptedSinglePathRisks": [],
+      "evidence": [
+        "docs/audits/heimgewebe-resilience-gap-matrix-v1.md"
+      ],
+      "uncertainty": 1.0
+    },
+    {
+      "system": "repo:leitwerk",
+      "criticality": "unknown",
+      "failureDomains": [
+        "identity:github",
+        "provider:github"
+      ],
+      "recoveryModeRefs": [],
+      "acceptedSinglePathRisks": [],
+      "evidence": [
+        "docs/audits/heimgewebe-resilience-gap-matrix-v1.md"
+      ],
+      "uncertainty": 1.0
+    },
+    {
+      "system": "repo:obsidian-bridge",
+      "criticality": "unknown",
+      "failureDomains": [
+        "identity:github",
+        "provider:github"
+      ],
+      "recoveryModeRefs": [],
+      "acceptedSinglePathRisks": [],
+      "evidence": [
+        "docs/audits/heimgewebe-resilience-gap-matrix-v1.md"
+      ],
+      "uncertainty": 1.0
+    },
+    {
+      "system": "repo:snippet-engine-control",
+      "criticality": "unknown",
+      "failureDomains": [
+        "identity:github",
+        "provider:github"
+      ],
+      "recoveryModeRefs": [],
+      "acceptedSinglePathRisks": [],
+      "evidence": [
+        "docs/audits/heimgewebe-resilience-gap-matrix-v1.md"
+      ],
+      "uncertainty": 1.0
+    },
+    {
+      "system": "repo:konvergenzregelkreis",
+      "criticality": "essential",
+      "failureDomains": [
+        "identity:github",
+        "provider:github"
+      ],
+      "recoveryModeRefs": [],
+      "acceptedSinglePathRisks": [
+        "The stateless protocol can be reconstructed from verified Git clones, but no system-specific recovery mode is yet catalogued and hosted collaboration still depends on GitHub."
+      ],
+      "evidence": [
+        "docs/audits/heimgewebe-resilience-gap-matrix-v1.md",
+        "registry/ecosystem/authority-matrix.v1.json"
+      ],
+      "uncertainty": 0.18
+    }
+  ],
+  "relations": [
+    {
+      "relation": {
+        "from": "actor:alexander",
+        "to": "repo:systemkatalog",
+        "type": "steers"
+      },
+      "coupling": "manual",
+      "failurePolicy": "block",
+      "authorityDirection": "from-to",
+      "recoveryModeRef": null,
+      "evidence": [
+        "docs/audits/heimgewebe-resilience-gap-matrix-v1.md",
+        "registry/ecosystem/edges.json"
+      ],
+      "uncertainty": 0.16
+    },
+    {
+      "relation": {
+        "from": "repo:bureau",
+        "to": "repo:grabowski",
+        "type": "delegates_to"
+      },
+      "coupling": "synchronous-blocking",
+      "failurePolicy": "block",
+      "authorityDirection": "from-to",
+      "recoveryModeRef": null,
+      "evidence": [
+        "docs/audits/heimgewebe-resilience-gap-matrix-v1.md",
+        "registry/ecosystem/edges.json"
+      ],
+      "uncertainty": 0.16
+    },
+    {
+      "relation": {
+        "from": "repo:grabowski",
+        "to": "service:github",
+        "type": "operates_on"
+      },
+      "coupling": "synchronous-blocking",
+      "failurePolicy": "block",
+      "authorityDirection": "to-from",
+      "recoveryModeRef": null,
+      "evidence": [
+        "docs/audits/heimgewebe-resilience-gap-matrix-v1.md",
+        "registry/ecosystem/edges.json"
+      ],
+      "uncertainty": 0.16
+    },
+    {
+      "relation": {
+        "from": "service:github",
+        "to": "service:ci",
+        "type": "validated_by"
+      },
+      "coupling": "synchronous-blocking",
+      "failurePolicy": "block",
+      "authorityDirection": "to-from",
+      "recoveryModeRef": null,
+      "evidence": [
+        "docs/audits/heimgewebe-resilience-gap-matrix-v1.md",
+        "registry/ecosystem/edges.json"
+      ],
+      "uncertainty": 0.16
+    },
+    {
+      "relation": {
+        "from": "repo:weltgewebe",
+        "to": "service:github",
+        "type": "operates_on"
+      },
+      "coupling": "synchronous-blocking",
+      "failurePolicy": "block",
+      "authorityDirection": "to-from",
+      "recoveryModeRef": null,
+      "evidence": [
+        "docs/audits/heimgewebe-resilience-gap-matrix-v1.md",
+        "registry/ecosystem/edges.json"
+      ],
+      "uncertainty": 0.16
+    },
+    {
+      "relation": {
+        "from": "repo:systemkatalog",
+        "to": "repo:leitstand",
+        "type": "provides"
+      },
+      "coupling": "asynchronous-durable",
+      "failurePolicy": "degrade",
+      "authorityDirection": "from-to",
+      "recoveryModeRef": null,
+      "evidence": [
+        "docs/audits/heimgewebe-resilience-gap-matrix-v1.md",
+        "registry/ecosystem/edges.json"
+      ],
+      "uncertainty": 0.16
+    },
+    {
+      "relation": {
+        "from": "repo:chronik",
+        "to": "repo:leitstand",
+        "type": "provides"
+      },
+      "coupling": "observational",
+      "failurePolicy": "degrade",
+      "authorityDirection": "from-to",
+      "recoveryModeRef": null,
+      "evidence": [
+        "docs/audits/heimgewebe-resilience-gap-matrix-v1.md",
+        "registry/ecosystem/edges.json"
+      ],
+      "uncertainty": 0.16
+    },
+    {
+      "relation": {
+        "from": "repo:bureau",
+        "to": "repo:leitstand",
+        "type": "provides"
+      },
+      "coupling": "observational",
+      "failurePolicy": "degrade",
+      "authorityDirection": "from-to",
+      "recoveryModeRef": null,
+      "evidence": [
+        "docs/audits/heimgewebe-resilience-gap-matrix-v1.md",
+        "registry/ecosystem/edges.json"
+      ],
+      "uncertainty": 0.16
+    },
+    {
+      "relation": {
+        "from": "service:github",
+        "to": "repo:leitstand",
+        "type": "provides"
+      },
+      "coupling": "observational",
+      "failurePolicy": "degrade",
+      "authorityDirection": "from-to",
+      "recoveryModeRef": null,
+      "evidence": [
+        "docs/audits/heimgewebe-resilience-gap-matrix-v1.md",
+        "registry/ecosystem/edges.json"
+      ],
+      "uncertainty": 0.16
+    },
+    {
+      "relation": {
+        "from": "service:ci",
+        "to": "repo:leitstand",
+        "type": "provides"
+      },
+      "coupling": "observational",
+      "failurePolicy": "degrade",
+      "authorityDirection": "from-to",
+      "recoveryModeRef": null,
+      "evidence": [
+        "docs/audits/heimgewebe-resilience-gap-matrix-v1.md",
+        "registry/ecosystem/edges.json"
+      ],
+      "uncertainty": 0.16
+    },
+    {
+      "relation": {
+        "from": "repo:plexer",
+        "to": "repo:chronik",
+        "type": "delivers_to"
+      },
+      "coupling": "asynchronous-durable",
+      "failurePolicy": "queue",
+      "authorityDirection": "from-to",
+      "recoveryModeRef": null,
+      "evidence": [
+        "docs/audits/heimgewebe-resilience-gap-matrix-v1.md",
+        "registry/ecosystem/edges.json"
+      ],
+      "uncertainty": 0.16
+    },
+    {
+      "relation": {
+        "from": "repo:grabowski",
+        "to": "repo:chronik",
+        "type": "emits_to"
+      },
+      "coupling": "asynchronous-durable",
+      "failurePolicy": "queue",
+      "authorityDirection": "from-to",
+      "recoveryModeRef": "chronik-durable-outbox",
+      "evidence": [
+        "docs/audits/heimgewebe-resilience-gap-matrix-v1.md",
+        "registry/ecosystem/edges.json"
+      ],
+      "uncertainty": 0.16
+    },
+    {
+      "relation": {
+        "from": "repo:chronik",
+        "to": "repo:bureau",
+        "type": "evidence_for"
+      },
+      "coupling": "observational",
+      "failurePolicy": "degrade",
+      "authorityDirection": "from-to",
+      "recoveryModeRef": null,
+      "evidence": [
+        "docs/audits/heimgewebe-resilience-gap-matrix-v1.md",
+        "registry/ecosystem/edges.json"
+      ],
+      "uncertainty": 0.16
+    },
+    {
+      "relation": {
+        "from": "repo:chronik",
+        "to": "repo:vibe-lab",
+        "type": "learning_input_for"
+      },
+      "coupling": "observational",
+      "failurePolicy": "degrade",
+      "authorityDirection": "from-to",
+      "recoveryModeRef": null,
+      "evidence": [
+        "docs/audits/heimgewebe-resilience-gap-matrix-v1.md",
+        "registry/ecosystem/edges.json"
+      ],
+      "uncertainty": 0.16
+    },
+    {
+      "relation": {
+        "from": "repo:metarepo",
+        "to": "repo:systemkatalog",
+        "type": "provides"
+      },
+      "coupling": "asynchronous-durable",
+      "failurePolicy": "block",
+      "authorityDirection": "from-to",
+      "recoveryModeRef": null,
+      "evidence": [
+        "docs/audits/heimgewebe-resilience-gap-matrix-v1.md",
+        "registry/ecosystem/edges.json"
+      ],
+      "uncertainty": 0.16
+    },
+    {
+      "relation": {
+        "from": "repo:vibe-lab",
+        "to": "repo:bureau",
+        "type": "exports_candidate_to"
+      },
+      "coupling": "manual",
+      "failurePolicy": "degrade",
+      "authorityDirection": "from-to",
+      "recoveryModeRef": null,
+      "evidence": [
+        "docs/audits/heimgewebe-resilience-gap-matrix-v1.md",
+        "registry/ecosystem/edges.json"
+      ],
+      "uncertainty": 0.16
+    },
+    {
+      "relation": {
+        "from": "repo:konvergenzregelkreis",
+        "to": "repo:bureau",
+        "type": "scope_boundary"
+      },
+      "coupling": "manual",
+      "failurePolicy": "block",
+      "authorityDirection": "none",
+      "recoveryModeRef": null,
+      "evidence": [
+        "docs/audits/heimgewebe-resilience-gap-matrix-v1.md",
+        "registry/ecosystem/edges.json"
+      ],
+      "uncertainty": 0.16
+    },
+    {
+      "relation": {
+        "from": "repo:schauwerk",
+        "to": "artifact:ecosystem-map",
+        "type": "renders"
+      },
+      "coupling": "observational",
+      "failurePolicy": "degrade",
+      "authorityDirection": "to-from",
+      "recoveryModeRef": null,
+      "evidence": [
+        "docs/audits/heimgewebe-resilience-gap-matrix-v1.md",
+        "registry/ecosystem/edges.json"
+      ],
+      "uncertainty": 0.16
+    }
+  ],
+  "recoveryModes": [
+    {
+      "id": "bureau-state-restore",
+      "system": "repo:bureau",
+      "kind": "restore",
+      "failureDomains": [
+        "host:heim-pc",
+        "data:bureau-state",
+        "credentials:operator",
+        "provider:backup-storage"
+      ],
+      "independence": "partially-shared",
+      "sharedFailureDomains": [
+        "credentials:operator"
+      ],
+      "triggerClass": "authoritative Bureau state is missing or invalid",
+      "returnCondition": "Bureau validation, task and receipt integrity, claim reconciliation and a bounded operational readback all pass.",
+      "evidence": [
+        "docs/audits/heimgewebe-resilience-gap-matrix-v1.md"
+      ],
+      "doesNotEstablish": [
+        "a currently runnable restore",
+        "fresh backup contents",
+        "permission to overwrite a live Bureau state root"
+      ]
+    },
+    {
+      "id": "grabowski-release-rollback",
+      "system": "repo:grabowski",
+      "kind": "rollback",
+      "failureDomains": [
+        "host:heim-pc",
+        "control:grabowski-runtime",
+        "credentials:operator"
+      ],
+      "independence": "same-failure-domain",
+      "sharedFailureDomains": [
+        "host:heim-pc",
+        "credentials:operator"
+      ],
+      "triggerClass": "a candidate Grabowski release fails deployment identity, integrity, health or consumer gates",
+      "returnCondition": "The previous manifest-bound release is active, healthy, audit-valid and consumer-compatible.",
+      "evidence": [
+        "docs/audits/heimgewebe-resilience-gap-matrix-v1.md"
+      ],
+      "doesNotEstablish": [
+        "host-independent recovery",
+        "automatic rollback authority",
+        "connector client snapshot identity"
+      ]
+    },
+    {
+      "id": "grabowski-state-restore",
+      "system": "repo:grabowski",
+      "kind": "restore",
+      "failureDomains": [
+        "host:heim-pc",
+        "control:grabowski-runtime",
+        "credentials:operator",
+        "provider:backup-storage"
+      ],
+      "independence": "partially-shared",
+      "sharedFailureDomains": [
+        "credentials:operator"
+      ],
+      "triggerClass": "local operator state or deployment data cannot be reconciled in place",
+      "returnCondition": "A clean target passes deployment, audit, recovery-gate and typed operation readbacks without secret exposure.",
+      "evidence": [
+        "docs/audits/heimgewebe-resilience-gap-matrix-v1.md"
+      ],
+      "doesNotEstablish": [
+        "a currently runnable restore",
+        "recovery of unrelated application data",
+        "permission for privileged mutation"
+      ]
+    },
+    {
+      "id": "chronik-durable-outbox",
+      "system": "repo:grabowski",
+      "kind": "durable-queue",
+      "failureDomains": [
+        "host:heim-pc",
+        "data:grabowski-outbox",
+        "data:chronik-store"
+      ],
+      "independence": "partially-shared",
+      "sharedFailureDomains": [
+        "host:heim-pc"
+      ],
+      "triggerClass": "Chronik ingest is unavailable while a task-local event is ready for delivery",
+      "returnCondition": "Bounded retry succeeds, idempotency is preserved and the durable outbox is drained with a receipt.",
+      "evidence": [
+        "docs/audits/heimgewebe-resilience-gap-matrix-v1.md",
+        "registry/ecosystem/edges.json"
+      ],
+      "doesNotEstablish": [
+        "host-independent durability",
+        "Chronik task authority",
+        "unbounded retry safety"
+      ]
+    },
+    {
+      "id": "weltgewebe-postgresql-restore",
+      "system": "repo:weltgewebe",
+      "kind": "restore",
+      "failureDomains": [
+        "host:wg-prod-1",
+        "data:weltgewebe-postgresql",
+        "credentials:operator",
+        "provider:backup-storage"
+      ],
+      "independence": "partially-shared",
+      "sharedFailureDomains": [
+        "credentials:operator"
+      ],
+      "triggerClass": "the authoritative PostgreSQL state cannot safely continue or fail over in place",
+      "returnCondition": "A clean target passes schema, integrity, representative API, authentication and domain readbacks.",
+      "evidence": [
+        "docs/audits/heimgewebe-resilience-gap-matrix-v1.md"
+      ],
+      "doesNotEstablish": [
+        "a fresh successful restore",
+        "zero data loss",
+        "permission to replace the current primary"
+      ]
+    },
+    {
+      "id": "weltgewebe-jetstream-recovery",
+      "system": "repo:weltgewebe",
+      "kind": "restore",
+      "failureDomains": [
+        "host:wg-prod-1",
+        "stream:weltgewebe-jetstream",
+        "credentials:operator",
+        "provider:backup-storage"
+      ],
+      "independence": "partially-shared",
+      "sharedFailureDomains": [
+        "credentials:operator"
+      ],
+      "triggerClass": "durable stream state is unavailable, corrupt or cannot retain authoritative ordering guarantees",
+      "returnCondition": "Stream consumers, deduplication, ordering and representative end-to-end behavior pass without split brain.",
+      "evidence": [
+        "docs/audits/heimgewebe-resilience-gap-matrix-v1.md"
+      ],
+      "doesNotEstablish": [
+        "a fresh successful restore",
+        "exactly-once behavior outside tested contracts",
+        "permission to discard the current stream state"
+      ]
+    },
+    {
+      "id": "chronik-state-restore",
+      "system": "repo:chronik",
+      "kind": "restore",
+      "failureDomains": [
+        "host:heim-pc",
+        "data:chronik-store",
+        "provider:backup-storage"
+      ],
+      "independence": "partially-shared",
+      "sharedFailureDomains": [
+        "host:heim-pc"
+      ],
+      "triggerClass": "Chronik event data or integrity metadata cannot be validated in place",
+      "returnCondition": "Append-only integrity, provenance, retention and bounded query readbacks pass on the restored target.",
+      "evidence": [
+        "docs/audits/heimgewebe-resilience-gap-matrix-v1.md"
+      ],
+      "doesNotEstablish": [
+        "host-independent restore",
+        "task or orchestration authority",
+        "permission to truncate invalid evidence"
+      ]
+    },
+    {
+      "id": "repoground-legacy-rollback",
+      "system": "repo:repoground",
+      "kind": "rollback",
+      "failureDomains": [
+        "host:heim-pc",
+        "runtime:repoground",
+        "runtime:lenskit-legacy"
+      ],
+      "independence": "same-failure-domain",
+      "sharedFailureDomains": [
+        "host:heim-pc"
+      ],
+      "triggerClass": "the RepoGround replacement fails canary, identity, consumer or rollback-window gates",
+      "returnCondition": "The legacy runtime serves the expected identity and all bounded consumers return to their prior verified behavior.",
+      "evidence": [
+        "docs/audits/heimgewebe-resilience-gap-matrix-v1.md"
+      ],
+      "doesNotEstablish": [
+        "host-independent fallback",
+        "permission to retain the legacy runtime indefinitely",
+        "completed consumer migration"
+      ]
+    }
+  ],
+  "doesNotEstablish": [
+    "runtime_health",
+    "task_status",
+    "merge_readiness",
+    "execution_permission",
+    "current_recovery_readiness",
+    "automatic_failover_authority",
+    "complete_physical_topology"
+  ]
+}
