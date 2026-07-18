@@ -10,6 +10,7 @@
     "registry/ecosystem/edges.json",
     "registry/ecosystem/claims.jsonl",
     "registry/ecosystem/authority-matrix.v1.json",
+    "registry/ecosystem/resilience.v1.json",
     "registry/ecosystem/fleet-coverage.v1.json",
     "registry/ecosystem/organization-scope.v1.json",
     "registry/ecosystem/source-bindings.v1.json"
@@ -27,6 +28,7 @@
     "policy/ecosystem-map-view.v1.json",
     "registry/ecosystem/nodes.json",
     "registry/ecosystem/edges.json",
+    "registry/ecosystem/resilience.v1.json",
     "registry/ecosystem/claims.jsonl",
     "registry/ecosystem/authority-matrix.v1.json",
     "registry/ecosystem/fleet-coverage.v1.json",
@@ -41,7 +43,9 @@
     "scripts/system_catalog_sources.py",
     "scripts/systemkatalog_query.py",
     "scripts/read_github_catalog_observations.py",
-    "scripts/system_catalog_drift.py"
+    "scripts/system_catalog_drift.py",
+    "catalog/resilience.schema.v1.json",
+    "scripts/system_catalog_resilience.py"
   ],
   "archiveBoundary": {
     "path": "docs/archive/cabinet-era",
@@ -158,5 +162,7 @@
     "currentIdentityAndRoomRetirementTask": "OPERATOR-ECOSYSTEM-REDUNDANCY-V1-T021",
     "httpRuntimeRetirementTask": "OPERATOR-ECOSYSTEM-REDUNDANCY-V1-T023"
   },
-  "publishedArtifactManifest": "rendered/ecosystem-map-artifact-manifest.json"
+  "publishedArtifactManifest": "rendered/ecosystem-map-artifact-manifest.json",
+  "canonicalResilienceRegistry": "registry/ecosystem/resilience.v1.json",
+  "resilienceSchema": "catalog/resilience.schema.v1.json"
 }

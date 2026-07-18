@@ -59,6 +59,7 @@ def render_text(root: Path = ROOT) -> str:
     nodes_doc = _load(root, "registry/ecosystem/nodes.json")
     edges_doc = _load(root, "registry/ecosystem/edges.json")
     authority = _load(root, "registry/ecosystem/authority-matrix.v1.json")
+    resilience = _load(root, "registry/ecosystem/resilience.v1.json")
 
     nodes = [item for item in nodes_doc.get("nodes", []) if isinstance(item, dict)]
     node_by_id = {item.get("id"): item for item in nodes if isinstance(item.get("id"), str)}
@@ -76,6 +77,11 @@ def render_text(root: Path = ROOT) -> str:
     fleet_coverage = validate_coverage(root, repository_nodes)
     repository_refs = {item["node"]: item for item in fleet_coverage["repositories"]}
     organization_scope = validate_scope(root, repository_nodes, fleet_coverage)
+    resilience_by_system = {item["system"]: item for item in resilience["systems"]}
+    resilience_by_relation = {
+        (item["relation"]["from"], item["relation"]["to"], item["relation"]["type"]): item
+        for item in resilience["relations"]
+    }
 
     lines = [
         "# Systemkatalog",
@@ -88,12 +94,14 @@ def render_text(root: Path = ROOT) -> str:
         "",
         "## Systeme",
         "",
-        "| System | Typ | Zweck | Nicht zuständig für | Wahrheitsbesitz | Einstiegspunkte |",
-        "|---|---|---|---|---|---|",
+        "| System | Typ | Kritikalität | Ausfalldomänen | Zweck | Nicht zuständig für | Wahrheitsbesitz | Einstiegspunkte |",
+        "|---|---|---|---|---|---|---|---|",
     ]
     for node in sorted(nodes, key=lambda item: (str(item.get("type", "")).casefold(), str(item.get("name", "")).casefold(), str(item.get("id", "")))):
+        stable = resilience_by_system[node["id"]]
         lines.append(
             f"| {_cell(node.get('name'))} | {_cell(node.get('type'))} | "
+            f"`{_cell(stable.get('criticality'))}` | {_string_list_cell(stable.get('failureDomains'))} | "
             f"{_cell(node.get('purpose'))} | {_string_list_cell(node.get('notResponsibleFor'))} | "
             f"{_string_list_cell(node.get('truthOwnership'))} | "
             f"{_entrypoints_cell(node.get('entrypoints'))} |"
@@ -138,15 +146,40 @@ def render_text(root: Path = ROOT) -> str:
 
     lines.extend([
         "", "## Stabile Beziehungen", "",
-        "Nur Beziehungen der Klassen `stable`, `bounded` oder `related` werden angezeigt. Die Klasse beschreibt die Dauerhaftigkeit der Architekturbeziehung, nicht ihren aktuellen Betriebszustand.",
-        "", "| Von | Beziehung | Zu | Klasse | Bedeutung |", "|---|---|---|---|---|",
+        "Nur Beziehungen der Klassen `stable`, `bounded` oder `related` werden angezeigt. Die Klasse beschreibt die Dauerhaftigkeit der Architekturbeziehung, nicht ihren aktuellen Betriebszustand. Resilienzfelder erscheinen nur für fachlich geprüfte, ausfall- oder autoritätsrelevante Kanten; `—` bedeutet nicht geprüft, nicht automatisch harmlos.",
+        "", "| Von | Beziehung | Zu | Klasse | Kopplung | Ausfallpolitik | Autoritätsrichtung | Recovery | Bedeutung |", "|---|---|---|---|---|---|---|---|---|",
     ])
     for edge in sorted(edges, key=lambda item: (str(item.get("from", "")), str(item.get("type", "")), str(item.get("to", "")))):
         source = node_by_id.get(edge.get("from"), {})
         target = node_by_id.get(edge.get("to"), {})
+        stable = resilience_by_relation.get((edge["from"], edge["to"], edge["type"]))
         lines.append(
             f"| {_cell(source.get('name') or edge.get('from'))} | `{_cell(edge.get('type'))}` | "
-            f"{_cell(target.get('name') or edge.get('to'))} | `{_cell(edge.get('stability'))}` | {_cell(edge.get('meaning'))} |"
+            f"{_cell(target.get('name') or edge.get('to'))} | `{_cell(edge.get('stability'))}` | "
+            f"`{_cell(stable.get('coupling') if stable else '—')}` | "
+            f"`{_cell(stable.get('failurePolicy') if stable else '—')}` | "
+            f"`{_cell(stable.get('authorityDirection') if stable else '—')}` | "
+            f"`{_cell((stable.get('recoveryModeRef') or '—') if stable else '—')}` | {_cell(edge.get('meaning'))} |"
+        )
+
+    lines.extend([
+        "", "## Ausfalldomänen", "",
+        "Ausfalldomänen beschreiben stabile gemeinsame Abhängigkeiten. Sie sind keine Aussage über aktuellen Ausfall oder Gesundheit.",
+        "", "| ID | Art | Bedeutung |", "|---|---|---|",
+    ])
+    for item in sorted(resilience["failureDomains"], key=lambda value: value["id"]):
+        lines.append(f"| `{_cell(item['id'])}` | `{_cell(item['kind'])}` | {_cell(item['meaning'])} |")
+
+    lines.extend([
+        "", "## Deklarierte Recoverymodi", "",
+        "Ein Recoverymodus beschreibt einen zulässigen Pfad und seine gemeinsamen Fehlerursachen. Er belegt weder aktuelle Bereitschaft noch Ausführungsautorität.",
+        "", "| Modus | System | Art | Unabhängigkeit | Gemeinsame Ausfalldomänen | Rückkehrbedingung |", "|---|---|---|---|---|---|",
+    ])
+    for item in sorted(resilience["recoveryModes"], key=lambda value: value["id"]):
+        lines.append(
+            f"| `{_cell(item['id'])}` | `{_cell(item['system'])}` | `{_cell(item['kind'])}` | "
+            f"`{_cell(item['independence'])}` | {_string_list_cell(item['sharedFailureDomains'])} | "
+            f"{_cell(item['returnCondition'])} |"
         )
 
     lines.extend(["", "## Einstiegspunkte", "", "| System | Einstieg |", "|---|---|"])
