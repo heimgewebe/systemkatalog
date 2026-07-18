@@ -15,6 +15,7 @@ Er ist **kein Steuerungs- oder Statussystem**. Aufgaben, Prioritäten, Laufzust�
 7. [Agenteneinstieg](AGENTS.md)
 8. [Architektur](docs/architecture/systemkatalog.md)
 9. [Audit der früheren Cabinet-Räume](docs/audits/systemkatalog-room-audit-v1.md)
+10. [Resilienz-Gap-Matrix v1](docs/audits/heimgewebe-resilience-gap-matrix-v1.md)
 
 ## Was der Systemkatalog beantwortet
 
