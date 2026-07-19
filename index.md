@@ -14,6 +14,7 @@ Dies ist der kurze Einstieg in den read-only Systemkatalog.
 - [Deterministische Abfrage-CLI](scripts/systemkatalog_query.py)
 - [Architektur](docs/architecture/systemkatalog.md)
 - [Räume-Audit](docs/audits/systemkatalog-room-audit-v1.md)
+- [Repository-Lifecycle-Audit 2026-07-19](docs/audits/repository-lifecycle-classification-2026-07-19.md)
 
 Der Systemkatalog beschreibt stabile Semantik. Für Aufgaben, Livezustand, Pull Requests, Tests oder Ausführung verweist er auf Bureau, Runtime, GitHub, CI und Grabowski, statt deren wechselnde Zustände zu kopieren.
 

@@ -1,0 +1,319 @@
+{
+  "schema_version": 1,
+  "audit_id": "systemkatalog.repository-lifecycle-classification.v1",
+  "observed_at": "2026-07-19T13:54:06+02:00",
+  "authority": "diagnostic_only",
+  "organization": {
+    "repository_count": 35,
+    "archived_repository_count": 0,
+    "deep_review_repository_count": 5
+  },
+  "classifications": [
+    {
+      "repository": "heimgewebe/heimlern",
+      "catalog_node": "repo:heimlern",
+      "catalog_purpose": "retired reference for the former offline operator-learning implementation",
+      "current_role": "retired_reference",
+      "lifecycle_decision": "archive_candidate",
+      "archive_readiness": "blocked_by_compatibility_freeze",
+      "last_main_commit": "d0a5d1bf26c9a5f555b7541d97fadb27a7cf9b31",
+      "last_main_commit_at": "2026-07-15T20:28:59+02:00",
+      "open_pull_requests": 0,
+      "workflow_count": 10,
+      "runtime_evidence": {
+        "systemd_user_units": [],
+        "processes": [],
+        "scope": "heim-pc user session at observed_at"
+      },
+      "consumer_evidence": [
+        {
+          "consumer": "heimgewebe/hausKI",
+          "kind": "vendored_code_and_feature",
+          "evidence": "crates/policy_api uses vendor/heimlern-core and vendor/heimlern-bandits behind a heimlern feature.",
+          "source_ref": "repo.hausKI@7ae329ed5cee56666a9f6571e7ebee1c9df59441:crates/policy_api/Cargo.toml"
+        },
+        {
+          "consumer": "heimgewebe/metarepo",
+          "kind": "normative_contracts",
+          "evidence": "Heimlern schemas, protobufs and consumer declarations remain normative in Metarepo.",
+          "source_ref": "repo.metarepo@90fef7585b473ef499847ad92a21f76abd2b1c41:contracts/README.md"
+        },
+        {
+          "consumer": "heimgewebe/aussensensor",
+          "kind": "deprecated_compatibility",
+          "evidence": "The direct Heimlern ingest path is deprecated but still documented and guarded by ALLOW_HEIMLERN_MVP.",
+          "source_ref": "repo.aussensensor@f9c75995b61ee841321420789e8e6b6374384a2a:README.md"
+        },
+        {
+          "consumer": "heimgewebe/grabowski",
+          "kind": "offline_boundary",
+          "evidence": "Recall exports retain an explicit offline_proposal_only Heimlern boundary without live authority.",
+          "source_ref": "repo.grabowski@50765d14683fd3139cd374f81006ffcce9804e51:docs/operator-recall.md"
+        }
+      ],
+      "migration_preconditions": [
+        "Prove HausKI vendored crates have no remote repository dependency.",
+        "Keep normative Heimlern contracts in Metarepo and mark the repository copy historical.",
+        "Remove or terminally classify the deprecated Aussensensor direct-ingest path.",
+        "Update Systemkatalog and Bureau resource metadata to archived-reference semantics after GitHub archival."
+      ],
+      "follow_up_task": "OPERATOR-ECOSYSTEM-REDUNDANCY-V1-T036",
+      "covered_by_existing_task": null
+    },
+    {
+      "repository": "heimgewebe/leitwerk",
+      "catalog_node": "repo:leitwerk",
+      "catalog_purpose": "retained normative coordination-contract reference from the pre-Bureau and pre-Grabowski control model",
+      "current_role": "normative_reference",
+      "lifecycle_decision": "archive_candidate",
+      "archive_readiness": "blocked_by_reference_freeze",
+      "last_main_commit": "5f35d0ad6020cf9f113732a9d8c35c0ccbe0e745",
+      "last_main_commit_at": "2026-07-06T14:01:35+02:00",
+      "open_pull_requests": 0,
+      "workflow_count": 3,
+      "runtime_evidence": {
+        "systemd_user_units": [],
+        "processes": [],
+        "scope": "heim-pc user session at observed_at"
+      },
+      "consumer_evidence": [
+        {
+          "consumer": "heimgewebe/systemkatalog",
+          "kind": "scope_boundary",
+          "evidence": "Systemkatalog retains Leitwerk as a pre-Bureau normative reference and assigns current task truth to Bureau.",
+          "source_ref": "repo.systemkatalog@3cecde159552a7e0eff94fca94add0051017d9cc:registry/ecosystem/nodes.json"
+        },
+        {
+          "consumer": "heimgewebe/metarepo",
+          "kind": "vision_reference",
+          "evidence": "Metarepo still contains the Leitwerk blueprint and ACS-sidecar design history.",
+          "source_ref": "repo.metarepo@90fef7585b473ef499847ad92a21f76abd2b1c41:docs/vision/leitwerk-blueprint"
+        },
+        {
+          "consumer": "heimgewebe/bureau",
+          "kind": "discovery_reference",
+          "evidence": "Bureau discovery inventory indexes Leitwerk planning documents but no runtime authority.",
+          "source_ref": "repo.bureau@7cd658cc92b9dd8655f32e99abbda1854fd34f0f:docs/reports/discovery-source-inventory.v1.json"
+        }
+      ],
+      "migration_preconditions": [
+        "Freeze the authoritative normative subset into Metarepo or Systemkatalog.",
+        "Remove or retire repository-local guards that imply ongoing product evolution.",
+        "Record that Bureau, Grabowski and Konvergenzregelkreis inherit no Leitwerk runtime authority.",
+        "Update organization scope to archived normative reference after GitHub archival."
+      ],
+      "follow_up_task": "OPERATOR-ECOSYSTEM-REDUNDANCY-V1-T037",
+      "covered_by_existing_task": null
+    },
+    {
+      "repository": "heimgewebe/heimgeist",
+      "catalog_node": "repo:heimgeist",
+      "catalog_purpose": "System self-reflection and meta-agent experimentation",
+      "current_role": "migration_compatibility_observer",
+      "lifecycle_decision": "retain_during_consumer_migration",
+      "archive_readiness": "not_ready",
+      "last_main_commit": "2d657297e9875cf0ec12932b3391fc4c0d8a246a",
+      "last_main_commit_at": "2026-07-06T14:01:08+02:00",
+      "open_pull_requests": 0,
+      "workflow_count": 4,
+      "runtime_evidence": {
+        "systemd_user_units": [],
+        "processes": [],
+        "scope": "heim-pc user session at observed_at"
+      },
+      "consumer_evidence": [
+        {
+          "consumer": "heimgewebe/plexer",
+          "kind": "legacy_critical_consumer",
+          "evidence": "Legacy /events still treats Heimgeist as a critical compatibility consumer with retry semantics.",
+          "source_ref": "repo.plexer@93fb9aa2451d44eb6b8cff7c7fd054086804049e:README.md"
+        },
+        {
+          "consumer": "heimgewebe/chronik",
+          "kind": "event_contract_and_renderer",
+          "evidence": "Chronik validates, normalizes and retains Heimgeist event families.",
+          "source_ref": "repo.chronik@73a8df1ea5ac0a0b0cfa064d0d010dce2f3b6b6f:docs/heimgeist_spec.md"
+        },
+        {
+          "consumer": "heimgewebe/leitstand",
+          "kind": "read_only_renderer",
+          "evidence": "Leitstand renders Heimgeist reflexion and self-state bundles.",
+          "source_ref": "repo.leitstand@da4cf5b12ad50d2b1dafbe1883dc3130a3d8a130:src/fixtures/self_state.json"
+        },
+        {
+          "consumer": "heimgewebe/wgx",
+          "kind": "event_client",
+          "evidence": "WGX ships a Heimgeist event-emission module and schema validation.",
+          "source_ref": "repo.wgx@01efb27f424466c951a196f095c549d1afdd10da:docs/heimgeist_spec.md"
+        }
+      ],
+      "migration_preconditions": [
+        "Remove Heimgeist as a critical Plexer legacy consumer.",
+        "Decide ownership of remaining Heimgeist event families in Metarepo and Chronik.",
+        "Migrate Leitstand renderers to generic observer contracts or archive-only fixtures.",
+        "Close the broad meta-agent and orchestration claims in the Heimgeist repository."
+      ],
+      "follow_up_task": null,
+      "covered_by_existing_task": "OPERATOR-ECOSYSTEM-REDUNDANCY-V1-T034"
+    },
+    {
+      "repository": "heimgewebe/agent-control-surface",
+      "catalog_node": "repo:agent-control-surface",
+      "catalog_purpose": "local manual control surface for Jules sessions and guarded step-by-step Git workflows",
+      "current_role": "migration_compatibility_manual_ui",
+      "lifecycle_decision": "retain_during_consumer_migration",
+      "archive_readiness": "not_ready",
+      "last_main_commit": "00635f4b3dcd7f29d7b2f672098b097282341268",
+      "last_main_commit_at": "2026-07-06T14:00:14+02:00",
+      "open_pull_requests": 0,
+      "workflow_count": 1,
+      "runtime_evidence": {
+        "systemd_user_units": [
+          {
+            "unit": "acs-tunnel.service",
+            "unit_file_state": "enabled",
+            "active_state": "inactive",
+            "sub_state": "dead",
+            "target": "heimserver",
+            "source_ref": "file:/home/alex/.config/systemd/user/acs-tunnel.service#sha256=7cf4f4f1f0447af9a022a07935b98df39cf11b296d28c9217f928fa1f731de4c"
+          }
+        ],
+        "processes": [],
+        "scope": "heim-pc user session at observed_at"
+      },
+      "consumer_evidence": [
+        {
+          "consumer": "heimgewebe/leitstand",
+          "kind": "optional_live_data_source",
+          "evidence": "The Ops Viewer consumes ACS audit data when LEITSTAND_ACS_URL is configured.",
+          "source_ref": "repo.leitstand@da4cf5b12ad50d2b1dafbe1883dc3130a3d8a130:src/config.ts"
+        },
+        {
+          "consumer": "heim-pc user systemd",
+          "kind": "tunnel_configuration",
+          "evidence": "acs-tunnel.service remains enabled although inactive and still targets Heimserver.",
+          "source_ref": "file:/home/alex/.config/systemd/user/acs-tunnel.service#sha256=7cf4f4f1f0447af9a022a07935b98df39cf11b296d28c9217f928fa1f731de4c"
+        },
+        {
+          "consumer": "heimgewebe/systemkatalog",
+          "kind": "manual_control_role",
+          "evidence": "Systemkatalog still defines ACS as a bounded manual Git control surface.",
+          "source_ref": "repo.systemkatalog@3cecde159552a7e0eff94fca94add0051017d9cc:registry/ecosystem/nodes.json"
+        }
+      ],
+      "migration_preconditions": [
+        "Remove Leitstand ACS data-source dependency or replace it with Grabowski receipts.",
+        "Retire the Heimserver-bound ACS tunnel and verify no recovery dependency.",
+        "Decide whether a human GUI over Grabowski remains useful.",
+        "Only then remove ACS control-plane semantics or archive the repository."
+      ],
+      "follow_up_task": null,
+      "covered_by_existing_task": "OPERATOR-ECOSYSTEM-REDUNDANCY-V1-T034"
+    },
+    {
+      "repository": "heimgewebe/semantAH",
+      "catalog_node": "repo:semantAH",
+      "catalog_purpose": "Semantic index, embeddings and knowledge-graph pipeline",
+      "current_role": "active_semantic_provider",
+      "lifecycle_decision": "keep_active",
+      "archive_readiness": "not_applicable",
+      "last_main_commit": "d53000a909946a0381a8b365c4af7abd2456e8f6",
+      "last_main_commit_at": "2026-07-18T04:48:40+02:00",
+      "open_pull_requests": 0,
+      "workflow_count": 17,
+      "runtime_evidence": {
+        "systemd_user_units": [],
+        "processes": [
+          {
+            "kind": "grabowski_agent_workspace",
+            "workspace": "gaw-semantah-semantah-optimize-2026-a6e06a83e48a",
+            "pane_count": 4,
+            "source_ref": "tmux:gaw-semantah-semantah-optimize-2026-a6e06a83e48a@2026-07-19T13:58:00+02:00",
+            "pane_commands": [
+              "python",
+              "python",
+              "python",
+              "python"
+            ]
+          }
+        ],
+        "scope": "heim-pc user session at observed_at"
+      },
+      "consumer_evidence": [
+        {
+          "consumer": "heimgewebe/hausKI",
+          "kind": "stable_semantic_provider",
+          "evidence": "Systemkatalog records a stable provides edge from SemantAH to HausKI.",
+          "source_ref": "repo.systemkatalog@3cecde159552a7e0eff94fca94add0051017d9cc:registry/ecosystem/edges.json"
+        },
+        {
+          "consumer": "heimgewebe/mitschreiber",
+          "kind": "bounded_index_input",
+          "evidence": "Mitschreiber may provide redacted embeddings and context signals.",
+          "source_ref": "repo.systemkatalog@3cecde159552a7e0eff94fca94add0051017d9cc:registry/ecosystem/edges.json"
+        },
+        {
+          "consumer": "Bureau",
+          "kind": "active_roadmap",
+          "evidence": "WELTGEWEBE-SEMANTIC-SEARCH-V1-T003 and SemantAH portability work remain open.",
+          "source_ref": "repo.bureau@7cd658cc92b9dd8655f32e99abbda1854fd34f0f:registry/tasks/SEMANTAH-E2E-PORTABILITY-V1-T001.json+registry/tasks/WELTGEWEBE-SEMANTIC-SEARCH-V1-T003.json"
+        }
+      ],
+      "migration_preconditions": [
+        "Do not archive while current semantic-search and portability tasks remain active.",
+        "Any future split must first migrate live consumers and shared index contracts."
+      ],
+      "follow_up_task": null,
+      "covered_by_existing_task": "OPERATOR-ECOSYSTEM-REDUNDANCY-V1-T034"
+    }
+  ],
+  "dependabot_queue": {
+    "classification": "stale_parallel_priority_queue",
+    "does_not_establish_repository_retirement": true,
+    "repositories": [
+      {
+        "repository": "heimgewebe/hausKI",
+        "open_stale_pr_count": 15,
+        "oldest_created_at": "2026-04-06T13:25:31Z",
+        "newest_created_at": "2026-05-11T21:00:02Z"
+      },
+      {
+        "repository": "heimgewebe/hausKI-audio",
+        "open_stale_pr_count": 7,
+        "oldest_created_at": "2026-03-02T20:01:53Z",
+        "newest_created_at": "2026-04-20T20:27:11Z"
+      },
+      {
+        "repository": "heimgewebe/metarepo",
+        "open_recent_pr_count": 2,
+        "oldest_created_at": "2026-07-14T14:23:23Z",
+        "classification": "recent_not_stale"
+      }
+    ],
+    "follow_up_task": "OPERATOR-ECOSYSTEM-REDUNDANCY-V1-T038"
+  },
+  "decisions": {
+    "archive_candidates": [
+      "heimgewebe/heimlern",
+      "heimgewebe/leitwerk"
+    ],
+    "migration_retained": [
+      "heimgewebe/heimgeist",
+      "heimgewebe/agent-control-surface"
+    ],
+    "active_retained": [
+      "heimgewebe/semantAH"
+    ]
+  },
+  "does_not_establish": [
+    "authorization to archive any repository",
+    "absence of remote consumers outside the inspected organization and local host",
+    "fitness of all archived historical contracts",
+    "that stale dependency pull requests should be merged without rebasing and testing"
+  ],
+  "evidence_binding": {
+    "repository_refs": "All repo.* source_ref values are bound to the named commit, preferring remote main where local checkouts were stale or dirty.",
+    "live_refs": "file: and tmux: source_ref values are point-in-time heim-pc observations and do not establish future liveness.",
+    "github_inventory": "Repository and pull-request counts were read from GitHub during observed_at; they are not stable catalog truth."
+  }
+}
