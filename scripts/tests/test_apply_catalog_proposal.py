@@ -16,7 +16,7 @@ def workspace():
         root = Path(td)
         registry_dir = root / "registry" / "ecosystem"
         registry_dir.mkdir(parents=True)
-        
+
         bindings = {
             "schemaVersion": 1,
             "observedAt": "2026-07-19T10:00:00Z",
@@ -36,20 +36,20 @@ def workspace():
                 }
             ]
         }
-        
+
         bindings_path = registry_dir / "source-bindings.v1.json"
         bindings_path.write_text(json.dumps(bindings))
-        
+
         yield root
 
 def create_report_review(root, report_data, review_data):
     report_path = root / "report.json"
     review_path = root / "review.json"
-    
+
     report_bytes = json.dumps(report_data).encode("utf-8")
     report_path.write_bytes(report_bytes)
     report_sha = hashlib.sha256(report_bytes).hexdigest()
-    
+
     if review_data is not None:
         if "reportSha256" not in review_data or review_data["reportSha256"] == "AUTO":
             review_data["reportSha256"] = report_sha
@@ -58,7 +58,7 @@ def create_report_review(root, report_data, review_data):
         review_sha = hashlib.sha256(review_bytes).hexdigest()
     else:
         review_sha = None
-        
+
     return report_path, review_path, report_sha, review_sha
 
 def valid_report():

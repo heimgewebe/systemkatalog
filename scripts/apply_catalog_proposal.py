@@ -44,7 +44,7 @@ def validate_report(report: dict) -> None:
         raise ValueError("Invalid generatedAt format")
     if not isinstance(report.get("materialDrift"), bool):
         raise ValueError("materialDrift must be a boolean")
-    
+
     changes = report.get("changes")
     if not isinstance(changes, list) or len(changes) == 0:
         raise ValueError("changes must be a non-empty list")
@@ -89,7 +89,7 @@ def validate_review(review: dict, expected_report_sha256: str) -> None:
         raise ValueError("Invalid reviewedAt format")
     if review.get("reportSha256") != expected_report_sha256:
         raise ValueError("reportSha256 does not match the exact report file hash")
-    
+
     dne = review.get("doesNotEstablish")
     if not isinstance(dne, list) or len(dne) == 0:
         raise ValueError("doesNotEstablish must be a non-empty list")
@@ -100,19 +100,19 @@ def validate_review(review: dict, expected_report_sha256: str) -> None:
     changes = review.get("approvedChanges")
     if not isinstance(changes, list) or len(changes) == 0:
         raise ValueError("approvedChanges must be a non-empty list")
-    
+
     seen_systems = set()
     for change in changes:
         c_keys = set(change.keys())
         c_allowed = {"repository", "system", "locatorKind", "path", "boundCommit", "boundSha256", "observedCommit", "observedSha256"}
         if c_keys != c_allowed:
             raise ValueError(f"Review change has missing or extra fields. Expected: {c_allowed}, Got: {c_keys}")
-            
+
         system = change.get("system")
         if system in seen_systems:
             raise ValueError(f"Duplicate change for system {system} in review")
         seen_systems.add(system)
-        
+
         for hash_field, length in [("boundCommit", 40), ("observedCommit", 40), ("boundSha256", 64), ("observedSha256", 64)]:
             if not is_hex(change.get(hash_field), length):
                 raise ValueError(f"Invalid {hash_field} for {system} in review")
@@ -173,7 +173,7 @@ def apply_proposal(root: Path, report_path: Path, review_path: Path, expected_re
         return 1
 
     systems_by_name = {b["system"]: b for b in bindings.get("systems", [])}
-    
+
     updated_count = 0
 
     for change in report_changes:
@@ -181,22 +181,22 @@ def apply_proposal(root: Path, report_path: Path, review_path: Path, expected_re
         if system not in systems_by_name:
             print(f"System {system} not found in bindings")
             return 1
-            
+
         b = systems_by_name[system]
         locator = b["source"]["locator"]
-        
+
         if b["source"]["repository"] != change.get("repository"):
             print(f"Repository mismatch for {system}")
             return 1
         if locator.get("kind") != change.get("locatorKind"):
             print(f"Locator kind mismatch for {system}")
             return 1
-        
+
         b_path = locator.get("path")
         if b_path != change.get("path"):
             print(f"Path mismatch for {system}")
             return 1
-            
+
         if b["source"]["commit"] != change.get("boundCommit"):
             print(f"Stale binding (commit) for {system}: {b['source']['commit']} != {change.get('boundCommit')}")
             return 1
@@ -208,7 +208,7 @@ def apply_proposal(root: Path, report_path: Path, review_path: Path, expected_re
         locator["contentSha256"] = change["observedSha256"]
         b["reviewedAt"] = review["reviewedAt"]
         updated_count += 1
-        
+
     bindings["observedAt"] = report["generatedAt"]
 
     if not write:
@@ -228,7 +228,7 @@ def apply_proposal(root: Path, report_path: Path, review_path: Path, expected_re
                 temp_path.unlink()
             print(f"Failed to write bindings: {e}")
             return 1
-            
+
         print(f"Successfully applied {updated_count} source binding updates.")
     else:
         print("No source binding updates applied.")
