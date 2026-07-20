@@ -32,12 +32,20 @@ class OrganizationScopeTests(unittest.TestCase):
         nodes = self._repository_nodes(root)
         return validate_scope(root, nodes, validate_coverage(root, nodes))
 
-    def test_all_active_organization_repositories_are_classified(self) -> None:
+    def test_all_organization_repositories_are_classified(self) -> None:
         scope = self._validate()
         self.assertEqual(len(scope["repositories"]), 35)
         self.assertEqual(
             sum(row["classification"] == "catalog" for row in scope["repositories"]),
-            33,
+            32,
+        )
+        self.assertEqual(
+            {
+                row["name"]
+                for row in scope["repositories"]
+                if row["classification"] == "archived_reference"
+            },
+            {"heimlern"},
         )
         self.assertEqual(
             {
@@ -87,7 +95,7 @@ class OrganizationScopeTests(unittest.TestCase):
                 "name": row["name"],
                 "nameWithOwner": row["repository"],
                 "visibility": row["visibility"].upper(),
-                "isArchived": False,
+                "isArchived": row["classification"] == "archived_reference",
                 "isFork": False,
             }
             for row in scope["repositories"]
@@ -101,7 +109,7 @@ class OrganizationScopeTests(unittest.TestCase):
                 "name": row["name"],
                 "nameWithOwner": row["repository"],
                 "visibility": row["visibility"].upper(),
-                "isArchived": False,
+                "isArchived": row["classification"] == "archived_reference",
                 "isFork": False,
             }
             for row in scope["repositories"]
@@ -111,6 +119,23 @@ class OrganizationScopeTests(unittest.TestCase):
             OrganizationScopeError, "missing=.*demo-repository"
         ):
             validate_github_inventory(scope, inventory, visibility="public")
+
+    def test_archived_reference_mismatch_fails_closed(self) -> None:
+        scope = load_scope(ROOT)
+        inventory = [
+            {
+                "name": row["name"],
+                "nameWithOwner": row["repository"],
+                "visibility": row["visibility"].upper(),
+                "isArchived": False,
+                "isFork": False,
+            }
+            for row in scope["repositories"]
+        ]
+        with self.assertRaisesRegex(
+            OrganizationScopeError, "identity or visibility drift: .*heimlern"
+        ):
+            validate_github_inventory(scope, inventory)
 
 
 if __name__ == "__main__":

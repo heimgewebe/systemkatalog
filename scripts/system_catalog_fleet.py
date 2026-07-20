@@ -3,14 +3,17 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 import re
 from pathlib import Path
 from typing import Any
 
 COVERAGE_REL = Path("registry/ecosystem/fleet-coverage.v1.json")
-MEMBERSHIPS = {"fleet", "related", "catalog-only"}
+MEMBERSHIPS = {"fleet", "related", "catalog-only", "archived-reference"}
 REPOSITORY_RE = re.compile(r"^heimgewebe/([A-Za-z0-9_.-]+)$")
+COMMIT_RE = re.compile(r"^[0-9a-f]{40}$")
+SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 
 
 class FleetCoverageError(ValueError):
@@ -48,11 +51,24 @@ def validate_coverage(root: Path, repository_nodes: set[str]) -> dict[str, Any]:
         "system_catalog_fleet_coverage",
     ):
         raise FleetCoverageError("Fleet coverage identity mismatch")
-    if coverage["membershipAuthority"] != {
-        "repository": "heimgewebe/metarepo",
-        "path": "fleet/repos.yml",
-        "scope": "fleet_membership_only",
+    membership_authority = coverage["membershipAuthority"]
+    if not isinstance(membership_authority, dict) or set(membership_authority) != {
+        "repository",
+        "commit",
+        "path",
+        "contentSha256",
+        "scope",
     }:
+        raise FleetCoverageError("Fleet membership authority fields mismatch")
+    if (
+        membership_authority["repository"] != "heimgewebe/metarepo"
+        or membership_authority["path"] != "fleet/repos.yml"
+        or membership_authority["scope"] != "fleet_membership_only"
+        or not isinstance(membership_authority["commit"], str)
+        or COMMIT_RE.fullmatch(membership_authority["commit"]) is None
+        or not isinstance(membership_authority["contentSha256"], str)
+        or SHA256_RE.fullmatch(membership_authority["contentSha256"]) is None
+    ):
         raise FleetCoverageError("Fleet membership authority mismatch")
     if coverage["catalogAuthority"] != {
         "repository": "heimgewebe/systemkatalog",
@@ -122,17 +138,32 @@ def validate_coverage(root: Path, repository_nodes: set[str]) -> dict[str, Any]:
     return coverage
 
 
-def parse_fleet_source(path: Path) -> tuple[dict[str, str], set[str]]:
-    """Parse the intentionally small `fleet/repos.yml` contract without a YAML dependency."""
+def parse_fleet_source(
+    path: Path, *, expected_sha256: str | None = None
+) -> tuple[dict[str, str], dict[str, str]]:
+    """Parse and optionally hash-bind the small `fleet/repos.yml` contract."""
     try:
-        lines = path.read_text(encoding="utf-8").splitlines()
+        raw = path.read_bytes()
     except FileNotFoundError:
         raise FleetCoverageError(f"Fleet authority missing: {path}") from None
+    actual_sha256 = hashlib.sha256(raw).hexdigest()
+    if expected_sha256 is not None:
+        if not isinstance(expected_sha256, str) or SHA256_RE.fullmatch(expected_sha256) is None:
+            raise FleetCoverageError("Fleet authority expected SHA-256 invalid")
+        if actual_sha256 != expected_sha256:
+            raise FleetCoverageError(
+                f"Fleet authority SHA-256 mismatch; expected={expected_sha256}, "
+                f"actual={actual_sha256}"
+            )
+    try:
+        lines = raw.decode("utf-8").splitlines()
+    except UnicodeDecodeError as exc:
+        raise FleetCoverageError(f"Fleet authority is not UTF-8: {path}") from exc
 
     section = ""
     item: dict[str, str | bool] | None = None
     included: dict[str, str] = {}
-    excluded: set[str] = set()
+    excluded: dict[str, str] = {}
 
     def finish() -> None:
         nonlocal item
@@ -141,10 +172,17 @@ def parse_fleet_source(path: Path) -> tuple[dict[str, str], set[str]]:
         name = item.get("name")
         if not isinstance(name, str) or not name or name in included or name in excluded:
             raise FleetCoverageError(f"invalid or duplicated Fleet item: {name}")
+        status = item.get("status")
         if item.get("fleet") is False:
-            excluded.add(name)
+            excluded[name] = (
+                "archived-reference" if status == "archived-reference" else "excluded"
+            )
         else:
-            included[name] = "related" if item.get("status") == "related" else "fleet"
+            if status == "archived-reference":
+                raise FleetCoverageError(
+                    f"archived-reference Fleet item must set fleet: false: {name}"
+                )
+            included[name] = "related" if status == "related" else "fleet"
         item = None
 
     for raw in lines:
@@ -176,7 +214,7 @@ def parse_fleet_source(path: Path) -> tuple[dict[str, str], set[str]]:
 
 
 def compare_with_source(
-    coverage: dict[str, Any], source: tuple[dict[str, str], set[str]]
+    coverage: dict[str, Any], source: tuple[dict[str, str], dict[str, str]]
 ) -> dict[str, Any]:
     included, excluded = source
     catalog = {
@@ -191,9 +229,22 @@ def compare_with_source(
             f"wrong_membership={sorted(name for name in set(catalog) & set(included) if catalog[name] != included[name])}"
         )
     catalog_exclusions = {item["name"] for item in coverage["sourceExclusions"]}
-    if catalog_exclusions != excluded:
+    if catalog_exclusions != set(excluded):
         raise FleetCoverageError(
             f"Fleet exclusion drift; source={sorted(excluded)}, catalog={sorted(catalog_exclusions)}"
+        )
+    source_archived = {
+        name for name, status in excluded.items() if status == "archived-reference"
+    }
+    catalog_archived = {
+        row["repository"].split("/", 1)[1]
+        for row in coverage["repositories"]
+        if row["membership"] == "archived-reference"
+    }
+    if catalog_archived != source_archived:
+        raise FleetCoverageError(
+            f"Fleet archived-reference drift; source={sorted(source_archived)}, "
+            f"catalog={sorted(catalog_archived)}"
         )
     return {
         "status": "valid",
@@ -210,13 +261,18 @@ def validate_github_inventory(coverage: dict[str, Any], inventory: Any) -> int:
     remote = {
         item.get("nameWithOwner"): item for item in inventory if isinstance(item, dict)
     }
-    expected = {item["repository"] for item in coverage["repositories"]}
-    missing = sorted(expected - set(remote))
-    archived = sorted(
-        name for name in expected if remote.get(name, {}).get("isArchived") is True
+    expected_archived = {
+        item["repository"]: item["membership"] == "archived-reference"
+        for item in coverage["repositories"]
+    }
+    missing = sorted(set(expected_archived) - set(remote))
+    archived_mismatch = sorted(
+        name
+        for name, should_be_archived in expected_archived.items()
+        if (remote.get(name, {}).get("isArchived") is True) != should_be_archived
     )
-    if missing or archived:
+    if missing or archived_mismatch:
         raise FleetCoverageError(
-            f"GitHub reference drift; missing={missing}, archived={archived}"
+            f"GitHub reference drift; missing={missing}, archived_mismatch={archived_mismatch}"
         )
-    return len(expected)
+    return len(expected_archived)

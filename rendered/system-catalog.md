@@ -24,7 +24,7 @@ Der Katalog beantwortet, welche Systeme existieren, welchem Zweck sie dienen, we
 | HausKI Audio | repository | `unknown` | identity:github<br>provider:github | Local audio playback, recording and automation | ecosystem catalog semantics<br>task authority<br>merge approval | — | `repository`: [https://github.com/heimgewebe/hausKI-audio](https://github.com/heimgewebe/hausKI-audio) |
 | heim-pc | repository | `unknown` | identity:github<br>provider:github | Versioned local operator entry and host orientation | fleet task authority<br>service runtime truth<br>ecosystem semantics | — | `repository`: [https://github.com/heimgewebe/heim-pc](https://github.com/heimgewebe/heim-pc) |
 | Heimgeist | repository | `unknown` | identity:github<br>provider:github | System self-reflection and meta-agent experimentation | production authority<br>task state<br>merge approval | — | `repository`: [https://github.com/heimgewebe/heimgeist](https://github.com/heimgewebe/heimgeist) |
-| heimlern | repository | `unknown` | identity:github<br>provider:github | retired reference for the former offline operator-learning implementation | active learning proposals<br>runtime operation<br>automatic policy application<br>task dispatch<br>merge authorization | — | `repository`: [https://github.com/heimgewebe/heimlern](https://github.com/heimgewebe/heimlern) |
+| heimlern | repository | `optional` | provider:github | archived historical reference for the former offline operator-learning implementation | active learning proposals<br>runtime operation<br>automatic policy application<br>task dispatch<br>merge authorization<br>active contract authority<br>new feature development without a separately registered experiment | — | `repository`: [https://github.com/heimgewebe/heimlern](https://github.com/heimgewebe/heimlern) |
 | Heimserver | repository | `unknown` | identity:github<br>provider:github | private operations and contract repository for the home-network service layer, edge gateway, DDNS and Weltgewebe infrastructure | runtime health claims without live checks<br>task state<br>ecosystem semantics<br>secret storage in Git | — | `agentEntry`: [https://github.com/heimgewebe/heimserver/blob/main/AGENTS.md](https://github.com/heimgewebe/heimserver/blob/main/AGENTS.md)<br>`readme`: [https://github.com/heimgewebe/heimserver/blob/main/README.md](https://github.com/heimgewebe/heimserver/blob/main/README.md)<br>`repository`: [https://github.com/heimgewebe/heimserver](https://github.com/heimgewebe/heimserver)<br>`systemMap`: [https://github.com/heimgewebe/heimserver/blob/main/SYSTEM_MAP.md](https://github.com/heimgewebe/heimserver/blob/main/SYSTEM_MAP.md) |
 | Infra | repository | `unknown` | identity:github<br>provider:github | host, network, cockpit and operational runbooks | task state<br>ecosystem semantics<br>product-domain truth | — | `repository`: [https://github.com/heimgewebe/infra](https://github.com/heimgewebe/infra) |
 | Konvergenzregelkreis | repository | `essential` | identity:github<br>provider:github | public stateless convergence protocol and conformance core for evidence-bound closure of ecosystem changes | task state<br>queue or claims<br>execution, leases or recovery<br>merge authorization<br>deployment state or runtime health<br>ecosystem semantics<br>fleet membership<br>event history<br>product telemetry | convergence_protocol | `agentEntry`: [https://github.com/heimgewebe/konvergenzregelkreis/blob/main/AGENTS.md](https://github.com/heimgewebe/konvergenzregelkreis/blob/main/AGENTS.md)<br>`profiles`: [https://github.com/heimgewebe/konvergenzregelkreis/tree/main/profiles](https://github.com/heimgewebe/konvergenzregelkreis/tree/main/profiles)<br>`protocol`: [https://github.com/heimgewebe/konvergenzregelkreis/tree/main/protocol](https://github.com/heimgewebe/konvergenzregelkreis/tree/main/protocol)<br>`readme`: [https://github.com/heimgewebe/konvergenzregelkreis/blob/main/README.md](https://github.com/heimgewebe/konvergenzregelkreis/blob/main/README.md)<br>`repository`: [https://github.com/heimgewebe/konvergenzregelkreis](https://github.com/heimgewebe/konvergenzregelkreis)<br>`roleBoundary`: [https://github.com/heimgewebe/konvergenzregelkreis/blob/main/system/regelkreis-role.v1.json](https://github.com/heimgewebe/konvergenzregelkreis/blob/main/system/regelkreis-role.v1.json) |
@@ -66,7 +66,7 @@ Metarepo ist Primärquelle für die Fleet-Mitgliedschaft. Der Systemkatalog blei
 | HausKI Audio | `heimgewebe/hausKI-audio` | `fleet` | [https://github.com/heimgewebe/hausKI-audio](https://github.com/heimgewebe/hausKI-audio) |
 | heim-pc | `heimgewebe/heim-pc` | `fleet` | [https://github.com/heimgewebe/heim-pc](https://github.com/heimgewebe/heim-pc) |
 | Heimgeist | `heimgewebe/heimgeist` | `fleet` | [https://github.com/heimgewebe/heimgeist](https://github.com/heimgewebe/heimgeist) |
-| heimlern | `heimgewebe/heimlern` | `fleet` | [https://github.com/heimgewebe/heimlern](https://github.com/heimgewebe/heimlern) |
+| heimlern | `heimgewebe/heimlern` | `archived-reference` | [https://github.com/heimgewebe/heimlern](https://github.com/heimgewebe/heimlern) |
 | Heimserver | `heimgewebe/heimserver` | `catalog-only` | [https://github.com/heimgewebe/heimserver](https://github.com/heimgewebe/heimserver) |
 | Infra | `heimgewebe/infra` | `catalog-only` | [https://github.com/heimgewebe/infra](https://github.com/heimgewebe/infra) |
 | Konvergenzregelkreis | `heimgewebe/konvergenzregelkreis` | `fleet` | [https://github.com/heimgewebe/konvergenzregelkreis](https://github.com/heimgewebe/konvergenzregelkreis) |
@@ -88,13 +88,18 @@ Metarepo ist Primärquelle für die Fleet-Mitgliedschaft. Der Systemkatalog blei
 | Weltgewebe | `heimgewebe/weltgewebe` | `related` | [https://github.com/heimgewebe/weltgewebe](https://github.com/heimgewebe/weltgewebe) |
 | WGX | `heimgewebe/wgx` | `fleet` | [https://github.com/heimgewebe/wgx](https://github.com/heimgewebe/wgx) |
 
-Explizit außerhalb der Fleet-Quelle:
+Explizit ohne aktive Fleet-Mitgliedschaft:
 
+- `heimlern` — Archived historical reference explicitly marked status: archived-reference and fleet: false in the bound Metarepo source.
 - `vault-privat` — Private related repository explicitly marked fleet: false in Metarepo.
 
 ## Organisationsumfang
 
-Der GitHub-Snapshot umfasst 35 aktive, nicht geforkte Repositories. Davon sind 33 als Systeme katalogisiert und 2 begründet ausgeschlossen.
+Der GitHub-Snapshot umfasst 35 nicht geforkte Repositories. Davon sind 32 aktive Katalogsysteme, 1 archivierte Referenz und 2 begründet ausgeschlossen.
+
+Archivierte Referenzen ohne aktive Betriebsautorität:
+
+- `heimgewebe/heimlern` (`public`) — archived historical reference for retired offline learning and proposal experiments; no active runtime or contract authority
 
 Begründete Ausschlüsse:
 

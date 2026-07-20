@@ -292,13 +292,15 @@
       "id": "repo:heimlern",
       "name": "heimlern",
       "type": "repository",
-      "purpose": "retired reference for the former offline operator-learning implementation",
+      "purpose": "archived historical reference for the former offline operator-learning implementation",
       "notResponsibleFor": [
         "active learning proposals",
         "runtime operation",
         "automatic policy application",
         "task dispatch",
-        "merge authorization"
+        "merge authorization",
+        "active contract authority",
+        "new feature development without a separately registered experiment"
       ],
       "truthOwnership": [],
       "entrypoints": {

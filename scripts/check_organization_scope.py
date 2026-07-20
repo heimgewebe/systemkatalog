@@ -42,6 +42,10 @@ def main() -> int:
             "catalogRepositories": sum(
                 row["classification"] == "catalog" for row in scope["repositories"]
             ),
+            "archivedReferenceRepositories": sum(
+                row["classification"] == "archived_reference"
+                for row in scope["repositories"]
+            ),
             "excludedRepositories": sum(
                 row["classification"] == "excluded" for row in scope["repositories"]
             ),

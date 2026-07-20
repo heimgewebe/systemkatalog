@@ -1,10 +1,12 @@
 {
   "schemaVersion": 1,
   "kind": "system_catalog_fleet_coverage",
-  "updatedAt": "2026-07-17",
+  "updatedAt": "2026-07-20",
   "membershipAuthority": {
     "repository": "heimgewebe/metarepo",
+    "commit": "b215b418a038ff535f07b7888fd6adeb3f4de51c",
     "path": "fleet/repos.yml",
+    "contentSha256": "ea9f6285be9556105ff0ed208766946f3c951a8392d59b3066bb4d8c9f476bc8",
     "scope": "fleet_membership_only"
   },
   "catalogAuthority": {
@@ -89,7 +91,7 @@
       "node": "repo:heimlern",
       "repository": "heimgewebe/heimlern",
       "entrypoint": "https://github.com/heimgewebe/heimlern",
-      "membership": "fleet"
+      "membership": "archived-reference"
     },
     {
       "node": "repo:heimserver",
@@ -213,6 +215,10 @@
     }
   ],
   "sourceExclusions": [
+    {
+      "name": "heimlern",
+      "reason": "Archived historical reference explicitly marked status: archived-reference and fleet: false in the bound Metarepo source."
+    },
     {
       "name": "vault-privat",
       "reason": "Private related repository explicitly marked fleet: false in Metarepo."

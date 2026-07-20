@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import copy
+import hashlib
 import json
 import os
 import shutil
@@ -24,7 +25,7 @@ def matching_observations() -> dict:
     repositories = [
         {
             "nameWithOwner": item["repository"],
-            "isArchived": False,
+            "isArchived": item["classification"] == "archived_reference",
             "isFork": False,
             "visibility": item["visibility"],
         }
@@ -75,6 +76,20 @@ class SystemCatalogDriftTests(unittest.TestCase):
         report = build_report(ROOT, data)
         self.assertIn("repository_unclassified", {item["kind"] for item in report["changes"]})
 
+    def test_archived_reference_status_change_is_reported(self) -> None:
+        data = matching_observations()
+        heimlern = next(
+            item
+            for item in data["repositories"]
+            if item["nameWithOwner"] == "heimgewebe/heimlern"
+        )
+        heimlern["isArchived"] = False
+        report = build_report(ROOT, data)
+        self.assertIn(
+            "repository_archive_status_changed",
+            {item["kind"] for item in report["changes"]},
+        )
+
     def test_default_branch_change_is_reported(self) -> None:
         data = matching_observations()
         data["observations"][0]["defaultBranch"] = "trunk"
@@ -93,8 +108,16 @@ class SystemCatalogDriftTests(unittest.TestCase):
             lines.append(f"  - name: {name}")
             if row["membership"] == "related":
                 lines.append("    status: related")
+        archived_names = {
+            row["repository"].split("/", 1)[1]
+            for row in coverage["repositories"]
+            if row["membership"] == "archived-reference"
+        }
         for item in coverage["sourceExclusions"]:
-            lines.extend((f"  - name: {item['name']}", "    fleet: false"))
+            lines.append(f"  - name: {item['name']}")
+            if item["name"] in archived_names:
+                lines.append("    status: archived-reference")
+            lines.append("    fleet: false")
 
         with tempfile.TemporaryDirectory() as raw_tmp:
             tmp = Path(raw_tmp)
@@ -106,6 +129,17 @@ class SystemCatalogDriftTests(unittest.TestCase):
             )
             fleet = tmp / "repos.yml"
             fleet.write_text("\n".join(lines) + "\n", encoding="utf-8")
+            fixture_coverage_path = tmp / "registry/ecosystem/fleet-coverage.v1.json"
+            fixture_coverage = json.loads(
+                fixture_coverage_path.read_text(encoding="utf-8")
+            )
+            fixture_coverage["membershipAuthority"]["contentSha256"] = (
+                hashlib.sha256(fleet.read_bytes()).hexdigest()
+            )
+            fixture_coverage_path.write_text(
+                json.dumps(fixture_coverage, ensure_ascii=False, indent=2) + "\n",
+                encoding="utf-8",
+            )
             report = tmp / "report.json"
             env = os.environ.copy()
             env.pop("PYTHONDONTWRITEBYTECODE", None)

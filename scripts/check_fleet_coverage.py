@@ -26,7 +26,13 @@ def main() -> int:
     args = parser.parse_args()
     try:
         coverage = load_coverage(args.repo_root)
-        result = compare_with_source(coverage, parse_fleet_source(args.fleet_file))
+        authority = coverage["membershipAuthority"]
+        result = compare_with_source(
+            coverage,
+            parse_fleet_source(
+                args.fleet_file, expected_sha256=authority["contentSha256"]
+            ),
+        )
         if args.github_inventory:
             inventory = json.loads(args.github_inventory.read_text(encoding="utf-8"))
             result["githubRepositories"] = validate_github_inventory(

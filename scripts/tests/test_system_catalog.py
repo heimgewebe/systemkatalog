@@ -29,10 +29,11 @@ class SystemCatalogTests(unittest.TestCase):
         self.assertEqual(result["registryRelations"], 45)
         self.assertEqual(result["authorityDomains"], 17)
         self.assertEqual(result["catalogRepositories"], 33)
-        self.assertEqual(result["fleetRepositories"], 19)
-        self.assertEqual(result["fleetExclusions"], 1)
+        self.assertEqual(result["fleetRepositories"], 18)
+        self.assertEqual(result["fleetExclusions"], 2)
         self.assertEqual(result["organizationRepositories"], 35)
-        self.assertEqual(result["organizationCatalogRepositories"], 33)
+        self.assertEqual(result["organizationCatalogRepositories"], 32)
+        self.assertEqual(result["organizationArchivedReferences"], 1)
         self.assertEqual(result["organizationExclusions"], 2)
         self.assertEqual(result["activeLegacyRooms"], 0)
         for room in (
@@ -59,6 +60,10 @@ class SystemCatalogTests(unittest.TestCase):
         self.assertIn("`vault-privat`", actual)
         self.assertIn("`heimgewebe/demo-repository`", actual)
         self.assertIn("## Organisationsumfang", actual)
+        self.assertIn("Archivierte Referenzen ohne aktive Betriebsautorität", actual)
+        self.assertIn("`heimgewebe/heimlern` (`public`)", actual)
+        self.assertIn("`archived-reference`", actual)
+        self.assertNotIn("35 aktive, nicht geforkte Repositories", actual)
 
     def test_entrypoint_href_uses_raw_target_not_markdown_escape(self) -> None:
         from render_system_catalog import _entrypoints_cell
