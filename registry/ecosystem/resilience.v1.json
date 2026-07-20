@@ -486,9 +486,8 @@
     },
     {
       "system": "repo:heimlern",
-      "criticality": "unknown",
+      "criticality": "optional",
       "failureDomains": [
-        "identity:github",
         "provider:github"
       ],
       "recoveryModeRefs": [],
@@ -496,7 +495,7 @@
       "evidence": [
         "docs/audits/heimgewebe-resilience-gap-matrix-v1.md"
       ],
-      "uncertainty": 1.0
+      "uncertainty": 0.0
     },
     {
       "system": "repo:metarepo",

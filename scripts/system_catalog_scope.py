@@ -11,7 +11,7 @@ from typing import Any
 SCOPE_REL = Path("registry/ecosystem/organization-scope.v1.json")
 REPOSITORY_RE = re.compile(r"^heimgewebe/([A-Za-z0-9_.-]+)$")
 VISIBILITIES = {"public", "private", "internal"}
-CLASSIFICATIONS = {"catalog", "excluded"}
+CLASSIFICATIONS = {"catalog", "archived_reference", "excluded"}
 
 
 class OrganizationScopeError(ValueError):
@@ -65,7 +65,7 @@ def validate_scope(
         raise OrganizationScopeError("organization scope source fields mismatch")
     if source["provider"] != "github" or source["organization"] != "heimgewebe":
         raise OrganizationScopeError("organization scope source identity mismatch")
-    if source["selection"] != {"archived": False, "fork": False}:
+    if source["selection"] != {"archived": "include", "fork": False}:
         raise OrganizationScopeError("organization scope selection mismatch")
     if not isinstance(source["observedAt"], str) or not source["observedAt"].strip():
         raise OrganizationScopeError("organization scope observedAt missing")
@@ -101,7 +101,7 @@ def validate_scope(
             raise OrganizationScopeError(f"organization scope row {index} classification invalid")
         if not isinstance(row["reason"], str) or not row["reason"].strip():
             raise OrganizationScopeError(f"organization scope row {index} reason missing")
-        if row["classification"] == "catalog":
+        if row["classification"] in {"catalog", "archived_reference"}:
             expected_node = f"repo:{name}"
             if row["node"] != expected_node or expected_node not in repository_nodes:
                 raise OrganizationScopeError(
@@ -154,7 +154,7 @@ def validate_github_inventory(
     for item in inventory:
         if not isinstance(item, dict):
             continue
-        if item.get("isArchived") is True or item.get("isFork") is True:
+        if item.get("isFork") is True:
             continue
         name = item.get("name")
         owner = item.get("nameWithOwner")
@@ -170,12 +170,14 @@ def validate_github_inventory(
             remote[name] = {
                 "repository": owner,
                 "visibility": normalized_visibility,
+                "archived": item.get("isArchived") is True,
             }
 
     expected = {
         row["name"]: {
             "repository": row["repository"],
             "visibility": row["visibility"],
+            "archived": row["classification"] == "archived_reference",
         }
         for row in scope["repositories"]
         if visibility is None or row["visibility"] == visibility

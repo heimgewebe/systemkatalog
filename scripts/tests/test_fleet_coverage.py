@@ -33,13 +33,34 @@ class FleetCoverageTests(unittest.TestCase):
         coverage = validate_coverage(ROOT, self._repository_nodes())
         self.assertEqual(len(coverage["repositories"]), 33)
         self.assertEqual(
+            coverage["membershipAuthority"],
+            {
+                "repository": "heimgewebe/metarepo",
+                "commit": "b215b418a038ff535f07b7888fd6adeb3f4de51c",
+                "path": "fleet/repos.yml",
+                "contentSha256": "ea9f6285be9556105ff0ed208766946f3c951a8392d59b3066bb4d8c9f476bc8",
+                "scope": "fleet_membership_only",
+            },
+        )
+        self.assertEqual(
             sum(
                 item["membership"] in {"fleet", "related"}
                 for item in coverage["repositories"]
             ),
-            19,
+            18,
         )
-        self.assertEqual(coverage["sourceExclusions"][0]["name"], "vault-privat")
+        self.assertEqual(
+            {item["name"] for item in coverage["sourceExclusions"]},
+            {"heimlern", "vault-privat"},
+        )
+        self.assertEqual(
+            next(
+                item["membership"]
+                for item in coverage["repositories"]
+                if item["repository"] == "heimgewebe/heimlern"
+            ),
+            "archived-reference",
+        )
 
     def test_parser_and_comparison_accept_authority_shape(self) -> None:
         source_text = """---
@@ -59,7 +80,8 @@ repos:
             path.write_text(source_text, encoding="utf-8")
             source = parse_fleet_source(path)
         self.assertEqual(
-            source, ({"weltgewebe": "related", "metarepo": "fleet"}, {"vault-privat"})
+            source,
+            ({"weltgewebe": "related", "metarepo": "fleet"}, {"vault-privat": "excluded"}),
         )
 
     def test_missing_fleet_repository_fails_closed(self) -> None:
@@ -73,10 +95,54 @@ repos:
                 },
                 "new-repository": "fleet",
             },
-            {item["name"] for item in coverage["sourceExclusions"]},
+            {
+                item["name"]: (
+                    "archived-reference" if item["name"] == "heimlern" else "excluded"
+                )
+                for item in coverage["sourceExclusions"]
+            },
         )
         with self.assertRaisesRegex(FleetCoverageError, "missing=.*new-repository"):
             compare_with_source(coverage, source)
+
+    def test_fleet_authority_content_hash_mismatch_fails_closed(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "repos.yml"
+            path.write_text("repos:\n  - name: metarepo\n", encoding="utf-8")
+            with self.assertRaisesRegex(
+                FleetCoverageError, "Fleet authority SHA-256 mismatch"
+            ):
+                parse_fleet_source(path, expected_sha256="0" * 64)
+
+    def test_archived_reference_status_drift_fails_closed(self) -> None:
+        coverage = load_coverage(ROOT)
+        source = (
+            {
+                item["repository"].split("/", 1)[1]: item["membership"]
+                for item in coverage["repositories"]
+                if item["membership"] in {"fleet", "related"}
+            },
+            {"heimlern": "excluded", "vault-privat": "excluded"},
+        )
+        with self.assertRaisesRegex(FleetCoverageError, "archived-reference drift"):
+            compare_with_source(coverage, source)
+
+    def test_active_archived_reference_fails_closed(self) -> None:
+        source_text = """---
+static:
+  include:
+    - name: heimlern
+      status: archived-reference
+repos:
+  - name: metarepo
+"""
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "repos.yml"
+            path.write_text(source_text, encoding="utf-8")
+            with self.assertRaisesRegex(
+                FleetCoverageError, "must set fleet: false: heimlern"
+            ):
+                parse_fleet_source(path)
 
     def test_repository_node_without_mapping_fails_closed(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -108,7 +174,10 @@ repos:
     def test_github_inventory_shape_can_resolve_every_mapping(self) -> None:
         coverage = load_coverage(ROOT)
         inventory = [
-            {"nameWithOwner": item["repository"], "isArchived": False}
+            {
+                "nameWithOwner": item["repository"],
+                "isArchived": item["membership"] == "archived-reference",
+            }
             for item in coverage["repositories"]
         ]
         self.assertEqual(validate_github_inventory(coverage, inventory), 33)
@@ -120,6 +189,15 @@ repos:
             for item in coverage["repositories"][1:]
         ]
         with self.assertRaisesRegex(FleetCoverageError, "GitHub reference drift"):
+            validate_github_inventory(coverage, inventory)
+
+    def test_archived_reference_mismatch_fails_closed(self) -> None:
+        coverage = load_coverage(ROOT)
+        inventory = [
+            {"nameWithOwner": item["repository"], "isArchived": False}
+            for item in coverage["repositories"]
+        ]
+        with self.assertRaisesRegex(FleetCoverageError, "archived_mismatch=.*heimgewebe/heimlern"):
             validate_github_inventory(coverage, inventory)
 
     def test_non_array_github_inventory_fails_closed(self) -> None:

@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "kind": "system_catalog_source_bindings",
   "catalogRepository": "heimgewebe/systemkatalog",
-  "observedAt": "2026-07-19T12:09:42Z",
+  "observedAt": "2026-07-20T15:44:35Z",
   "systems": [
     {
       "system": "actor:alexander",
@@ -283,23 +283,23 @@
       "system": "repo:heimlern",
       "source": {
         "repository": "heimgewebe/heimlern",
-        "commit": "d0a5d1bf26c9a5f555b7541d97fadb27a7cf9b31",
+        "commit": "f74579cbe46d5f5f7b95c4c3431da03efb67cc85",
         "locator": {
           "kind": "file",
-          "path": "README.md",
-          "contentSha256": "5a4f64ccab00b6c31b0817769b53ade5ded61c5927a4bfb5184cfe501e4cc4a8"
+          "path": "docs/archive-readiness.v1.json",
+          "contentSha256": "bbf1d19865812b9584a3645ecd031f0854ee6110849d249692b4ac62d8f8d1e0"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-15T21:18:00Z",
-      "method": "repository_primary_document",
-      "uncertainty": 0.01
+      "reviewedAt": "2026-07-20T15:44:35Z",
+      "method": "repository_normative_contract",
+      "uncertainty": 0.0
     },
     {
       "system": "repo:metarepo",
       "source": {
         "repository": "heimgewebe/metarepo",
-        "commit": "8c6990e024d3e54a0d3dc8f5a0766162d3683497",
+        "commit": "b215b418a038ff535f07b7888fd6adeb3f4de51c",
         "locator": {
           "kind": "file",
           "path": "system/metarepo-role.v1.json",
@@ -307,9 +307,9 @@
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-15T21:18:00Z",
+      "reviewedAt": "2026-07-20T15:35:21Z",
       "method": "repository_normative_contract",
-      "uncertainty": 0.02
+      "uncertainty": 0.0
     },
     {
       "system": "repo:wgx",

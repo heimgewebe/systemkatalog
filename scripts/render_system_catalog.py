@@ -119,19 +119,39 @@ def render_text(root: Path = ROOT) -> str:
             f"| {_cell(node.get('name'))} | `{_cell(reference['repository'])}` | "
             f"`{_cell(reference['membership'])}` | [{entrypoint}]({entrypoint}) |"
         )
-    lines.extend(["", "Explizit außerhalb der Fleet-Quelle:", ""])
+    lines.extend(["", "Explizit ohne aktive Fleet-Mitgliedschaft:", ""])
     for item in sorted(fleet_coverage["sourceExclusions"], key=lambda value: str(value.get("name", ""))):
         lines.append(f"- `{_cell(item.get('name'))}` — {_cell(item.get('reason'))}")
 
     organization_rows = organization_scope["repositories"]
     catalog_count = sum(item["classification"] == "catalog" for item in organization_rows)
-    excluded = [item for item in organization_rows if item["classification"] == "excluded"]
+    archived_references = sorted(
+        (
+            item
+            for item in organization_rows
+            if item["classification"] == "archived_reference"
+        ),
+        key=lambda item: str(item["name"]).casefold(),
+    )
+    excluded = sorted(
+        (item for item in organization_rows if item["classification"] == "excluded"),
+        key=lambda item: str(item["name"]).casefold(),
+    )
     lines.extend([
         "", "## Organisationsumfang", "",
-        f"Der GitHub-Snapshot umfasst {len(organization_rows)} aktive, nicht geforkte Repositories. "
-        f"Davon sind {catalog_count} als Systeme katalogisiert und {len(excluded)} begründet ausgeschlossen.",
-        "", "Begründete Ausschlüsse:", "",
+        f"Der GitHub-Snapshot umfasst {len(organization_rows)} nicht geforkte Repositories. "
+        f"Davon sind {catalog_count} aktive Katalogsysteme, "
+        f"{len(archived_references)} "
+        f"{'archivierte Referenz' if len(archived_references) == 1 else 'archivierte Referenzen'} "
+        f"und {len(excluded)} begründet ausgeschlossen.",
+        "", "Archivierte Referenzen ohne aktive Betriebsautorität:", "",
     ])
+    for item in archived_references:
+        lines.append(
+            f"- `{_cell(item['repository'])}` (`{_cell(item['visibility'])}`) — "
+            f"{_cell(item['reason'])}"
+        )
+    lines.extend(["", "Begründete Ausschlüsse:", ""])
     for item in excluded:
         lines.append(
             f"- `{_cell(item['repository'])}` (`{_cell(item['visibility'])}`) — "

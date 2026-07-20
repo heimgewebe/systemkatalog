@@ -22,13 +22,13 @@ def _load(path: Path) -> Any:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def _active_repositories(raw: Any) -> dict[str, dict[str, Any]]:
+def _repositories(raw: Any) -> dict[str, dict[str, Any]]:
     items = raw.get("repositories") if isinstance(raw, dict) else raw
     if not isinstance(items, list):
         raise ValueError("GitHub inventory must be an array or contain repositories")
     result: dict[str, dict[str, Any]] = {}
     for item in items:
-        if not isinstance(item, dict) or item.get("isArchived") is True or item.get("isFork") is True:
+        if not isinstance(item, dict) or item.get("isFork") is True:
             continue
         repo = item.get("nameWithOwner")
         if not isinstance(repo, str):
@@ -48,7 +48,7 @@ def build_report(root: Path, github_data: dict[str, Any] | list[Any], *, fleet_f
     scope = _load(root / "registry/ecosystem/organization-scope.v1.json")
     bindings = _load(root / "registry/ecosystem/source-bindings.v1.json")
     expected = {item["repository"]: item for item in scope["repositories"]}
-    actual = _active_repositories(github_data)
+    actual = _repositories(github_data)
     changes: list[dict[str, Any]] = []
 
     for repository in sorted(set(actual) - set(expected)):
@@ -64,6 +64,15 @@ def build_report(root: Path, github_data: dict[str, Any] | list[Any], *, fleet_f
                 "repository": repository,
                 "expected": expected_visibility,
                 "actual": actual_visibility,
+            })
+        expected_archived = expected[repository].get("classification") == "archived_reference"
+        actual_archived = actual[repository].get("isArchived") is True
+        if expected_archived != actual_archived:
+            changes.append({
+                "kind": "repository_archive_status_changed",
+                "repository": repository,
+                "expectedArchived": expected_archived,
+                "actualArchived": actual_archived,
             })
 
     observations_raw = github_data.get("observations", []) if isinstance(github_data, dict) else []
@@ -111,7 +120,14 @@ def build_report(root: Path, github_data: dict[str, Any] | list[Any], *, fleet_f
     if fleet_file is not None:
         try:
             from system_catalog_fleet import compare_with_source, load_coverage, parse_fleet_source
-            compare_with_source(load_coverage(root), parse_fleet_source(fleet_file))
+            coverage = load_coverage(root)
+            compare_with_source(
+                coverage,
+                parse_fleet_source(
+                    fleet_file,
+                    expected_sha256=coverage["membershipAuthority"]["contentSha256"],
+                ),
+            )
         except Exception as exc:
             changes.append({"kind": "fleet_membership_drift", "detail": str(exc)})
 

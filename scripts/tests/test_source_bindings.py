@@ -41,9 +41,14 @@ class SourceBindingTests(unittest.TestCase):
         )
         expected = {
             "repo:metarepo": {
-                "commit": "8c6990e024d3e54a0d3dc8f5a0766162d3683497",
+                "commit": "b215b418a038ff535f07b7888fd6adeb3f4de51c",
                 "path": "system/metarepo-role.v1.json",
                 "sha256": "9848a87b77aeb58b80a307a0a3dceca320e92c696031547937fe9cfa95f158fd",
+            },
+            "repo:heimlern": {
+                "commit": "f74579cbe46d5f5f7b95c4c3431da03efb67cc85",
+                "path": "docs/archive-readiness.v1.json",
+                "sha256": "bbf1d19865812b9584a3645ecd031f0854ee6110849d249692b4ac62d8f8d1e0",
             },
             "repo:heim-pc": {
                 "commit": "686fc485f1af971ce336486ef5b10037284e626a",

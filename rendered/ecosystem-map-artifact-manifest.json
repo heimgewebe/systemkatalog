@@ -2,25 +2,25 @@
   "artifactCount": 6,
   "artifacts": [
     {
-      "bytes": 8967,
+      "bytes": 8979,
       "contentType": "text/mermaid",
       "path": "rendered/ecosystem-registry-map.mmd",
       "role": "canonical_ecosystem_map_mermaid",
-      "sha256": "702c64d98eca32dc8084c845b9728db17427c5bdc2a5e6514859818d261f5500"
+      "sha256": "4e1615ab202ff2425db828bff879fdaab18b5953002dd24b3abff1a88b4ab750"
     },
     {
-      "bytes": 36931,
+      "bytes": 37414,
       "contentType": "text/markdown",
       "path": "rendered/system-catalog.md",
       "role": "rendered_catalog_markdown",
-      "sha256": "8354f63d02143077e0f3a58992fb3abfa02e997f60c911779b812717f0468ee5"
+      "sha256": "7a322f78bac0b28be03aba4845ff10d2019b1f97011363756bee8d77d5e3474b"
     },
     {
-      "bytes": 19178,
+      "bytes": 19305,
       "contentType": "application/json",
       "path": "registry/ecosystem/nodes.json",
       "role": "registry_nodes",
-      "sha256": "418b6d6c433fc7c1fb6b7fe69a9c4676011ec60ba589512762ab7f2649737848"
+      "sha256": "888b3e697ad03f342b59d9205e055070c99888f17a105dd69a539a68e64bf00e"
     },
     {
       "bytes": 11163,
@@ -37,11 +37,11 @@
       "sha256": "a44ed4c33258e80257ea3dd6bfd284a6cfcab8fee6db0aefc1ad0458871a0e48"
     },
     {
-      "bytes": 35908,
+      "bytes": 35882,
       "contentType": "application/json",
       "path": "registry/ecosystem/resilience.v1.json",
       "role": "resilience_semantics",
-      "sha256": "d4cdef7722fe18cee5401149e9bb54c12d5b9ffbf299a581399a923f108957ed"
+      "sha256": "28e1497b448ca94e8249c6fd52e5ca200827201e89be195058455da7878861ea"
     }
   ],
   "contractVersion": "1",
@@ -58,8 +58,8 @@
   "schemaPath": "catalog/ecosystem-map-artifact-manifest.schema.v1.json",
   "schemaVersion": 1,
   "source": {
-    "commit": "27c6b99afe0e20caf912fa2c8b7770ff272126ae",
-    "generatedAt": "2026-07-19T12:11:55Z",
+    "commit": "27924b7cd1b2506dae121052efb4a195804d1554",
+    "generatedAt": "2026-07-20T19:37:37Z",
     "repository": "heimgewebe/systemkatalog"
   }
 }

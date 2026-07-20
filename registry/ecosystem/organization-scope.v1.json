@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
   "kind": "system_catalog_organization_scope",
-  "updatedAt": "2026-07-17",
+  "updatedAt": "2026-07-20",
   "source": {
     "provider": "github",
     "organization": "heimgewebe",
-    "observedAt": "2026-07-17T16:19:35Z",
+    "observedAt": "2026-07-20T15:44:35Z",
     "selection": {
-      "archived": false,
+      "archived": "include",
       "fork": false
     },
     "repositoryCount": 35
@@ -121,9 +121,9 @@
       "name": "heimlern",
       "repository": "heimgewebe/heimlern",
       "visibility": "public",
-      "classification": "catalog",
+      "classification": "archived_reference",
       "node": "repo:heimlern",
-      "reason": "offline operator-learning and proposal generation"
+      "reason": "archived historical reference for retired offline learning and proposal experiments; no active runtime or contract authority"
     },
     {
       "name": "heimserver",
