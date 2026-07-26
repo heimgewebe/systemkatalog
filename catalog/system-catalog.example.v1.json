@@ -21,6 +21,13 @@
         "repository": "https://github.com/heimgewebe/systemkatalog",
         "readme": "README.md",
         "agentEntry": "AGENTS.md"
+      },
+      "lifecycle": {
+        "state": "active",
+        "reviewedAt": "2026-07-26",
+        "evidenceRefs": [
+          "catalog/system-catalog.example.v1.json"
+        ]
       }
     },
     {
@@ -42,6 +49,13 @@
         "repository": "https://github.com/heimgewebe/bureau",
         "readme": "README.md",
         "agentEntry": "AGENTS.md"
+      },
+      "lifecycle": {
+        "state": "active",
+        "reviewedAt": "2026-07-26",
+        "evidenceRefs": [
+          "catalog/system-catalog.example.v1.json"
+        ]
       }
     },
     {
@@ -61,6 +75,13 @@
         "repository": "https://github.com/heimgewebe/grabowski",
         "readme": "README.md",
         "agentEntry": "AGENTS.md"
+      },
+      "lifecycle": {
+        "state": "active",
+        "reviewedAt": "2026-07-26",
+        "evidenceRefs": [
+          "catalog/system-catalog.example.v1.json"
+        ]
       }
     },
     {
@@ -77,6 +98,13 @@
       ],
       "entrypoints": {
         "organization": "https://github.com/heimgewebe"
+      },
+      "lifecycle": {
+        "state": "active",
+        "reviewedAt": "2026-07-26",
+        "evidenceRefs": [
+          "catalog/system-catalog.example.v1.json"
+        ]
       }
     },
     {
@@ -94,6 +122,13 @@
       ],
       "entrypoints": {
         "catalogGuidance": "registry/ecosystem/authority-matrix.v1.json"
+      },
+      "lifecycle": {
+        "state": "active",
+        "reviewedAt": "2026-07-26",
+        "evidenceRefs": [
+          "catalog/system-catalog.example.v1.json"
+        ]
       }
     }
   ],

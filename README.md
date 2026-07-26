@@ -1,6 +1,6 @@
 # Systemkatalog
 
-Der Systemkatalog beschreibt die stabilen Bestandteile des Heimgewebe-Ökosystems: vorhandene Systeme, ihren Zweck, ihre Grenzen, Wahrheitszuständigkeiten, dauerhafte Beziehungen und Einstiegspunkte.
+Der Systemkatalog beschreibt die stabilen Bestandteile des Heimgewebe-Ökosystems: vorhandene Systeme, ihren Zweck, ihren langfristigen Lebenszyklus, ihre Grenzen, Wahrheitszuständigkeiten, dauerhafte Beziehungen und Einstiegspunkte.
 
 Er ist **kein Steuerungs- oder Statussystem**. Aufgaben, Prioritäten, Laufzustände, Pull Requests, Prüfungen und Ausführung bleiben bei den dafür zuständigen Primärsystemen.
 
@@ -22,6 +22,7 @@ Er ist **kein Steuerungs- oder Statussystem**. Aufgaben, Prioritäten, Laufzust�
 
 - Welche stabilen Systeme sind katalogisiert, und welche Metarepo-Fleet-Repositories sind abgedeckt?
 - Welchem Zweck dient jedes System?
+- Ist seine stabile Katalogrolle aktiv, im Übergang, eine Referenz, archiviert oder außer Betrieb?
 - Wofür ist es ausdrücklich nicht zuständig?
 - Wem gehört welche Wahrheit?
 - Welche stabilen Beziehungen bestehen?
@@ -66,7 +67,7 @@ Die frühere Cabinet-Raumstruktur liegt ausschließlich unter `docs/archive/cabi
 
 Die Fleet-Mitgliedschaft selbst gehört Metarepo (`fleet/repos.yml`). Der Systemkatalog gleicht diese Quelle ab, übernimmt daraus aber weder Zweck noch Architektursemantik. Jedes Fleet-Repository muss katalogisiert sein; Quellausschlüsse wie `fleet: false` müssen ausdrücklich dokumentiert bleiben.
 
-Der vollständige Organisationsumfang steht separat in `registry/ecosystem/organization-scope.v1.json`. Dort ist jedes aktive, nicht geforkte Heimgewebe-Repository entweder als Katalogsystem oder als begründeter Ausschluss klassifiziert. Die Datei enthält die vollständige aktuelle Klassifikation. CI mintet dafür kurzlebig ein ausschließlich lesendes Heimgewebe-App-Token und gleicht den Umfang einschließlich privater Repository-Metadaten live gegen GitHub ab. Die konkreten Anzahlen werden aus den kanonischen Daten berechnet statt in dieser Dokumentation doppelt gepflegt. Private Commit- und Inhaltsmetadaten werden nicht in den öffentlichen Quellenbindungen veröffentlicht.
+Der vollständige Organisationsumfang steht separat in `registry/ecosystem/organization-scope.v1.json`. Dort ist jedes nicht geforkte Heimgewebe-Repository einschließlich archivierter Repositories entweder als Katalogsystem, archivierte Referenz oder begründeter Ausschluss klassifiziert. Die Datei enthält die vollständige aktuelle Klassifikation. CI mintet dafür kurzlebig ein ausschließlich lesendes Heimgewebe-App-Token und gleicht den Umfang einschließlich privater Repository-Metadaten live gegen GitHub ab. Die konkreten Anzahlen werden aus den kanonischen Daten berechnet statt in dieser Dokumentation doppelt gepflegt. Private Commit- und Inhaltsmetadaten werden nicht in den öffentlichen Quellenbindungen veröffentlicht.
 
 Konkrete Coding-Agenten sind keine stabilen Katalogsysteme. Die dauerhafte Zuständigkeit für Agent-Auswahl und Rollenrouting liegt bei Grabowski und wird als Authority-Domäne `agent_routing` referenziert.
 
@@ -85,6 +86,12 @@ python3 scripts/systemkatalog_query.py recovery-mode grabowski-release-rollback
 ```
 
 Jede Ausgabe nennt den gelesenen Katalogcommit, die Quellpfade und – soweit öffentlich zulässig – die zugehörige Quellenbindung. Die CLI besitzt keine Datenbank, keine Schreibschnittstelle und keine Runtime-Autorität.
+
+## Lebenszyklus ist kein Laufzeitstatus
+
+Jeder Knoten trägt eine reviewte Katalogklassifikation `active`, `transition`, `reference`, `archived` oder `retired`. Sie beschreibt die langfristige Rolle im Ökosystem und nennt Prüfdatum sowie Evidenzreferenzen. Sie behauptet weder, dass ein Prozess läuft, noch dass ein GitHub-Repository archiviert werden darf oder eine Bureau-Aufgabe abgeschlossen ist.
+
+Die Mermaidkarte macht diese Klassen sichtbar, ohne die getrennte Kantenstabilität `stable`, `bounded` oder `related` umzudeuten. Eine stabile Beziehung zu einem historischen Knoten bleibt eine stabile historische Beziehung und wird nicht zu einer aktiven Betriebsabhängigkeit.
 
 ## Quellenbindungen und Frische
 
@@ -117,7 +124,7 @@ Cabinet- und Agentenlaufzeitpfade werden absichtlich **nicht** durch `.gitignore
 
 ### Manifest veröffentlichen
 
-Das Manifest wird absichtlich in einem zweiten Commit veröffentlicht: Der erste Commit enthält die Katalogdaten und Projektionen. Danach bindet das Manifest exakt diesen Artefakt-Commit und die SHA-256-Prüfsummen der fünf ausgelieferten Dateien. So entsteht keine unmögliche Selbstreferenz auf den Commit, der das Manifest selbst enthält.
+Das Manifest wird absichtlich in einem zweiten Commit veröffentlicht: Der erste Commit enthält die Katalogdaten und Projektionen. Danach bindet das Manifest exakt diesen Artefakt-Commit und die SHA-256-Prüfsummen der sechs ausgelieferten Dateien. So entsteht keine unmögliche Selbstreferenz auf den Commit, der das Manifest selbst enthält.
 
 ```bash
 # 1. Katalogdaten und Projektionen committen

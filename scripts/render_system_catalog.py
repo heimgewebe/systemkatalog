@@ -94,13 +94,17 @@ def render_text(root: Path = ROOT) -> str:
         "",
         "## Systeme",
         "",
-        "| System | Typ | Kritikalität | Ausfalldomänen | Zweck | Nicht zuständig für | Wahrheitsbesitz | Einstiegspunkte |",
-        "|---|---|---|---|---|---|---|---|",
+        "| System | Typ | Lebenszyklus | Kritikalität | Ausfalldomänen | Zweck | Nicht zuständig für | Wahrheitsbesitz | Einstiegspunkte |",
+        "|---|---|---|---|---|---|---|---|---|",
     ]
     for node in sorted(nodes, key=lambda item: (str(item.get("type", "")).casefold(), str(item.get("name", "")).casefold(), str(item.get("id", "")))):
         stable = resilience_by_system[node["id"]]
+        lifecycle = node.get("lifecycle", {})
+        lifecycle_cell = (
+            f"`{_cell(lifecycle.get('state'))}` · geprüft {_cell(lifecycle.get('reviewedAt'))}"
+        )
         lines.append(
-            f"| {_cell(node.get('name'))} | {_cell(node.get('type'))} | "
+            f"| {_cell(node.get('name'))} | {_cell(node.get('type'))} | {lifecycle_cell} | "
             f"`{_cell(stable.get('criticality'))}` | {_string_list_cell(stable.get('failureDomains'))} | "
             f"{_cell(node.get('purpose'))} | {_string_list_cell(node.get('notResponsibleFor'))} | "
             f"{_string_list_cell(node.get('truthOwnership'))} | "

@@ -8,7 +8,7 @@ Der Systemkatalog ist eine kleine, app-unabhängige Wissensschicht. Er hält nur
 
 | Inhalt | Kanonische Datei |
 |---|---|
-| Systeme | `registry/ecosystem/nodes.json` |
+| Systeme und stabile Lebenszyklen | `registry/ecosystem/nodes.json` |
 | Beziehungen | `registry/ecosystem/edges.json` |
 | stabile, belegte Aussagen | `registry/ecosystem/claims.jsonl` |
 | Wahrheitszuständigkeiten | `registry/ecosystem/authority-matrix.v1.json` |
@@ -31,6 +31,18 @@ Konkrete Coding-Agenten und Provider sind wechselnde Runtime-Details. Die stabil
 Der Systemkatalog besitzt keine eigene Laufzeit. Markdown, Mermaid, JSON/JSONL und das Map-Artefaktmanifest werden deterministisch aus den versionierten Repositorydateien erzeugt und von Verbrauchern read-only übernommen. Das versionierte Manifest wird in einem zweiten Commit erzeugt und bindet den unmittelbar vorher veröffentlichten Artefakt-Commit. Diese Zweistufigkeit verhindert eine Selbstreferenz des Manifests auf seinen eigenen Commit. Vor dem Merge darf der Writer oder die PR-CI einen ausdrücklich angegebenen, lokal gefetchten Remote-Tracking-Ref als Dauerhaftigkeitsbeleg verwenden. Dieser Ref beweist allein die lokale Git-Abstammung; der Aufrufer muss seine Remote-Identität und den erwarteten SHA separat prüfen. Die GitHub-PR-CI fetchte deshalb Repository und Branch aus dem Event und vergleicht den resultierenden Ref bytegenau mit dem Event-Head-SHA. Nach dem Merge verwendet `--check` ohne Override ausschließlich `refs/remotes/origin/main` und prüft Datei, aktuelle Hashes, Git-Abstammung sowie die Bytes im gebundenen Commit. Ein PR mit neuem Artefakt- und Manifestcommit muss deshalb per Merge-Commit integriert werden; Squash oder Rebase würden den gebundenen Quellcommit zerstören und die Post-Merge-Prüfung korrekt scheitern lassen.
 
 Aktuelle Dienstzustände bleiben außerhalb des Katalogs bei Runtime, systemd, Healthchecks und Logs. Diese Grenze verhindert, dass der Systemkatalog selbst zu einem zweiten Status- oder Betriebsmodell wird.
+
+### Lebenszyklusgrenze
+
+Der Knoten-Lebenszyklus ist eine stabile, reviewpflichtige Semantikachse:
+
+- `active`: aktuell reguläre Systemrolle; kein Liveness-Beweis;
+- `transition`: Rolle bleibt während einer belegten Migration oder Consumerablösung sichtbar;
+- `reference`: normative oder historische Referenz ohne reguläre Ausführungsrolle;
+- `archived`: archivierte historische Referenz;
+- `retired`: außer Betrieb und ohne aktive Autorität, Exposition oder Betriebsabhängigkeit.
+
+Jede Klassifikation bindet `reviewedAt` und mindestens eine `evidenceRef`. GitHub-Archivstatus, Prozesse, Units, Health, Taskstatus und Mergefähigkeit bleiben trotzdem bei ihren Primärquellen. Die Relationseigenschaft `stability` ist orthogonal: Sie beschreibt die Beständigkeit der Beziehung, nicht die Betriebsaktivität ihrer Endpunkte.
 
 ## Archivgrenze
 

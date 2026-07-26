@@ -175,6 +175,7 @@ class MermaidRenderer:
         ]
         lines.extend(self._render_nodes(registry.nodes, node_ids))
         lines.extend(self._render_edges(registry.edges, node_ids))
+        lines.extend(self._render_lifecycle_classes(registry.nodes, node_ids))
         lines.extend(self._render_visual_anchors(node_ids))
         lines.append("")
         return "\n".join(lines)
@@ -230,6 +231,35 @@ class MermaidRenderer:
             edge_type = escape_label(edge["type"])
             stability = escape_label(edge["stability"])
             lines.append(f"    {node_ids[source]} -->|{edge_type} / {stability}| {node_ids[target]}")
+        return lines
+
+    def _render_lifecycle_classes(
+        self, nodes: list[dict[str, Any]], node_ids: dict[str, str]
+    ) -> list[str]:
+        style_by_state = {
+            "active": "stroke-width:1.5px",
+            "transition": "stroke:#fbbf24,stroke-width:3px,stroke-dasharray:6 3",
+            "reference": "stroke:#a78bfa,stroke-width:2px,stroke-dasharray:3 3",
+            "archived": "fill:#1f2937,stroke:#64748b,color:#cbd5e1",
+            "retired": "fill:#111827,stroke:#ef4444,stroke-width:2px,stroke-dasharray:8 4,color:#94a3b8",
+        }
+        nodes_by_state: dict[str, list[str]] = defaultdict(list)
+        for node in nodes:
+            lifecycle = node.get("lifecycle")
+            if not isinstance(lifecycle, dict):
+                raise RegistryMapError(f"node lifecycle missing: {node.get('id')}")
+            state = lifecycle.get("state")
+            if state not in style_by_state:
+                raise RegistryMapError(f"node lifecycle unsupported: {node.get('id')}={state}")
+            nodes_by_state[state].append(node_ids[node["id"]])
+        lines = ["", "    %% Lifecycle is stable catalog semantics, not runtime status."]
+        for state in ("active", "transition", "reference", "archived", "retired"):
+            rendered = nodes_by_state.get(state, [])
+            if not rendered:
+                continue
+            class_name = f"lifecycle{state.title()}"
+            lines.append(f"    classDef {class_name} {style_by_state[state]};")
+            lines.append(f"    class {','.join(rendered)} {class_name};")
         return lines
 
     def _render_visual_anchors(self, node_ids: dict[str, str]) -> list[str]:
@@ -309,8 +339,14 @@ def node_label(node: dict[str, Any]) -> str:
     label = escape_label(node["name"])
     node_id = escape_label(node["id"])
     node_type = escape_label(node["type"])
+    lifecycle = node["lifecycle"]
+    lifecycle_state = escape_label(lifecycle["state"])
+    reviewed_at = escape_label(lifecycle["reviewedAt"])
     purpose = escape_label(node["purpose"])
-    return f"{label}<br/>id: {node_id}<br/>{node_type}<br/>{purpose}"
+    return (
+        f"{label}<br/>id: {node_id}<br/>{node_type}"
+        f"<br/>lifecycle: {lifecycle_state} · reviewed: {reviewed_at}<br/>{purpose}"
+    )
 
 
 def ordered_kinds(nodes: list[dict[str, Any]]) -> list[str]:

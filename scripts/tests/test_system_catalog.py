@@ -76,7 +76,7 @@ class SystemCatalogTests(unittest.TestCase):
     def test_canonical_nodes_implement_the_full_system_contract(self) -> None:
         data = json.loads((ROOT / "registry/ecosystem/nodes.json").read_text(encoding="utf-8"))
         required = {
-            "id", "name", "type", "purpose",
+            "id", "name", "type", "purpose", "lifecycle",
             "notResponsibleFor", "truthOwnership", "entrypoints",
         }
         self.assertEqual(len(data["nodes"]), 37)
@@ -84,8 +84,14 @@ class SystemCatalogTests(unittest.TestCase):
             self.assertEqual(set(node), required)
             self.assertTrue(node["notResponsibleFor"])
             self.assertTrue(node["entrypoints"])
+            self.assertIn(node["lifecycle"]["state"], {"active", "transition", "reference", "archived", "retired"})
+            self.assertEqual(node["lifecycle"]["reviewedAt"], "2026-07-26")
+            self.assertTrue(node["lifecycle"]["evidenceRefs"])
         self.assertIn("Nicht zuständig für", (ROOT / "rendered/system-catalog.md").read_text(encoding="utf-8"))
-        self.assertIn("Wahrheitsbesitz", (ROOT / "rendered/system-catalog.md").read_text(encoding="utf-8"))
+        rendered = (ROOT / "rendered/system-catalog.md").read_text(encoding="utf-8")
+        self.assertIn("Wahrheitsbesitz", rendered)
+        self.assertIn("Lebenszyklus", rendered)
+        self.assertIn("`retired` · geprüft 2026-07-26", rendered)
 
     def test_missing_canonical_system_field_fails_closed(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -95,6 +101,26 @@ class SystemCatalogTests(unittest.TestCase):
             del data["nodes"][0]["notResponsibleFor"]
             path.write_text(json.dumps(data), encoding="utf-8")
             with self.assertRaisesRegex(ValueError, "node 1 fields mismatch"):
+                validate(target)
+
+    def test_invalid_lifecycle_state_fails_closed(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            target = self._copy_repository(directory)
+            path = target / "registry/ecosystem/nodes.json"
+            data = json.loads(path.read_text(encoding="utf-8"))
+            data["nodes"][0]["lifecycle"]["state"] = "running"
+            path.write_text(json.dumps(data), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "lifecycle.state unsupported"):
+                validate(target)
+
+    def test_invalid_lifecycle_date_fails_closed(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            target = self._copy_repository(directory)
+            path = target / "registry/ecosystem/nodes.json"
+            data = json.loads(path.read_text(encoding="utf-8"))
+            data["nodes"][0]["lifecycle"]["reviewedAt"] = "yesterday"
+            path.write_text(json.dumps(data), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "reviewedAt must be an ISO date"):
                 validate(target)
 
     def test_truth_ownership_drift_fails_closed(self) -> None:

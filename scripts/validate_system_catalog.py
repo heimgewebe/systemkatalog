@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import json
 from dataclasses import dataclass
+from datetime import date
 from pathlib import Path
 from typing import Any, Iterable
 
@@ -34,7 +35,9 @@ SOURCE_BINDINGS_PATH_REL = SOURCE_BINDINGS_REL
 FRESHNESS_POLICY_PATH_REL = FRESHNESS_POLICY_REL
 ARCHIVE_REL = Path("docs/archive/cabinet-era")
 
-NODE_FIELDS = {"id", "name", "type", "purpose", "notResponsibleFor", "truthOwnership", "entrypoints"}
+NODE_FIELDS = {"id", "name", "type", "purpose", "lifecycle", "notResponsibleFor", "truthOwnership", "entrypoints"}
+LIFECYCLE_FIELDS = {"state", "reviewedAt", "evidenceRefs"}
+ALLOWED_LIFECYCLE_STATES = {"active", "transition", "reference", "archived", "retired"}
 EDGE_FIELDS = {"from", "to", "type", "stability", "meaning"}
 CLAIM_FIELDS = {"id", "subject", "predicate", "object", "evidence", "does_not_establish"}
 ALLOWED_NODE_TYPES = {"human", "repository", "concept", "artifact", "service", "background_process", "operator_surface"}
@@ -110,12 +113,30 @@ class RegistryData:
     edges: list[dict[str, Any]]
 
 
+def validate_lifecycle(raw_lifecycle: Any, label: str) -> dict[str, Any]:
+    if not isinstance(raw_lifecycle, dict) or set(raw_lifecycle) != LIFECYCLE_FIELDS:
+        raise RegistryValidationError(f"{label} fields mismatch")
+    state = _require_string(raw_lifecycle.get("state"), f"{label}.state")
+    if state not in ALLOWED_LIFECYCLE_STATES:
+        raise RegistryValidationError(f"{label}.state unsupported: {state}")
+    reviewed_at = _require_string(raw_lifecycle.get("reviewedAt"), f"{label}.reviewedAt")
+    try:
+        date.fromisoformat(reviewed_at)
+    except ValueError as exc:
+        raise RegistryValidationError(f"{label}.reviewedAt must be an ISO date") from exc
+    evidence_refs = _require_string_array(raw_lifecycle.get("evidenceRefs"), f"{label}.evidenceRefs")
+    if len(evidence_refs) != len(set(evidence_refs)):
+        raise RegistryValidationError(f"{label}.evidenceRefs must be unique")
+    return raw_lifecycle
+
+
 def validate_node(raw_node: Any, index: int) -> dict[str, Any]:
     label = f"node {index}"
     if not isinstance(raw_node, dict) or set(raw_node) != NODE_FIELDS:
         raise RegistryValidationError(f"{label} fields mismatch")
     for field in ("id", "name", "type", "purpose"):
         _require_string(raw_node.get(field), f"{label}.{field}")
+    validate_lifecycle(raw_node.get("lifecycle"), f"{label}.lifecycle")
     if raw_node["type"] not in ALLOWED_NODE_TYPES:
         raise RegistryValidationError(f"{label} uses non-catalog type: {raw_node['type']}")
     if raw_node["id"].startswith(("runtime:", "agent:")):
@@ -303,6 +324,7 @@ def _validate_example(policy: dict[str, Any], example: dict[str, Any]) -> int:
         system_id = _require_string(system.get("id"), f"systems[{index}].id")
         for field in ("name", "type", "purpose"):
             _require_string(system.get(field), f"systems[{index}].{field}")
+        validate_lifecycle(system.get("lifecycle"), f"systems[{index}].lifecycle")
         if not isinstance(system.get("notResponsibleFor"), list):
             raise ValueError(f"systems[{index}].notResponsibleFor must be an array")
         if not isinstance(system.get("truthOwnership"), list):
@@ -362,6 +384,13 @@ def validate(root: Path = ROOT) -> dict[str, Any]:
     required_system_fields = policy.get("targetFormat", {}).get("requiredSystemFields")
     if not isinstance(required_system_fields, list) or set(required_system_fields) != NODE_FIELDS:
         raise ValueError("targetFormat.requiredSystemFields mismatch")
+    lifecycle_boundary = policy.get("lifecycleBoundary")
+    if not isinstance(lifecycle_boundary, dict) or set(lifecycle_boundary) != {"states", "meaning", "doesNotEstablish"}:
+        raise ValueError("lifecycleBoundary fields mismatch")
+    if set(_require_string_array(lifecycle_boundary.get("states"), "lifecycleBoundary.states")) != ALLOWED_LIFECYCLE_STATES:
+        raise ValueError("lifecycleBoundary states mismatch")
+    _require_string(lifecycle_boundary.get("meaning"), "lifecycleBoundary.meaning")
+    _require_string_array(lifecycle_boundary.get("doesNotEstablish"), "lifecycleBoundary.doesNotEstablish")
     schema_required = schema.get("properties", {}).get("systems", {}).get("items", {}).get("required")
     if not isinstance(schema_required, list) or set(schema_required) != NODE_FIELDS:
         raise ValueError("system catalog schema required fields mismatch")
