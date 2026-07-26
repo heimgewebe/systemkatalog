@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import json
+import re
 from dataclasses import dataclass
 from datetime import date
 from pathlib import Path
@@ -120,10 +121,14 @@ def validate_lifecycle(raw_lifecycle: Any, label: str) -> dict[str, Any]:
     if state not in ALLOWED_LIFECYCLE_STATES:
         raise RegistryValidationError(f"{label}.state unsupported: {state}")
     reviewed_at = _require_string(raw_lifecycle.get("reviewedAt"), f"{label}.reviewedAt")
+    if re.fullmatch(r"\d{4}-\d{2}-\d{2}", reviewed_at) is None:
+        raise RegistryValidationError(f"{label}.reviewedAt must use exact YYYY-MM-DD format")
     try:
-        date.fromisoformat(reviewed_at)
+        parsed_reviewed_at = date.fromisoformat(reviewed_at)
     except ValueError as exc:
-        raise RegistryValidationError(f"{label}.reviewedAt must be an ISO date") from exc
+        raise RegistryValidationError(f"{label}.reviewedAt must use exact YYYY-MM-DD format") from exc
+    if parsed_reviewed_at.isoformat() != reviewed_at:
+        raise RegistryValidationError(f"{label}.reviewedAt must use exact YYYY-MM-DD format")
     evidence_refs = _require_string_array(raw_lifecycle.get("evidenceRefs"), f"{label}.evidenceRefs")
     if len(evidence_refs) != len(set(evidence_refs)):
         raise RegistryValidationError(f"{label}.evidenceRefs must be unique")
