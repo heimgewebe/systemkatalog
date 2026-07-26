@@ -8,26 +8,50 @@ ROOT = Path(__file__).resolve().parents[2]
 EXPECTED = {
     "repo:systemkatalog": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "3cecde159552a7e0eff94fca94add0051017d9cc",
-        "sha256": "26adf42dc6a00347ad3ae38878fe35ba20b2cbef6601d4ba08caffb7916f7175",
+        "commit": "1cda4ee29aacb39d99a5ab415611fff6da6c54aa",
+        "sha256": "dbd566b6d8337f5238313386537eece250c9ad05f92c1a6cab780d77f1679457",
         "path": "README.md",
     },
     "repo:bureau": {
         "repository": "heimgewebe/bureau",
-        "commit": "1fca33a9945cb25dac9eb5ef0d5b29619eb6d2a7",
-        "sha256": "94b9241d6ebb0a8c0ff9b308965967825dcd5fbad285354a546ad705fa912b6d",
+        "commit": "bfa44a83a76de053991b271883c738e87c854397",
+        "sha256": "395960b2ca6a06310216123b7c311ad58fb0fa3adc55837fc26a649ea7c0358c",
         "path": "README.md",
     },
     "repo:weltgewebe": {
         "repository": "heimgewebe/weltgewebe",
-        "commit": "b5a9383fc36b381bf5a68fd2e9a287d13f2caa82",
-        "sha256": "4ada1c4578942f620098c7b7317b040200e720c69625bf2f57cafabebe59ae33",
+        "commit": "9fda211859e0cdca9decf8e159ea6a630c4ea086",
+        "sha256": "dadcfe97ed4ae110533f51f5c3d256ef5157fcf8578cbc5c2a3177f81f65ecd6",
         "path": "README.md",
     },
     "repo:repoground": {
         "repository": "heimgewebe/repoground",
-        "commit": "04f346dfcbff4513344709b4204ff9d820a91d48",
-        "sha256": "de79925b48f536bf88aa1d5f6bf678a1a6461027d0a42f89d99d35c987d0f6bf",
+        "commit": "40dd1088a642370c5a7cc0dfd19dbd59e6395a35",
+        "sha256": "34de5eedbd3cc9c7340887c12c97e5241b8060c17f2ff90f9facc1e175f03d9c",
+        "path": "README.md",
+    },
+    "repo:vibe-lab": {
+        "repository": "heimgewebe/vibe-lab",
+        "commit": "63c3d533dad4d51775aba7746915b5c8c5086f42",
+        "sha256": "0949d20b07df77ec2d1976b754258e837ef4b4a0b9a799daa4560f9413300bd8",
+        "path": "README.md",
+    },
+    "repo:schauwerk": {
+        "repository": "heimgewebe/schauwerk",
+        "commit": "8bdc86d013de3dfde0cb8502291cc8cfee6faba0",
+        "sha256": "72fc8e0d66600cefa4a3f01dfda9fc6e95f04067352216da6ffe79edfcd0e9ab",
+        "path": "README.md",
+    },
+    "repo:leitstand": {
+        "repository": "heimgewebe/leitstand",
+        "commit": "a85c14d0df83da61c68e43fe814a19d483f3f6f2",
+        "sha256": "be0fd2f4b5c4829fab65e1e6c0f732827c79edf779f04ad3760b49bfc1c98655",
+        "path": "README.md",
+    },
+    "repo:wgx": {
+        "repository": "heimgewebe/wgx",
+        "commit": "5c14e53674193446b8832eca6e312bcf58190248",
+        "sha256": "b7103c3519a9470bfecf7c75b10ce837223ea6ce88b90289162063ae2e875357",
         "path": "README.md",
     },
     "repo:semantAH": {
@@ -44,14 +68,14 @@ EXPECTED = {
     },
     "repo:heim-pc": {
         "repository": "heimgewebe/heim-pc",
-        "commit": "686fc485f1af971ce336486ef5b10037284e626a",
-        "sha256": "9e1bbe5060a3c6aa47155ac2299fc3dbc25d7aabac3ba6e498cd8667e4ca2eb6",
+        "commit": "446dcef499147970ca3bc7abc1d95f551be8d279",
+        "sha256": "480a23722c17a0ec8cfa67a69389ebba22a95f83ccac0631b6a2a3b44eeb03bb",
         "path": "manifest/operator-entry.v1.json",
     },
     "repo:commonworld": {
         "repository": "heimgewebe/commonworld",
-        "commit": "3b33b4a566ab4cd5487a8a99e3f99b211347a6bc",
-        "sha256": "90f94b50c7ed43bbd225e1ef52e3449858063d154f16741389f8f20f8db46880",
+        "commit": "47b6e82c6e359dda1b03737ab45de0dbbca8f794",
+        "sha256": "1465617e273db98b25a3bc1390502a74a07581c3d0bd8c20e2e82a2b27fe9ed7",
         "path": "README.md",
     },
 }

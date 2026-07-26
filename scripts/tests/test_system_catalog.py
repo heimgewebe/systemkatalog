@@ -114,14 +114,15 @@ class SystemCatalogTests(unittest.TestCase):
                 validate(target)
 
     def test_invalid_lifecycle_date_fails_closed(self) -> None:
-        with tempfile.TemporaryDirectory() as directory:
-            target = self._copy_repository(directory)
-            path = target / "registry/ecosystem/nodes.json"
-            data = json.loads(path.read_text(encoding="utf-8"))
-            data["nodes"][0]["lifecycle"]["reviewedAt"] = "yesterday"
-            path.write_text(json.dumps(data), encoding="utf-8")
-            with self.assertRaisesRegex(ValueError, "reviewedAt must be an ISO date"):
-                validate(target)
+        for reviewed_at in ("yesterday", "20260726", "2026-W30-7", "2026-02-30"):
+            with self.subTest(reviewed_at=reviewed_at), tempfile.TemporaryDirectory() as directory:
+                target = self._copy_repository(directory)
+                path = target / "registry/ecosystem/nodes.json"
+                data = json.loads(path.read_text(encoding="utf-8"))
+                data["nodes"][0]["lifecycle"]["reviewedAt"] = reviewed_at
+                path.write_text(json.dumps(data), encoding="utf-8")
+                with self.assertRaisesRegex(ValueError, "reviewedAt must use exact YYYY-MM-DD format"):
+                    validate(target)
 
     def test_truth_ownership_drift_fails_closed(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
