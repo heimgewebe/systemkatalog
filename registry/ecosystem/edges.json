@@ -72,11 +72,11 @@
       "meaning": "RepoGround provides Systemkatalog with verifiable, citable codebase context."
     },
     {
-      "from": "repo:steuerboard",
+      "from": "repo:reposkop",
       "to": "repo:systemkatalog",
       "type": "observes",
       "stability": "stable",
-      "meaning": "Steuerboard can provide read-only repo-state signals, not decisions."
+      "meaning": "Reposkop provides target-bound, read-only repository and checkout coherence signals, but no decisions or effect authority."
     },
     {
       "from": "repo:vibe-lab",

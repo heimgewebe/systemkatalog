@@ -12,7 +12,7 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 ADMISSION_POLICY_REL = Path("policy/component-admission.v1.json")
 ADMISSIONS_REL = Path("registry/ecosystem/component-admissions.v1.json")
-FROZEN_GRANDFATHERED_BASELINE_SHA256 = "ea4a400cba02b08f97252392c7ea5f169623767e43e13ce5ae98007dcb792254"
+FROZEN_GRANDFATHERED_BASELINE_SHA256 = "691223849841ced5ed0f360c6d829da28f79eaaa85f3078ce165ac7a2b92ae91"
 
 
 class ComponentAdmissionError(ValueError):

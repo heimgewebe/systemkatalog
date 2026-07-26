@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "kind": "system_catalog_fleet_coverage",
-  "updatedAt": "2026-07-20",
+  "updatedAt": "2026-07-26",
   "membershipAuthority": {
     "repository": "heimgewebe/metarepo",
     "commit": "b215b418a038ff535f07b7888fd6adeb3f4de51c",
@@ -124,12 +124,6 @@
       "membership": "catalog-only"
     },
     {
-      "node": "repo:repoground",
-      "repository": "heimgewebe/repoground",
-      "entrypoint": "https://github.com/heimgewebe/repoground",
-      "membership": "fleet"
-    },
-    {
       "node": "repo:metarepo",
       "repository": "heimgewebe/metarepo",
       "entrypoint": "https://github.com/heimgewebe/metarepo",
@@ -154,6 +148,18 @@
       "membership": "fleet"
     },
     {
+      "node": "repo:repoground",
+      "repository": "heimgewebe/repoground",
+      "entrypoint": "https://github.com/heimgewebe/repoground",
+      "membership": "fleet"
+    },
+    {
+      "node": "repo:reposkop",
+      "repository": "heimgewebe/reposkop",
+      "entrypoint": "https://github.com/heimgewebe/reposkop",
+      "membership": "catalog-only"
+    },
+    {
       "node": "repo:schauwerk",
       "repository": "heimgewebe/schauwerk",
       "entrypoint": "https://github.com/heimgewebe/schauwerk",
@@ -175,12 +181,6 @@
       "node": "repo:snippet-engine-control",
       "repository": "heimgewebe/snippet-engine-control",
       "entrypoint": "https://github.com/heimgewebe/snippet-engine-control",
-      "membership": "catalog-only"
-    },
-    {
-      "node": "repo:steuerboard",
-      "repository": "heimgewebe/steuerboard",
-      "entrypoint": "https://github.com/heimgewebe/steuerboard",
       "membership": "catalog-only"
     },
     {
