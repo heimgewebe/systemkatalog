@@ -43,7 +43,7 @@ AUTHORITY_OWNER_NODES = {
     "grabowski": "repo:grabowski",
     "repoground": "repo:repoground",
     "systemkatalog": "repo:systemkatalog",
-    "steuerboard": "repo:steuerboard",
+    "reposkop": "repo:reposkop",
     "leitstand": "repo:leitstand",
     "schauwerk": "repo:schauwerk",
     "chronik": "repo:chronik",

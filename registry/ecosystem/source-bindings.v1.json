@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "kind": "system_catalog_source_bindings",
   "catalogRepository": "heimgewebe/systemkatalog",
-  "observedAt": "2026-07-20T15:44:35Z",
+  "observedAt": "2026-07-26T07:42:00Z",
   "systems": [
     {
       "system": "actor:alexander",
@@ -119,20 +119,20 @@
       "uncertainty": 0.02
     },
     {
-      "system": "repo:steuerboard",
+      "system": "repo:reposkop",
       "source": {
-        "repository": "heimgewebe/steuerboard",
-        "commit": "28f9660f5e3237cf469826800e69ded85a9b40aa",
+        "repository": "heimgewebe/reposkop",
+        "commit": "27d84a64b8e6e64581c0e55194c1faaaa1bbc1c8",
         "locator": {
           "kind": "file",
           "path": "README.md",
-          "contentSha256": "c1d6c910499c3163cbf345a537029747509772750947ff954cb30d750d9eb43b"
+          "contentSha256": "2dcaeae33e16b8439fdda4172f9f5916c4e736b9c7365d2ae895c6a59032e36e"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-13T07:55:00+02:00",
+      "reviewedAt": "2026-07-26T07:42:00Z",
       "method": "repository_primary_document",
-      "uncertainty": 0.08
+      "uncertainty": 0.02
     },
     {
       "system": "repo:vibe-lab",
@@ -727,24 +727,24 @@
     },
     {
       "relation": {
-        "from": "repo:steuerboard",
+        "from": "repo:reposkop",
         "to": "repo:systemkatalog",
         "type": "observes"
       },
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "c2693d1a4524e7f1ea811730d090b4f7ec6b93d8",
+        "commit": "a69cc934bd3bde2c35a3bc1162ef1cece659c57a",
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/edges.json",
           "pointer": "/edges/6",
-          "contentSha256": "d392919edcc2496a12bbdd01a046ecbe47a1277361372b4b9bb4ba892464f544"
+          "contentSha256": "b2eb80c7b6ba9e7a9dda91a5643251ade574724648fb3876c3b611d12c873407"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-17T16:24:11Z",
+      "reviewedAt": "2026-07-26T07:42:00Z",
       "method": "catalog_curator_review",
-      "uncertainty": 0.18
+      "uncertainty": 0.02
     },
     {
       "relation": {
