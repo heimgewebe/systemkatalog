@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "kind": "system_catalog_organization_scope",
-  "updatedAt": "2026-07-20",
+  "updatedAt": "2026-07-26",
   "source": {
     "provider": "github",
     "organization": "heimgewebe",
@@ -206,6 +206,14 @@
       "reason": "verifiable, citable codebase context"
     },
     {
+      "name": "reposkop",
+      "repository": "heimgewebe/reposkop",
+      "visibility": "public",
+      "classification": "catalog",
+      "node": "repo:reposkop",
+      "reason": "read-only repo-state signal"
+    },
+    {
       "name": "schauwerk",
       "repository": "heimgewebe/schauwerk",
       "visibility": "public",
@@ -236,14 +244,6 @@
       "classification": "catalog",
       "node": "repo:snippet-engine-control",
       "reason": "engine-neutral contract, diagnostics and diffable export-planning layer for text-expansion systems"
-    },
-    {
-      "name": "steuerboard",
-      "repository": "heimgewebe/steuerboard",
-      "visibility": "public",
-      "classification": "catalog",
-      "node": "repo:steuerboard",
-      "reason": "read-only repo-state signal"
     },
     {
       "name": "systemkatalog",
