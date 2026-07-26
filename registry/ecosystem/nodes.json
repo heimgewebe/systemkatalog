@@ -3,7 +3,7 @@
   "kind": "system_catalog_inventory",
   "owner": "repo:systemkatalog",
   "catalogRole": "canonical_system_inventory",
-  "updatedAt": "2026-07-17",
+  "updatedAt": "2026-07-26",
   "nodes": [
     {
       "id": "actor:alexander",
@@ -17,6 +17,13 @@
       "truthOwnership": [],
       "entrypoints": {
         "authorityPolicy": "policy/system-catalog.v1.json"
+      },
+      "lifecycle": {
+        "state": "active",
+        "reviewedAt": "2026-07-26",
+        "evidenceRefs": [
+          "policy/system-catalog.v1.json"
+        ]
       }
     },
     {
@@ -32,6 +39,13 @@
       "truthOwnership": [],
       "entrypoints": {
         "artifact": "rendered/ecosystem-registry-map.mmd"
+      },
+      "lifecycle": {
+        "state": "active",
+        "reviewedAt": "2026-07-26",
+        "evidenceRefs": [
+          "policy/system-catalog.v1.json"
+        ]
       }
     },
     {
@@ -52,6 +66,13 @@
         "repository": "https://github.com/heimgewebe/systemkatalog",
         "readme": "README.md",
         "agentEntry": "AGENTS.md"
+      },
+      "lifecycle": {
+        "state": "active",
+        "reviewedAt": "2026-07-26",
+        "evidenceRefs": [
+          "registry/ecosystem/organization-scope.v1.json"
+        ]
       }
     },
     {
@@ -69,6 +90,13 @@
       ],
       "entrypoints": {
         "repository": "https://github.com/heimgewebe/bureau"
+      },
+      "lifecycle": {
+        "state": "active",
+        "reviewedAt": "2026-07-26",
+        "evidenceRefs": [
+          "registry/ecosystem/organization-scope.v1.json"
+        ]
       }
     },
     {
@@ -87,6 +115,13 @@
       ],
       "entrypoints": {
         "repository": "https://github.com/heimgewebe/grabowski"
+      },
+      "lifecycle": {
+        "state": "active",
+        "reviewedAt": "2026-07-26",
+        "evidenceRefs": [
+          "registry/ecosystem/organization-scope.v1.json"
+        ]
       }
     },
     {
@@ -102,6 +137,13 @@
       "entrypoints": {
         "repository": "https://github.com/heimgewebe/weltgewebe",
         "targetArchitecture": "https://github.com/heimgewebe/weltgewebe/blob/main/architecture/weltgewebe-os.md"
+      },
+      "lifecycle": {
+        "state": "active",
+        "reviewedAt": "2026-07-26",
+        "evidenceRefs": [
+          "registry/ecosystem/organization-scope.v1.json"
+        ]
       }
     },
     {
@@ -120,6 +162,13 @@
       "entrypoints": {
         "repository": "https://github.com/heimgewebe/repoground",
         "mcpServer": "https://github.com/heimgewebe/repoground/blob/main/docs/usage/repobrief-mcp-stdio.md"
+      },
+      "lifecycle": {
+        "state": "active",
+        "reviewedAt": "2026-07-26",
+        "evidenceRefs": [
+          "registry/ecosystem/organization-scope.v1.json"
+        ]
       }
     },
     {
@@ -137,6 +186,13 @@
       ],
       "entrypoints": {
         "repository": "https://github.com/heimgewebe/steuerboard"
+      },
+      "lifecycle": {
+        "state": "active",
+        "reviewedAt": "2026-07-26",
+        "evidenceRefs": [
+          "registry/ecosystem/organization-scope.v1.json"
+        ]
       }
     },
     {
@@ -156,6 +212,13 @@
       ],
       "entrypoints": {
         "repository": "https://github.com/heimgewebe/vibe-lab"
+      },
+      "lifecycle": {
+        "state": "active",
+        "reviewedAt": "2026-07-26",
+        "evidenceRefs": [
+          "registry/ecosystem/organization-scope.v1.json"
+        ]
       }
     },
     {
@@ -173,6 +236,13 @@
       ],
       "entrypoints": {
         "repository": "https://github.com/heimgewebe/chronik"
+      },
+      "lifecycle": {
+        "state": "active",
+        "reviewedAt": "2026-07-26",
+        "evidenceRefs": [
+          "registry/ecosystem/organization-scope.v1.json"
+        ]
       }
     },
     {
@@ -190,6 +260,13 @@
       ],
       "entrypoints": {
         "repository": "https://github.com/heimgewebe/schauwerk"
+      },
+      "lifecycle": {
+        "state": "active",
+        "reviewedAt": "2026-07-26",
+        "evidenceRefs": [
+          "registry/ecosystem/organization-scope.v1.json"
+        ]
       }
     },
     {
@@ -205,6 +282,13 @@
       "truthOwnership": [],
       "entrypoints": {
         "repository": "https://github.com/heimgewebe/infra"
+      },
+      "lifecycle": {
+        "state": "active",
+        "reviewedAt": "2026-07-26",
+        "evidenceRefs": [
+          "registry/ecosystem/organization-scope.v1.json"
+        ]
       }
     },
     {
@@ -220,6 +304,13 @@
       "truthOwnership": [],
       "entrypoints": {
         "repository": "https://github.com/heimgewebe/device-graph"
+      },
+      "lifecycle": {
+        "state": "active",
+        "reviewedAt": "2026-07-26",
+        "evidenceRefs": [
+          "registry/ecosystem/organization-scope.v1.json"
+        ]
       }
     },
     {
@@ -237,6 +328,13 @@
       ],
       "entrypoints": {
         "organization": "https://github.com/heimgewebe"
+      },
+      "lifecycle": {
+        "state": "active",
+        "reviewedAt": "2026-07-26",
+        "evidenceRefs": [
+          "policy/system-catalog.v1.json"
+        ]
       }
     },
     {
@@ -254,6 +352,13 @@
       ],
       "entrypoints": {
         "checks": "https://github.com/heimgewebe"
+      },
+      "lifecycle": {
+        "state": "active",
+        "reviewedAt": "2026-07-26",
+        "evidenceRefs": [
+          "policy/system-catalog.v1.json"
+        ]
       }
     },
     {
@@ -271,6 +376,13 @@
       ],
       "entrypoints": {
         "repository": "https://github.com/heimgewebe/leitstand"
+      },
+      "lifecycle": {
+        "state": "active",
+        "reviewedAt": "2026-07-26",
+        "evidenceRefs": [
+          "registry/ecosystem/organization-scope.v1.json"
+        ]
       }
     },
     {
@@ -286,6 +398,13 @@
       "truthOwnership": [],
       "entrypoints": {
         "repository": "https://github.com/heimgewebe/plexer"
+      },
+      "lifecycle": {
+        "state": "active",
+        "reviewedAt": "2026-07-26",
+        "evidenceRefs": [
+          "registry/ecosystem/organization-scope.v1.json"
+        ]
       }
     },
     {
@@ -305,6 +424,15 @@
       "truthOwnership": [],
       "entrypoints": {
         "repository": "https://github.com/heimgewebe/heimlern"
+      },
+      "lifecycle": {
+        "state": "archived",
+        "reviewedAt": "2026-07-26",
+        "evidenceRefs": [
+          "registry/ecosystem/organization-scope.v1.json",
+          "registry/ecosystem/fleet-coverage.v1.json",
+          "bureau:OPERATOR-ECOSYSTEM-REDUNDANCY-V1-T036"
+        ]
       }
     },
     {
@@ -322,6 +450,13 @@
       ],
       "entrypoints": {
         "repository": "https://github.com/heimgewebe/metarepo"
+      },
+      "lifecycle": {
+        "state": "active",
+        "reviewedAt": "2026-07-26",
+        "evidenceRefs": [
+          "registry/ecosystem/organization-scope.v1.json"
+        ]
       }
     },
     {
@@ -339,6 +474,13 @@
       ],
       "entrypoints": {
         "repository": "https://github.com/heimgewebe/wgx"
+      },
+      "lifecycle": {
+        "state": "active",
+        "reviewedAt": "2026-07-26",
+        "evidenceRefs": [
+          "registry/ecosystem/organization-scope.v1.json"
+        ]
       }
     },
     {
@@ -354,6 +496,13 @@
       "truthOwnership": [],
       "entrypoints": {
         "repository": "https://github.com/heimgewebe/contracts-mirror"
+      },
+      "lifecycle": {
+        "state": "active",
+        "reviewedAt": "2026-07-26",
+        "evidenceRefs": [
+          "registry/ecosystem/organization-scope.v1.json"
+        ]
       }
     },
     {
@@ -369,6 +518,13 @@
       "truthOwnership": [],
       "entrypoints": {
         "repository": "https://github.com/heimgewebe/hausKI"
+      },
+      "lifecycle": {
+        "state": "active",
+        "reviewedAt": "2026-07-26",
+        "evidenceRefs": [
+          "registry/ecosystem/organization-scope.v1.json"
+        ]
       }
     },
     {
@@ -384,6 +540,13 @@
       "truthOwnership": [],
       "entrypoints": {
         "repository": "https://github.com/heimgewebe/hausKI-audio"
+      },
+      "lifecycle": {
+        "state": "active",
+        "reviewedAt": "2026-07-26",
+        "evidenceRefs": [
+          "registry/ecosystem/organization-scope.v1.json"
+        ]
       }
     },
     {
@@ -399,6 +562,13 @@
       "truthOwnership": [],
       "entrypoints": {
         "repository": "https://github.com/heimgewebe/semantAH"
+      },
+      "lifecycle": {
+        "state": "active",
+        "reviewedAt": "2026-07-26",
+        "evidenceRefs": [
+          "registry/ecosystem/organization-scope.v1.json"
+        ]
       }
     },
     {
@@ -414,6 +584,13 @@
       "truthOwnership": [],
       "entrypoints": {
         "repository": "https://github.com/heimgewebe/aussensensor"
+      },
+      "lifecycle": {
+        "state": "active",
+        "reviewedAt": "2026-07-26",
+        "evidenceRefs": [
+          "registry/ecosystem/organization-scope.v1.json"
+        ]
       }
     },
     {
@@ -429,6 +606,13 @@
       "truthOwnership": [],
       "entrypoints": {
         "repository": "https://github.com/heimgewebe/mitschreiber"
+      },
+      "lifecycle": {
+        "state": "active",
+        "reviewedAt": "2026-07-26",
+        "evidenceRefs": [
+          "registry/ecosystem/organization-scope.v1.json"
+        ]
       }
     },
     {
@@ -444,6 +628,13 @@
       "truthOwnership": [],
       "entrypoints": {
         "repository": "https://github.com/heimgewebe/sichter"
+      },
+      "lifecycle": {
+        "state": "active",
+        "reviewedAt": "2026-07-26",
+        "evidenceRefs": [
+          "registry/ecosystem/organization-scope.v1.json"
+        ]
       }
     },
     {
@@ -459,6 +650,14 @@
       "truthOwnership": [],
       "entrypoints": {
         "repository": "https://github.com/heimgewebe/heimgeist"
+      },
+      "lifecycle": {
+        "state": "transition",
+        "reviewedAt": "2026-07-26",
+        "evidenceRefs": [
+          "docs/audits/repository-lifecycle-classification-2026-07-19.v1.json",
+          "bureau:OPERATOR-ECOSYSTEM-REDUNDANCY-V1-T034"
+        ]
       }
     },
     {
@@ -474,6 +673,13 @@
       "truthOwnership": [],
       "entrypoints": {
         "repository": "https://github.com/heimgewebe/heim-pc"
+      },
+      "lifecycle": {
+        "state": "active",
+        "reviewedAt": "2026-07-26",
+        "evidenceRefs": [
+          "registry/ecosystem/organization-scope.v1.json"
+        ]
       }
     },
     {
@@ -489,6 +695,13 @@
       "truthOwnership": [],
       "entrypoints": {
         "repository": "https://github.com/heimgewebe/vault-gewebe"
+      },
+      "lifecycle": {
+        "state": "active",
+        "reviewedAt": "2026-07-26",
+        "evidenceRefs": [
+          "registry/ecosystem/organization-scope.v1.json"
+        ]
       }
     },
     {
@@ -504,6 +717,13 @@
       "truthOwnership": [],
       "entrypoints": {
         "repository": "https://github.com/heimgewebe/commonworld"
+      },
+      "lifecycle": {
+        "state": "active",
+        "reviewedAt": "2026-07-26",
+        "evidenceRefs": [
+          "registry/ecosystem/organization-scope.v1.json"
+        ]
       }
     },
     {
@@ -522,13 +742,21 @@
         "repository": "https://github.com/heimgewebe/agent-control-surface",
         "readme": "https://github.com/heimgewebe/agent-control-surface/blob/main/README.md",
         "runbook": "https://github.com/heimgewebe/agent-control-surface/blob/main/RUNBOOK.md"
+      },
+      "lifecycle": {
+        "state": "transition",
+        "reviewedAt": "2026-07-26",
+        "evidenceRefs": [
+          "docs/audits/repository-lifecycle-classification-2026-07-19.v1.json",
+          "bureau:OPERATOR-ECOSYSTEM-REDUNDANCY-V1-T034"
+        ]
       }
     },
     {
       "id": "repo:heimserver",
       "name": "Heimserver",
       "type": "repository",
-      "purpose": "private operations and contract repository for the home-network service layer, edge gateway, DDNS and Weltgewebe infrastructure",
+      "purpose": "retired historical operations and contract reference for the former home-network service layer, edge gateway, DDNS and Weltgewebe infrastructure",
       "notResponsibleFor": [
         "runtime health claims without live checks",
         "task state",
@@ -541,6 +769,14 @@
         "readme": "https://github.com/heimgewebe/heimserver/blob/main/README.md",
         "agentEntry": "https://github.com/heimgewebe/heimserver/blob/main/AGENTS.md",
         "systemMap": "https://github.com/heimgewebe/heimserver/blob/main/SYSTEM_MAP.md"
+      },
+      "lifecycle": {
+        "state": "retired",
+        "reviewedAt": "2026-07-26",
+        "evidenceRefs": [
+          "https://github.com/heimgewebe/infra/blob/e1245b502393edcdb42d0f20317c8a5a2c2defbe/INFRA_CONSTITUTION.md",
+          "bureau:OPERATOR-ECOSYSTEM-REDUNDANCY-V1-T032"
+        ]
       }
     },
     {
@@ -559,6 +795,14 @@
         "repository": "https://github.com/heimgewebe/leitwerk",
         "readme": "https://github.com/heimgewebe/leitwerk/blob/main/README.md",
         "roleBoundary": "https://github.com/heimgewebe/leitwerk/blob/main/docs/leitwerk.md"
+      },
+      "lifecycle": {
+        "state": "reference",
+        "reviewedAt": "2026-07-26",
+        "evidenceRefs": [
+          "docs/audits/repository-lifecycle-classification-2026-07-19.v1.json",
+          "bureau:OPERATOR-ECOSYSTEM-REDUNDANCY-V1-T037"
+        ]
       }
     },
     {
@@ -577,6 +821,13 @@
         "repository": "https://github.com/heimgewebe/obsidian-bridge",
         "readme": "https://github.com/heimgewebe/obsidian-bridge/blob/main/README.md",
         "contracts": "https://github.com/heimgewebe/obsidian-bridge/tree/main/contracts"
+      },
+      "lifecycle": {
+        "state": "active",
+        "reviewedAt": "2026-07-26",
+        "evidenceRefs": [
+          "registry/ecosystem/organization-scope.v1.json"
+        ]
       }
     },
     {
@@ -595,6 +846,13 @@
         "repository": "https://github.com/heimgewebe/snippet-engine-control",
         "readme": "https://github.com/heimgewebe/snippet-engine-control/blob/main/README.md",
         "contracts": "https://github.com/heimgewebe/snippet-engine-control/tree/main/contracts"
+      },
+      "lifecycle": {
+        "state": "active",
+        "reviewedAt": "2026-07-26",
+        "evidenceRefs": [
+          "registry/ecosystem/organization-scope.v1.json"
+        ]
       }
     },
     {
@@ -623,6 +881,13 @@
         "roleBoundary": "https://github.com/heimgewebe/konvergenzregelkreis/blob/main/system/regelkreis-role.v1.json",
         "protocol": "https://github.com/heimgewebe/konvergenzregelkreis/tree/main/protocol",
         "profiles": "https://github.com/heimgewebe/konvergenzregelkreis/tree/main/profiles"
+      },
+      "lifecycle": {
+        "state": "active",
+        "reviewedAt": "2026-07-26",
+        "evidenceRefs": [
+          "registry/ecosystem/organization-scope.v1.json"
+        ]
       }
     }
   ]

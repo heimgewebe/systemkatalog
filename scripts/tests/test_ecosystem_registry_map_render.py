@@ -35,6 +35,11 @@ def node(
         "name": name,
         "type": node_type,
         "purpose": purpose,
+        "lifecycle": {
+            "state": "active",
+            "reviewedAt": "2026-07-26",
+            "evidenceRefs": ["test:fixture"],
+        },
         "notResponsibleFor": ["runtime state"],
         "truthOwnership": [],
         "entrypoints": {"repository": "https://example.invalid/system"},
@@ -55,6 +60,25 @@ class EcosystemRegistryMapTests(unittest.TestCase):
         self.assertIn("repo_systemkatalog -->|owns / stable| artifact_ecosystem_map", rendered)
         self.assertIn("class repo_systemkatalog,artifact_ecosystem_map mapAnchor", rendered)
         self.assertNotIn("heimgewebe_katalog", rendered)
+
+    def test_render_exposes_lifecycle_without_changing_edge_stability(self) -> None:
+        source = node("repo:systemkatalog")
+        target = node("repo:old", name="Old")
+        target["lifecycle"] = {
+            "state": "archived",
+            "reviewedAt": "2026-07-26",
+            "evidenceRefs": ["test:archive"],
+        }
+        rendered = render_mermaid([source, target], [edge("repo:systemkatalog", "repo:old")])
+        self.assertIn("lifecycle: archived · reviewed: 2026-07-26", rendered)
+        self.assertIn("class repo_old lifecycleArchived", rendered)
+        self.assertIn("repo_systemkatalog -->|owns / stable| repo_old", rendered)
+
+    def test_missing_lifecycle_fails_closed(self) -> None:
+        invalid = node("repo:systemkatalog")
+        del invalid["lifecycle"]
+        with self.assertRaisesRegex(RegistryMapError, "fields mismatch"):
+            render_mermaid([invalid], [])
 
     def test_unknown_edge_endpoint_fails_closed(self) -> None:
         with self.assertRaisesRegex(RegistryMapError, "unknown to node"):

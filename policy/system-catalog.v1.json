@@ -108,6 +108,7 @@
       "name",
       "type",
       "purpose",
+      "lifecycle",
       "notResponsibleFor",
       "truthOwnership",
       "entrypoints"
@@ -164,5 +165,22 @@
   },
   "publishedArtifactManifest": "rendered/ecosystem-map-artifact-manifest.json",
   "canonicalResilienceRegistry": "registry/ecosystem/resilience.v1.json",
-  "resilienceSchema": "catalog/resilience.schema.v1.json"
+  "resilienceSchema": "catalog/resilience.schema.v1.json",
+  "lifecycleBoundary": {
+    "states": [
+      "active",
+      "transition",
+      "reference",
+      "archived",
+      "retired"
+    ],
+    "meaning": "stable catalog role classification, not a live operational status",
+    "doesNotEstablish": [
+      "runtime health",
+      "process activity",
+      "repository archive authority",
+      "task state",
+      "merge readiness"
+    ]
+  }
 }

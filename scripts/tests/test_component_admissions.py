@@ -85,6 +85,11 @@ class ComponentAdmissionTests(unittest.TestCase):
             "name": "New",
             "type": kind,
             "purpose": purpose,
+            "lifecycle": {
+                "state": "active",
+                "reviewedAt": "2026-07-26",
+                "evidenceRefs": ["test:fixture"],
+            },
             "notResponsibleFor": [],
             "truthOwnership": [],
             "entrypoints": {"repository": "https://example.invalid/new"},

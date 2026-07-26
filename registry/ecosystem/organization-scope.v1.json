@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
   "kind": "system_catalog_organization_scope",
-  "updatedAt": "2026-07-20",
+  "updatedAt": "2026-07-26",
   "source": {
     "provider": "github",
     "organization": "heimgewebe",
-    "observedAt": "2026-07-20T15:44:35Z",
+    "observedAt": "2026-07-26T08:20:45Z",
     "selection": {
       "archived": "include",
       "fork": false
@@ -131,7 +131,7 @@
       "visibility": "private",
       "classification": "catalog",
       "node": "repo:heimserver",
-      "reason": "private operations and contract repository for the home-network service layer, edge gateway, DDNS and Weltgewebe infrastructure"
+      "reason": "retired infrastructure repository retained as historical contract reference; no active device, service, exposure or authority"
     },
     {
       "name": "infra",

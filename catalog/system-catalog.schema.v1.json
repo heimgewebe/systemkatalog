@@ -30,6 +30,7 @@
           "name",
           "type",
           "purpose",
+          "lifecycle",
           "notResponsibleFor",
           "truthOwnership",
           "entrypoints"
@@ -78,6 +79,39 @@
               "type": "string",
               "minLength": 1
             }
+          },
+          "lifecycle": {
+            "type": "object",
+            "required": [
+              "state",
+              "reviewedAt",
+              "evidenceRefs"
+            ],
+            "properties": {
+              "state": {
+                "enum": [
+                  "active",
+                  "transition",
+                  "reference",
+                  "archived",
+                  "retired"
+                ]
+              },
+              "reviewedAt": {
+                "type": "string",
+                "format": "date"
+              },
+              "evidenceRefs": {
+                "type": "array",
+                "minItems": 1,
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            },
+            "additionalProperties": false
           }
         },
         "additionalProperties": false
