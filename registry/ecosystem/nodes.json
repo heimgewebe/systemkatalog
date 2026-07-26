@@ -172,20 +172,21 @@
       }
     },
     {
-      "id": "repo:steuerboard",
-      "name": "Steuerboard",
+      "id": "repo:reposkop",
+      "name": "Reposkop",
       "type": "repository",
-      "purpose": "read-only repo-state signal",
+      "purpose": "target-bound, deterministic read-only repository and checkout coherence projection",
       "notResponsibleFor": [
         "task authorization",
         "merge approval",
-        "runtime mutation"
+        "runtime mutation",
+        "effect authorization"
       ],
       "truthOwnership": [
         "repository_observation_readiness"
       ],
       "entrypoints": {
-        "repository": "https://github.com/heimgewebe/steuerboard"
+        "repository": "https://github.com/heimgewebe/reposkop"
       },
       "lifecycle": {
         "state": "active",

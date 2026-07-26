@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "kind": "system_catalog_authority_matrix",
-  "updatedAt": "2026-07-17T18:19:35+02:00",
+  "updatedAt": "2026-07-26T09:38:30+02:00",
   "canonicalMap": "rendered/ecosystem-registry-map.mmd",
   "registryInputs": [
     "registry/ecosystem/nodes.json",
@@ -42,7 +42,7 @@
     },
     {
       "domain": "repository_observation_readiness",
-      "owner": "steuerboard",
+      "owner": "reposkop",
       "projections": [
         "grabowski",
         "leitstand"

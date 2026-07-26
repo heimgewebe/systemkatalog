@@ -33,11 +33,11 @@ flowchart TD
         repo_obsidian_bridge["Obsidian Bridge<br/>id: repo:obsidian-bridge<br/>repository<br/>lifecycle: active · reviewed: 2026-07-26<br/>deterministic CLI and artifact bridge for using Obsidian as a projection and observatory interface"]
         repo_plexer["Plexer<br/>id: repo:plexer<br/>repository<br/>lifecycle: active · reviewed: 2026-07-26<br/>bounded event delivery and queueing gateway"]
         repo_repoground["RepoGround<br/>id: repo:repoground<br/>repository<br/>lifecycle: active · reviewed: 2026-07-26<br/>verifiable, citable codebase context for humans and AI systems"]
+        repo_reposkop["Reposkop<br/>id: repo:reposkop<br/>repository<br/>lifecycle: active · reviewed: 2026-07-26<br/>target-bound, deterministic read-only repository and checkout coherence projection"]
         repo_schauwerk["Schauwerk<br/>id: repo:schauwerk<br/>repository<br/>lifecycle: active · reviewed: 2026-07-26<br/>visual surface and projection layer"]
         repo_semantAH["semantAH<br/>id: repo:semantAH<br/>repository<br/>lifecycle: active · reviewed: 2026-07-26<br/>Semantic index, embeddings and knowledge-graph pipeline"]
         repo_sichter["Sichter<br/>id: repo:sichter<br/>repository<br/>lifecycle: active · reviewed: 2026-07-26<br/>Code-review and pull-request automation prototype"]
         repo_snippet_engine_control["Snippet Engine Control<br/>id: repo:snippet-engine-control<br/>repository<br/>lifecycle: active · reviewed: 2026-07-26<br/>engine-neutral contract, diagnostics and diffable export-planning layer for text-expansion systems"]
-        repo_steuerboard["Steuerboard<br/>id: repo:steuerboard<br/>repository<br/>lifecycle: active · reviewed: 2026-07-26<br/>read-only repo-state signal"]
         repo_systemkatalog["Systemkatalog<br/>id: repo:systemkatalog<br/>repository<br/>lifecycle: active · reviewed: 2026-07-26<br/>app-independent catalog for system purposes, truth ownership, stable relations and entrypoints"]
         repo_vault_gewebe["Vault Gewebe<br/>id: repo:vault-gewebe<br/>repository<br/>lifecycle: active · reviewed: 2026-07-26<br/>Versioned shared knowledge vault and design source material"]
         repo_vibe_lab["Vibe-Lab<br/>id: repo:vibe-lab<br/>repository<br/>lifecycle: active · reviewed: 2026-07-26<br/>bounded prospective experiments, evidence review and proposal-ready learning candidates"]
@@ -84,11 +84,11 @@ flowchart TD
     repo_obsidian_bridge -->|provides / bounded| repo_vault_gewebe
     repo_plexer -->|delivers_to / stable| repo_chronik
     repo_repoground -->|provides / stable| repo_systemkatalog
+    repo_reposkop -->|observes / stable| repo_systemkatalog
     repo_schauwerk -->|renders / stable| artifact_ecosystem_map
     repo_semantAH -->|provides / stable| repo_hausKI
     repo_sichter -->|operates_on / bounded| service_github
     repo_snippet_engine_control -->|provides / bounded| repo_heim_pc
-    repo_steuerboard -->|observes / stable| repo_systemkatalog
     repo_systemkatalog -->|owns / stable| artifact_ecosystem_map
     repo_systemkatalog -->|provides / stable| repo_leitstand
     repo_vault_gewebe -->|scope_boundary / related| repo_systemkatalog
@@ -102,7 +102,7 @@ flowchart TD
 
     %% Lifecycle is stable catalog semantics, not runtime status.
     classDef lifecycleActive stroke-width:1.5px;
-    class actor_alexander,artifact_ecosystem_map,repo_systemkatalog,repo_bureau,repo_grabowski,repo_weltgewebe,repo_repoground,repo_steuerboard,repo_vibe_lab,repo_chronik,repo_schauwerk,repo_infra,repo_device_graph,service_github,service_ci,repo_leitstand,repo_plexer,repo_metarepo,repo_wgx,repo_contracts_mirror,repo_hausKI,repo_hausKI_audio,repo_semantAH,repo_aussensensor,repo_mitschreiber,repo_sichter,repo_heim_pc,repo_vault_gewebe,repo_commonworld,repo_obsidian_bridge,repo_snippet_engine_control,repo_konvergenzregelkreis lifecycleActive;
+    class actor_alexander,artifact_ecosystem_map,repo_systemkatalog,repo_bureau,repo_grabowski,repo_weltgewebe,repo_repoground,repo_reposkop,repo_vibe_lab,repo_chronik,repo_schauwerk,repo_infra,repo_device_graph,service_github,service_ci,repo_leitstand,repo_plexer,repo_metarepo,repo_wgx,repo_contracts_mirror,repo_hausKI,repo_hausKI_audio,repo_semantAH,repo_aussensensor,repo_mitschreiber,repo_sichter,repo_heim_pc,repo_vault_gewebe,repo_commonworld,repo_obsidian_bridge,repo_snippet_engine_control,repo_konvergenzregelkreis lifecycleActive;
     classDef lifecycleTransition stroke:#fbbf24,stroke-width:3px,stroke-dasharray:6 3;
     class repo_heimgeist,repo_agent_control_surface lifecycleTransition;
     classDef lifecycleReference stroke:#a78bfa,stroke-width:2px,stroke-dasharray:3 3;

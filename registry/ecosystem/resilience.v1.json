@@ -3,7 +3,7 @@
   "kind": "system_catalog_resilience",
   "owner": "repo:systemkatalog",
   "catalogRole": "canonical_stable_resilience_semantics",
-  "updatedAt": "2026-07-18",
+  "updatedAt": "2026-07-26",
   "defaultCriticality": "unknown",
   "criticalityClasses": [
     "foundational",
@@ -333,7 +333,7 @@
       "uncertainty": 0.18
     },
     {
-      "system": "repo:steuerboard",
+      "system": "repo:reposkop",
       "criticality": "unknown",
       "failureDomains": [
         "identity:github",
