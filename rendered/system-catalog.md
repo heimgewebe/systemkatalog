@@ -13,6 +13,7 @@ Der Katalog beantwortet, welche Systeme existieren, welchem Zweck sie dienen, we
 | Ecosystem Map v0 | artifact | `active` · geprüft 2026-07-26 | `optional` | — | machine-readable overview graph and rendered orientation map | claim truth<br>runtime health<br>merge readiness | — | `artifact`: [rendered/ecosystem-registry-map.mmd](../rendered/ecosystem-registry-map.mmd) |
 | Alexander | human | `active` · geprüft 2026-07-26 | `foundational` | human:alexander | meaning, approval and abort authority outside automation | automated execution<br>machine-derived repository or runtime state | — | `authorityPolicy`: [policy/system-catalog.v1.json](../policy/system-catalog.v1.json) |
 | Agent Control Surface | repository | `transition` · geprüft 2026-07-26 | `unknown` | identity:github<br>provider:github | local manual control surface for Jules sessions and guarded step-by-step Git workflows | autonomous task dispatch<br>task priority<br>merge authorization<br>remote access security | — | `readme`: [https://github.com/heimgewebe/agent-control-surface/blob/main/README.md](https://github.com/heimgewebe/agent-control-surface/blob/main/README.md)<br>`repository`: [https://github.com/heimgewebe/agent-control-surface](https://github.com/heimgewebe/agent-control-surface)<br>`runbook`: [https://github.com/heimgewebe/agent-control-surface/blob/main/RUNBOOK.md](https://github.com/heimgewebe/agent-control-surface/blob/main/RUNBOOK.md) |
+| audio | repository | `active` · geprüft 2026-07-28 | `supporting` | host:heim-pc<br>identity:github<br>provider:github | Canonical Heim-PC audio configuration, recording, playback, instruments and experimental music systems | live hardware presence without current observation<br>runtime audio health without live checks<br>task authority<br>merge approval | — | `readme`: [https://github.com/heimgewebe/audio/blob/58935598706e24438c95ae092d802709b0ae2203/README.md](https://github.com/heimgewebe/audio/blob/58935598706e24438c95ae092d802709b0ae2203/README.md)<br>`repository`: [https://github.com/heimgewebe/audio](https://github.com/heimgewebe/audio) |
 | Außensensor | repository | `active` · geprüft 2026-07-26 | `unknown` | identity:github<br>provider:github | Curated external signals and event feeds for Chronik | task authority<br>canonical event history<br>merge approval | — | `repository`: [https://github.com/heimgewebe/aussensensor](https://github.com/heimgewebe/aussensensor) |
 | Bureau | repository | `active` · geprüft 2026-07-26 | `foundational` | host:heim-pc<br>data:bureau-state<br>identity:github<br>credentials:operator<br>provider:backup-storage | task cadence, delegation, run reporting | runtime execution<br>Git and review truth<br>ecosystem semantics | tasks_claims_completion | `repository`: [https://github.com/heimgewebe/bureau](https://github.com/heimgewebe/bureau) |
 | Chronik | repository | `active` · geprüft 2026-07-26 | `supporting` | host:heim-pc<br>data:chronik-store<br>provider:backup-storage | append-only event ledger and historical evidence axis | task state<br>policy decisions<br>runtime mutation | append_only_history | `repository`: [https://github.com/heimgewebe/chronik](https://github.com/heimgewebe/chronik) |
@@ -21,7 +22,7 @@ Der Katalog beantwortet, welche Systeme existieren, welchem Zweck sie dienen, we
 | Device Graph | repository | `active` · geprüft 2026-07-26 | `unknown` | identity:github<br>provider:github | infrastructure device graph; adjacent but not ecosystem-governance canon | ecosystem governance canon<br>task state<br>merge authority | — | `repository`: [https://github.com/heimgewebe/device-graph](https://github.com/heimgewebe/device-graph) |
 | Grabowski | repository | `active` · geprüft 2026-07-26 | `foundational` | host:heim-pc<br>control:grabowski-runtime<br>credentials:operator<br>network:public-internet<br>provider:backup-storage<br>data:grabowski-outbox | operator execution, repo work, review gates | task priority<br>ecosystem semantics<br>primary Git or runtime truth | agent_routing<br>local_fleet_execution | `repository`: [https://github.com/heimgewebe/grabowski](https://github.com/heimgewebe/grabowski) |
 | HausKI | repository | `active` · geprüft 2026-07-26 | `unknown` | identity:github<br>provider:github | Local offline-first AI orchestration and policy-controlled memory | fleet task authority<br>ecosystem catalog semantics<br>merge approval | — | `repository`: [https://github.com/heimgewebe/hausKI](https://github.com/heimgewebe/hausKI) |
-| HausKI Audio | repository | `active` · geprüft 2026-07-26 | `unknown` | identity:github<br>provider:github | Local audio playback, recording and automation | ecosystem catalog semantics<br>task authority<br>merge approval | — | `repository`: [https://github.com/heimgewebe/hausKI-audio](https://github.com/heimgewebe/hausKI-audio) |
+| HausKI Audio | repository | `retired` · geprüft 2026-07-28 | `optional` | identity:github<br>provider:github | Retired historical donor and provenance reference for the canonical heimgewebe/audio repository | current audio product truth<br>runtime audio configuration<br>new maintenance work<br>task authority<br>merge approval | — | `repository`: [https://github.com/heimgewebe/hausKI-audio](https://github.com/heimgewebe/hausKI-audio) |
 | heim-pc | repository | `active` · geprüft 2026-07-26 | `unknown` | identity:github<br>provider:github | Versioned local operator entry and host orientation | fleet task authority<br>service runtime truth<br>ecosystem semantics | — | `repository`: [https://github.com/heimgewebe/heim-pc](https://github.com/heimgewebe/heim-pc) |
 | Heimgeist | repository | `transition` · geprüft 2026-07-26 | `unknown` | identity:github<br>provider:github | System self-reflection and meta-agent experimentation | production authority<br>task state<br>merge approval | — | `repository`: [https://github.com/heimgewebe/heimgeist](https://github.com/heimgewebe/heimgeist) |
 | heimlern | repository | `archived` · geprüft 2026-07-26 | `optional` | provider:github | archived historical reference for the former offline operator-learning implementation | active learning proposals<br>runtime operation<br>automatic policy application<br>task dispatch<br>merge authorization<br>active contract authority<br>new feature development without a separately registered experiment | — | `repository`: [https://github.com/heimgewebe/heimlern](https://github.com/heimgewebe/heimlern) |
@@ -55,6 +56,7 @@ Metarepo ist Primärquelle für die Fleet-Mitgliedschaft. Der Systemkatalog blei
 | System | Repository | Einordnung | Einstieg |
 |---|---|---|---|
 | Agent Control Surface | `heimgewebe/agent-control-surface` | `catalog-only` | [https://github.com/heimgewebe/agent-control-surface](https://github.com/heimgewebe/agent-control-surface) |
+| audio | `heimgewebe/audio` | `fleet` | [https://github.com/heimgewebe/audio](https://github.com/heimgewebe/audio) |
 | Außensensor | `heimgewebe/aussensensor` | `fleet` | [https://github.com/heimgewebe/aussensensor](https://github.com/heimgewebe/aussensensor) |
 | Bureau | `heimgewebe/bureau` | `catalog-only` | [https://github.com/heimgewebe/bureau](https://github.com/heimgewebe/bureau) |
 | Chronik | `heimgewebe/chronik` | `fleet` | [https://github.com/heimgewebe/chronik](https://github.com/heimgewebe/chronik) |
@@ -63,7 +65,7 @@ Metarepo ist Primärquelle für die Fleet-Mitgliedschaft. Der Systemkatalog blei
 | Device Graph | `heimgewebe/device-graph` | `catalog-only` | [https://github.com/heimgewebe/device-graph](https://github.com/heimgewebe/device-graph) |
 | Grabowski | `heimgewebe/grabowski` | `catalog-only` | [https://github.com/heimgewebe/grabowski](https://github.com/heimgewebe/grabowski) |
 | HausKI | `heimgewebe/hausKI` | `fleet` | [https://github.com/heimgewebe/hausKI](https://github.com/heimgewebe/hausKI) |
-| HausKI Audio | `heimgewebe/hausKI-audio` | `fleet` | [https://github.com/heimgewebe/hausKI-audio](https://github.com/heimgewebe/hausKI-audio) |
+| HausKI Audio | `heimgewebe/hausKI-audio` | `catalog-only` | [https://github.com/heimgewebe/hausKI-audio](https://github.com/heimgewebe/hausKI-audio) |
 | heim-pc | `heimgewebe/heim-pc` | `fleet` | [https://github.com/heimgewebe/heim-pc](https://github.com/heimgewebe/heim-pc) |
 | Heimgeist | `heimgewebe/heimgeist` | `fleet` | [https://github.com/heimgewebe/heimgeist](https://github.com/heimgewebe/heimgeist) |
 | heimlern | `heimgewebe/heimlern` | `archived-reference` | [https://github.com/heimgewebe/heimlern](https://github.com/heimgewebe/heimlern) |
@@ -90,12 +92,13 @@ Metarepo ist Primärquelle für die Fleet-Mitgliedschaft. Der Systemkatalog blei
 
 Explizit ohne aktive Fleet-Mitgliedschaft:
 
+- `hausKI-audio` — Historical donor repository explicitly marked status: related and fleet: false in the bound Metarepo source; current audio product truth belongs to heimgewebe/audio.
 - `heimlern` — Archived historical reference explicitly marked status: archived-reference and fleet: false in the bound Metarepo source.
 - `vault-privat` — Private related repository explicitly marked fleet: false in Metarepo.
 
 ## Organisationsumfang
 
-Der GitHub-Snapshot umfasst 35 nicht geforkte Repositories. Davon sind 32 aktive Katalogsysteme, 1 archivierte Referenz und 2 begründet ausgeschlossen.
+Der GitHub-Snapshot umfasst 36 nicht geforkte Repositories. Davon sind 33 aktive Katalogsysteme, 1 archivierte Referenz und 2 begründet ausgeschlossen.
 
 Archivierte Referenzen ohne aktive Betriebsautorität:
 
@@ -149,7 +152,7 @@ Nur Beziehungen der Klassen `stable`, `bounded` oder `related` werden angezeigt.
 | Device Graph | `scope_boundary` | Ecosystem Map v0 | `related` | `—` | `—` | `—` | `—` | Device Graph may describe infrastructure devices; it is not the ecosystem-governance map canon. |
 | Grabowski | `emits_to` | Chronik | `bounded` | `asynchronous-durable` | `queue` | `from-to` | `chronik-durable-outbox` | Grabowski may write task-local agent-run events through an explicit Chronik outbox path. |
 | Grabowski | `operates_on` | GitHub | `stable` | `synchronous-blocking` | `block` | `to-from` | `—` | PRs, branches, issues and reviews remain GitHub-owned state. |
-| HausKI Audio | `provides` | HausKI | `related` | `—` | `—` | `—` | `—` | HausKI Audio is the bounded audio and automation surface adjacent to the local AI stack. |
+| HausKI Audio | `provides` | audio | `related` | `—` | `—` | `—` | `—` | HausKI Audio is retained only as a reviewed historical donor and provenance source for the canonical audio repository. |
 | heim-pc | `observes` | Ecosystem Map v0 | `stable` | `—` | `—` | `—` | `—` | The local operator entry points to the canonical ecosystem map without duplicating it. |
 | Heimgeist | `observes` | Ecosystem Map v0 | `related` | `—` | `—` | `—` | `—` | Heimgeist may inspect catalog projections for reflection but does not own catalog truth. |
 | Heimserver | `scope_boundary` | Infra | `related` | `—` | `—` | `—` | `—` | Heimserver retains the private service-layer and edge contracts; Infra remains the broader host and network runbook surface. |

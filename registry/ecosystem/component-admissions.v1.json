@@ -3,7 +3,38 @@
   "kind": "system_catalog_component_admissions",
   "owner": "repo:systemkatalog",
   "policy": "policy/component-admission.v1.json",
-  "admissions": [],
+  "admissions": [
+    {
+      "componentId": "repo:audio",
+      "componentKind": "repository",
+      "admissionClass": "replace",
+      "purpose": "Canonical Heim-PC audio configuration, recording, playback, instruments and experimental music systems",
+      "consumers": [
+        "Alex",
+        "ChatGPT through Grabowski",
+        "Systemkatalog and Leitstand readers"
+      ],
+      "truthAuthority": "Systemkatalog owns stable product identity; heimgewebe/audio owns repository content and live audio tools own runtime observations.",
+      "operatingDependencies": [
+        "host:heim-pc",
+        "provider:github",
+        "physically connected audio and MIDI devices for live operation"
+      ],
+      "maintenanceBurden": "Keep product identity, repository entrypoints and donor boundaries aligned when audio or its hardware contracts change.",
+      "reviewOrRetirementPath": "Review when the canonical audio repository changes; retire only after a replacement product and preserved donor provenance are evidenced.",
+      "source": {
+        "kind": "repository_primary_document",
+        "ref": "https://github.com/heimgewebe/audio/blob/58935598706e24438c95ae092d802709b0ae2203/README.md"
+      },
+      "doesNotEstablish": [
+        "live hardware presence",
+        "runtime readiness",
+        "low-latency performance",
+        "task priority",
+        "merge authority"
+      ]
+    }
+  ],
   "doesNotEstablish": [
     "runtime status",
     "task or queue truth",

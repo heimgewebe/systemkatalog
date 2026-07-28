@@ -25,14 +25,14 @@ class SystemCatalogTests(unittest.TestCase):
     def test_repository_catalog_is_valid_and_roomless(self) -> None:
         result = validate(ROOT)
         self.assertEqual(result["status"], "valid")
-        self.assertEqual(result["registrySystems"], 37)
+        self.assertEqual(result["registrySystems"], 38)
         self.assertEqual(result["registryRelations"], 45)
         self.assertEqual(result["authorityDomains"], 17)
-        self.assertEqual(result["catalogRepositories"], 33)
+        self.assertEqual(result["catalogRepositories"], 34)
         self.assertEqual(result["fleetRepositories"], 18)
-        self.assertEqual(result["fleetExclusions"], 2)
-        self.assertEqual(result["organizationRepositories"], 35)
-        self.assertEqual(result["organizationCatalogRepositories"], 32)
+        self.assertEqual(result["fleetExclusions"], 3)
+        self.assertEqual(result["organizationRepositories"], 36)
+        self.assertEqual(result["organizationCatalogRepositories"], 33)
         self.assertEqual(result["organizationArchivedReferences"], 1)
         self.assertEqual(result["organizationExclusions"], 2)
         self.assertEqual(result["activeLegacyRooms"], 0)
@@ -79,19 +79,21 @@ class SystemCatalogTests(unittest.TestCase):
             "id", "name", "type", "purpose", "lifecycle",
             "notResponsibleFor", "truthOwnership", "entrypoints",
         }
-        self.assertEqual(len(data["nodes"]), 37)
+        self.assertEqual(len(data["nodes"]), 38)
         for node in data["nodes"]:
             self.assertEqual(set(node), required)
             self.assertTrue(node["notResponsibleFor"])
             self.assertTrue(node["entrypoints"])
             self.assertIn(node["lifecycle"]["state"], {"active", "transition", "reference", "archived", "retired"})
-            self.assertEqual(node["lifecycle"]["reviewedAt"], "2026-07-26")
+            self.assertIn(node["lifecycle"]["reviewedAt"], {"2026-07-26", "2026-07-28"})
             self.assertTrue(node["lifecycle"]["evidenceRefs"])
         self.assertIn("Nicht zuständig für", (ROOT / "rendered/system-catalog.md").read_text(encoding="utf-8"))
         rendered = (ROOT / "rendered/system-catalog.md").read_text(encoding="utf-8")
         self.assertIn("Wahrheitsbesitz", rendered)
         self.assertIn("Lebenszyklus", rendered)
         self.assertIn("`retired` · geprüft 2026-07-26", rendered)
+        self.assertIn("HausKI Audio", rendered)
+        self.assertIn("`retired` · geprüft 2026-07-28", rendered)
 
     def test_missing_canonical_system_field_fails_closed(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

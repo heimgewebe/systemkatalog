@@ -31,14 +31,14 @@ class FleetCoverageTests(unittest.TestCase):
 
     def test_repository_coverage_is_complete(self) -> None:
         coverage = validate_coverage(ROOT, self._repository_nodes())
-        self.assertEqual(len(coverage["repositories"]), 33)
+        self.assertEqual(len(coverage["repositories"]), 34)
         self.assertEqual(
             coverage["membershipAuthority"],
             {
                 "repository": "heimgewebe/metarepo",
-                "commit": "b215b418a038ff535f07b7888fd6adeb3f4de51c",
+                "commit": "64d9193621af6e43ac2260023e7c8429c96e95b2",
                 "path": "fleet/repos.yml",
-                "contentSha256": "ea9f6285be9556105ff0ed208766946f3c951a8392d59b3066bb4d8c9f476bc8",
+                "contentSha256": "37e966516be8a6eef4b0e38a19f380c388b9795e61e4eb6a7354ab7cfbcd7e11",
                 "scope": "fleet_membership_only",
             },
         )
@@ -51,7 +51,7 @@ class FleetCoverageTests(unittest.TestCase):
         )
         self.assertEqual(
             {item["name"] for item in coverage["sourceExclusions"]},
-            {"heimlern", "vault-privat"},
+            {"hausKI-audio", "heimlern", "vault-privat"},
         )
         self.assertEqual(
             next(
@@ -122,7 +122,7 @@ repos:
                 for item in coverage["repositories"]
                 if item["membership"] in {"fleet", "related"}
             },
-            {"heimlern": "excluded", "vault-privat": "excluded"},
+            {"hausKI-audio": "excluded", "heimlern": "excluded", "vault-privat": "excluded"},
         )
         with self.assertRaisesRegex(FleetCoverageError, "archived-reference drift"):
             compare_with_source(coverage, source)
@@ -180,7 +180,7 @@ repos:
             }
             for item in coverage["repositories"]
         ]
-        self.assertEqual(validate_github_inventory(coverage, inventory), 33)
+        self.assertEqual(validate_github_inventory(coverage, inventory), 34)
 
     def test_missing_github_repository_fails_closed(self) -> None:
         coverage = load_coverage(ROOT)

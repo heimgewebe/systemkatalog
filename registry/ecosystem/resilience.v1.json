@@ -3,7 +3,7 @@
   "kind": "system_catalog_resilience",
   "owner": "repo:systemkatalog",
   "catalogRole": "canonical_stable_resilience_semantics",
-  "updatedAt": "2026-07-26",
+  "updatedAt": "2026-07-28",
   "defaultCriticality": "unknown",
   "criticalityClasses": [
     "foundational",
@@ -557,18 +557,41 @@
       "uncertainty": 1.0
     },
     {
+      "system": "repo:audio",
+      "criticality": "supporting",
+      "failureDomains": [
+        "host:heim-pc",
+        "identity:github",
+        "provider:github"
+      ],
+      "recoveryModeRefs": [],
+      "acceptedSinglePathRisks": [
+        "live audio depends on the Heim-PC and physically connected devices"
+      ],
+      "evidence": [
+        "registry/ecosystem/nodes.json",
+        "registry/ecosystem/source-bindings.v1.json",
+        "registry/ecosystem/component-admissions.v1.json"
+      ],
+      "uncertainty": 0.08
+    },
+    {
       "system": "repo:hausKI-audio",
-      "criticality": "unknown",
+      "criticality": "optional",
       "failureDomains": [
         "identity:github",
         "provider:github"
       ],
       "recoveryModeRefs": [],
-      "acceptedSinglePathRisks": [],
-      "evidence": [
-        "docs/audits/heimgewebe-resilience-gap-matrix-v1.md"
+      "acceptedSinglePathRisks": [
+        "historical donor availability is not required for current audio operation"
       ],
-      "uncertainty": 1.0
+      "evidence": [
+        "registry/ecosystem/nodes.json",
+        "registry/ecosystem/source-bindings.v1.json",
+        "registry/ecosystem/component-admissions.v1.json"
+      ],
+      "uncertainty": 0.05
     },
     {
       "system": "repo:semantAH",

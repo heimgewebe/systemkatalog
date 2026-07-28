@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "kind": "system_catalog_relations",
   "catalogRole": "canonical_stable_relations",
-  "updatedAt": "2026-07-17",
+  "updatedAt": "2026-07-28",
   "relationTypes": [
     "owns",
     "steers",
@@ -227,10 +227,10 @@
     },
     {
       "from": "repo:hausKI-audio",
-      "to": "repo:hausKI",
+      "to": "repo:audio",
       "type": "provides",
       "stability": "related",
-      "meaning": "HausKI Audio is the bounded audio and automation surface adjacent to the local AI stack."
+      "meaning": "HausKI Audio is retained only as a reviewed historical donor and provenance source for the canonical audio repository."
     },
     {
       "from": "repo:aussensensor",
