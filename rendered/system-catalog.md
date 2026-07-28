@@ -56,7 +56,7 @@ Metarepo ist Primärquelle für die Fleet-Mitgliedschaft. Der Systemkatalog blei
 | System | Repository | Einordnung | Einstieg |
 |---|---|---|---|
 | Agent Control Surface | `heimgewebe/agent-control-surface` | `catalog-only` | [https://github.com/heimgewebe/agent-control-surface](https://github.com/heimgewebe/agent-control-surface) |
-| audio | `heimgewebe/audio` | `catalog-only` | [https://github.com/heimgewebe/audio](https://github.com/heimgewebe/audio) |
+| audio | `heimgewebe/audio` | `fleet` | [https://github.com/heimgewebe/audio](https://github.com/heimgewebe/audio) |
 | Außensensor | `heimgewebe/aussensensor` | `fleet` | [https://github.com/heimgewebe/aussensensor](https://github.com/heimgewebe/aussensensor) |
 | Bureau | `heimgewebe/bureau` | `catalog-only` | [https://github.com/heimgewebe/bureau](https://github.com/heimgewebe/bureau) |
 | Chronik | `heimgewebe/chronik` | `fleet` | [https://github.com/heimgewebe/chronik](https://github.com/heimgewebe/chronik) |
@@ -65,7 +65,7 @@ Metarepo ist Primärquelle für die Fleet-Mitgliedschaft. Der Systemkatalog blei
 | Device Graph | `heimgewebe/device-graph` | `catalog-only` | [https://github.com/heimgewebe/device-graph](https://github.com/heimgewebe/device-graph) |
 | Grabowski | `heimgewebe/grabowski` | `catalog-only` | [https://github.com/heimgewebe/grabowski](https://github.com/heimgewebe/grabowski) |
 | HausKI | `heimgewebe/hausKI` | `fleet` | [https://github.com/heimgewebe/hausKI](https://github.com/heimgewebe/hausKI) |
-| HausKI Audio | `heimgewebe/hausKI-audio` | `fleet` | [https://github.com/heimgewebe/hausKI-audio](https://github.com/heimgewebe/hausKI-audio) |
+| HausKI Audio | `heimgewebe/hausKI-audio` | `catalog-only` | [https://github.com/heimgewebe/hausKI-audio](https://github.com/heimgewebe/hausKI-audio) |
 | heim-pc | `heimgewebe/heim-pc` | `fleet` | [https://github.com/heimgewebe/heim-pc](https://github.com/heimgewebe/heim-pc) |
 | Heimgeist | `heimgewebe/heimgeist` | `fleet` | [https://github.com/heimgewebe/heimgeist](https://github.com/heimgewebe/heimgeist) |
 | heimlern | `heimgewebe/heimlern` | `archived-reference` | [https://github.com/heimgewebe/heimlern](https://github.com/heimgewebe/heimlern) |
@@ -92,6 +92,7 @@ Metarepo ist Primärquelle für die Fleet-Mitgliedschaft. Der Systemkatalog blei
 
 Explizit ohne aktive Fleet-Mitgliedschaft:
 
+- `hausKI-audio` — Historical donor repository explicitly marked status: related and fleet: false in the bound Metarepo source; current audio product truth belongs to heimgewebe/audio.
 - `heimlern` — Archived historical reference explicitly marked status: archived-reference and fleet: false in the bound Metarepo source.
 - `vault-privat` — Private related repository explicitly marked fleet: false in Metarepo.
 
