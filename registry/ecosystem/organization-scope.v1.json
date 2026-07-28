@@ -5,7 +5,7 @@
   "source": {
     "provider": "github",
     "organization": "heimgewebe",
-    "observedAt": "2026-07-28T18:48:18+02:00",
+    "observedAt": "2026-07-28T19:39:27Z",
     "selection": {
       "archived": "include",
       "fork": false
@@ -136,7 +136,7 @@
     {
       "name": "heimserver",
       "repository": "heimgewebe/heimserver",
-      "visibility": "private",
+      "visibility": "public",
       "classification": "catalog",
       "node": "repo:heimserver",
       "reason": "retired infrastructure repository retained as historical contract reference; no active device, service, exposure or authority"
