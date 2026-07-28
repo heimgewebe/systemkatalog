@@ -28,7 +28,13 @@ class SystemCatalogResilienceTests(unittest.TestCase):
         (root / "registry/ecosystem").mkdir(parents=True)
         (root / "docs/audits").mkdir(parents=True)
         shutil.copy(ROOT / "registry/ecosystem/authority-matrix.v1.json", root / "registry/ecosystem/authority-matrix.v1.json")
-        shutil.copy(ROOT / "registry/ecosystem/edges.json", root / "registry/ecosystem/edges.json")
+        for relative in (
+            "registry/ecosystem/edges.json",
+            "registry/ecosystem/nodes.json",
+            "registry/ecosystem/source-bindings.v1.json",
+            "registry/ecosystem/component-admissions.v1.json",
+        ):
+            shutil.copy(ROOT / relative, root / relative)
         shutil.copy(ROOT / "docs/audits/heimgewebe-resilience-gap-matrix-v1.md", root / "docs/audits/heimgewebe-resilience-gap-matrix-v1.md")
         (root / "registry/ecosystem/resilience.v1.json").write_text(json.dumps(document))
         return temp, root
