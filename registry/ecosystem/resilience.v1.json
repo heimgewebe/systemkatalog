@@ -569,9 +569,9 @@
         "live audio depends on the Heim-PC and physically connected devices"
       ],
       "evidence": [
-        "https://github.com/heimgewebe/audio/blob/58935598706e24438c95ae092d802709b0ae2203/README.md",
-        "https://github.com/heimgewebe/bureau/blob/702fd606235494c2bd3a151555b2a2b9169f745c/docs/plans/operator-platform-masterplan-v2.md",
-        "bureau:OPERATOR-ECOSYSTEM-REDUNDANCY-V1-T065"
+        "registry/ecosystem/nodes.json",
+        "registry/ecosystem/source-bindings.v1.json",
+        "registry/ecosystem/component-admissions.v1.json"
       ],
       "uncertainty": 0.08
     },
@@ -587,9 +587,9 @@
         "historical donor availability is not required for current audio operation"
       ],
       "evidence": [
-        "https://github.com/heimgewebe/audio/blob/58935598706e24438c95ae092d802709b0ae2203/README.md",
-        "https://github.com/heimgewebe/bureau/blob/702fd606235494c2bd3a151555b2a2b9169f745c/docs/plans/operator-platform-masterplan-v2.md",
-        "bureau:OPERATOR-ECOSYSTEM-REDUNDANCY-V1-T065"
+        "registry/ecosystem/nodes.json",
+        "registry/ecosystem/source-bindings.v1.json",
+        "registry/ecosystem/component-admissions.v1.json"
       ],
       "uncertainty": 0.05
     },
