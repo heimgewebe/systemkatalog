@@ -37,11 +37,11 @@
       "sha256": "5add0652fd25c9d3d9bcd55feb282c129a86e0c9580b96fe6242c5c2ee00afdd"
     },
     {
-      "bytes": 36903,
+      "bytes": 36613,
       "contentType": "application/json",
       "path": "registry/ecosystem/resilience.v1.json",
       "role": "resilience_semantics",
-      "sha256": "4ecbbb593681a43402efcca47f51a055b587d241a1edbe355161cac1dd16cd36"
+      "sha256": "72dc882534ea1b76865eabb79c29e578b1aaa03256600550d59de1bbe1da656c"
     }
   ],
   "contractVersion": "1",
@@ -58,8 +58,8 @@
   "schemaPath": "catalog/ecosystem-map-artifact-manifest.schema.v1.json",
   "schemaVersion": 1,
   "source": {
-    "commit": "815bde3f8ca5ea88f5925589673109f078efa2f9",
-    "generatedAt": "2026-07-28T16:59:58Z",
+    "commit": "349782c440b750e4c10a63dfff13b77f1865c1ef",
+    "generatedAt": "2026-07-28T17:23:22Z",
     "repository": "heimgewebe/systemkatalog"
   }
 }
