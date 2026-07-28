@@ -1,16 +1,16 @@
 {
   "schemaVersion": 1,
   "kind": "system_catalog_organization_scope",
-  "updatedAt": "2026-07-26",
+  "updatedAt": "2026-07-28",
   "source": {
     "provider": "github",
     "organization": "heimgewebe",
-    "observedAt": "2026-07-26T08:20:45Z",
+    "observedAt": "2026-07-28T18:48:18+02:00",
     "selection": {
       "archived": "include",
       "fork": false
     },
-    "repositoryCount": 35
+    "repositoryCount": 36
   },
   "repositories": [
     {
@@ -20,6 +20,14 @@
       "classification": "catalog",
       "node": "repo:agent-control-surface",
       "reason": "local manual control surface for Jules sessions and guarded step-by-step Git workflows"
+    },
+    {
+      "name": "audio",
+      "repository": "heimgewebe/audio",
+      "visibility": "public",
+      "classification": "catalog",
+      "node": "repo:audio",
+      "reason": "Canonical Heim-PC audio configuration, recording, playback, instruments and experimental music systems"
     },
     {
       "name": "aussensensor",
@@ -99,7 +107,7 @@
       "visibility": "public",
       "classification": "catalog",
       "node": "repo:hausKI-audio",
-      "reason": "Local audio playback, recording and automation"
+      "reason": "Retired historical donor and provenance reference for heimgewebe/audio; not the current audio product"
     },
     {
       "name": "heim-pc",

@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "kind": "system_catalog_source_bindings",
   "catalogRepository": "heimgewebe/systemkatalog",
-  "observedAt": "2026-07-26T18:02:52.360381Z",
+  "observedAt": "2026-07-28T18:48:18+02:00",
   "systems": [
     {
       "system": "actor:alexander",
@@ -360,20 +360,36 @@
       "uncertainty": 0.01
     },
     {
-      "system": "repo:hausKI-audio",
+      "system": "repo:audio",
       "source": {
-        "repository": "heimgewebe/hausKI-audio",
-        "commit": "abf65724c63dbbb905546afeb7acb114c509f1bb",
+        "repository": "heimgewebe/audio",
+        "commit": "58935598706e24438c95ae092d802709b0ae2203",
         "locator": {
           "kind": "file",
           "path": "README.md",
-          "contentSha256": "b7c4091c2dc27b5787315c120f70e2f7cce243669133f71317f46760ee33b27c"
+          "contentSha256": "b266e127f951a4304325f522c15a924c3628815178e2e33c3b6e57bf8955f92e"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-13T07:55:00+02:00",
+      "reviewedAt": "2026-07-28T18:48:18+02:00",
       "method": "repository_primary_document",
-      "uncertainty": 0.08
+      "uncertainty": 0.01
+    },
+    {
+      "system": "repo:hausKI-audio",
+      "source": {
+        "repository": "heimgewebe/audio",
+        "commit": "58935598706e24438c95ae092d802709b0ae2203",
+        "locator": {
+          "kind": "file",
+          "path": "README.md",
+          "contentSha256": "b266e127f951a4304325f522c15a924c3628815178e2e33c3b6e57bf8955f92e"
+        },
+        "defaultBranch": "main"
+      },
+      "reviewedAt": "2026-07-28T18:48:18+02:00",
+      "method": "canonical_successor_primary_document",
+      "uncertainty": 0.02
     },
     {
       "system": "repo:semantAH",
@@ -1190,23 +1206,22 @@
     {
       "relation": {
         "from": "repo:hausKI-audio",
-        "to": "repo:hausKI",
+        "to": "repo:audio",
         "type": "provides"
       },
       "source": {
-        "repository": "heimgewebe/systemkatalog",
-        "commit": "c2693d1a4524e7f1ea811730d090b4f7ec6b93d8",
+        "repository": "heimgewebe/audio",
+        "commit": "58935598706e24438c95ae092d802709b0ae2203",
         "locator": {
-          "kind": "json_pointer",
-          "path": "registry/ecosystem/edges.json",
-          "pointer": "/edges/28",
-          "contentSha256": "d392919edcc2496a12bbdd01a046ecbe47a1277361372b4b9bb4ba892464f544"
+          "kind": "file",
+          "path": "README.md",
+          "contentSha256": "b266e127f951a4304325f522c15a924c3628815178e2e33c3b6e57bf8955f92e"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-17T16:24:11Z",
-      "method": "catalog_curator_review",
-      "uncertainty": 0.18
+      "reviewedAt": "2026-07-28T18:48:18+02:00",
+      "method": "canonical_successor_primary_document",
+      "uncertainty": 0.02
     },
     {
       "relation": {

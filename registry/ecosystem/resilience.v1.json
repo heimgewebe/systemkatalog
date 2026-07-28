@@ -3,7 +3,7 @@
   "kind": "system_catalog_resilience",
   "owner": "repo:systemkatalog",
   "catalogRole": "canonical_stable_resilience_semantics",
-  "updatedAt": "2026-07-26",
+  "updatedAt": "2026-07-28",
   "defaultCriticality": "unknown",
   "criticalityClasses": [
     "foundational",
@@ -557,18 +557,41 @@
       "uncertainty": 1.0
     },
     {
+      "system": "repo:audio",
+      "criticality": "supporting",
+      "failureDomains": [
+        "host:heim-pc",
+        "identity:github",
+        "provider:github"
+      ],
+      "recoveryModeRefs": [],
+      "acceptedSinglePathRisks": [
+        "live audio depends on the Heim-PC and physically connected devices"
+      ],
+      "evidence": [
+        "https://github.com/heimgewebe/audio/blob/58935598706e24438c95ae092d802709b0ae2203/README.md",
+        "https://github.com/heimgewebe/bureau/blob/702fd606235494c2bd3a151555b2a2b9169f745c/docs/plans/operator-platform-masterplan-v2.md",
+        "bureau:OPERATOR-ECOSYSTEM-REDUNDANCY-V1-T065"
+      ],
+      "uncertainty": 0.08
+    },
+    {
       "system": "repo:hausKI-audio",
-      "criticality": "unknown",
+      "criticality": "optional",
       "failureDomains": [
         "identity:github",
         "provider:github"
       ],
       "recoveryModeRefs": [],
-      "acceptedSinglePathRisks": [],
-      "evidence": [
-        "docs/audits/heimgewebe-resilience-gap-matrix-v1.md"
+      "acceptedSinglePathRisks": [
+        "historical donor availability is not required for current audio operation"
       ],
-      "uncertainty": 1.0
+      "evidence": [
+        "https://github.com/heimgewebe/audio/blob/58935598706e24438c95ae092d802709b0ae2203/README.md",
+        "https://github.com/heimgewebe/bureau/blob/702fd606235494c2bd3a151555b2a2b9169f745c/docs/plans/operator-platform-masterplan-v2.md",
+        "bureau:OPERATOR-ECOSYSTEM-REDUNDANCY-V1-T065"
+      ],
+      "uncertainty": 0.05
     },
     {
       "system": "repo:semantAH",

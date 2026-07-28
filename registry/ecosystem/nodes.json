@@ -3,7 +3,7 @@
   "kind": "system_catalog_inventory",
   "owner": "repo:systemkatalog",
   "catalogRole": "canonical_system_inventory",
-  "updatedAt": "2026-07-26",
+  "updatedAt": "2026-07-28",
   "nodes": [
     {
       "id": "actor:alexander",
@@ -529,12 +529,40 @@
       }
     },
     {
+      "id": "repo:audio",
+      "name": "audio",
+      "type": "repository",
+      "purpose": "Canonical Heim-PC audio configuration, recording, playback, instruments and experimental music systems",
+      "notResponsibleFor": [
+        "live hardware presence without current observation",
+        "runtime audio health without live checks",
+        "task authority",
+        "merge approval"
+      ],
+      "truthOwnership": [],
+      "entrypoints": {
+        "repository": "https://github.com/heimgewebe/audio",
+        "readme": "https://github.com/heimgewebe/audio/blob/58935598706e24438c95ae092d802709b0ae2203/README.md"
+      },
+      "lifecycle": {
+        "state": "active",
+        "reviewedAt": "2026-07-28",
+        "evidenceRefs": [
+          "https://github.com/heimgewebe/audio/blob/58935598706e24438c95ae092d802709b0ae2203/README.md",
+          "https://github.com/heimgewebe/bureau/blob/702fd606235494c2bd3a151555b2a2b9169f745c/docs/plans/operator-platform-masterplan-v2.md",
+          "bureau:OPERATOR-ECOSYSTEM-REDUNDANCY-V1-T065"
+        ]
+      }
+    },
+    {
       "id": "repo:hausKI-audio",
       "name": "HausKI Audio",
       "type": "repository",
-      "purpose": "Local audio playback, recording and automation",
+      "purpose": "Retired historical donor and provenance reference for the canonical heimgewebe/audio repository",
       "notResponsibleFor": [
-        "ecosystem catalog semantics",
+        "current audio product truth",
+        "runtime audio configuration",
+        "new maintenance work",
         "task authority",
         "merge approval"
       ],
@@ -543,10 +571,12 @@
         "repository": "https://github.com/heimgewebe/hausKI-audio"
       },
       "lifecycle": {
-        "state": "active",
-        "reviewedAt": "2026-07-26",
+        "state": "retired",
+        "reviewedAt": "2026-07-28",
         "evidenceRefs": [
-          "registry/ecosystem/organization-scope.v1.json"
+          "https://github.com/heimgewebe/audio/blob/58935598706e24438c95ae092d802709b0ae2203/README.md",
+          "https://github.com/heimgewebe/bureau/blob/702fd606235494c2bd3a151555b2a2b9169f745c/docs/plans/operator-platform-masterplan-v2.md",
+          "bureau:OPERATOR-ECOSYSTEM-REDUNDANCY-V1-T065"
         ]
       }
     },
