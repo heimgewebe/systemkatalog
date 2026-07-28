@@ -30,7 +30,7 @@ class SystemCatalogTests(unittest.TestCase):
         self.assertEqual(result["authorityDomains"], 17)
         self.assertEqual(result["catalogRepositories"], 34)
         self.assertEqual(result["fleetRepositories"], 18)
-        self.assertEqual(result["fleetExclusions"], 2)
+        self.assertEqual(result["fleetExclusions"], 3)
         self.assertEqual(result["organizationRepositories"], 36)
         self.assertEqual(result["organizationCatalogRepositories"], 33)
         self.assertEqual(result["organizationArchivedReferences"], 1)
