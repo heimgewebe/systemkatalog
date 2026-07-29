@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
   "kind": "system_catalog_fleet_coverage",
-  "updatedAt": "2026-07-28",
+  "updatedAt": "2026-07-29",
   "membershipAuthority": {
     "repository": "heimgewebe/metarepo",
-    "commit": "64d9193621af6e43ac2260023e7c8429c96e95b2",
+    "commit": "df3063d846d6751e668b65ec8e64a4fc34474401",
     "path": "fleet/repos.yml",
-    "contentSha256": "37e966516be8a6eef4b0e38a19f380c388b9795e61e4eb6a7354ab7cfbcd7e11",
+    "contentSha256": "4fc8803f7acc91eb1967cf325eb25638328e31dffdca49e35aeea17f2bee8ce9",
     "scope": "fleet_membership_only"
   },
   "catalogAuthority": {
@@ -127,7 +127,7 @@
       "node": "repo:leitwerk",
       "repository": "heimgewebe/leitwerk",
       "entrypoint": "https://github.com/heimgewebe/leitwerk",
-      "membership": "catalog-only"
+      "membership": "archived-reference"
     },
     {
       "node": "repo:metarepo",
@@ -227,6 +227,10 @@
     },
     {
       "name": "heimlern",
+      "reason": "Archived historical reference explicitly marked status: archived-reference and fleet: false in the bound Metarepo source."
+    },
+    {
+      "name": "leitwerk",
       "reason": "Archived historical reference explicitly marked status: archived-reference and fleet: false in the bound Metarepo source."
     },
     {

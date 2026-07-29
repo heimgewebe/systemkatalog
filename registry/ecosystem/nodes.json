@@ -3,7 +3,7 @@
   "kind": "system_catalog_inventory",
   "owner": "repo:systemkatalog",
   "catalogRole": "canonical_system_inventory",
-  "updatedAt": "2026-07-28",
+  "updatedAt": "2026-07-29",
   "nodes": [
     {
       "id": "actor:alexander",
@@ -814,24 +814,29 @@
       "id": "repo:leitwerk",
       "name": "Leitwerk",
       "type": "repository",
-      "purpose": "retained normative coordination-contract reference from the pre-Bureau and pre-Grabowski control model",
+      "purpose": "archived historical reference for the former pre-Bureau and pre-Grabowski coordination model",
       "notResponsibleFor": [
+        "active contract or policy authority",
         "current task or claim state",
         "runtime execution",
         "merge authorization",
-        "agent dispatch"
+        "agent dispatch",
+        "new feature development"
       ],
       "truthOwnership": [],
       "entrypoints": {
         "repository": "https://github.com/heimgewebe/leitwerk",
-        "readme": "https://github.com/heimgewebe/leitwerk/blob/main/README.md",
-        "roleBoundary": "https://github.com/heimgewebe/leitwerk/blob/main/docs/leitwerk.md"
+        "readme": "https://github.com/heimgewebe/leitwerk/blob/1449145af543b78c0d3813942f1d6d95ddb33c4a/README.md",
+        "archiveEvidence": "https://github.com/heimgewebe/leitwerk/blob/1449145af543b78c0d3813942f1d6d95ddb33c4a/ARCHIVE.md"
       },
       "lifecycle": {
-        "state": "reference",
-        "reviewedAt": "2026-07-26",
+        "state": "archived",
+        "reviewedAt": "2026-07-29",
         "evidenceRefs": [
-          "docs/audits/repository-lifecycle-classification-2026-07-19.v1.json",
+          "https://github.com/heimgewebe/leitwerk/tree/1449145af543b78c0d3813942f1d6d95ddb33c4a",
+          "https://github.com/heimgewebe/metarepo/pull/667",
+          "https://github.com/heimgewebe/metarepo/pull/668",
+          "https://github.com/heimgewebe/leitwerk/pull/27",
           "bureau:OPERATOR-ECOSYSTEM-REDUNDANCY-V1-T037"
         ]
       }

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "kind": "system_catalog_organization_scope",
-  "updatedAt": "2026-07-28",
+  "updatedAt": "2026-07-29",
   "source": {
     "provider": "github",
     "organization": "heimgewebe",
@@ -169,9 +169,9 @@
       "name": "leitwerk",
       "repository": "heimgewebe/leitwerk",
       "visibility": "public",
-      "classification": "catalog",
+      "classification": "archived_reference",
       "node": "repo:leitwerk",
-      "reason": "retained normative coordination-contract reference from the pre-Bureau and pre-Grabowski control model"
+      "reason": "archived historical reference for the retired Leitwerk coordination model; no active runtime, task, policy or contract authority"
     },
     {
       "name": "metarepo",

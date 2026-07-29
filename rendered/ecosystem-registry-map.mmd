@@ -28,7 +28,7 @@ flowchart TD
         repo_infra["Infra<br/>id: repo:infra<br/>repository<br/>lifecycle: active · reviewed: 2026-07-26<br/>host, network, cockpit and operational runbooks"]
         repo_konvergenzregelkreis["Konvergenzregelkreis<br/>id: repo:konvergenzregelkreis<br/>repository<br/>lifecycle: active · reviewed: 2026-07-26<br/>public stateless convergence protocol and conformance core for evidence-bound closure of ecosystem changes"]
         repo_leitstand["Leitstand<br/>id: repo:leitstand<br/>repository<br/>lifecycle: active · reviewed: 2026-07-26<br/>read-only ecosystem observability and status projection"]
-        repo_leitwerk["Leitwerk<br/>id: repo:leitwerk<br/>repository<br/>lifecycle: reference · reviewed: 2026-07-26<br/>retained normative coordination-contract reference from the pre-Bureau and pre-Grabowski control model"]
+        repo_leitwerk["Leitwerk<br/>id: repo:leitwerk<br/>repository<br/>lifecycle: archived · reviewed: 2026-07-29<br/>archived historical reference for the former pre-Bureau and pre-Grabowski coordination model"]
         repo_metarepo["Metarepo<br/>id: repo:metarepo<br/>repository<br/>lifecycle: active · reviewed: 2026-07-26<br/>Fleet membership, canonical shared contracts and repository templates"]
         repo_mitschreiber["Mitschreiber<br/>id: repo:mitschreiber<br/>repository<br/>lifecycle: active · reviewed: 2026-07-26<br/>Privacy-first on-device context capture and redacted event production"]
         repo_obsidian_bridge["Obsidian Bridge<br/>id: repo:obsidian-bridge<br/>repository<br/>lifecycle: active · reviewed: 2026-07-26<br/>deterministic CLI and artifact bridge for using Obsidian as a projection and observatory interface"]
@@ -106,10 +106,8 @@ flowchart TD
     class actor_alexander,artifact_ecosystem_map,repo_systemkatalog,repo_bureau,repo_grabowski,repo_weltgewebe,repo_repoground,repo_reposkop,repo_vibe_lab,repo_chronik,repo_schauwerk,repo_infra,repo_device_graph,service_github,service_ci,repo_leitstand,repo_plexer,repo_metarepo,repo_wgx,repo_contracts_mirror,repo_hausKI,repo_audio,repo_semantAH,repo_aussensensor,repo_mitschreiber,repo_sichter,repo_heim_pc,repo_vault_gewebe,repo_commonworld,repo_obsidian_bridge,repo_snippet_engine_control,repo_konvergenzregelkreis lifecycleActive;
     classDef lifecycleTransition stroke:#fbbf24,stroke-width:3px,stroke-dasharray:6 3;
     class repo_heimgeist,repo_agent_control_surface lifecycleTransition;
-    classDef lifecycleReference stroke:#a78bfa,stroke-width:2px,stroke-dasharray:3 3;
-    class repo_leitwerk lifecycleReference;
     classDef lifecycleArchived fill:#1f2937,stroke:#64748b,color:#cbd5e1;
-    class repo_heimlern lifecycleArchived;
+    class repo_heimlern,repo_leitwerk lifecycleArchived;
     classDef lifecycleRetired fill:#111827,stroke:#ef4444,stroke-width:2px,stroke-dasharray:8 4,color:#94a3b8;
     class repo_hausKI_audio,repo_heimserver lifecycleRetired;
 

@@ -30,10 +30,10 @@ class SystemCatalogTests(unittest.TestCase):
         self.assertEqual(result["authorityDomains"], 17)
         self.assertEqual(result["catalogRepositories"], 34)
         self.assertEqual(result["fleetRepositories"], 18)
-        self.assertEqual(result["fleetExclusions"], 3)
+        self.assertEqual(result["fleetExclusions"], 4)
         self.assertEqual(result["organizationRepositories"], 36)
-        self.assertEqual(result["organizationCatalogRepositories"], 33)
-        self.assertEqual(result["organizationArchivedReferences"], 1)
+        self.assertEqual(result["organizationCatalogRepositories"], 32)
+        self.assertEqual(result["organizationArchivedReferences"], 2)
         self.assertEqual(result["organizationExclusions"], 2)
         self.assertEqual(result["activeLegacyRooms"], 0)
         for room in (
@@ -69,9 +69,9 @@ class SystemCatalogTests(unittest.TestCase):
         from render_system_catalog import _entrypoints_cell
 
         rendered = _entrypoints_cell({"docs": "docs/a|b.md"})
-        self.assertIn("[docs/a\|b.md]", rendered)
+        self.assertIn(r"[docs/a\|b.md]", rendered)
         self.assertIn("(../docs/a%7Cb.md)", rendered)
-        self.assertNotIn("(../docs/a\|b.md)", rendered)
+        self.assertNotIn(r"(../docs/a\|b.md)", rendered)
 
     def test_canonical_nodes_implement_the_full_system_contract(self) -> None:
         data = json.loads((ROOT / "registry/ecosystem/nodes.json").read_text(encoding="utf-8"))
@@ -85,7 +85,7 @@ class SystemCatalogTests(unittest.TestCase):
             self.assertTrue(node["notResponsibleFor"])
             self.assertTrue(node["entrypoints"])
             self.assertIn(node["lifecycle"]["state"], {"active", "transition", "reference", "archived", "retired"})
-            self.assertIn(node["lifecycle"]["reviewedAt"], {"2026-07-26", "2026-07-28"})
+            self.assertIn(node["lifecycle"]["reviewedAt"], {"2026-07-26", "2026-07-28", "2026-07-29"})
             self.assertTrue(node["lifecycle"]["evidenceRefs"])
         self.assertIn("Nicht zuständig für", (ROOT / "rendered/system-catalog.md").read_text(encoding="utf-8"))
         rendered = (ROOT / "rendered/system-catalog.md").read_text(encoding="utf-8")
