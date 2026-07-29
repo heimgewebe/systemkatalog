@@ -118,6 +118,11 @@ class SystemCatalogDriftTests(unittest.TestCase):
             if item["name"] in archived_names:
                 lines.append("    status: archived-reference")
             lines.append("    fleet: false")
+        excluded_names = {item["name"] for item in coverage["sourceExclusions"]}
+        for name in sorted(archived_names - excluded_names):
+            lines.append(f"  - name: {name}")
+            lines.append("    status: archived-reference")
+            lines.append("    fleet: false")
 
         with tempfile.TemporaryDirectory() as raw_tmp:
             tmp = Path(raw_tmp)
@@ -164,7 +169,10 @@ class SystemCatalogDriftTests(unittest.TestCase):
                 capture_output=True,
                 check=False,
             )
-            self.assertEqual(result.returncode, 0, result.stderr)
+            diagnostic = result.stdout + result.stderr
+            if report.exists():
+                diagnostic += report.read_text(encoding="utf-8")
+            self.assertEqual(result.returncode, 0, diagnostic)
             self.assertFalse(
                 list((tmp / "scripts").rglob("__pycache__")),
                 "canonical drift process created Python bytecode cache",

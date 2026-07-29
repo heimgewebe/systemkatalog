@@ -36,9 +36,9 @@ class FleetCoverageTests(unittest.TestCase):
             coverage["membershipAuthority"],
             {
                 "repository": "heimgewebe/metarepo",
-                "commit": "64d9193621af6e43ac2260023e7c8429c96e95b2",
+                "commit": "df3063d846d6751e668b65ec8e64a4fc34474401",
                 "path": "fleet/repos.yml",
-                "contentSha256": "37e966516be8a6eef4b0e38a19f380c388b9795e61e4eb6a7354ab7cfbcd7e11",
+                "contentSha256": "4fc8803f7acc91eb1967cf325eb25638328e31dffdca49e35aeea17f2bee8ce9",
                 "scope": "fleet_membership_only",
             },
         )
@@ -51,7 +51,7 @@ class FleetCoverageTests(unittest.TestCase):
         )
         self.assertEqual(
             {item["name"] for item in coverage["sourceExclusions"]},
-            {"hausKI-audio", "heimlern", "vault-privat"},
+            {"hausKI-audio", "heimlern", "leitwerk", "vault-privat"},
         )
         self.assertEqual(
             next(
@@ -122,7 +122,7 @@ repos:
                 for item in coverage["repositories"]
                 if item["membership"] in {"fleet", "related"}
             },
-            {"hausKI-audio": "excluded", "heimlern": "excluded", "vault-privat": "excluded"},
+            {"hausKI-audio": "excluded", "heimlern": "excluded", "leitwerk": "archived-reference", "vault-privat": "excluded"},
         )
         with self.assertRaisesRegex(FleetCoverageError, "archived-reference drift"):
             compare_with_source(coverage, source)

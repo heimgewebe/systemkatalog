@@ -36,6 +36,7 @@ class SystemCatalogResilienceTests(unittest.TestCase):
         ):
             shutil.copy(ROOT / relative, root / relative)
         shutil.copy(ROOT / "docs/audits/heimgewebe-resilience-gap-matrix-v1.md", root / "docs/audits/heimgewebe-resilience-gap-matrix-v1.md")
+        shutil.copy(ROOT / "docs/audits/leitwerk-archival-closeout-2026-07-29.v1.json", root / "docs/audits/leitwerk-archival-closeout-2026-07-29.v1.json")
         (root / "registry/ecosystem/resilience.v1.json").write_text(json.dumps(document))
         return temp, root
 

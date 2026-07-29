@@ -3,7 +3,7 @@
   "kind": "system_catalog_resilience",
   "owner": "repo:systemkatalog",
   "catalogRole": "canonical_stable_resilience_semantics",
-  "updatedAt": "2026-07-28",
+  "updatedAt": "2026-07-29",
   "defaultCriticality": "unknown",
   "criticalityClasses": [
     "foundational",
@@ -735,17 +735,16 @@
     },
     {
       "system": "repo:leitwerk",
-      "criticality": "unknown",
+      "criticality": "optional",
       "failureDomains": [
-        "identity:github",
         "provider:github"
       ],
       "recoveryModeRefs": [],
       "acceptedSinglePathRisks": [],
       "evidence": [
-        "docs/audits/heimgewebe-resilience-gap-matrix-v1.md"
+        "docs/audits/leitwerk-archival-closeout-2026-07-29.v1.json"
       ],
-      "uncertainty": 1.0
+      "uncertainty": 0.02
     },
     {
       "system": "repo:obsidian-bridge",

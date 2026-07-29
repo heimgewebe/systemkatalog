@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "kind": "system_catalog_source_bindings",
   "catalogRepository": "heimgewebe/systemkatalog",
-  "observedAt": "2026-07-28T18:48:18+02:00",
+  "observedAt": "2026-07-29T15:48:10+02:00",
   "systems": [
     {
       "system": "actor:alexander",
@@ -553,17 +553,17 @@
       "system": "repo:leitwerk",
       "source": {
         "repository": "heimgewebe/leitwerk",
-        "commit": "5f35d0ad6020cf9f113732a9d8c35c0ccbe0e745",
+        "commit": "1449145af543b78c0d3813942f1d6d95ddb33c4a",
         "locator": {
           "kind": "file",
           "path": "README.md",
-          "contentSha256": "91405a1beaaa68768ad5c1d5df764bb1de0f3690a3f730c7e91963187afcfffb"
+          "contentSha256": "192c8ebb41e0af26792696e677758bbdfc5b5466148980265ff3677fbf6bf012"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-13T07:55:00+02:00",
+      "reviewedAt": "2026-07-29T15:48:10+02:00",
       "method": "repository_primary_document",
-      "uncertainty": 0.08
+      "uncertainty": 0.01
     },
     {
       "system": "repo:obsidian-bridge",

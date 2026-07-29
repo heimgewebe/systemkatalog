@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "kind": "repository_archival_closeout",
+  "observed_at": "2026-07-29T15:48:10+02:00",
+  "repository": "heimgewebe/leitwerk",
+  "bureau_task_id": "OPERATOR-ECOSYSTEM-REDUNDANCY-V1-T037",
+  "decision": "archived_reference",
+  "github_readback": {
+    "archived": true,
+    "disabled": false,
+    "default_branch": "main",
+    "main_commit": "1449145af543b78c0d3813942f1d6d95ddb33c4a",
+    "open_pull_requests": 0,
+    "open_issues": 0,
+    "updated_at": "2026-07-29T09:42:22Z"
+  },
+  "migration": {
+    "repository": "heimgewebe/metarepo",
+    "pull_request": 667,
+    "merge_commit": "74ce9202952d00b0d2fef0587255c92a9cd05dee",
+    "contract": "contracts/operator/agent-change-boundaries.v1.json",
+    "inventory": "docs/archive/leitwerk-normative-freeze.v1.json",
+    "classification_counts": {
+      "files": 40,
+      "keep": 14,
+      "migrate": 5,
+      "retire": 21,
+      "remote_branches": 24
+    }
+  },
+  "source_freeze": {
+    "pull_request": 27,
+    "head": "6976e766050507742fbf1e109d46af39f6c4c882",
+    "merge_commit": "1449145af543b78c0d3813942f1d6d95ddb33c4a",
+    "diff_sha256": "b764eb3cfb3c249aba29ab039e612de7290d0d8ef45612418c0742d54b5fca0e",
+    "checks": [
+      "CodeQL",
+      "Analyze (actions)",
+      "Guard branch-only workflow",
+      "Guard contracts mirror"
+    ]
+  },
+  "resilience": {
+    "criticality": "optional",
+    "failure_domains": [
+      "provider:github"
+    ],
+    "recovery": "Git history and the canonical migrated contract remain sufficient for historical reconstruction; no runtime recovery is required."
+  },
+  "does_not_establish": [
+    "runtime_health",
+    "task_or_queue_truth",
+    "authority_inheritance",
+    "permission_to_unarchive_without_new_review"
+  ],
+  "fleet_registration": {
+    "repository": "heimgewebe/metarepo",
+    "pull_request": 668,
+    "base": "74ce9202952d00b0d2fef0587255c92a9cd05dee",
+    "head": "01221b37ed3cb43bce7550207436ded53b9d2785",
+    "merge_commit": "df3063d846d6751e668b65ec8e64a4fc34474401",
+    "diff_sha256": "402766cafa3868953a4269c3bc354ac4dda5ae3fc6bce2c8fa6942280b4df973",
+    "source_path": "fleet/repos.yml",
+    "source_content_sha256": "4fc8803f7acc91eb1967cf325eb25638328e31dffdca49e35aeea17f2bee8ce9",
+    "classification": "archived-reference",
+    "fleet": false,
+    "active_fleet_count": 18,
+    "checks": "25/25 passed"
+  }
+}

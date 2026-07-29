@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "kind": "system_catalog_relations",
   "catalogRole": "canonical_stable_relations",
-  "updatedAt": "2026-07-28",
+  "updatedAt": "2026-07-29",
   "relationTypes": [
     "owns",
     "steers",
@@ -307,7 +307,7 @@
       "to": "repo:bureau",
       "type": "scope_boundary",
       "stability": "related",
-      "meaning": "Leitwerk is retained as a normative reference; Bureau owns current task, claim and completion state."
+      "meaning": "Archived Leitwerk documents predate Bureau; Bureau owns current task, claim and completion truth and inherits no Leitwerk authority."
     },
     {
       "from": "repo:obsidian-bridge",
@@ -342,7 +342,7 @@
       "to": "repo:konvergenzregelkreis",
       "type": "scope_boundary",
       "stability": "related",
-      "meaning": "Leitwerk remains a historical pre-Bureau reference; Konvergenzregelkreis is an independent public protocol and inherits no Leitwerk authority."
+      "meaning": "Archived Leitwerk is historical provenance only; Konvergenzregelkreis is an independent protocol and inherits no Leitwerk authority."
     }
   ]
 }
