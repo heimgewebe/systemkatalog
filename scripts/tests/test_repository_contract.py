@@ -54,6 +54,13 @@ class RepositoryContractTests(unittest.TestCase):
         with self.assertRaisesRegex(SystemExit, "must remain visible"):
             MODULE.check_gitignore_text("**/.agents/.runtime/\n.global-agents/\n")
 
+    def test_validation_buffers_passing_unit_test_output(self) -> None:
+        validation_script = (ROOT / "scripts/ci/validate-repository.sh").read_text()
+        self.assertIn(
+            "python3 -m unittest discover --buffer -s scripts/tests -p 'test_*.py'",
+            validation_script,
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

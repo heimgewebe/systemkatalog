@@ -61,6 +61,6 @@ python3 scripts/systemkatalog_query.py truth-owner ecosystem_semantics >/dev/nul
 python3 scripts/systemkatalog_query.py relations systemkatalog >/dev/null
 
 echo "=== Unit tests ==="
-python3 -m unittest discover -s scripts/tests -p 'test_*.py'
+python3 -m unittest discover --buffer -s scripts/tests -p 'test_*.py'
 
 echo "TARGET-PROOF: SYSTEMKATALOG REPOSITORY CONTRACT VALID"
