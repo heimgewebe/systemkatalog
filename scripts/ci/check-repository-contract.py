@@ -15,6 +15,7 @@ LEGACY_ROOTS = {
 LEGACY_MARKERS = {".cabinet", ".home", ".agents", ".global-agents", ".jobs", "Cabinet-Modell.md"}
 LEGACY_RUNTIME_PARTS = {".agents", ".global-agents", ".cabinet", ".cabinet-state"}
 LEGACY_IGNORE_MARKERS = (".cabinet", ".agents", ".global-agents")
+REQUIRED_ROOT_IGNORE_PATTERNS = {"__pycache__/", "*.py[cod]"}
 REQUIRED_STATIC_SURFACES = {
     "README.md",
     "AGENTS.md",
@@ -130,12 +131,16 @@ def check_layout_and_forbidden_paths(tree: dict[str, dict[str, str]]) -> None:
         fail("forbidden tracked path:\n  " + "\n  ".join(errors))
 
 
-def check_gitignore_text(text: str, *, source: str = ".gitignore") -> None:
-    patterns = [
+def gitignore_patterns(text: str) -> list[str]:
+    return [
         line.strip()
         for line in text.splitlines()
         if line.strip() and not line.lstrip().startswith("#")
     ]
+
+
+def check_gitignore_text(text: str, *, source: str = ".gitignore") -> None:
+    patterns = gitignore_patterns(text)
     stale = sorted(
         pattern
         for pattern in patterns
@@ -146,6 +151,15 @@ def check_gitignore_text(text: str, *, source: str = ".gitignore") -> None:
         fail(
             f"legacy runtime path must remain visible instead of ignored in {source}: "
             + ", ".join(stale)
+        )
+
+
+def check_root_gitignore_hygiene(text: str) -> None:
+    missing = sorted(REQUIRED_ROOT_IGNORE_PATTERNS - set(gitignore_patterns(text)))
+    if missing:
+        fail(
+            "root .gitignore must ignore generated Python artifacts: "
+            + ", ".join(missing)
         )
 
 
@@ -177,7 +191,10 @@ def check_static_surface(tree: dict[str, dict[str, str]], repo: Path, treeish: s
     if ".gitignore" not in gitignore_paths:
         fail("root .gitignore missing")
     for path in gitignore_paths:
-        check_gitignore_text(git_text(repo, treeish, path), source=path)
+        text = git_text(repo, treeish, path)
+        check_gitignore_text(text, source=path)
+        if path == ".gitignore":
+            check_root_gitignore_hygiene(text)
 
     policy = json.loads(git_text(repo, treeish, "policy/system-catalog.v1.json"))
     if "runtimeProjection" in policy:

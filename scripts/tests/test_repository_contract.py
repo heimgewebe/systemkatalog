@@ -23,6 +23,13 @@ class RepositoryContractTests(unittest.TestCase):
         with self.assertRaisesRegex(SystemExit, "must remain visible"):
             MODULE.check_gitignore_text(".cabinet.db\n.cabinet-state/\n")
 
+    def test_root_gitignore_requires_python_cache_hygiene(self) -> None:
+        with self.assertRaisesRegex(SystemExit, "generated Python artifacts"):
+            MODULE.check_root_gitignore_hygiene("*.log\n")
+
+    def test_root_gitignore_accepts_python_cache_hygiene(self) -> None:
+        MODULE.check_root_gitignore_hygiene("__pycache__/\n*.py[cod]\n")
+
     def test_nested_cabinet_directory_is_forbidden(self) -> None:
         tree = {
             "docs/archive/cabinet-era/README.md": {"type": "blob"},
