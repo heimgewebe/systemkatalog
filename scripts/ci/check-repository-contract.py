@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import json
 import subprocess
+import tempfile
 from pathlib import Path
 
 LEGACY_ROOTS = {
@@ -161,6 +162,36 @@ def check_root_gitignore_hygiene(text: str) -> None:
             "root .gitignore must ignore generated Python artifacts: "
             + ", ".join(missing)
         )
+
+    probes = ("keep.pyc", "nested/__pycache__/probe.pyc")
+    with tempfile.TemporaryDirectory(prefix="systemkatalog-ignore-") as tmp:
+        probe_repo = Path(tmp)
+        (probe_repo / ".gitignore").write_text(text, encoding="utf-8")
+        subprocess.run(
+            ["git", "init", "--quiet"],
+            cwd=probe_repo,
+            check=True,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.PIPE,
+            text=True,
+        )
+        for probe in probes:
+            probe_path = probe_repo / probe
+            probe_path.parent.mkdir(parents=True, exist_ok=True)
+            probe_path.write_bytes(b"probe")
+            result = subprocess.run(
+                ["git", "check-ignore", "--quiet", "--no-index", probe],
+                cwd=probe_repo,
+                check=False,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.PIPE,
+                text=True,
+            )
+            if result.returncode != 0:
+                fail(
+                    "root .gitignore must effectively ignore generated Python "
+                    f"artifact: {probe}"
+                )
 
 
 def active_gitignore_paths(tree: dict[str, dict[str, str]]) -> list[str]:
