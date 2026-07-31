@@ -6,6 +6,19 @@ import unittest
 
 ROOT = Path(__file__).resolve().parents[2]
 MODULE_PATH = ROOT / "scripts/ci/check-repository-contract.py"
+BUFFERED_UNITTEST_COMMAND = (
+    "python3 -m unittest discover --buffer -s scripts/tests -p 'test_*.py'"
+)
+
+
+def _active_shell_commands(script: str) -> set[str]:
+    return {
+        line.strip()
+        for line in script.splitlines()
+        if line.strip() and not line.lstrip().startswith("#")
+    }
+
+
 SPEC = importlib.util.spec_from_file_location("systemkatalog_repository_contract", MODULE_PATH)
 assert SPEC is not None and SPEC.loader is not None
 MODULE = importlib.util.module_from_spec(SPEC)
@@ -60,11 +73,25 @@ class RepositoryContractTests(unittest.TestCase):
         with self.assertRaisesRegex(SystemExit, "must remain visible"):
             MODULE.check_gitignore_text("**/.agents/.runtime/\n.global-agents/\n")
 
-    def test_validation_buffers_passing_unit_test_output(self) -> None:
+    def test_validation_executes_buffered_unit_test_command(self) -> None:
         validation_script = (ROOT / "scripts/ci/validate-repository.sh").read_text()
+
         self.assertIn(
-            "python3 -m unittest discover --buffer -s scripts/tests -p 'test_*.py'",
-            validation_script,
+            BUFFERED_UNITTEST_COMMAND,
+            _active_shell_commands(validation_script),
+        )
+
+    def test_commented_buffered_unit_test_command_is_not_execution(self) -> None:
+        validation_script = (ROOT / "scripts/ci/validate-repository.sh").read_text()
+        commented_script = validation_script.replace(
+            BUFFERED_UNITTEST_COMMAND,
+            f"# {BUFFERED_UNITTEST_COMMAND}",
+            1,
+        )
+
+        self.assertNotIn(
+            BUFFERED_UNITTEST_COMMAND,
+            _active_shell_commands(commented_script),
         )
 
 
