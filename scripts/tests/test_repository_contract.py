@@ -30,6 +30,12 @@ class RepositoryContractTests(unittest.TestCase):
     def test_root_gitignore_accepts_python_cache_hygiene(self) -> None:
         MODULE.check_root_gitignore_hygiene("__pycache__/\n*.py[cod]\n")
 
+    def test_root_gitignore_rejects_effective_python_cache_reinclusion(self) -> None:
+        with self.assertRaisesRegex(SystemExit, "effectively ignore"):
+            MODULE.check_root_gitignore_hygiene(
+                "__pycache__/\n*.py[cod]\n!keep.pyc\n"
+            )
+
     def test_nested_cabinet_directory_is_forbidden(self) -> None:
         tree = {
             "docs/archive/cabinet-era/README.md": {"type": "blob"},
