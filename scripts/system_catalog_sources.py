@@ -147,16 +147,6 @@ def _validate_local_source_bytes(root: Path, source: dict[str, Any], label: str)
     )
     if inside.returncode != 0:
         return None
-    ancestor = subprocess.run(
-        ["git", "merge-base", "--is-ancestor", source["commit"], "HEAD"],
-        cwd=root,
-        stdout=subprocess.DEVNULL,
-        stderr=subprocess.DEVNULL,
-    )
-    if ancestor.returncode == 1:
-        raise ValueError(f"{label} commit is not an ancestor of HEAD")
-    if ancestor.returncode != 0:
-        raise ValueError(f"{label} cannot verify bound catalog commit ancestry")
     result = subprocess.run(
         ["git", "show", f"{source['commit']}:{locator['path']}"],
         cwd=root,
@@ -167,6 +157,26 @@ def _validate_local_source_bytes(root: Path, source: dict[str, Any], label: str)
     digest = hashlib.sha256(result.stdout).hexdigest()
     if digest != locator["contentSha256"]:
         raise ValueError(f"{label} contentSha256 differs from the bound catalog bytes")
+    ancestor = subprocess.run(
+        ["git", "merge-base", "--is-ancestor", source["commit"], "HEAD"],
+        cwd=root,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )
+    if ancestor.returncode == 1:
+        head_result = subprocess.run(
+            ["git", "show", f"HEAD:{locator['path']}"],
+            cwd=root,
+            capture_output=True,
+        )
+        if head_result.returncode != 0:
+            raise ValueError(f"{label} cannot resolve the catalog path at HEAD")
+        if hashlib.sha256(head_result.stdout).hexdigest() != digest:
+            raise ValueError(
+                f"{label} commit is not an ancestor of HEAD and HEAD bytes differ"
+            )
+    elif ancestor.returncode != 0:
+        raise ValueError(f"{label} cannot verify bound catalog commit ancestry")
     if locator["kind"] != "json_pointer":
         return None
     try:

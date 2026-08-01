@@ -131,6 +131,38 @@ class SourceBindingTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "differs from the bound catalog bytes"):
                 _validate_local_source_bytes(target, source, "test source")
 
+    def test_local_catalog_binding_accepts_artifact_equivalent_non_ancestor(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            target = Path(directory) / "repo"
+            target.mkdir()
+            subprocess.run(["git", "init", "-q", "-b", "main"], cwd=target, check=True)
+            subprocess.run(["git", "config", "user.name", "Systemkatalog Test"], cwd=target, check=True)
+            subprocess.run(["git", "config", "user.email", "systemkatalog@example.invalid"], cwd=target, check=True)
+            raw = b"shared bytes\n"
+            (target / "README.md").write_bytes(raw)
+            subprocess.run(["git", "add", "README.md"], cwd=target, check=True)
+            subprocess.run(["git", "commit", "-q", "-m", "main fixture"], cwd=target, check=True)
+            subprocess.run(["git", "switch", "-q", "-c", "side"], cwd=target, check=True)
+            (target / "side-note.txt").write_text("side only\n", encoding="utf-8")
+            subprocess.run(["git", "add", "side-note.txt"], cwd=target, check=True)
+            subprocess.run(["git", "commit", "-q", "-m", "side fixture"], cwd=target, check=True)
+            commit = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=target, text=True).strip()
+            subprocess.run(["git", "switch", "-q", "main"], cwd=target, check=True)
+            import hashlib
+            source = {
+                "repository": "heimgewebe/systemkatalog",
+                "commit": commit,
+                "defaultBranch": "main",
+                "locator": {
+                    "kind": "file",
+                    "path": "README.md",
+                    "contentSha256": hashlib.sha256(raw).hexdigest(),
+                },
+            }
+            self.assertIsNone(
+                _validate_local_source_bytes(target, source, "test source")
+            )
+
     def test_local_catalog_binding_rejects_non_ancestor_commit(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             target = Path(directory) / "repo"

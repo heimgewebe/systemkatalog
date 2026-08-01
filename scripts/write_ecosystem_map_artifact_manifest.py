@@ -291,6 +291,26 @@ def _load_manifest(path: Path) -> dict[str, Any]:
     return value
 
 
+def _validate_artifacts_at_revision(
+    root: Path,
+    manifest: dict[str, Any],
+    revision: str,
+    *,
+    label: str,
+) -> None:
+    for item in manifest["artifacts"]:
+        try:
+            content = _git_artifact(root, revision, item["path"])
+        except EcosystemMapManifestError as exc:
+            raise EcosystemMapManifestError(
+                f"could not read {label} artifact: {item['path']}"
+            ) from exc
+        if len(content) != item["bytes"] or _sha256_bytes(content) != item["sha256"]:
+            raise EcosystemMapManifestError(
+                f"artifact does not match {label}: {item['path']}"
+            )
+
+
 def _validate_source_binding(
     root: Path,
     manifest: dict[str, Any],
@@ -303,16 +323,20 @@ def _validate_source_binding(
         if durable_source_ref is not None
         else _durable_source_ref(root)
     )
-    if not _git_is_ancestor(root, commit, durable_ref):
-        raise EcosystemMapManifestError(
-            f"manifest source commit is not an ancestor of durable ref {durable_ref}"
+    _validate_artifacts_at_revision(
+        root, manifest, commit, label="bound source commit"
+    )
+    if _git_is_ancestor(root, commit, durable_ref):
+        return
+    try:
+        _validate_artifacts_at_revision(
+            root, manifest, durable_ref, label=f"durable ref {durable_ref}"
         )
-    for item in manifest["artifacts"]:
-        content = _git_artifact(root, commit, item["path"])
-        if len(content) != item["bytes"] or _sha256_bytes(content) != item["sha256"]:
-            raise EcosystemMapManifestError(
-                f"artifact does not match bound source commit: {item['path']}"
-            )
+    except EcosystemMapManifestError as exc:
+        raise EcosystemMapManifestError(
+            f"manifest source commit is not an ancestor of durable ref {durable_ref} "
+            "and the durable ref is not artifact-equivalent"
+        ) from exc
 
 
 def check_manifest(

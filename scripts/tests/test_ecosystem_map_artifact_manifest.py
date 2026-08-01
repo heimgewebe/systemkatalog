@@ -197,7 +197,7 @@ class EcosystemMapManifestTests(unittest.TestCase):
             with self.assertRaisesRegex(EcosystemMapManifestError, "stale for current artifacts"):
                 check_manifest(root)
 
-    def test_write_rejects_feature_commit_not_on_origin_main(self) -> None:
+    def test_write_and_check_accept_artifact_equivalent_non_ancestor(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             base_commit = initialize_repository(root)
@@ -207,9 +207,24 @@ class EcosystemMapManifestTests(unittest.TestCase):
             git(root, "add", "feature-note.txt")
             git(root, "commit", "-qm", "feature-only commit")
             feature_commit = git(root, "rev-parse", "HEAD")
+            manifest = write_manifest(root, DEFAULT_OUTPUT, source_commit=feature_commit)
+            checked = check_manifest(root)
+        self.assertEqual(checked, manifest)
+
+    def test_write_rejects_non_ancestor_with_artifact_drift(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            base_commit = initialize_repository(root)
+            git(root, "update-ref", "refs/remotes/origin/main", base_commit)
+            git(root, "switch", "-qc", "feature")
+            artifact = root / ARTIFACT_SPECS[0]["path"]
+            artifact.write_text("feature-only artifact content\n", encoding="utf-8")
+            git(root, "add", str(artifact.relative_to(root)))
+            git(root, "commit", "-qm", "change feature artifact")
+            feature_commit = git(root, "rev-parse", "HEAD")
             with self.assertRaisesRegex(
                 EcosystemMapManifestError,
-                "not an ancestor of durable ref refs/remotes/origin/main",
+                "durable ref is not artifact-equivalent",
             ):
                 write_manifest(root, DEFAULT_OUTPUT, source_commit=feature_commit)
 
@@ -234,12 +249,9 @@ class EcosystemMapManifestTests(unittest.TestCase):
             checked = check_manifest(
                 root, DEFAULT_OUTPUT, durable_source_ref=durable_ref
             )
-            with self.assertRaisesRegex(
-                EcosystemMapManifestError,
-                "not an ancestor of durable ref refs/remotes/origin/main",
-            ):
-                check_manifest(root)
+            origin_checked = check_manifest(root)
         self.assertEqual(manifest, checked)
+        self.assertEqual(manifest, origin_checked)
 
     def test_explicit_local_branch_ref_is_rejected(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
