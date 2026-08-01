@@ -95,7 +95,7 @@ Die Mermaidkarte macht diese Klassen sichtbar, ohne die getrennte Kantenstabilit
 
 ## Quellenbindungen und Frische
 
-`registry/ecosystem/source-bindings.v1.json` bindet jedes System und jede stabile Beziehung an einen geprüften Quellstand, einen Locator, eine Prüfmethode, ein Prüfdatum und eine Unsicherheit. Öffentliche Repositoryquellen werden an Commit und Inhalts-SHA-256 gebunden. Bei privaten Repositories bleiben Commit und Inhalt redigiert; veröffentlicht wird nur ein Digest nichtvertraulicher Klassifikationsmetadaten.
+`registry/ecosystem/source-bindings.v1.json` bindet jedes System und jede stabile Beziehung an einen geprüften Quellstand, einen Locator, eine Prüfmethode, ein Prüfdatum und eine Unsicherheit. Öffentliche Repositoryquellen werden an Commit und Inhalts-SHA-256 gebunden. Bei kataloginternen Quellen muss der Commit normalerweise ein Vorfahr des aktuellen Stands sein; nach einem Squash-Merge ist eine abweichende Commitidentität nur zulässig, wenn die vollständig gebundene Quelldatei am aktuellen Stand denselben SHA-256 besitzt. Bei privaten Repositories bleiben Commit und Inhalt redigiert; veröffentlicht wird nur ein Digest nichtvertraulicher Klassifikationsmetadaten.
 
 `policy/freshness-slo.v1.json` definiert Erkennungs- und Reviewziele. GitHub- und Fleet-Abweichungen sowie Änderungen gebundener Primärdokumente erzeugen einen maschinenlesbaren Driftbericht. Der Folgeschritt bleibt ausdrücklich **proposal-only**: Er darf einen deduplizierten Bureau-Kandidaten und einen Änderungsvorschlag erzeugen, aber keine neue Semantik automatisch mergen.
 
@@ -138,7 +138,7 @@ git add rendered/ecosystem-map-artifact-manifest.json
 git commit
 ```
 
-`--check` liest die tatsächlich veröffentlichte Datei. Es scheitert, wenn das Manifest fehlt, die aktuellen Artefakte abweichen, der gebundene Commit nicht in der Git-Historie liegt oder die dort gespeicherten Bytes nicht zu den Manifest-Hashes passen.
+`--check` liest die tatsächlich veröffentlichte Datei und prüft den gebundenen Quellcommit sowie die sechs Artefakthashes. Normalerweise muss der Quellcommit ein Vorfahr des langlebigen Remote-Refs sein. Nach einem Squash-Merge darf der langlebige Commit eine andere Identität besitzen, aber nur wenn alle sechs ausgelieferten Artefakte dort bytegenau dem Manifest entsprechen. Fehlende Artefakte, abweichende Bytes oder ein weder genealogisch noch inhaltlich gebundener Hauptstand bleiben fail-closed.
 
 ## Validierung
 
