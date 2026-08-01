@@ -8,8 +8,8 @@ ROOT = Path(__file__).resolve().parents[2]
 EXPECTED = {
     "repo:systemkatalog": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "1cda4ee29aacb39d99a5ab415611fff6da6c54aa",
-        "sha256": "dbd566b6d8337f5238313386537eece250c9ad05f92c1a6cab780d77f1679457",
+        "commit": "fd96a544eb848b8047e62561efe63db27a087281",
+        "sha256": "126b58f511c81af0549e73cb8757c255859161b2eca50e5c97d8d3a53f8fa72d",
         "path": "README.md",
     },
     "repo:bureau": {
@@ -44,14 +44,26 @@ EXPECTED = {
     },
     "repo:leitstand": {
         "repository": "heimgewebe/leitstand",
-        "commit": "a85c14d0df83da61c68e43fe814a19d483f3f6f2",
-        "sha256": "be0fd2f4b5c4829fab65e1e6c0f732827c79edf779f04ad3760b49bfc1c98655",
+        "commit": "362dda6ac161bf275a38682d18998fc284eebe52",
+        "sha256": "6fcc6537ade5c39ac1a9427d0a0da4423b836886d760835a458e731fd1450848",
         "path": "README.md",
+    },
+    "repo:metarepo": {
+        "repository": "heimgewebe/metarepo",
+        "commit": "f3524f9b040be957cfead5b80f7a683d0ea6df72",
+        "sha256": "9f22e6414f841ed017589586d655fbcbe636c14a54ad02c09a7408c095fe9ffe",
+        "path": "system/metarepo-role.v1.json",
     },
     "repo:wgx": {
         "repository": "heimgewebe/wgx",
-        "commit": "5c14e53674193446b8832eca6e312bcf58190248",
-        "sha256": "b7103c3519a9470bfecf7c75b10ce837223ea6ce88b90289162063ae2e875357",
+        "commit": "45611f094cd7c4019c7eda4bd36b6fa862503132",
+        "sha256": "f9696a4a65b51cffeefa16d146f0fdd785c7cc30db7b1a26d9f08b485f146729",
+        "path": "README.md",
+    },
+    "repo:audio": {
+        "repository": "heimgewebe/audio",
+        "commit": "49710c62c017019ba3778d0599e511e6b8bc61a7",
+        "sha256": "e5d4650315ceb5cfae0dcb44eb2efe5111c0a312ebdd07ef3e9977b357a175cb",
         "path": "README.md",
     },
     "repo:semantAH": {
@@ -72,10 +84,16 @@ EXPECTED = {
         "sha256": "480a23722c17a0ec8cfa67a69389ebba22a95f83ccac0631b6a2a3b44eeb03bb",
         "path": "manifest/operator-entry.v1.json",
     },
+    "repo:heimserver": {
+        "repository": "heimgewebe/heimserver",
+        "commit": "4c4099e234a277b5ea48a28939f0ec4d08711f2a",
+        "sha256": "1a6555386d9e641c17485fc76dc6ca00bae3956f78115a06ec10a63095dc02b2",
+        "path": "repo.meta.yaml",
+    },
     "repo:commonworld": {
         "repository": "heimgewebe/commonworld",
-        "commit": "47b6e82c6e359dda1b03737ab45de0dbbca8f794",
-        "sha256": "1465617e273db98b25a3bc1390502a74a07581c3d0bd8c20e2e82a2b27fe9ed7",
+        "commit": "35b6b19529891d33f0b0db3f864256f7069bbba4",
+        "sha256": "48edacaa06c1380e6ad2d9e4603a223e0f5fd93c4d08b8ade718c57cadfebda1",
         "path": "README.md",
     },
 }

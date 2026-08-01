@@ -209,7 +209,7 @@
       "to": "service:ci",
       "type": "provides",
       "stability": "stable",
-      "meaning": "WGX provides reusable Fleet checks and repository workflow mechanics."
+      "meaning": "WGX provides shared static checks and routes CI to repository-owned verification frontdoors without taking task, runtime or deployment authority."
     },
     {
       "from": "repo:contracts-mirror",

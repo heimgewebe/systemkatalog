@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "kind": "system_catalog_organization_scope",
-  "updatedAt": "2026-07-29",
+  "updatedAt": "2026-08-01",
   "source": {
     "provider": "github",
     "organization": "heimgewebe",
@@ -59,7 +59,7 @@
       "visibility": "public",
       "classification": "catalog",
       "node": "repo:commonworld",
-      "reason": "Interactive globe and commons-oriented world exploration"
+      "reason": "Interactive globe and evidence-bound catalog and admission rules for physical, digital, local and global commons"
     },
     {
       "name": "contracts-mirror",
@@ -139,7 +139,7 @@
       "visibility": "public",
       "classification": "catalog",
       "node": "repo:heimserver",
-      "reason": "retired infrastructure repository retained as historical contract reference; no active device, service, exposure or authority"
+      "reason": "retired historical operations and contract reference for the former home-network service layer, edge gateway, DDNS and Weltgewebe infrastructure"
     },
     {
       "name": "infra",
@@ -299,7 +299,7 @@
       "visibility": "public",
       "classification": "catalog",
       "node": "repo:wgx",
-      "reason": "Fleet CLI and reusable repository workflow engine"
+      "reason": "Repository verification adapter and reusable CI frontdoor router"
     }
   ],
   "doesNotEstablish": [

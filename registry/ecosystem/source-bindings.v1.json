@@ -2,22 +2,22 @@
   "schemaVersion": 1,
   "kind": "system_catalog_source_bindings",
   "catalogRepository": "heimgewebe/systemkatalog",
-  "observedAt": "2026-08-01T03:35:00+02:00",
+  "observedAt": "2026-08-01T05:17:09Z",
   "systems": [
     {
       "system": "actor:alexander",
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "c2693d1a4524e7f1ea811730d090b4f7ec6b93d8",
+        "commit": "a29543f9f64ccc0743b05d00e7f87f63a620cc9e",
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/nodes.json",
           "pointer": "/nodes/0",
-          "contentSha256": "418b6d6c433fc7c1fb6b7fe69a9c4676011ec60ba589512762ab7f2649737848"
+          "contentSha256": "61d1361b1fdc94281e4a409b1f151e6d64a272cfc07520b924c6efef7152dcf3"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-17T16:24:11Z",
+      "reviewedAt": "2026-08-01T07:24:00+02:00",
       "method": "catalog_curator_review",
       "uncertainty": 0.15
     },
@@ -25,16 +25,16 @@
       "system": "artifact:ecosystem-map",
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "c2693d1a4524e7f1ea811730d090b4f7ec6b93d8",
+        "commit": "a29543f9f64ccc0743b05d00e7f87f63a620cc9e",
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/nodes.json",
           "pointer": "/nodes/1",
-          "contentSha256": "418b6d6c433fc7c1fb6b7fe69a9c4676011ec60ba589512762ab7f2649737848"
+          "contentSha256": "61d1361b1fdc94281e4a409b1f151e6d64a272cfc07520b924c6efef7152dcf3"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-17T16:24:11Z",
+      "reviewedAt": "2026-08-01T07:24:00+02:00",
       "method": "catalog_curator_review",
       "uncertainty": 0.15
     },
@@ -42,17 +42,17 @@
       "system": "repo:systemkatalog",
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "1cda4ee29aacb39d99a5ab415611fff6da6c54aa",
+        "commit": "fd96a544eb848b8047e62561efe63db27a087281",
         "locator": {
           "kind": "file",
           "path": "README.md",
-          "contentSha256": "dbd566b6d8337f5238313386537eece250c9ad05f92c1a6cab780d77f1679457"
+          "contentSha256": "126b58f511c81af0549e73cb8757c255859161b2eca50e5c97d8d3a53f8fa72d"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-26T18:09:02Z",
+      "reviewedAt": "2026-08-01T07:17:09+02:00",
       "method": "repository_primary_document",
-      "uncertainty": 0.02
+      "uncertainty": 0.01
     },
     {
       "system": "repo:bureau",
@@ -217,16 +217,16 @@
       "system": "service:github",
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "c2693d1a4524e7f1ea811730d090b4f7ec6b93d8",
+        "commit": "a29543f9f64ccc0743b05d00e7f87f63a620cc9e",
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/nodes.json",
           "pointer": "/nodes/13",
-          "contentSha256": "418b6d6c433fc7c1fb6b7fe69a9c4676011ec60ba589512762ab7f2649737848"
+          "contentSha256": "61d1361b1fdc94281e4a409b1f151e6d64a272cfc07520b924c6efef7152dcf3"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-17T16:24:11Z",
+      "reviewedAt": "2026-08-01T07:24:00+02:00",
       "method": "catalog_curator_review",
       "uncertainty": 0.15
     },
@@ -234,16 +234,16 @@
       "system": "service:ci",
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "c2693d1a4524e7f1ea811730d090b4f7ec6b93d8",
+        "commit": "a29543f9f64ccc0743b05d00e7f87f63a620cc9e",
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/nodes.json",
           "pointer": "/nodes/14",
-          "contentSha256": "418b6d6c433fc7c1fb6b7fe69a9c4676011ec60ba589512762ab7f2649737848"
+          "contentSha256": "61d1361b1fdc94281e4a409b1f151e6d64a272cfc07520b924c6efef7152dcf3"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-17T16:24:11Z",
+      "reviewedAt": "2026-08-01T07:24:00+02:00",
       "method": "catalog_curator_review",
       "uncertainty": 0.15
     },
@@ -251,15 +251,15 @@
       "system": "repo:leitstand",
       "source": {
         "repository": "heimgewebe/leitstand",
-        "commit": "a85c14d0df83da61c68e43fe814a19d483f3f6f2",
+        "commit": "362dda6ac161bf275a38682d18998fc284eebe52",
         "locator": {
           "kind": "file",
           "path": "README.md",
-          "contentSha256": "be0fd2f4b5c4829fab65e1e6c0f732827c79edf779f04ad3760b49bfc1c98655"
+          "contentSha256": "6fcc6537ade5c39ac1a9427d0a0da4423b836886d760835a458e731fd1450848"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-26T18:09:02Z",
+      "reviewedAt": "2026-08-01T07:17:09+02:00",
       "method": "repository_primary_document",
       "uncertainty": 0.01
     },
@@ -299,15 +299,15 @@
       "system": "repo:metarepo",
       "source": {
         "repository": "heimgewebe/metarepo",
-        "commit": "b215b418a038ff535f07b7888fd6adeb3f4de51c",
+        "commit": "f3524f9b040be957cfead5b80f7a683d0ea6df72",
         "locator": {
           "kind": "file",
           "path": "system/metarepo-role.v1.json",
-          "contentSha256": "9848a87b77aeb58b80a307a0a3dceca320e92c696031547937fe9cfa95f158fd"
+          "contentSha256": "9f22e6414f841ed017589586d655fbcbe636c14a54ad02c09a7408c095fe9ffe"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-20T15:35:21Z",
+      "reviewedAt": "2026-08-01T07:17:09+02:00",
       "method": "repository_normative_contract",
       "uncertainty": 0.0
     },
@@ -315,15 +315,15 @@
       "system": "repo:wgx",
       "source": {
         "repository": "heimgewebe/wgx",
-        "commit": "5c14e53674193446b8832eca6e312bcf58190248",
+        "commit": "45611f094cd7c4019c7eda4bd36b6fa862503132",
         "locator": {
           "kind": "file",
           "path": "README.md",
-          "contentSha256": "b7103c3519a9470bfecf7c75b10ce837223ea6ce88b90289162063ae2e875357"
+          "contentSha256": "f9696a4a65b51cffeefa16d146f0fdd785c7cc30db7b1a26d9f08b485f146729"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-26T18:09:02Z",
+      "reviewedAt": "2026-08-01T07:17:09+02:00",
       "method": "repository_primary_document",
       "uncertainty": 0.01
     },
@@ -363,15 +363,15 @@
       "system": "repo:audio",
       "source": {
         "repository": "heimgewebe/audio",
-        "commit": "58935598706e24438c95ae092d802709b0ae2203",
+        "commit": "49710c62c017019ba3778d0599e511e6b8bc61a7",
         "locator": {
           "kind": "file",
           "path": "README.md",
-          "contentSha256": "b266e127f951a4304325f522c15a924c3628815178e2e33c3b6e57bf8955f92e"
+          "contentSha256": "e5d4650315ceb5cfae0dcb44eb2efe5111c0a312ebdd07ef3e9977b357a175cb"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-28T18:48:18+02:00",
+      "reviewedAt": "2026-08-01T07:17:09+02:00",
       "method": "repository_primary_document",
       "uncertainty": 0.01
     },
@@ -506,17 +506,17 @@
       "system": "repo:commonworld",
       "source": {
         "repository": "heimgewebe/commonworld",
-        "commit": "47b6e82c6e359dda1b03737ab45de0dbbca8f794",
+        "commit": "35b6b19529891d33f0b0db3f864256f7069bbba4",
         "locator": {
           "kind": "file",
           "path": "README.md",
-          "contentSha256": "1465617e273db98b25a3bc1390502a74a07581c3d0bd8c20e2e82a2b27fe9ed7"
+          "contentSha256": "48edacaa06c1380e6ad2d9e4603a223e0f5fd93c4d08b8ade718c57cadfebda1"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-26T18:09:02Z",
+      "reviewedAt": "2026-08-01T07:17:09+02:00",
       "method": "repository_primary_document",
-      "uncertainty": 0.08
+      "uncertainty": 0.02
     },
     {
       "system": "repo:agent-control-surface",
@@ -538,16 +538,17 @@
       "system": "repo:heimserver",
       "source": {
         "repository": "heimgewebe/heimserver",
-        "commit": "redacted",
+        "commit": "4c4099e234a277b5ea48a28939f0ec4d08711f2a",
+        "defaultBranch": "main",
         "locator": {
-          "kind": "private_repository_metadata",
-          "contentSha256": "71fbbbb0ceacdc23f1ee028cb1e595a77393eb13574ee7f9898595f63fd12569"
-        },
-        "defaultBranch": "main"
+          "kind": "file",
+          "path": "repo.meta.yaml",
+          "contentSha256": "1a6555386d9e641c17485fc76dc6ca00bae3956f78115a06ec10a63095dc02b2"
+        }
       },
-      "reviewedAt": "2026-07-13T07:55:00+02:00",
-      "method": "private_repository_metadata_projection",
-      "uncertainty": 0.25
+      "reviewedAt": "2026-08-01T07:17:09+02:00",
+      "method": "repository_normative_contract",
+      "uncertainty": 0.08
     },
     {
       "system": "repo:leitwerk",
@@ -617,16 +618,16 @@
       "system": "concept:weltgewebe-os",
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "d66424a15f3d67a381e03dba51eedd3532f1725a",
+        "commit": "a29543f9f64ccc0743b05d00e7f87f63a620cc9e",
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/nodes.json",
           "pointer": "/nodes/38",
-          "contentSha256": "8aa70b0fea06d11ea8f985398f4fbb725c7507236fa25c7bcd9417c085ebb90c"
+          "contentSha256": "61d1361b1fdc94281e4a409b1f151e6d64a272cfc07520b924c6efef7152dcf3"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-08-01T03:35:00+02:00",
+      "reviewedAt": "2026-08-01T07:24:00+02:00",
       "method": "catalog_curator_review",
       "uncertainty": 0.04
     },
@@ -634,16 +635,16 @@
       "system": "concept:gewebezelle",
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "d66424a15f3d67a381e03dba51eedd3532f1725a",
+        "commit": "a29543f9f64ccc0743b05d00e7f87f63a620cc9e",
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/nodes.json",
           "pointer": "/nodes/39",
-          "contentSha256": "8aa70b0fea06d11ea8f985398f4fbb725c7507236fa25c7bcd9417c085ebb90c"
+          "contentSha256": "61d1361b1fdc94281e4a409b1f151e6d64a272cfc07520b924c6efef7152dcf3"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-08-01T03:35:00+02:00",
+      "reviewedAt": "2026-08-01T07:24:00+02:00",
       "method": "catalog_curator_review",
       "uncertainty": 0.04
     },
@@ -651,16 +652,16 @@
       "system": "concept:weltgewebe-platform-target",
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "d66424a15f3d67a381e03dba51eedd3532f1725a",
+        "commit": "a29543f9f64ccc0743b05d00e7f87f63a620cc9e",
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/nodes.json",
           "pointer": "/nodes/40",
-          "contentSha256": "8aa70b0fea06d11ea8f985398f4fbb725c7507236fa25c7bcd9417c085ebb90c"
+          "contentSha256": "61d1361b1fdc94281e4a409b1f151e6d64a272cfc07520b924c6efef7152dcf3"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-08-01T03:35:00+02:00",
+      "reviewedAt": "2026-08-01T07:24:00+02:00",
       "method": "catalog_curator_review",
       "uncertainty": 0.04
     },
@@ -668,16 +669,16 @@
       "system": "concept:weltgewebe-federation-planes",
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "d66424a15f3d67a381e03dba51eedd3532f1725a",
+        "commit": "a29543f9f64ccc0743b05d00e7f87f63a620cc9e",
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/nodes.json",
           "pointer": "/nodes/41",
-          "contentSha256": "8aa70b0fea06d11ea8f985398f4fbb725c7507236fa25c7bcd9417c085ebb90c"
+          "contentSha256": "61d1361b1fdc94281e4a409b1f151e6d64a272cfc07520b924c6efef7152dcf3"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-08-01T03:35:00+02:00",
+      "reviewedAt": "2026-08-01T07:24:00+02:00",
       "method": "catalog_curator_review",
       "uncertainty": 0.04
     },
@@ -685,16 +686,16 @@
       "system": "concept:gewebezelle-betreiberrolle",
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "d66424a15f3d67a381e03dba51eedd3532f1725a",
+        "commit": "a29543f9f64ccc0743b05d00e7f87f63a620cc9e",
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/nodes.json",
           "pointer": "/nodes/42",
-          "contentSha256": "8aa70b0fea06d11ea8f985398f4fbb725c7507236fa25c7bcd9417c085ebb90c"
+          "contentSha256": "61d1361b1fdc94281e4a409b1f151e6d64a272cfc07520b924c6efef7152dcf3"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-08-01T03:35:00+02:00",
+      "reviewedAt": "2026-08-01T07:24:00+02:00",
       "method": "catalog_curator_review",
       "uncertainty": 0.04
     }
@@ -708,16 +709,16 @@
       },
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "c2693d1a4524e7f1ea811730d090b4f7ec6b93d8",
+        "commit": "a29543f9f64ccc0743b05d00e7f87f63a620cc9e",
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/edges.json",
           "pointer": "/edges/0",
-          "contentSha256": "d392919edcc2496a12bbdd01a046ecbe47a1277361372b4b9bb4ba892464f544"
+          "contentSha256": "9f6b7509e6aab115a0e328dae7b777b4570a2e3f90860f35cb25262a7eca3420"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-17T16:24:11Z",
+      "reviewedAt": "2026-08-01T07:24:00+02:00",
       "method": "catalog_curator_review",
       "uncertainty": 0.18
     },
@@ -729,16 +730,16 @@
       },
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "c2693d1a4524e7f1ea811730d090b4f7ec6b93d8",
+        "commit": "a29543f9f64ccc0743b05d00e7f87f63a620cc9e",
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/edges.json",
           "pointer": "/edges/1",
-          "contentSha256": "d392919edcc2496a12bbdd01a046ecbe47a1277361372b4b9bb4ba892464f544"
+          "contentSha256": "9f6b7509e6aab115a0e328dae7b777b4570a2e3f90860f35cb25262a7eca3420"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-17T16:24:11Z",
+      "reviewedAt": "2026-08-01T07:24:00+02:00",
       "method": "catalog_curator_review",
       "uncertainty": 0.18
     },
@@ -750,16 +751,16 @@
       },
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "c2693d1a4524e7f1ea811730d090b4f7ec6b93d8",
+        "commit": "a29543f9f64ccc0743b05d00e7f87f63a620cc9e",
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/edges.json",
           "pointer": "/edges/2",
-          "contentSha256": "d392919edcc2496a12bbdd01a046ecbe47a1277361372b4b9bb4ba892464f544"
+          "contentSha256": "9f6b7509e6aab115a0e328dae7b777b4570a2e3f90860f35cb25262a7eca3420"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-17T16:24:11Z",
+      "reviewedAt": "2026-08-01T07:24:00+02:00",
       "method": "catalog_curator_review",
       "uncertainty": 0.18
     },
@@ -771,16 +772,16 @@
       },
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "c2693d1a4524e7f1ea811730d090b4f7ec6b93d8",
+        "commit": "a29543f9f64ccc0743b05d00e7f87f63a620cc9e",
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/edges.json",
           "pointer": "/edges/3",
-          "contentSha256": "d392919edcc2496a12bbdd01a046ecbe47a1277361372b4b9bb4ba892464f544"
+          "contentSha256": "9f6b7509e6aab115a0e328dae7b777b4570a2e3f90860f35cb25262a7eca3420"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-17T16:24:11Z",
+      "reviewedAt": "2026-08-01T07:24:00+02:00",
       "method": "catalog_curator_review",
       "uncertainty": 0.18
     },
@@ -792,16 +793,16 @@
       },
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "c2693d1a4524e7f1ea811730d090b4f7ec6b93d8",
+        "commit": "a29543f9f64ccc0743b05d00e7f87f63a620cc9e",
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/edges.json",
           "pointer": "/edges/4",
-          "contentSha256": "d392919edcc2496a12bbdd01a046ecbe47a1277361372b4b9bb4ba892464f544"
+          "contentSha256": "9f6b7509e6aab115a0e328dae7b777b4570a2e3f90860f35cb25262a7eca3420"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-17T16:24:11Z",
+      "reviewedAt": "2026-08-01T07:24:00+02:00",
       "method": "catalog_curator_review",
       "uncertainty": 0.18
     },
@@ -813,16 +814,16 @@
       },
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "c2693d1a4524e7f1ea811730d090b4f7ec6b93d8",
+        "commit": "a29543f9f64ccc0743b05d00e7f87f63a620cc9e",
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/edges.json",
           "pointer": "/edges/5",
-          "contentSha256": "d392919edcc2496a12bbdd01a046ecbe47a1277361372b4b9bb4ba892464f544"
+          "contentSha256": "9f6b7509e6aab115a0e328dae7b777b4570a2e3f90860f35cb25262a7eca3420"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-17T16:24:11Z",
+      "reviewedAt": "2026-08-01T07:24:00+02:00",
       "method": "catalog_curator_review",
       "uncertainty": 0.02
     },
@@ -834,16 +835,16 @@
       },
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "a69cc934bd3bde2c35a3bc1162ef1cece659c57a",
+        "commit": "a29543f9f64ccc0743b05d00e7f87f63a620cc9e",
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/edges.json",
           "pointer": "/edges/6",
-          "contentSha256": "b2eb80c7b6ba9e7a9dda91a5643251ade574724648fb3876c3b611d12c873407"
+          "contentSha256": "9f6b7509e6aab115a0e328dae7b777b4570a2e3f90860f35cb25262a7eca3420"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-26T07:42:00Z",
+      "reviewedAt": "2026-08-01T07:24:00+02:00",
       "method": "catalog_curator_review",
       "uncertainty": 0.02
     },
@@ -855,16 +856,16 @@
       },
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "c2693d1a4524e7f1ea811730d090b4f7ec6b93d8",
+        "commit": "a29543f9f64ccc0743b05d00e7f87f63a620cc9e",
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/edges.json",
           "pointer": "/edges/7",
-          "contentSha256": "d392919edcc2496a12bbdd01a046ecbe47a1277361372b4b9bb4ba892464f544"
+          "contentSha256": "9f6b7509e6aab115a0e328dae7b777b4570a2e3f90860f35cb25262a7eca3420"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-17T16:24:11Z",
+      "reviewedAt": "2026-08-01T07:24:00+02:00",
       "method": "catalog_curator_review",
       "uncertainty": 0.18
     },
@@ -876,16 +877,16 @@
       },
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "c2693d1a4524e7f1ea811730d090b4f7ec6b93d8",
+        "commit": "a29543f9f64ccc0743b05d00e7f87f63a620cc9e",
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/edges.json",
           "pointer": "/edges/8",
-          "contentSha256": "d392919edcc2496a12bbdd01a046ecbe47a1277361372b4b9bb4ba892464f544"
+          "contentSha256": "9f6b7509e6aab115a0e328dae7b777b4570a2e3f90860f35cb25262a7eca3420"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-17T16:24:11Z",
+      "reviewedAt": "2026-08-01T07:24:00+02:00",
       "method": "catalog_curator_review",
       "uncertainty": 0.18
     },
@@ -897,16 +898,16 @@
       },
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "c2693d1a4524e7f1ea811730d090b4f7ec6b93d8",
+        "commit": "a29543f9f64ccc0743b05d00e7f87f63a620cc9e",
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/edges.json",
           "pointer": "/edges/9",
-          "contentSha256": "d392919edcc2496a12bbdd01a046ecbe47a1277361372b4b9bb4ba892464f544"
+          "contentSha256": "9f6b7509e6aab115a0e328dae7b777b4570a2e3f90860f35cb25262a7eca3420"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-17T16:24:11Z",
+      "reviewedAt": "2026-08-01T07:24:00+02:00",
       "method": "catalog_curator_review",
       "uncertainty": 0.18
     },
@@ -918,16 +919,16 @@
       },
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "c2693d1a4524e7f1ea811730d090b4f7ec6b93d8",
+        "commit": "a29543f9f64ccc0743b05d00e7f87f63a620cc9e",
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/edges.json",
           "pointer": "/edges/10",
-          "contentSha256": "d392919edcc2496a12bbdd01a046ecbe47a1277361372b4b9bb4ba892464f544"
+          "contentSha256": "9f6b7509e6aab115a0e328dae7b777b4570a2e3f90860f35cb25262a7eca3420"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-17T16:24:11Z",
+      "reviewedAt": "2026-08-01T07:24:00+02:00",
       "method": "catalog_curator_review",
       "uncertainty": 0.18
     },
@@ -939,16 +940,16 @@
       },
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "c2693d1a4524e7f1ea811730d090b4f7ec6b93d8",
+        "commit": "a29543f9f64ccc0743b05d00e7f87f63a620cc9e",
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/edges.json",
           "pointer": "/edges/11",
-          "contentSha256": "d392919edcc2496a12bbdd01a046ecbe47a1277361372b4b9bb4ba892464f544"
+          "contentSha256": "9f6b7509e6aab115a0e328dae7b777b4570a2e3f90860f35cb25262a7eca3420"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-17T16:24:11Z",
+      "reviewedAt": "2026-08-01T07:24:00+02:00",
       "method": "catalog_curator_review",
       "uncertainty": 0.18
     },
@@ -960,16 +961,16 @@
       },
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "c2693d1a4524e7f1ea811730d090b4f7ec6b93d8",
+        "commit": "a29543f9f64ccc0743b05d00e7f87f63a620cc9e",
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/edges.json",
           "pointer": "/edges/12",
-          "contentSha256": "d392919edcc2496a12bbdd01a046ecbe47a1277361372b4b9bb4ba892464f544"
+          "contentSha256": "9f6b7509e6aab115a0e328dae7b777b4570a2e3f90860f35cb25262a7eca3420"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-17T16:24:11Z",
+      "reviewedAt": "2026-08-01T07:24:00+02:00",
       "method": "catalog_curator_review",
       "uncertainty": 0.18
     },
@@ -981,16 +982,16 @@
       },
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "c2693d1a4524e7f1ea811730d090b4f7ec6b93d8",
+        "commit": "a29543f9f64ccc0743b05d00e7f87f63a620cc9e",
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/edges.json",
           "pointer": "/edges/13",
-          "contentSha256": "d392919edcc2496a12bbdd01a046ecbe47a1277361372b4b9bb4ba892464f544"
+          "contentSha256": "9f6b7509e6aab115a0e328dae7b777b4570a2e3f90860f35cb25262a7eca3420"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-17T16:24:11Z",
+      "reviewedAt": "2026-08-01T07:24:00+02:00",
       "method": "catalog_curator_review",
       "uncertainty": 0.18
     },
@@ -1002,16 +1003,16 @@
       },
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "c2693d1a4524e7f1ea811730d090b4f7ec6b93d8",
+        "commit": "a29543f9f64ccc0743b05d00e7f87f63a620cc9e",
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/edges.json",
           "pointer": "/edges/14",
-          "contentSha256": "d392919edcc2496a12bbdd01a046ecbe47a1277361372b4b9bb4ba892464f544"
+          "contentSha256": "9f6b7509e6aab115a0e328dae7b777b4570a2e3f90860f35cb25262a7eca3420"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-17T16:24:11Z",
+      "reviewedAt": "2026-08-01T07:24:00+02:00",
       "method": "catalog_curator_review",
       "uncertainty": 0.18
     },
@@ -1023,16 +1024,16 @@
       },
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "c2693d1a4524e7f1ea811730d090b4f7ec6b93d8",
+        "commit": "a29543f9f64ccc0743b05d00e7f87f63a620cc9e",
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/edges.json",
           "pointer": "/edges/15",
-          "contentSha256": "d392919edcc2496a12bbdd01a046ecbe47a1277361372b4b9bb4ba892464f544"
+          "contentSha256": "9f6b7509e6aab115a0e328dae7b777b4570a2e3f90860f35cb25262a7eca3420"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-17T16:24:11Z",
+      "reviewedAt": "2026-08-01T07:24:00+02:00",
       "method": "catalog_curator_review",
       "uncertainty": 0.18
     },
@@ -1044,16 +1045,16 @@
       },
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "c2693d1a4524e7f1ea811730d090b4f7ec6b93d8",
+        "commit": "a29543f9f64ccc0743b05d00e7f87f63a620cc9e",
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/edges.json",
           "pointer": "/edges/16",
-          "contentSha256": "d392919edcc2496a12bbdd01a046ecbe47a1277361372b4b9bb4ba892464f544"
+          "contentSha256": "9f6b7509e6aab115a0e328dae7b777b4570a2e3f90860f35cb25262a7eca3420"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-17T16:24:11Z",
+      "reviewedAt": "2026-08-01T07:24:00+02:00",
       "method": "catalog_curator_review",
       "uncertainty": 0.18
     },
@@ -1065,16 +1066,16 @@
       },
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "c2693d1a4524e7f1ea811730d090b4f7ec6b93d8",
+        "commit": "a29543f9f64ccc0743b05d00e7f87f63a620cc9e",
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/edges.json",
           "pointer": "/edges/17",
-          "contentSha256": "d392919edcc2496a12bbdd01a046ecbe47a1277361372b4b9bb4ba892464f544"
+          "contentSha256": "9f6b7509e6aab115a0e328dae7b777b4570a2e3f90860f35cb25262a7eca3420"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-17T16:24:11Z",
+      "reviewedAt": "2026-08-01T07:24:00+02:00",
       "method": "catalog_curator_review",
       "uncertainty": 0.18
     },
@@ -1086,16 +1087,16 @@
       },
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "c2693d1a4524e7f1ea811730d090b4f7ec6b93d8",
+        "commit": "a29543f9f64ccc0743b05d00e7f87f63a620cc9e",
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/edges.json",
           "pointer": "/edges/18",
-          "contentSha256": "d392919edcc2496a12bbdd01a046ecbe47a1277361372b4b9bb4ba892464f544"
+          "contentSha256": "9f6b7509e6aab115a0e328dae7b777b4570a2e3f90860f35cb25262a7eca3420"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-17T16:24:11Z",
+      "reviewedAt": "2026-08-01T07:24:00+02:00",
       "method": "catalog_curator_review",
       "uncertainty": 0.18
     },
@@ -1107,16 +1108,16 @@
       },
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "c2693d1a4524e7f1ea811730d090b4f7ec6b93d8",
+        "commit": "a29543f9f64ccc0743b05d00e7f87f63a620cc9e",
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/edges.json",
           "pointer": "/edges/19",
-          "contentSha256": "d392919edcc2496a12bbdd01a046ecbe47a1277361372b4b9bb4ba892464f544"
+          "contentSha256": "9f6b7509e6aab115a0e328dae7b777b4570a2e3f90860f35cb25262a7eca3420"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-17T16:24:11Z",
+      "reviewedAt": "2026-08-01T07:24:00+02:00",
       "method": "catalog_curator_review",
       "uncertainty": 0.18
     },
@@ -1128,16 +1129,16 @@
       },
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "c2693d1a4524e7f1ea811730d090b4f7ec6b93d8",
+        "commit": "a29543f9f64ccc0743b05d00e7f87f63a620cc9e",
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/edges.json",
           "pointer": "/edges/20",
-          "contentSha256": "d392919edcc2496a12bbdd01a046ecbe47a1277361372b4b9bb4ba892464f544"
+          "contentSha256": "9f6b7509e6aab115a0e328dae7b777b4570a2e3f90860f35cb25262a7eca3420"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-17T16:24:11Z",
+      "reviewedAt": "2026-08-01T07:24:00+02:00",
       "method": "catalog_curator_review",
       "uncertainty": 0.18
     },
@@ -1149,16 +1150,16 @@
       },
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "c2693d1a4524e7f1ea811730d090b4f7ec6b93d8",
+        "commit": "a29543f9f64ccc0743b05d00e7f87f63a620cc9e",
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/edges.json",
           "pointer": "/edges/21",
-          "contentSha256": "d392919edcc2496a12bbdd01a046ecbe47a1277361372b4b9bb4ba892464f544"
+          "contentSha256": "9f6b7509e6aab115a0e328dae7b777b4570a2e3f90860f35cb25262a7eca3420"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-17T16:24:11Z",
+      "reviewedAt": "2026-08-01T07:24:00+02:00",
       "method": "catalog_curator_review",
       "uncertainty": 0.18
     },
@@ -1170,16 +1171,16 @@
       },
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "c2693d1a4524e7f1ea811730d090b4f7ec6b93d8",
+        "commit": "a29543f9f64ccc0743b05d00e7f87f63a620cc9e",
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/edges.json",
           "pointer": "/edges/22",
-          "contentSha256": "d392919edcc2496a12bbdd01a046ecbe47a1277361372b4b9bb4ba892464f544"
+          "contentSha256": "9f6b7509e6aab115a0e328dae7b777b4570a2e3f90860f35cb25262a7eca3420"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-17T16:24:11Z",
+      "reviewedAt": "2026-08-01T07:24:00+02:00",
       "method": "catalog_curator_review",
       "uncertainty": 0.08
     },
@@ -1191,16 +1192,16 @@
       },
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "c2693d1a4524e7f1ea811730d090b4f7ec6b93d8",
+        "commit": "a29543f9f64ccc0743b05d00e7f87f63a620cc9e",
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/edges.json",
           "pointer": "/edges/23",
-          "contentSha256": "d392919edcc2496a12bbdd01a046ecbe47a1277361372b4b9bb4ba892464f544"
+          "contentSha256": "9f6b7509e6aab115a0e328dae7b777b4570a2e3f90860f35cb25262a7eca3420"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-17T16:24:11Z",
+      "reviewedAt": "2026-08-01T07:24:00+02:00",
       "method": "catalog_curator_review",
       "uncertainty": 0.18
     },
@@ -1212,16 +1213,16 @@
       },
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "c2693d1a4524e7f1ea811730d090b4f7ec6b93d8",
+        "commit": "a29543f9f64ccc0743b05d00e7f87f63a620cc9e",
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/edges.json",
           "pointer": "/edges/24",
-          "contentSha256": "d392919edcc2496a12bbdd01a046ecbe47a1277361372b4b9bb4ba892464f544"
+          "contentSha256": "9f6b7509e6aab115a0e328dae7b777b4570a2e3f90860f35cb25262a7eca3420"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-17T16:24:11Z",
+      "reviewedAt": "2026-08-01T07:24:00+02:00",
       "method": "catalog_curator_review",
       "uncertainty": 0.18
     },
@@ -1233,16 +1234,16 @@
       },
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "c2693d1a4524e7f1ea811730d090b4f7ec6b93d8",
+        "commit": "a29543f9f64ccc0743b05d00e7f87f63a620cc9e",
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/edges.json",
           "pointer": "/edges/25",
-          "contentSha256": "d392919edcc2496a12bbdd01a046ecbe47a1277361372b4b9bb4ba892464f544"
+          "contentSha256": "9f6b7509e6aab115a0e328dae7b777b4570a2e3f90860f35cb25262a7eca3420"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-17T16:24:11Z",
+      "reviewedAt": "2026-08-01T07:24:00+02:00",
       "method": "catalog_curator_review",
       "uncertainty": 0.18
     },
@@ -1254,16 +1255,16 @@
       },
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "c2693d1a4524e7f1ea811730d090b4f7ec6b93d8",
+        "commit": "a29543f9f64ccc0743b05d00e7f87f63a620cc9e",
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/edges.json",
           "pointer": "/edges/26",
-          "contentSha256": "d392919edcc2496a12bbdd01a046ecbe47a1277361372b4b9bb4ba892464f544"
+          "contentSha256": "9f6b7509e6aab115a0e328dae7b777b4570a2e3f90860f35cb25262a7eca3420"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-17T16:24:11Z",
+      "reviewedAt": "2026-08-01T07:24:00+02:00",
       "method": "catalog_curator_review",
       "uncertainty": 0.18
     },
@@ -1275,16 +1276,16 @@
       },
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "c2693d1a4524e7f1ea811730d090b4f7ec6b93d8",
+        "commit": "a29543f9f64ccc0743b05d00e7f87f63a620cc9e",
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/edges.json",
           "pointer": "/edges/27",
-          "contentSha256": "d392919edcc2496a12bbdd01a046ecbe47a1277361372b4b9bb4ba892464f544"
+          "contentSha256": "9f6b7509e6aab115a0e328dae7b777b4570a2e3f90860f35cb25262a7eca3420"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-17T16:24:11Z",
+      "reviewedAt": "2026-08-01T07:24:00+02:00",
       "method": "catalog_curator_review",
       "uncertainty": 0.18
     },
@@ -1296,16 +1297,16 @@
       },
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "815bde3f8ca5ea88f5925589673109f078efa2f9",
+        "commit": "a29543f9f64ccc0743b05d00e7f87f63a620cc9e",
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/edges.json",
           "pointer": "/edges/28",
-          "contentSha256": "1beb90745b7c9501a9ce7ea1af65369deedf117a84f854513d42bd8289e488c6"
+          "contentSha256": "9f6b7509e6aab115a0e328dae7b777b4570a2e3f90860f35cb25262a7eca3420"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-28T18:48:18+02:00",
+      "reviewedAt": "2026-08-01T07:24:00+02:00",
       "method": "catalog_curator_review",
       "uncertainty": 0.02
     },
@@ -1317,16 +1318,16 @@
       },
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "c2693d1a4524e7f1ea811730d090b4f7ec6b93d8",
+        "commit": "a29543f9f64ccc0743b05d00e7f87f63a620cc9e",
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/edges.json",
           "pointer": "/edges/29",
-          "contentSha256": "d392919edcc2496a12bbdd01a046ecbe47a1277361372b4b9bb4ba892464f544"
+          "contentSha256": "9f6b7509e6aab115a0e328dae7b777b4570a2e3f90860f35cb25262a7eca3420"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-17T16:24:11Z",
+      "reviewedAt": "2026-08-01T07:24:00+02:00",
       "method": "catalog_curator_review",
       "uncertainty": 0.18
     },
@@ -1338,16 +1339,16 @@
       },
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "c2693d1a4524e7f1ea811730d090b4f7ec6b93d8",
+        "commit": "a29543f9f64ccc0743b05d00e7f87f63a620cc9e",
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/edges.json",
           "pointer": "/edges/30",
-          "contentSha256": "d392919edcc2496a12bbdd01a046ecbe47a1277361372b4b9bb4ba892464f544"
+          "contentSha256": "9f6b7509e6aab115a0e328dae7b777b4570a2e3f90860f35cb25262a7eca3420"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-17T16:24:11Z",
+      "reviewedAt": "2026-08-01T07:24:00+02:00",
       "method": "catalog_curator_review",
       "uncertainty": 0.18
     },
@@ -1359,16 +1360,16 @@
       },
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "c2693d1a4524e7f1ea811730d090b4f7ec6b93d8",
+        "commit": "a29543f9f64ccc0743b05d00e7f87f63a620cc9e",
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/edges.json",
           "pointer": "/edges/31",
-          "contentSha256": "d392919edcc2496a12bbdd01a046ecbe47a1277361372b4b9bb4ba892464f544"
+          "contentSha256": "9f6b7509e6aab115a0e328dae7b777b4570a2e3f90860f35cb25262a7eca3420"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-17T16:24:11Z",
+      "reviewedAt": "2026-08-01T07:24:00+02:00",
       "method": "catalog_curator_review",
       "uncertainty": 0.18
     },
@@ -1380,16 +1381,16 @@
       },
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "c2693d1a4524e7f1ea811730d090b4f7ec6b93d8",
+        "commit": "a29543f9f64ccc0743b05d00e7f87f63a620cc9e",
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/edges.json",
           "pointer": "/edges/32",
-          "contentSha256": "d392919edcc2496a12bbdd01a046ecbe47a1277361372b4b9bb4ba892464f544"
+          "contentSha256": "9f6b7509e6aab115a0e328dae7b777b4570a2e3f90860f35cb25262a7eca3420"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-17T16:24:11Z",
+      "reviewedAt": "2026-08-01T07:24:00+02:00",
       "method": "catalog_curator_review",
       "uncertainty": 0.18
     },
@@ -1401,16 +1402,16 @@
       },
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "c2693d1a4524e7f1ea811730d090b4f7ec6b93d8",
+        "commit": "a29543f9f64ccc0743b05d00e7f87f63a620cc9e",
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/edges.json",
           "pointer": "/edges/33",
-          "contentSha256": "d392919edcc2496a12bbdd01a046ecbe47a1277361372b4b9bb4ba892464f544"
+          "contentSha256": "9f6b7509e6aab115a0e328dae7b777b4570a2e3f90860f35cb25262a7eca3420"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-17T16:24:11Z",
+      "reviewedAt": "2026-08-01T07:24:00+02:00",
       "method": "catalog_curator_review",
       "uncertainty": 0.18
     },
@@ -1422,16 +1423,16 @@
       },
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "c2693d1a4524e7f1ea811730d090b4f7ec6b93d8",
+        "commit": "a29543f9f64ccc0743b05d00e7f87f63a620cc9e",
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/edges.json",
           "pointer": "/edges/34",
-          "contentSha256": "d392919edcc2496a12bbdd01a046ecbe47a1277361372b4b9bb4ba892464f544"
+          "contentSha256": "9f6b7509e6aab115a0e328dae7b777b4570a2e3f90860f35cb25262a7eca3420"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-17T16:24:11Z",
+      "reviewedAt": "2026-08-01T07:24:00+02:00",
       "method": "catalog_curator_review",
       "uncertainty": 0.18
     },
@@ -1443,16 +1444,16 @@
       },
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "c2693d1a4524e7f1ea811730d090b4f7ec6b93d8",
+        "commit": "a29543f9f64ccc0743b05d00e7f87f63a620cc9e",
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/edges.json",
           "pointer": "/edges/35",
-          "contentSha256": "d392919edcc2496a12bbdd01a046ecbe47a1277361372b4b9bb4ba892464f544"
+          "contentSha256": "9f6b7509e6aab115a0e328dae7b777b4570a2e3f90860f35cb25262a7eca3420"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-17T16:24:11Z",
+      "reviewedAt": "2026-08-01T07:24:00+02:00",
       "method": "catalog_curator_review",
       "uncertainty": 0.18
     },
@@ -1464,16 +1465,16 @@
       },
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "c2693d1a4524e7f1ea811730d090b4f7ec6b93d8",
+        "commit": "a29543f9f64ccc0743b05d00e7f87f63a620cc9e",
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/edges.json",
           "pointer": "/edges/36",
-          "contentSha256": "d392919edcc2496a12bbdd01a046ecbe47a1277361372b4b9bb4ba892464f544"
+          "contentSha256": "9f6b7509e6aab115a0e328dae7b777b4570a2e3f90860f35cb25262a7eca3420"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-17T16:24:11Z",
+      "reviewedAt": "2026-08-01T07:24:00+02:00",
       "method": "catalog_curator_review",
       "uncertainty": 0.18
     },
@@ -1485,16 +1486,16 @@
       },
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "c2693d1a4524e7f1ea811730d090b4f7ec6b93d8",
+        "commit": "a29543f9f64ccc0743b05d00e7f87f63a620cc9e",
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/edges.json",
           "pointer": "/edges/37",
-          "contentSha256": "d392919edcc2496a12bbdd01a046ecbe47a1277361372b4b9bb4ba892464f544"
+          "contentSha256": "9f6b7509e6aab115a0e328dae7b777b4570a2e3f90860f35cb25262a7eca3420"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-17T16:24:11Z",
+      "reviewedAt": "2026-08-01T07:24:00+02:00",
       "method": "catalog_curator_review",
       "uncertainty": 0.18
     },
@@ -1506,16 +1507,16 @@
       },
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "c2693d1a4524e7f1ea811730d090b4f7ec6b93d8",
+        "commit": "a29543f9f64ccc0743b05d00e7f87f63a620cc9e",
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/edges.json",
           "pointer": "/edges/38",
-          "contentSha256": "d392919edcc2496a12bbdd01a046ecbe47a1277361372b4b9bb4ba892464f544"
+          "contentSha256": "9f6b7509e6aab115a0e328dae7b777b4570a2e3f90860f35cb25262a7eca3420"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-17T16:24:11Z",
+      "reviewedAt": "2026-08-01T07:24:00+02:00",
       "method": "catalog_curator_review",
       "uncertainty": 0.18
     },
@@ -1527,16 +1528,16 @@
       },
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "c2693d1a4524e7f1ea811730d090b4f7ec6b93d8",
+        "commit": "a29543f9f64ccc0743b05d00e7f87f63a620cc9e",
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/edges.json",
           "pointer": "/edges/39",
-          "contentSha256": "d392919edcc2496a12bbdd01a046ecbe47a1277361372b4b9bb4ba892464f544"
+          "contentSha256": "9f6b7509e6aab115a0e328dae7b777b4570a2e3f90860f35cb25262a7eca3420"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-17T16:24:11Z",
+      "reviewedAt": "2026-08-01T07:24:00+02:00",
       "method": "catalog_curator_review",
       "uncertainty": 0.18
     },
@@ -1548,16 +1549,16 @@
       },
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "c2693d1a4524e7f1ea811730d090b4f7ec6b93d8",
+        "commit": "a29543f9f64ccc0743b05d00e7f87f63a620cc9e",
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/edges.json",
           "pointer": "/edges/40",
-          "contentSha256": "d392919edcc2496a12bbdd01a046ecbe47a1277361372b4b9bb4ba892464f544"
+          "contentSha256": "9f6b7509e6aab115a0e328dae7b777b4570a2e3f90860f35cb25262a7eca3420"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-17T16:24:11Z",
+      "reviewedAt": "2026-08-01T07:24:00+02:00",
       "method": "catalog_curator_review",
       "uncertainty": 0.18
     },
@@ -1569,16 +1570,16 @@
       },
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "c2693d1a4524e7f1ea811730d090b4f7ec6b93d8",
+        "commit": "a29543f9f64ccc0743b05d00e7f87f63a620cc9e",
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/edges.json",
           "pointer": "/edges/41",
-          "contentSha256": "d392919edcc2496a12bbdd01a046ecbe47a1277361372b4b9bb4ba892464f544"
+          "contentSha256": "9f6b7509e6aab115a0e328dae7b777b4570a2e3f90860f35cb25262a7eca3420"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-17T16:24:11Z",
+      "reviewedAt": "2026-08-01T07:24:00+02:00",
       "method": "catalog_curator_review",
       "uncertainty": 0.18
     },
@@ -1590,16 +1591,16 @@
       },
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "c2693d1a4524e7f1ea811730d090b4f7ec6b93d8",
+        "commit": "a29543f9f64ccc0743b05d00e7f87f63a620cc9e",
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/edges.json",
           "pointer": "/edges/42",
-          "contentSha256": "d392919edcc2496a12bbdd01a046ecbe47a1277361372b4b9bb4ba892464f544"
+          "contentSha256": "9f6b7509e6aab115a0e328dae7b777b4570a2e3f90860f35cb25262a7eca3420"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-17T16:24:11Z",
+      "reviewedAt": "2026-08-01T07:24:00+02:00",
       "method": "catalog_curator_review",
       "uncertainty": 0.08
     },
@@ -1611,16 +1612,16 @@
       },
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "c2693d1a4524e7f1ea811730d090b4f7ec6b93d8",
+        "commit": "a29543f9f64ccc0743b05d00e7f87f63a620cc9e",
         "defaultBranch": "main",
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/edges.json",
           "pointer": "/edges/43",
-          "contentSha256": "d392919edcc2496a12bbdd01a046ecbe47a1277361372b4b9bb4ba892464f544"
+          "contentSha256": "9f6b7509e6aab115a0e328dae7b777b4570a2e3f90860f35cb25262a7eca3420"
         }
       },
-      "reviewedAt": "2026-07-17T16:24:11Z",
+      "reviewedAt": "2026-08-01T07:24:00+02:00",
       "method": "catalog_curator_review",
       "uncertainty": 0.02
     },
@@ -1632,16 +1633,16 @@
       },
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "c2693d1a4524e7f1ea811730d090b4f7ec6b93d8",
+        "commit": "a29543f9f64ccc0743b05d00e7f87f63a620cc9e",
         "defaultBranch": "main",
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/edges.json",
           "pointer": "/edges/44",
-          "contentSha256": "d392919edcc2496a12bbdd01a046ecbe47a1277361372b4b9bb4ba892464f544"
+          "contentSha256": "9f6b7509e6aab115a0e328dae7b777b4570a2e3f90860f35cb25262a7eca3420"
         }
       },
-      "reviewedAt": "2026-07-17T16:24:11Z",
+      "reviewedAt": "2026-08-01T07:24:00+02:00",
       "method": "catalog_curator_review",
       "uncertainty": 0.02
     },
@@ -1653,16 +1654,16 @@
       },
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "d66424a15f3d67a381e03dba51eedd3532f1725a",
+        "commit": "a29543f9f64ccc0743b05d00e7f87f63a620cc9e",
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/edges.json",
           "pointer": "/edges/45",
-          "contentSha256": "5129f813a4e91baa96d89e06d7c0c13643f32db834463b2c4e1dc8ecd13fed1e"
+          "contentSha256": "9f6b7509e6aab115a0e328dae7b777b4570a2e3f90860f35cb25262a7eca3420"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-08-01T03:35:00+02:00",
+      "reviewedAt": "2026-08-01T07:24:00+02:00",
       "method": "catalog_curator_review",
       "uncertainty": 0.04
     },
@@ -1674,16 +1675,16 @@
       },
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "d66424a15f3d67a381e03dba51eedd3532f1725a",
+        "commit": "a29543f9f64ccc0743b05d00e7f87f63a620cc9e",
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/edges.json",
           "pointer": "/edges/46",
-          "contentSha256": "5129f813a4e91baa96d89e06d7c0c13643f32db834463b2c4e1dc8ecd13fed1e"
+          "contentSha256": "9f6b7509e6aab115a0e328dae7b777b4570a2e3f90860f35cb25262a7eca3420"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-08-01T03:35:00+02:00",
+      "reviewedAt": "2026-08-01T07:24:00+02:00",
       "method": "catalog_curator_review",
       "uncertainty": 0.04
     },
@@ -1695,16 +1696,16 @@
       },
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "d66424a15f3d67a381e03dba51eedd3532f1725a",
+        "commit": "a29543f9f64ccc0743b05d00e7f87f63a620cc9e",
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/edges.json",
           "pointer": "/edges/47",
-          "contentSha256": "5129f813a4e91baa96d89e06d7c0c13643f32db834463b2c4e1dc8ecd13fed1e"
+          "contentSha256": "9f6b7509e6aab115a0e328dae7b777b4570a2e3f90860f35cb25262a7eca3420"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-08-01T03:35:00+02:00",
+      "reviewedAt": "2026-08-01T07:24:00+02:00",
       "method": "catalog_curator_review",
       "uncertainty": 0.04
     },
@@ -1716,16 +1717,16 @@
       },
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "d66424a15f3d67a381e03dba51eedd3532f1725a",
+        "commit": "a29543f9f64ccc0743b05d00e7f87f63a620cc9e",
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/edges.json",
           "pointer": "/edges/48",
-          "contentSha256": "5129f813a4e91baa96d89e06d7c0c13643f32db834463b2c4e1dc8ecd13fed1e"
+          "contentSha256": "9f6b7509e6aab115a0e328dae7b777b4570a2e3f90860f35cb25262a7eca3420"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-08-01T03:35:00+02:00",
+      "reviewedAt": "2026-08-01T07:24:00+02:00",
       "method": "catalog_curator_review",
       "uncertainty": 0.04
     },
@@ -1737,16 +1738,16 @@
       },
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "d66424a15f3d67a381e03dba51eedd3532f1725a",
+        "commit": "a29543f9f64ccc0743b05d00e7f87f63a620cc9e",
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/edges.json",
           "pointer": "/edges/49",
-          "contentSha256": "5129f813a4e91baa96d89e06d7c0c13643f32db834463b2c4e1dc8ecd13fed1e"
+          "contentSha256": "9f6b7509e6aab115a0e328dae7b777b4570a2e3f90860f35cb25262a7eca3420"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-08-01T03:35:00+02:00",
+      "reviewedAt": "2026-08-01T07:24:00+02:00",
       "method": "catalog_curator_review",
       "uncertainty": 0.04
     },
@@ -1758,16 +1759,16 @@
       },
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "d66424a15f3d67a381e03dba51eedd3532f1725a",
+        "commit": "a29543f9f64ccc0743b05d00e7f87f63a620cc9e",
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/edges.json",
           "pointer": "/edges/50",
-          "contentSha256": "5129f813a4e91baa96d89e06d7c0c13643f32db834463b2c4e1dc8ecd13fed1e"
+          "contentSha256": "9f6b7509e6aab115a0e328dae7b777b4570a2e3f90860f35cb25262a7eca3420"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-08-01T03:35:00+02:00",
+      "reviewedAt": "2026-08-01T07:24:00+02:00",
       "method": "catalog_curator_review",
       "uncertainty": 0.04
     },
@@ -1779,16 +1780,16 @@
       },
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "d66424a15f3d67a381e03dba51eedd3532f1725a",
+        "commit": "a29543f9f64ccc0743b05d00e7f87f63a620cc9e",
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/edges.json",
           "pointer": "/edges/51",
-          "contentSha256": "5129f813a4e91baa96d89e06d7c0c13643f32db834463b2c4e1dc8ecd13fed1e"
+          "contentSha256": "9f6b7509e6aab115a0e328dae7b777b4570a2e3f90860f35cb25262a7eca3420"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-08-01T03:35:00+02:00",
+      "reviewedAt": "2026-08-01T07:24:00+02:00",
       "method": "catalog_curator_review",
       "uncertainty": 0.04
     }
