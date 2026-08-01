@@ -3,7 +3,7 @@
   "kind": "system_catalog_resilience",
   "owner": "repo:systemkatalog",
   "catalogRole": "canonical_stable_resilience_semantics",
-  "updatedAt": "2026-07-29",
+  "updatedAt": "2026-08-01",
   "defaultCriticality": "unknown",
   "criticalityClasses": [
     "foundational",
@@ -790,6 +790,76 @@
         "registry/ecosystem/authority-matrix.v1.json"
       ],
       "uncertainty": 0.18
+    },
+    {
+      "system": "concept:weltgewebe-os",
+      "criticality": "supporting",
+      "failureDomains": [],
+      "recoveryModeRefs": [],
+      "acceptedSinglePathRisks": [
+        "A normative target remains available from Git history, but catalog presence does not prove current implementation or runtime readiness."
+      ],
+      "evidence": [
+        "registry/ecosystem/authority-matrix.v1.json",
+        "registry/ecosystem/source-bindings.v1.json"
+      ],
+      "uncertainty": 0.12
+    },
+    {
+      "system": "concept:gewebezelle",
+      "criticality": "supporting",
+      "failureDomains": [],
+      "recoveryModeRefs": [],
+      "acceptedSinglePathRisks": [
+        "Cell-local truth intentionally has no global automatic replacement or multi-primary fallback."
+      ],
+      "evidence": [
+        "registry/ecosystem/authority-matrix.v1.json",
+        "registry/ecosystem/source-bindings.v1.json"
+      ],
+      "uncertainty": 0.12
+    },
+    {
+      "system": "concept:weltgewebe-platform-target",
+      "criticality": "supporting",
+      "failureDomains": [],
+      "recoveryModeRefs": [],
+      "acceptedSinglePathRisks": [
+        "The target platform remains semantically useful even while production Kubernetes and multi-host HA are not yet proven."
+      ],
+      "evidence": [
+        "registry/ecosystem/authority-matrix.v1.json",
+        "registry/ecosystem/source-bindings.v1.json"
+      ],
+      "uncertainty": 0.12
+    },
+    {
+      "system": "concept:weltgewebe-federation-planes",
+      "criticality": "supporting",
+      "failureDomains": [],
+      "recoveryModeRefs": [],
+      "acceptedSinglePathRisks": [
+        "Public federation readiness must be revalidated at Weltgewebe primary sources and is not inferred from this concept."
+      ],
+      "evidence": [
+        "registry/ecosystem/authority-matrix.v1.json",
+        "registry/ecosystem/source-bindings.v1.json"
+      ],
+      "uncertainty": 0.12
+    },
+    {
+      "system": "concept:gewebezelle-betreiberrolle",
+      "criticality": "supporting",
+      "failureDomains": [],
+      "recoveryModeRefs": [],
+      "acceptedSinglePathRisks": [
+        "Operator authority remains cell-scoped and cannot be reconstructed from technical reachability alone."
+      ],
+      "evidence": [
+        "registry/ecosystem/authority-matrix.v1.json",
+        "registry/ecosystem/source-bindings.v1.json"
+      ],
+      "uncertainty": 0.12
     }
   ],
   "relations": [

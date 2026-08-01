@@ -42,8 +42,16 @@ flowchart TD
         repo_systemkatalog["Systemkatalog<br/>id: repo:systemkatalog<br/>repository<br/>lifecycle: active · reviewed: 2026-07-26<br/>app-independent catalog for system purposes, truth ownership, stable relations and entrypoints"]
         repo_vault_gewebe["Vault Gewebe<br/>id: repo:vault-gewebe<br/>repository<br/>lifecycle: active · reviewed: 2026-07-26<br/>Versioned shared knowledge vault and design source material"]
         repo_vibe_lab["Vibe-Lab<br/>id: repo:vibe-lab<br/>repository<br/>lifecycle: active · reviewed: 2026-07-26<br/>bounded prospective experiments, evidence review and proposal-ready learning candidates"]
-        repo_weltgewebe["Weltgewebe<br/>id: repo:weltgewebe<br/>repository<br/>lifecycle: active · reviewed: 2026-07-26<br/>federated map and coordination system for collective goods, local relationships and community action"]
+        repo_weltgewebe["Weltgewebe<br/>id: repo:weltgewebe<br/>repository<br/>lifecycle: active · reviewed: 2026-08-01<br/>federated map and coordination system implementing the Weltgewebe OS product and domain core"]
         repo_wgx["WGX<br/>id: repo:wgx<br/>repository<br/>lifecycle: active · reviewed: 2026-07-26<br/>Fleet CLI and reusable repository workflow engine"]
+    end
+
+    subgraph kind_concept[Konzepte]
+        concept_gewebezelle["GewebeZelle<br/>id: concept:gewebezelle<br/>concept<br/>lifecycle: active · reviewed: 2026-08-01<br/>autonomous operational and social domain with local data sovereignty, moderation, rules, infrastructure boundaries and explicit federation relationships"]
+        concept_gewebezelle_betreiberrolle["GewebeZell-Betreiberrolle<br/>id: concept:gewebezelle-betreiberrolle<br/>concept<br/>lifecycle: active · reviewed: 2026-08-01<br/>local responsibility for cell infrastructure, moderation, rules, data boundaries and explicitly allowed federation relationships"]
+        concept_weltgewebe_federation_planes["Weltgewebe-Föderationsebenen<br/>id: concept:weltgewebe-federation-planes<br/>concept<br/>lifecycle: active · reviewed: 2026-08-01<br/>separation of same-operator infrastructure federation, trusted-neighbour event federation and public domain federation between independent cells"]
+        concept_weltgewebe_os["Weltgewebe OS<br/>id: concept:weltgewebe-os<br/>concept<br/>lifecycle: active · reviewed: 2026-08-01<br/>canonical target architecture for a federated, locally sovereign and globally connected societal coordination layer"]
+        concept_weltgewebe_platform_target["Weltgewebe-Plattformziel<br/>id: concept:weltgewebe-platform-target<br/>concept<br/>lifecycle: transition · reviewed: 2026-08-01<br/>Kubernetes- and GitOps-based target platform for staging and production while Compose remains a real, bounded development and recovery profile"]
     end
 
     subgraph kind_artifact[Artefakte]
@@ -56,6 +64,11 @@ flowchart TD
     end
 
     actor_alexander -->|steers / stable| repo_systemkatalog
+    concept_gewebezelle -->|operates_on / bounded| concept_weltgewebe_federation_planes
+    concept_gewebezelle_betreiberrolle -->|operates_on / stable| concept_gewebezelle
+    concept_weltgewebe_os -->|provides / stable| concept_gewebezelle
+    concept_weltgewebe_os -->|provides / stable| concept_weltgewebe_federation_planes
+    concept_weltgewebe_os -->|provides / stable| concept_weltgewebe_platform_target
     repo_agent_control_surface -->|operates_on / bounded| service_github
     repo_aussensensor -->|delivers_to / stable| repo_chronik
     repo_bureau -->|delegates_to / stable| repo_grabowski
@@ -68,6 +81,7 @@ flowchart TD
     repo_commonworld -->|operates_on / stable| service_github
     repo_contracts_mirror -->|validated_by / stable| service_ci
     repo_device_graph -->|scope_boundary / related| artifact_ecosystem_map
+    repo_grabowski -->|operates_on / bounded| concept_weltgewebe_platform_target
     repo_grabowski -->|emits_to / bounded| repo_chronik
     repo_grabowski -->|operates_on / stable| service_github
     repo_hausKI_audio -->|provides / related| repo_audio
@@ -95,6 +109,7 @@ flowchart TD
     repo_vault_gewebe -->|scope_boundary / related| repo_systemkatalog
     repo_vibe_lab -->|exports_candidate_to / bounded| repo_bureau
     repo_vibe_lab -->|provides / stable| repo_systemkatalog
+    repo_weltgewebe -->|provides / stable| concept_weltgewebe_os
     repo_weltgewebe -->|operates_on / stable| service_github
     repo_wgx -->|provides / stable| service_ci
     service_ci -->|provides / stable| repo_leitstand
@@ -103,9 +118,9 @@ flowchart TD
 
     %% Lifecycle is stable catalog semantics, not runtime status.
     classDef lifecycleActive stroke-width:1.5px;
-    class actor_alexander,artifact_ecosystem_map,repo_systemkatalog,repo_bureau,repo_grabowski,repo_weltgewebe,repo_repoground,repo_reposkop,repo_vibe_lab,repo_chronik,repo_schauwerk,repo_infra,repo_device_graph,service_github,service_ci,repo_leitstand,repo_plexer,repo_metarepo,repo_wgx,repo_contracts_mirror,repo_hausKI,repo_audio,repo_semantAH,repo_aussensensor,repo_mitschreiber,repo_sichter,repo_heim_pc,repo_vault_gewebe,repo_commonworld,repo_obsidian_bridge,repo_snippet_engine_control,repo_konvergenzregelkreis lifecycleActive;
+    class actor_alexander,artifact_ecosystem_map,repo_systemkatalog,repo_bureau,repo_grabowski,repo_weltgewebe,repo_repoground,repo_reposkop,repo_vibe_lab,repo_chronik,repo_schauwerk,repo_infra,repo_device_graph,service_github,service_ci,repo_leitstand,repo_plexer,repo_metarepo,repo_wgx,repo_contracts_mirror,repo_hausKI,repo_audio,repo_semantAH,repo_aussensensor,repo_mitschreiber,repo_sichter,repo_heim_pc,repo_vault_gewebe,repo_commonworld,repo_obsidian_bridge,repo_snippet_engine_control,repo_konvergenzregelkreis,concept_weltgewebe_os,concept_gewebezelle,concept_weltgewebe_federation_planes,concept_gewebezelle_betreiberrolle lifecycleActive;
     classDef lifecycleTransition stroke:#fbbf24,stroke-width:3px,stroke-dasharray:6 3;
-    class repo_heimgeist,repo_agent_control_surface lifecycleTransition;
+    class repo_heimgeist,repo_agent_control_surface,concept_weltgewebe_platform_target lifecycleTransition;
     classDef lifecycleArchived fill:#1f2937,stroke:#64748b,color:#cbd5e1;
     class repo_heimlern,repo_leitwerk lifecycleArchived;
     classDef lifecycleRetired fill:#111827,stroke:#ef4444,stroke-width:2px,stroke-dasharray:8 4,color:#94a3b8;
