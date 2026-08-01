@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "kind": "system_catalog_source_binding_review",
+  "decision": "approved_source_binding_refresh",
+  "reviewedAt": "2026-08-01T20:20:27+02:00",
+  "reportSha256": "35820e03ef28d80960eac325109492e2cdb98c01747c0a49351c1a112ee1feda",
+  "approvedChanges": [
+    {
+      "repository": "heimgewebe/reposkop",
+      "system": "repo:reposkop",
+      "locatorKind": "file",
+      "path": "README.md",
+      "boundCommit": "27d84a64b8e6e64581c0e55194c1faaaa1bbc1c8",
+      "boundSha256": "2dcaeae33e16b8439fdda4172f9f5916c4e736b9c7365d2ae895c6a59032e36e",
+      "observedCommit": "6c0847c2cbc6ee1d1cff52fc1b4a1c5ee17af487",
+      "observedSha256": "a6b63794cd4ec41e30e979fd524349386d207673700c3bc4c369f3fa0619ae94"
+    },
+    {
+      "repository": "heimgewebe/audio",
+      "system": "repo:audio",
+      "locatorKind": "file",
+      "path": "README.md",
+      "boundCommit": "49710c62c017019ba3778d0599e511e6b8bc61a7",
+      "boundSha256": "e5d4650315ceb5cfae0dcb44eb2efe5111c0a312ebdd07ef3e9977b357a175cb",
+      "observedCommit": "404736337ec315eb0af556b412c68136e49c1159",
+      "observedSha256": "a176fa0df833d7835e9ad7f15d87a9ef57bea0e6b1061379a7cb87941a56959a"
+    }
+  ],
+  "doesNotEstablish": [
+    "semantic_change",
+    "merge",
+    "deploy",
+    "runtime_health",
+    "task_completion"
+  ]
+}

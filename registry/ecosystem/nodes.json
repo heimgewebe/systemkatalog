@@ -184,24 +184,27 @@
       "id": "repo:reposkop",
       "name": "Reposkop",
       "type": "repository",
-      "purpose": "target-bound, deterministic read-only repository and checkout coherence projection",
+      "purpose": "canonical local checkout identity, transition and continuity truth for explicitly selected repository targets",
       "notResponsibleFor": [
         "task authorization",
-        "merge approval",
+        "pull request or merge truth",
+        "remote repository freshness",
         "runtime mutation",
         "effect authorization"
       ],
       "truthOwnership": [
-        "repository_observation_readiness"
+        "repository_checkout_identity_continuity"
       ],
       "entrypoints": {
-        "repository": "https://github.com/heimgewebe/reposkop"
+        "repository": "https://github.com/heimgewebe/reposkop",
+        "readme": "https://github.com/heimgewebe/reposkop/blob/6c0847c2cbc6ee1d1cff52fc1b4a1c5ee17af487/README.md"
       },
       "lifecycle": {
         "state": "active",
-        "reviewedAt": "2026-07-26",
+        "reviewedAt": "2026-08-01",
         "evidenceRefs": [
-          "registry/ecosystem/organization-scope.v1.json"
+          "https://github.com/heimgewebe/reposkop/blob/6c0847c2cbc6ee1d1cff52fc1b4a1c5ee17af487/README.md",
+          "https://github.com/heimgewebe/reposkop/pull/97"
         ]
       }
     },
@@ -552,13 +555,13 @@
       "truthOwnership": [],
       "entrypoints": {
         "repository": "https://github.com/heimgewebe/audio",
-        "readme": "https://github.com/heimgewebe/audio/blob/49710c62c017019ba3778d0599e511e6b8bc61a7/README.md"
+        "readme": "https://github.com/heimgewebe/audio/blob/404736337ec315eb0af556b412c68136e49c1159/README.md"
       },
       "lifecycle": {
         "state": "active",
         "reviewedAt": "2026-08-01",
         "evidenceRefs": [
-          "https://github.com/heimgewebe/audio/blob/49710c62c017019ba3778d0599e511e6b8bc61a7/README.md",
+          "https://github.com/heimgewebe/audio/blob/404736337ec315eb0af556b412c68136e49c1159/README.md",
           "https://github.com/heimgewebe/systemkatalog/pull/150",
           "https://github.com/heimgewebe/bureau/blob/702fd606235494c2bd3a151555b2a2b9169f745c/docs/plans/operator-platform-masterplan-v2.md"
         ]

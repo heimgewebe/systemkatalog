@@ -76,7 +76,7 @@
       "to": "repo:systemkatalog",
       "type": "observes",
       "stability": "stable",
-      "meaning": "Reposkop provides target-bound, read-only repository and checkout coherence signals, but no decisions or effect authority."
+      "meaning": "Reposkop provides canonical, target-bound local checkout identity, transition and continuity truth for Systemkatalog checkouts, but no effect authority."
     },
     {
       "from": "repo:vibe-lab",

@@ -113,6 +113,26 @@ class SystemCatalogTests(unittest.TestCase):
             ["commonworld_commons_admission"],
         )
         self.assertIn("evidence-bound", by_id["repo:commonworld"]["purpose"])
+        self.assertEqual(
+            by_id["repo:reposkop"]["truthOwnership"],
+            ["repository_checkout_identity_continuity"],
+        )
+        self.assertIn("checkout identity", by_id["repo:reposkop"]["purpose"])
+        self.assertIn(
+            "remote repository freshness",
+            by_id["repo:reposkop"]["notResponsibleFor"],
+        )
+        edges = json.loads(
+            (ROOT / "registry/ecosystem/edges.json").read_text(encoding="utf-8")
+        )["edges"]
+        reposkop_relation = next(
+            edge
+            for edge in edges
+            if edge["from"] == "repo:reposkop"
+            and edge["to"] == "repo:systemkatalog"
+        )
+        self.assertIn("checkout identity", reposkop_relation["meaning"])
+        self.assertIn("no effect authority", reposkop_relation["meaning"])
 
     def test_missing_canonical_system_field_fails_closed(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
