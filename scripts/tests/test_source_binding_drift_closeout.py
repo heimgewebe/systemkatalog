@@ -20,9 +20,9 @@ EXPECTED = {
     },
     "repo:weltgewebe": {
         "repository": "heimgewebe/weltgewebe",
-        "commit": "9fda211859e0cdca9decf8e159ea6a630c4ea086",
-        "sha256": "dadcfe97ed4ae110533f51f5c3d256ef5157fcf8578cbc5c2a3177f81f65ecd6",
-        "path": "README.md",
+        "commit": "322655285b520d04363e48487ae64d57264de573",
+        "sha256": "a8afc647c472cb16aedd0a5f63a499db4c00676a6bdac800ded531855e26a65f",
+        "path": "architecture/weltgewebe-os.md",
     },
     "repo:repoground": {
         "repository": "heimgewebe/repoground",
