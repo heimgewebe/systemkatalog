@@ -14,6 +14,7 @@ SCRIPTS = ROOT / "scripts"
 if str(SCRIPTS) not in sys.path:
     sys.path.insert(0, str(SCRIPTS))
 
+from system_catalog_provenance import provenance_tag_name  # noqa: E402
 from write_ecosystem_map_artifact_manifest import (  # noqa: E402
     ARTIFACT_SPECS,
     CONTRACT_VERSION,
@@ -72,6 +73,7 @@ def initialize_repository(root: Path) -> str:
 
 def publish_manifest(root: Path, source_commit: str) -> dict[str, object]:
     manifest = write_manifest(root, DEFAULT_OUTPUT, source_commit=source_commit)
+    git(root, "tag", provenance_tag_name(source_commit), source_commit)
     git(root, "add", str(DEFAULT_OUTPUT))
     env = os.environ.copy()
     env["GIT_AUTHOR_DATE"] = "2026-07-11T00:01:00+00:00"
@@ -197,6 +199,41 @@ class EcosystemMapManifestTests(unittest.TestCase):
             with self.assertRaisesRegex(EcosystemMapManifestError, "stale for current artifacts"):
                 check_manifest(root)
 
+    def test_check_requires_durable_provenance_tag_for_non_ancestor(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            base_commit = initialize_repository(root)
+            git(root, "switch", "-qc", "side")
+            (root / "side-note.txt").write_text("side only\n", encoding="utf-8")
+            git(root, "add", "side-note.txt")
+            git(root, "commit", "-qm", "side source")
+            source_commit = git(root, "rev-parse", "HEAD")
+            write_manifest(root, DEFAULT_OUTPUT, source_commit=source_commit)
+            git(root, "switch", "--detach", base_commit)
+            with self.assertRaisesRegex(
+                EcosystemMapManifestError,
+                "requires durable provenance tag",
+            ):
+                check_manifest(root)
+
+    def test_check_rejects_provenance_tag_bound_to_wrong_commit(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            base_commit = initialize_repository(root)
+            git(root, "switch", "-qc", "side")
+            (root / "side-note.txt").write_text("side only\n", encoding="utf-8")
+            git(root, "add", "side-note.txt")
+            git(root, "commit", "-qm", "side source")
+            source_commit = git(root, "rev-parse", "HEAD")
+            write_manifest(root, DEFAULT_OUTPUT, source_commit=source_commit)
+            git(root, "switch", "--detach", base_commit)
+            git(root, "tag", provenance_tag_name(source_commit), base_commit)
+            with self.assertRaisesRegex(
+                EcosystemMapManifestError,
+                "resolves to .* expected",
+            ):
+                check_manifest(root)
+
     def test_write_and_check_accept_artifact_equivalent_non_ancestor(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -207,6 +244,7 @@ class EcosystemMapManifestTests(unittest.TestCase):
             git(root, "add", "feature-note.txt")
             git(root, "commit", "-qm", "feature-only commit")
             feature_commit = git(root, "rev-parse", "HEAD")
+            git(root, "tag", provenance_tag_name(feature_commit), feature_commit)
             manifest = write_manifest(root, DEFAULT_OUTPUT, source_commit=feature_commit)
             checked = check_manifest(root)
         self.assertEqual(checked, manifest)
@@ -222,6 +260,7 @@ class EcosystemMapManifestTests(unittest.TestCase):
             git(root, "add", str(artifact.relative_to(root)))
             git(root, "commit", "-qm", "change feature artifact")
             feature_commit = git(root, "rev-parse", "HEAD")
+            git(root, "tag", provenance_tag_name(feature_commit), feature_commit)
             with self.assertRaisesRegex(
                 EcosystemMapManifestError,
                 "durable ref is not artifact-equivalent",
@@ -240,6 +279,7 @@ class EcosystemMapManifestTests(unittest.TestCase):
             feature_commit = git(root, "rev-parse", "HEAD")
             durable_ref = "refs/remotes/pull-request/head"
             git(root, "update-ref", durable_ref, feature_commit)
+            git(root, "tag", provenance_tag_name(feature_commit), feature_commit)
             manifest = write_manifest(
                 root,
                 DEFAULT_OUTPUT,
@@ -303,6 +343,7 @@ class EcosystemMapManifestTests(unittest.TestCase):
             artifact.write_text("new committed content\n", encoding="utf-8")
             git(root, "add", str(artifact.relative_to(root)))
             git(root, "commit", "-qm", "change artifact")
+            git(root, "tag", provenance_tag_name(old_commit), old_commit)
             with self.assertRaisesRegex(EcosystemMapManifestError, "bound source commit"):
                 write_manifest(root, DEFAULT_OUTPUT, source_commit=old_commit)
 

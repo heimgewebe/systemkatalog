@@ -11,6 +11,11 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
+from system_catalog_provenance import (
+    provenance_baseline,
+    require_durable_provenance_tag,
+)
+
 SOURCE_BINDINGS_REL = Path("registry/ecosystem/source-bindings.v1.json")
 FRESHNESS_POLICY_REL = Path("policy/freshness-slo.v1.json")
 SHA40 = re.compile(r"^[0-9a-f]{40}$")
@@ -147,6 +152,12 @@ def _validate_local_source_bytes(root: Path, source: dict[str, Any], label: str)
     )
     if inside.returncode != 0:
         return None
+    require_durable_provenance_tag(
+        root,
+        source["commit"],
+        provenance_baseline(root, "HEAD"),
+        label=label,
+    )
     result = subprocess.run(
         ["git", "show", f"{source['commit']}:{locator['path']}"],
         cwd=root,

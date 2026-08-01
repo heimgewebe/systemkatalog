@@ -41,6 +41,7 @@ REQUIRED_STATIC_SURFACES = {
     "scripts/validate_system_catalog.py",
     "scripts/system_catalog_scope.py",
     "scripts/system_catalog_sources.py",
+    "scripts/system_catalog_provenance.py",
     "scripts/systemkatalog_query.py",
     "scripts/read_github_catalog_observations.py",
     "scripts/system_catalog_drift.py",

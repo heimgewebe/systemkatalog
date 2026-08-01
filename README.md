@@ -95,7 +95,7 @@ Die Mermaidkarte macht diese Klassen sichtbar, ohne die getrennte Kantenstabilit
 
 ## Quellenbindungen und Frische
 
-`registry/ecosystem/source-bindings.v1.json` bindet jedes System und jede stabile Beziehung an einen geprüften Quellstand, einen Locator, eine Prüfmethode, ein Prüfdatum und eine Unsicherheit. Öffentliche Repositoryquellen werden an Commit und Inhalts-SHA-256 gebunden. Bei kataloginternen Quellen muss der Commit normalerweise ein Vorfahr des aktuellen Stands sein; nach einem Squash-Merge ist eine abweichende Commitidentität nur zulässig, wenn die vollständig gebundene Quelldatei am aktuellen Stand denselben SHA-256 besitzt. Bei privaten Repositories bleiben Commit und Inhalt redigiert; veröffentlicht wird nur ein Digest nichtvertraulicher Klassifikationsmetadaten.
+`registry/ecosystem/source-bindings.v1.json` bindet jedes System und jede stabile Beziehung an einen geprüften Quellstand, einen Locator, eine Prüfmethode, ein Prüfdatum und eine Unsicherheit. Öffentliche Repositoryquellen werden an Commit und Inhalts-SHA-256 gebunden. Kataloginterne Quellcommits, die kein Vorfahr von `origin/main` sind, benötigen zusätzlich den deterministischen Git-Tag `systemkatalog-provenance-v1/<vollständiger Commit-SHA>`. Der Tag muss exakt auf den benannten Commit zeigen und hält ihn nach Squash-Merge und Branch-Löschung in frischen Clones erreichbar. Inhaltsdigest, Locator und bei Squash-Äquivalenz die aktuellen Dateibytes werden weiterhin unabhängig geprüft. Bei privaten Repositories bleiben Commit und Inhalt redigiert; veröffentlicht wird nur ein Digest nichtvertraulicher Klassifikationsmetadaten.
 
 `policy/freshness-slo.v1.json` definiert Erkennungs- und Reviewziele. GitHub- und Fleet-Abweichungen sowie Änderungen gebundener Primärdokumente erzeugen einen maschinenlesbaren Driftbericht. Der Folgeschritt bleibt ausdrücklich **proposal-only**: Er darf einen deduplizierten Bureau-Kandidaten und einen Änderungsvorschlag erzeugen, aber keine neue Semantik automatisch mergen.
 
@@ -132,13 +132,21 @@ python3 scripts/render_system_catalog.py
 python3 scripts/render_ecosystem_registry_map.py
 git commit
 
-# 2. Manifest an diesen Artefakt-Commit binden und separat committen
-python3 scripts/write_ecosystem_map_artifact_manifest.py --source-commit "$(git rev-parse HEAD)"
+# 2. Den Artefakt-Commit dauerhaft adressierbar machen
+artifact_commit="$(git rev-parse HEAD)"
+git tag "systemkatalog-provenance-v1/$artifact_commit" "$artifact_commit"
+
+# 3. Manifest an diesen Artefakt-Commit binden und separat committen
+python3 scripts/write_ecosystem_map_artifact_manifest.py --source-commit "$artifact_commit"
 git add rendered/ecosystem-map-artifact-manifest.json
 git commit
+
+# 4. Branch und alle neu benötigten Provenienz-Tags vor der PR-CI veröffentlichen
+git push origin HEAD
+git push origin "refs/tags/systemkatalog-provenance-v1/$artifact_commit"
 ```
 
-`--check` liest die tatsächlich veröffentlichte Datei und prüft den gebundenen Quellcommit sowie die sechs Artefakthashes. Normalerweise muss der Quellcommit ein Vorfahr des langlebigen Remote-Refs sein. Nach einem Squash-Merge darf der langlebige Commit eine andere Identität besitzen, aber nur wenn alle sechs ausgelieferten Artefakte dort bytegenau dem Manifest entsprechen. Fehlende Artefakte, abweichende Bytes oder ein weder genealogisch noch inhaltlich gebundener Hauptstand bleiben fail-closed.
+`--check` liest die tatsächlich veröffentlichte Datei und prüft den gebundenen Quellcommit sowie die sechs Artefakthashes. Ist der Quellcommit kein Vorfahr von `origin/main`, muss der deterministische Provenienz-Tag vorhanden und unverändert auf genau diesen Commit gebunden sein. Nach einem Squash-Merge darf der langlebige Commit eine andere Identität besitzen, aber nur wenn alle sechs ausgelieferten Artefakte dort bytegenau dem Manifest entsprechen. Fehlende oder verschobene Tags, fehlende Artefakte, abweichende Bytes oder ein weder genealogisch noch inhaltlich gebundener Hauptstand bleiben fail-closed. Für weitere kataloginterne Quellcommits wird derselbe Tag vor der PR-CI erzeugt und veröffentlicht.
 
 ## Validierung
 
