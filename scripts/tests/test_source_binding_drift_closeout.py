@@ -8,8 +8,8 @@ ROOT = Path(__file__).resolve().parents[2]
 EXPECTED = {
     "repo:systemkatalog": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "fd96a544eb848b8047e62561efe63db27a087281",
-        "sha256": "126b58f511c81af0549e73cb8757c255859161b2eca50e5c97d8d3a53f8fa72d",
+        "commit": "6ffd171ab11ae5dd2f45688ad1a86d2dcc5cfef0",
+        "sha256": "56272984ae4117af9cb04e0fcc1d73bed828ba04574a809a62876fdedcebbd92",
         "path": "README.md",
     },
     "repo:bureau": {
