@@ -14,6 +14,12 @@ import sys
 import tempfile
 from typing import Any
 
+from system_catalog_provenance import (
+    ProvenanceTagError,
+    provenance_baseline,
+    require_durable_provenance_tag,
+)
+
 CONTRACT_VERSION = "1"
 MANIFEST_KIND = "system_catalog_map_artifact_manifest"
 SCHEMA_PATH = "catalog/ecosystem-map-artifact-manifest.schema.v1.json"
@@ -323,6 +329,15 @@ def _validate_source_binding(
         if durable_source_ref is not None
         else _durable_source_ref(root)
     )
+    try:
+        require_durable_provenance_tag(
+            root,
+            commit,
+            provenance_baseline(root, durable_ref),
+            label="manifest source",
+        )
+    except ProvenanceTagError as exc:
+        raise EcosystemMapManifestError(str(exc)) from exc
     _validate_artifacts_at_revision(
         root, manifest, commit, label="bound source commit"
     )

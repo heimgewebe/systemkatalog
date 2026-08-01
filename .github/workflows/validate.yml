@@ -28,14 +28,25 @@ jobs:
         with:
           persist-credentials: false
           fetch-depth: 0
+          fetch-tags: true
 
       - name: Bind pull request durability ref
         if: github.event_name == 'pull_request'
         env:
+          PR_BASE_REPOSITORY: ${{ github.event.pull_request.base.repo.clone_url }}
+          PR_BASE_REF: ${{ github.event.pull_request.base.ref }}
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
           PR_HEAD_REPOSITORY: ${{ github.event.pull_request.head.repo.clone_url }}
           PR_HEAD_REF: ${{ github.event.pull_request.head.ref }}
           PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
         run: |
+          git fetch --tags "$PR_BASE_REPOSITORY" \
+            "+refs/heads/$PR_BASE_REF:refs/remotes/origin/main"
+          observed_base="$(git rev-parse refs/remotes/origin/main)"
+          if [[ "$observed_base" != "$PR_BASE_SHA" ]]; then
+            echo "FAIL: fetched PR base $observed_base does not match event base $PR_BASE_SHA"
+            exit 1
+          fi
           git fetch --no-tags "$PR_HEAD_REPOSITORY" \
             "refs/heads/$PR_HEAD_REF:refs/remotes/pull-request/head"
           observed_head="$(git rev-parse refs/remotes/pull-request/head)"
