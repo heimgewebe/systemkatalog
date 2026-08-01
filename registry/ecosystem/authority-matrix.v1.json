@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "kind": "system_catalog_authority_matrix",
-  "updatedAt": "2026-08-01T07:17:09+02:00",
+  "updatedAt": "2026-08-01T20:20:27+02:00",
   "canonicalMap": "rendered/ecosystem-registry-map.mmd",
   "registryInputs": [
     "registry/ecosystem/nodes.json",
@@ -41,7 +41,7 @@
       ]
     },
     {
-      "domain": "repository_observation_readiness",
+      "domain": "repository_checkout_identity_continuity",
       "owner": "reposkop",
       "projections": [
         "grabowski",

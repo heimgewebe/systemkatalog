@@ -30,6 +30,12 @@ EXPECTED = {
         "sha256": "34de5eedbd3cc9c7340887c12c97e5241b8060c17f2ff90f9facc1e175f03d9c",
         "path": "README.md",
     },
+    "repo:reposkop": {
+        "repository": "heimgewebe/reposkop",
+        "commit": "6c0847c2cbc6ee1d1cff52fc1b4a1c5ee17af487",
+        "sha256": "a6b63794cd4ec41e30e979fd524349386d207673700c3bc4c369f3fa0619ae94",
+        "path": "README.md",
+    },
     "repo:vibe-lab": {
         "repository": "heimgewebe/vibe-lab",
         "commit": "63c3d533dad4d51775aba7746915b5c8c5086f42",
@@ -62,8 +68,8 @@ EXPECTED = {
     },
     "repo:audio": {
         "repository": "heimgewebe/audio",
-        "commit": "49710c62c017019ba3778d0599e511e6b8bc61a7",
-        "sha256": "e5d4650315ceb5cfae0dcb44eb2efe5111c0a312ebdd07ef3e9977b357a175cb",
+        "commit": "404736337ec315eb0af556b412c68136e49c1159",
+        "sha256": "a176fa0df833d7835e9ad7f15d87a9ef57bea0e6b1061379a7cb87941a56959a",
         "path": "README.md",
     },
     "repo:semantAH": {
