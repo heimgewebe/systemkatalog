@@ -3,7 +3,7 @@
   "kind": "system_catalog_inventory",
   "owner": "repo:systemkatalog",
   "catalogRole": "canonical_system_inventory",
-  "updatedAt": "2026-07-29",
+  "updatedAt": "2026-08-01",
   "nodes": [
     {
       "id": "actor:alexander",
@@ -128,21 +128,30 @@
       "id": "repo:weltgewebe",
       "name": "Weltgewebe",
       "type": "repository",
-      "purpose": "federated map and coordination system for collective goods, local relationships and community action",
+      "purpose": "federated map and coordination system implementing the Weltgewebe OS product and domain core",
       "notResponsibleFor": [
         "ecosystem governance",
-        "fleet task orchestration"
+        "fleet task orchestration",
+        "global multi-primary domain truth",
+        "claims about live Kubernetes, high-availability or public federation readiness"
       ],
-      "truthOwnership": [],
+      "truthOwnership": [
+        "weltgewebe_target_architecture"
+      ],
       "entrypoints": {
         "repository": "https://github.com/heimgewebe/weltgewebe",
-        "targetArchitecture": "https://github.com/heimgewebe/weltgewebe/blob/main/architecture/weltgewebe-os.md"
+        "targetArchitecture": "https://github.com/heimgewebe/weltgewebe/blob/322655285b520d04363e48487ae64d57264de573/architecture/weltgewebe-os.md",
+        "foundationStatus": "https://github.com/heimgewebe/weltgewebe/blob/322655285b520d04363e48487ae64d57264de573/docs/reports/weltgewebe-os-foundation-status.md",
+        "operatorRunbook": "https://github.com/heimgewebe/weltgewebe/blob/322655285b520d04363e48487ae64d57264de573/docs/runbook.md",
+        "recoveryRunbook": "https://github.com/heimgewebe/weltgewebe/blob/322655285b520d04363e48487ae64d57264de573/docs/runbooks/kubernetes-ha-recovery-proof.md",
+        "federationContract": "https://github.com/heimgewebe/weltgewebe/blob/322655285b520d04363e48487ae64d57264de573/contracts/federation/v1"
       },
       "lifecycle": {
         "state": "active",
-        "reviewedAt": "2026-07-26",
+        "reviewedAt": "2026-08-01",
         "evidenceRefs": [
-          "registry/ecosystem/organization-scope.v1.json"
+          "https://github.com/heimgewebe/weltgewebe/blob/322655285b520d04363e48487ae64d57264de573/architecture/weltgewebe-os.md",
+          "bureau:WELTGEWEBE-OS-V1-T010"
         ]
       }
     },
@@ -923,6 +932,136 @@
         "reviewedAt": "2026-07-26",
         "evidenceRefs": [
           "registry/ecosystem/organization-scope.v1.json"
+        ]
+      }
+    },
+    {
+      "id": "concept:weltgewebe-os",
+      "name": "Weltgewebe OS",
+      "type": "concept",
+      "purpose": "canonical target architecture for a federated, locally sovereign and globally connected societal coordination layer",
+      "notResponsibleFor": [
+        "device operating systems",
+        "claims that the current runtime already satisfies the target architecture",
+        "live Kubernetes, high-availability or public federation status"
+      ],
+      "truthOwnership": [],
+      "entrypoints": {
+        "architecture": "https://github.com/heimgewebe/weltgewebe/blob/322655285b520d04363e48487ae64d57264de573/architecture/weltgewebe-os.md",
+        "masterplan": "https://github.com/heimgewebe/weltgewebe/blob/322655285b520d04363e48487ae64d57264de573/docs/blueprints/weltgewebe-os-masterplan.md",
+        "foundationStatus": "https://github.com/heimgewebe/weltgewebe/blob/322655285b520d04363e48487ae64d57264de573/docs/reports/weltgewebe-os-foundation-status.md"
+      },
+      "lifecycle": {
+        "state": "active",
+        "reviewedAt": "2026-08-01",
+        "evidenceRefs": [
+          "https://github.com/heimgewebe/weltgewebe/blob/322655285b520d04363e48487ae64d57264de573/architecture/weltgewebe-os.md",
+          "bureau:WELTGEWEBE-OS-V1-T010"
+        ]
+      }
+    },
+    {
+      "id": "concept:gewebezelle",
+      "name": "GewebeZelle",
+      "type": "concept",
+      "purpose": "autonomous operational and social domain with local data sovereignty, moderation, rules, infrastructure boundaries and explicit federation relationships",
+      "notResponsibleFor": [
+        "global multi-primary truth",
+        "canonical state of foreign cells",
+        "implicit sharing of private data",
+        "claims about a cell runtime without primary-source observation"
+      ],
+      "truthOwnership": [
+        "weltgewebe_cell_domain_truth"
+      ],
+      "entrypoints": {
+        "architecture": "https://github.com/heimgewebe/weltgewebe/blob/322655285b520d04363e48487ae64d57264de573/architecture/weltgewebe-os.md",
+        "federationDecision": "https://github.com/heimgewebe/weltgewebe/blob/322655285b520d04363e48487ae64d57264de573/docs/adr/ADR-0011__foederierte-gewebezellen.md",
+        "cellDescriptor": "https://github.com/heimgewebe/weltgewebe/blob/322655285b520d04363e48487ae64d57264de573/contracts/federation/v1/cell-descriptor.schema.json"
+      },
+      "lifecycle": {
+        "state": "active",
+        "reviewedAt": "2026-08-01",
+        "evidenceRefs": [
+          "https://github.com/heimgewebe/weltgewebe/blob/322655285b520d04363e48487ae64d57264de573/architecture/weltgewebe-os.md",
+          "bureau:WELTGEWEBE-OS-V1-T010"
+        ]
+      }
+    },
+    {
+      "id": "concept:weltgewebe-platform-target",
+      "name": "Weltgewebe-Plattformziel",
+      "type": "concept",
+      "purpose": "Kubernetes- and GitOps-based target platform for staging and production while Compose remains a real, bounded development and recovery profile",
+      "notResponsibleFor": [
+        "claiming that Kubernetes production operation is already proven",
+        "live deployment or cluster health",
+        "manual runtime changes as durable desired state"
+      ],
+      "truthOwnership": [],
+      "entrypoints": {
+        "architecture": "https://github.com/heimgewebe/weltgewebe/blob/322655285b520d04363e48487ae64d57264de573/architecture/weltgewebe-os.md",
+        "platformDecision": "https://github.com/heimgewebe/weltgewebe/blob/322655285b520d04363e48487ae64d57264de573/docs/adr/ADR-0010__kubernetes-kanonische-plattform.md",
+        "foundationStatus": "https://github.com/heimgewebe/weltgewebe/blob/322655285b520d04363e48487ae64d57264de573/docs/reports/kubernetes-platform-foundation-status.md",
+        "recoveryProof": "https://github.com/heimgewebe/weltgewebe/blob/322655285b520d04363e48487ae64d57264de573/docs/runbooks/kubernetes-ha-recovery-proof.md"
+      },
+      "lifecycle": {
+        "state": "transition",
+        "reviewedAt": "2026-08-01",
+        "evidenceRefs": [
+          "https://github.com/heimgewebe/weltgewebe/blob/322655285b520d04363e48487ae64d57264de573/architecture/weltgewebe-os.md",
+          "bureau:WELTGEWEBE-OS-V1-T010"
+        ]
+      }
+    },
+    {
+      "id": "concept:weltgewebe-federation-planes",
+      "name": "Weltgewebe-Föderationsebenen",
+      "type": "concept",
+      "purpose": "separation of same-operator infrastructure federation, trusted-neighbour event federation and public domain federation between independent cells",
+      "notResponsibleFor": [
+        "global primary truth",
+        "unrestricted internal Kubernetes or NATS access between operators",
+        "claims that public cell federation is already operational"
+      ],
+      "truthOwnership": [],
+      "entrypoints": {
+        "architecture": "https://github.com/heimgewebe/weltgewebe/blob/322655285b520d04363e48487ae64d57264de573/architecture/weltgewebe-os.md",
+        "federationDecision": "https://github.com/heimgewebe/weltgewebe/blob/322655285b520d04363e48487ae64d57264de573/docs/adr/ADR-0011__foederierte-gewebezellen.md",
+        "wireContract": "https://github.com/heimgewebe/weltgewebe/blob/322655285b520d04363e48487ae64d57264de573/docs/specs/federation-wire-v1.md"
+      },
+      "lifecycle": {
+        "state": "active",
+        "reviewedAt": "2026-08-01",
+        "evidenceRefs": [
+          "https://github.com/heimgewebe/weltgewebe/blob/322655285b520d04363e48487ae64d57264de573/architecture/weltgewebe-os.md",
+          "bureau:WELTGEWEBE-OS-V1-T010"
+        ]
+      }
+    },
+    {
+      "id": "concept:gewebezelle-betreiberrolle",
+      "name": "GewebeZell-Betreiberrolle",
+      "type": "concept",
+      "purpose": "local responsibility for cell infrastructure, moderation, rules, data boundaries and explicitly allowed federation relationships",
+      "notResponsibleFor": [
+        "canonical truth of foreign cells",
+        "global ecosystem governance",
+        "authority derived only from technical reachability",
+        "Bureau task state or Grabowski execution authorization"
+      ],
+      "truthOwnership": [],
+      "entrypoints": {
+        "architecture": "https://github.com/heimgewebe/weltgewebe/blob/322655285b520d04363e48487ae64d57264de573/architecture/weltgewebe-os.md",
+        "operatorRunbook": "https://github.com/heimgewebe/weltgewebe/blob/322655285b520d04363e48487ae64d57264de573/docs/runbook.md",
+        "incidentResponse": "https://github.com/heimgewebe/weltgewebe/blob/322655285b520d04363e48487ae64d57264de573/docs/runbooks/incident-response.md"
+      },
+      "lifecycle": {
+        "state": "active",
+        "reviewedAt": "2026-08-01",
+        "evidenceRefs": [
+          "https://github.com/heimgewebe/weltgewebe/blob/322655285b520d04363e48487ae64d57264de573/architecture/weltgewebe-os.md",
+          "bureau:WELTGEWEBE-OS-V1-T010"
         ]
       }
     }

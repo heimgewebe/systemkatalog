@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "kind": "system_catalog_authority_matrix",
-  "updatedAt": "2026-07-26T09:38:30+02:00",
+  "updatedAt": "2026-08-01T03:30:00+02:00",
   "canonicalMap": "rendered/ecosystem-registry-map.mmd",
   "registryInputs": [
     "registry/ecosystem/nodes.json",
@@ -129,6 +129,20 @@
       "domain": "convergence_protocol",
       "owner": "konvergenzregelkreis",
       "projections": []
+    },
+    {
+      "domain": "weltgewebe_target_architecture",
+      "owner": "weltgewebe",
+      "projections": [
+        "systemkatalog"
+      ]
+    },
+    {
+      "domain": "weltgewebe_cell_domain_truth",
+      "owner": "gewebezelle",
+      "projections": [
+        "weltgewebe"
+      ]
     }
   ],
   "doesNotEstablish": [
