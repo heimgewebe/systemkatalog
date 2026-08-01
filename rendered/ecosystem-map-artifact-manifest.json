@@ -2,39 +2,39 @@
   "artifactCount": 6,
   "artifacts": [
     {
-      "bytes": 14368,
+      "bytes": 14439,
       "contentType": "text/mermaid",
       "path": "rendered/ecosystem-registry-map.mmd",
       "role": "canonical_ecosystem_map_mermaid",
-      "sha256": "1a9b4b6fd23332388884edc74ca2ae3fd04fcdd4dc9b4aef13f52a60e616e7ce"
+      "sha256": "807578d6a87cb615ee953257fcaca5c69515a2db063599e3d3e2b8552c66ba61"
     },
     {
-      "bytes": 49774,
+      "bytes": 50154,
       "contentType": "text/markdown",
       "path": "rendered/system-catalog.md",
       "role": "rendered_catalog_markdown",
-      "sha256": "e0f469bfcfb47bf182872e56510c68af6cbd91e156c6636f8bf7375d9cf2be21"
+      "sha256": "1516fd2b5ea4b1ac9f2f329d725104cf74aca5581eb24f005c77ef5d59a07266"
     },
     {
-      "bytes": 36315,
+      "bytes": 37087,
       "contentType": "application/json",
       "path": "registry/ecosystem/nodes.json",
       "role": "registry_nodes",
-      "sha256": "8aa70b0fea06d11ea8f985398f4fbb725c7507236fa25c7bcd9417c085ebb90c"
+      "sha256": "61d1361b1fdc94281e4a409b1f151e6d64a272cfc07520b924c6efef7152dcf3"
     },
     {
-      "bytes": 13235,
+      "bytes": 13311,
       "contentType": "application/json",
       "path": "registry/ecosystem/edges.json",
       "role": "registry_edges",
-      "sha256": "5129f813a4e91baa96d89e06d7c0c13643f32db834463b2c4e1dc8ecd13fed1e"
+      "sha256": "9f6b7509e6aab115a0e328dae7b777b4570a2e3f90860f35cb25262a7eca3420"
     },
     {
-      "bytes": 3133,
+      "bytes": 3249,
       "contentType": "application/json",
       "path": "registry/ecosystem/authority-matrix.v1.json",
       "role": "authority_matrix",
-      "sha256": "29d0dc9771b47376e7bba13b411d8698bcc16ca5a994821a5499e43d6e91470c"
+      "sha256": "7efa14c12e5ae5889e2505e4f17a84cb4dc3c8a09bcd22cf4c091c7ed3dc4ad1"
     },
     {
       "bytes": 39022,
@@ -58,8 +58,8 @@
   "schemaPath": "catalog/ecosystem-map-artifact-manifest.schema.v1.json",
   "schemaVersion": 1,
   "source": {
-    "commit": "48321e51aedb9ced077c914e8e5045231065c5e7",
-    "generatedAt": "2026-08-01T01:51:56Z",
+    "commit": "a350cb6b4193432c64fe4adf9ae7dec4aa767a16",
+    "generatedAt": "2026-08-01T05:31:43Z",
     "repository": "heimgewebe/systemkatalog"
   }
 }
