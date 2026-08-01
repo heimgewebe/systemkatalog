@@ -91,9 +91,14 @@ class SystemCatalogTests(unittest.TestCase):
         rendered = (ROOT / "rendered/system-catalog.md").read_text(encoding="utf-8")
         self.assertIn("Wahrheitsbesitz", rendered)
         self.assertIn("Lebenszyklus", rendered)
-        self.assertIn("`retired` · geprüft 2026-07-26", rendered)
-        self.assertIn("HausKI Audio", rendered)
-        self.assertIn("`retired` · geprüft 2026-07-28", rendered)
+        self.assertIn(
+            "| Heimserver | repository | `retired` · geprüft 2026-08-01 |",
+            rendered,
+        )
+        self.assertIn(
+            "| HausKI Audio | repository | `retired` · geprüft 2026-07-28 |",
+            rendered,
+        )
 
     def test_reviewed_role_boundaries_are_explicit(self) -> None:
         nodes = json.loads((ROOT / "registry/ecosystem/nodes.json").read_text(encoding="utf-8"))["nodes"]
