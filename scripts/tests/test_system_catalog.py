@@ -27,7 +27,7 @@ class SystemCatalogTests(unittest.TestCase):
         self.assertEqual(result["status"], "valid")
         self.assertEqual(result["registrySystems"], 43)
         self.assertEqual(result["registryRelations"], 52)
-        self.assertEqual(result["authorityDomains"], 19)
+        self.assertEqual(result["authorityDomains"], 20)
         self.assertEqual(result["catalogRepositories"], 34)
         self.assertEqual(result["fleetRepositories"], 18)
         self.assertEqual(result["fleetExclusions"], 4)
@@ -94,6 +94,20 @@ class SystemCatalogTests(unittest.TestCase):
         self.assertIn("`retired` · geprüft 2026-07-26", rendered)
         self.assertIn("HausKI Audio", rendered)
         self.assertIn("`retired` · geprüft 2026-07-28", rendered)
+
+    def test_reviewed_role_boundaries_are_explicit(self) -> None:
+        nodes = json.loads((ROOT / "registry/ecosystem/nodes.json").read_text(encoding="utf-8"))["nodes"]
+        by_id = {node["id"]: node for node in nodes}
+        self.assertEqual(
+            by_id["repo:wgx"]["purpose"],
+            "Repository verification adapter and reusable CI frontdoor router",
+        )
+        self.assertIn("task coordination or priority", by_id["repo:wgx"]["notResponsibleFor"])
+        self.assertEqual(
+            by_id["repo:commonworld"]["truthOwnership"],
+            ["commonworld_commons_admission"],
+        )
+        self.assertIn("evidence-bound", by_id["repo:commonworld"]["purpose"])
 
     def test_missing_canonical_system_field_fails_closed(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

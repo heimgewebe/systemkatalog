@@ -69,9 +69,9 @@
       },
       "lifecycle": {
         "state": "active",
-        "reviewedAt": "2026-07-26",
+        "reviewedAt": "2026-08-01",
         "evidenceRefs": [
-          "registry/ecosystem/organization-scope.v1.json"
+          "https://github.com/heimgewebe/systemkatalog/blob/fd96a544eb848b8047e62561efe63db27a087281/README.md"
         ]
       }
     },
@@ -389,9 +389,9 @@
       },
       "lifecycle": {
         "state": "active",
-        "reviewedAt": "2026-07-26",
+        "reviewedAt": "2026-08-01",
         "evidenceRefs": [
-          "registry/ecosystem/organization-scope.v1.json"
+          "https://github.com/heimgewebe/leitstand/blob/362dda6ac161bf275a38682d18998fc284eebe52/README.md"
         ]
       }
     },
@@ -463,9 +463,9 @@
       },
       "lifecycle": {
         "state": "active",
-        "reviewedAt": "2026-07-26",
+        "reviewedAt": "2026-08-01",
         "evidenceRefs": [
-          "registry/ecosystem/organization-scope.v1.json"
+          "https://github.com/heimgewebe/metarepo/blob/f3524f9b040be957cfead5b80f7a683d0ea6df72/system/metarepo-role.v1.json"
         ]
       }
     },
@@ -473,11 +473,12 @@
       "id": "repo:wgx",
       "name": "WGX",
       "type": "repository",
-      "purpose": "Fleet CLI and reusable repository workflow engine",
+      "purpose": "Repository verification adapter and reusable CI frontdoor router",
       "notResponsibleFor": [
         "repository purpose semantics",
-        "runtime truth",
-        "task priority"
+        "task coordination or priority",
+        "host, process or deployment effects",
+        "runtime or Fleet health"
       ],
       "truthOwnership": [
         "shared_fleet_ci_checks"
@@ -487,9 +488,9 @@
       },
       "lifecycle": {
         "state": "active",
-        "reviewedAt": "2026-07-26",
+        "reviewedAt": "2026-08-01",
         "evidenceRefs": [
-          "registry/ecosystem/organization-scope.v1.json"
+          "https://github.com/heimgewebe/wgx/blob/45611f094cd7c4019c7eda4bd36b6fa862503132/README.md"
         ]
       }
     },
@@ -551,15 +552,15 @@
       "truthOwnership": [],
       "entrypoints": {
         "repository": "https://github.com/heimgewebe/audio",
-        "readme": "https://github.com/heimgewebe/audio/blob/58935598706e24438c95ae092d802709b0ae2203/README.md"
+        "readme": "https://github.com/heimgewebe/audio/blob/49710c62c017019ba3778d0599e511e6b8bc61a7/README.md"
       },
       "lifecycle": {
         "state": "active",
-        "reviewedAt": "2026-07-28",
+        "reviewedAt": "2026-08-01",
         "evidenceRefs": [
-          "https://github.com/heimgewebe/audio/blob/58935598706e24438c95ae092d802709b0ae2203/README.md",
-          "https://github.com/heimgewebe/bureau/blob/702fd606235494c2bd3a151555b2a2b9169f745c/docs/plans/operator-platform-masterplan-v2.md",
-          "bureau:OPERATOR-ECOSYSTEM-REDUNDANCY-V1-T065"
+          "https://github.com/heimgewebe/audio/blob/49710c62c017019ba3778d0599e511e6b8bc61a7/README.md",
+          "https://github.com/heimgewebe/systemkatalog/pull/150",
+          "https://github.com/heimgewebe/bureau/blob/702fd606235494c2bd3a151555b2a2b9169f745c/docs/plans/operator-platform-masterplan-v2.md"
         ]
       }
     },
@@ -748,21 +749,25 @@
       "id": "repo:commonworld",
       "name": "Commonworld",
       "type": "repository",
-      "purpose": "Interactive globe and commons-oriented world exploration",
+      "purpose": "Interactive globe and evidence-bound catalog and admission rules for physical, digital, local and global commons",
       "notResponsibleFor": [
         "ecosystem governance",
+        "universal commons authority outside the published Commonworld admission contract",
         "task state",
         "merge authority"
       ],
-      "truthOwnership": [],
+      "truthOwnership": [
+        "commonworld_commons_admission"
+      ],
       "entrypoints": {
         "repository": "https://github.com/heimgewebe/commonworld"
       },
       "lifecycle": {
         "state": "active",
-        "reviewedAt": "2026-07-26",
+        "reviewedAt": "2026-08-01",
         "evidenceRefs": [
-          "registry/ecosystem/organization-scope.v1.json"
+          "https://github.com/heimgewebe/commonworld/blob/35b6b19529891d33f0b0db3f864256f7069bbba4/README.md",
+          "https://github.com/heimgewebe/commonworld/blob/35b6b19529891d33f0b0db3f864256f7069bbba4/contracts/commonworld/commons-definition.contract.json"
         ]
       }
     },
@@ -812,10 +817,10 @@
       },
       "lifecycle": {
         "state": "retired",
-        "reviewedAt": "2026-07-26",
+        "reviewedAt": "2026-08-01",
         "evidenceRefs": [
-          "https://github.com/heimgewebe/infra/blob/e1245b502393edcdb42d0f20317c8a5a2c2defbe/INFRA_CONSTITUTION.md",
-          "bureau:OPERATOR-ECOSYSTEM-REDUNDANCY-V1-T032"
+          "https://github.com/heimgewebe/heimserver/blob/4c4099e234a277b5ea48a28939f0ec4d08711f2a/repo.meta.yaml",
+          "https://github.com/heimgewebe/infra/blob/e1245b502393edcdb42d0f20317c8a5a2c2defbe/INFRA_CONSTITUTION.md"
         ]
       }
     },
