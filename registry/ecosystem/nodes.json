@@ -1072,6 +1072,32 @@
           "bureau:WELTGEWEBE-OS-V1-T010"
         ]
       }
+    },
+    {
+      "id": "concept:lenskit-legacy-role",
+      "name": "Lenskit-Legacyrolle",
+      "type": "concept",
+      "purpose": "bounded Lenskit/rLens compatibility and rollback role retained during the RepoGround cutover, not a separate product, repository or live-status authority",
+      "notResponsibleFor": [
+        "independent product or repository authority alongside RepoGround",
+        "primary ownership of repository context or citations",
+        "task state, merge authorization or live runtime health",
+        "indefinite retention after the RepoGround cutover is verified"
+      ],
+      "truthOwnership": [],
+      "entrypoints": {
+        "productArchitecture": "https://github.com/heimgewebe/repoground/blob/5548ca2d23a3d22ffe14fb1006363e4078e7c009/docs/architecture/repoground.md",
+        "cutoverContract": "https://github.com/heimgewebe/repoground/blob/5548ca2d23a3d22ffe14fb1006363e4078e7c009/docs/architecture/repoground-3-migration.md",
+        "migrationInventory": "https://github.com/heimgewebe/repoground/blob/5548ca2d23a3d22ffe14fb1006363e4078e7c009/docs/architecture/repoground-3-migration-inventory.v1.json"
+      },
+      "lifecycle": {
+        "state": "transition",
+        "reviewedAt": "2026-08-02",
+        "evidenceRefs": [
+          "https://github.com/heimgewebe/repoground/blob/5548ca2d23a3d22ffe14fb1006363e4078e7c009/docs/architecture/repoground-3-migration.md",
+          "bureau:WELTGEWEBE-OS-V1-T010"
+        ]
+      }
     }
   ]
 }

@@ -2,32 +2,32 @@
   "artifactCount": 6,
   "artifacts": [
     {
-      "bytes": 14466,
+      "bytes": 14887,
       "contentType": "text/mermaid",
       "path": "rendered/ecosystem-registry-map.mmd",
       "role": "canonical_ecosystem_map_mermaid",
-      "sha256": "7289d198c5a92a0297f5187a54aa71fcd1ed3bf4132a369d6a95f1cf4228369b"
+      "sha256": "3939c4fe09fabe272546459b0e7148d5e454df065cfd675b0d81f8d33831a80f"
     },
     {
-      "bytes": 50475,
+      "bytes": 52174,
       "contentType": "text/markdown",
       "path": "rendered/system-catalog.md",
       "role": "rendered_catalog_markdown",
-      "sha256": "806c3c020467bafef850bbb3ce05527aa5f4c870aa505b80feb142d89705413f"
+      "sha256": "cc01259e44940b71a9dae9e4b422df950fc22198c06d4157e2ed05288ac2a1c6"
     },
     {
-      "bytes": 37398,
+      "bytes": 38875,
       "contentType": "application/json",
       "path": "registry/ecosystem/nodes.json",
       "role": "registry_nodes",
-      "sha256": "feffd1a3ed1d2a937d53b6f6b697ce0626ba76759e7eb141bd3385e671e2b112"
+      "sha256": "b6da4f096a1ef40814306bd66301775e326cef020e7796f96c00ebfabce981f4"
     },
     {
-      "bytes": 13341,
+      "bytes": 13667,
       "contentType": "application/json",
       "path": "registry/ecosystem/edges.json",
       "role": "registry_edges",
-      "sha256": "67e808a6d7342a930131d8f5396eee4422d073c8b889c0aa1179ddd8fd8934b6"
+      "sha256": "2fed98f2292ff07d46395b8ab88787173c1477723ef69b88a07fece813d689cf"
     },
     {
       "bytes": 3256,
@@ -37,11 +37,11 @@
       "sha256": "13d1163935c900763fef3b63b238eac0075089bb2fea4dd9130e9d36c105cdcd"
     },
     {
-      "bytes": 39022,
+      "bytes": 40050,
       "contentType": "application/json",
       "path": "registry/ecosystem/resilience.v1.json",
       "role": "resilience_semantics",
-      "sha256": "c97b77ade9ba63e391fa3f69a1558d5173dd9c6021538d85c22d1312c5d21e83"
+      "sha256": "aa899d2f1ec2f7fe9ecc0a5e1de6993edb13f6be9df969099e68de46d1049052"
     }
   ],
   "contractVersion": "1",
@@ -58,8 +58,8 @@
   "schemaPath": "catalog/ecosystem-map-artifact-manifest.schema.v1.json",
   "schemaVersion": 1,
   "source": {
-    "commit": "ea41553c10e5564a7c3f6549fb9c699e929fdcff",
-    "generatedAt": "2026-08-01T18:28:39Z",
+    "commit": "d79e75460b960f2295769f32454e406aad0cadc2",
+    "generatedAt": "2026-08-02T19:52:42Z",
     "repository": "heimgewebe/systemkatalog"
   }
 }
