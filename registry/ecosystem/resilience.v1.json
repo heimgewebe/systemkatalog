@@ -3,7 +3,7 @@
   "kind": "system_catalog_resilience",
   "owner": "repo:systemkatalog",
   "catalogRole": "canonical_stable_resilience_semantics",
-  "updatedAt": "2026-08-01",
+  "updatedAt": "2026-08-02",
   "defaultCriticality": "unknown",
   "criticalityClasses": [
     "foundational",
@@ -860,6 +860,23 @@
         "registry/ecosystem/source-bindings.v1.json"
       ],
       "uncertainty": 0.12
+    },
+    {
+      "system": "concept:lenskit-legacy-role",
+      "criticality": "supporting",
+      "failureDomains": [
+        "host:heim-pc",
+        "runtime:lenskit-legacy"
+      ],
+      "recoveryModeRefs": [],
+      "acceptedSinglePathRisks": [
+        "The transitional fallback shares the Heim-PC failure domain with RepoGround and therefore does not provide host-independent recovery."
+      ],
+      "evidence": [
+        "docs/audits/heimgewebe-resilience-gap-matrix-v1.md",
+        "registry/ecosystem/edges.json"
+      ],
+      "uncertainty": 0.12
     }
   ],
   "relations": [
@@ -1150,6 +1167,22 @@
         "registry/ecosystem/edges.json"
       ],
       "uncertainty": 0.16
+    },
+    {
+      "relation": {
+        "from": "repo:repoground",
+        "to": "concept:lenskit-legacy-role",
+        "type": "scope_boundary"
+      },
+      "coupling": "manual",
+      "failurePolicy": "fallback",
+      "authorityDirection": "none",
+      "recoveryModeRef": "repoground-legacy-rollback",
+      "evidence": [
+        "docs/audits/heimgewebe-resilience-gap-matrix-v1.md",
+        "registry/ecosystem/edges.json"
+      ],
+      "uncertainty": 0.12
     }
   ],
   "recoveryModes": [

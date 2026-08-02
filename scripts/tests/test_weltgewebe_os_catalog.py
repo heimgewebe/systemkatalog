@@ -35,6 +35,37 @@ class WeltgewebeOsCatalogTests(unittest.TestCase):
         federation = nodes["concept:weltgewebe-federation-planes"]
         self.assertIn("claims that public cell federation is already operational", federation["notResponsibleFor"])
 
+        required_roles = {
+            "Weltgewebe": "repo:weltgewebe",
+            "Grabowski": "repo:grabowski",
+            "Bureau": "repo:bureau",
+            "Chronik": "repo:chronik",
+            "Leitstand": "repo:leitstand",
+            "Schauwerk": "repo:schauwerk",
+            "Commonworld": "repo:commonworld",
+            "Lenskit": "concept:lenskit-legacy-role",
+            "Konvergenzregelkreis": "repo:konvergenzregelkreis",
+        }
+        self.assertEqual(len(required_roles), len(set(required_roles.values())))
+        for role, node_id in required_roles.items():
+            with self.subTest(role=role):
+                self.assertIn(node_id, nodes)
+                self.assertTrue(nodes[node_id]["purpose"].strip())
+                self.assertTrue(nodes[node_id]["notResponsibleFor"])
+                self.assertTrue(nodes[node_id]["entrypoints"])
+
+        lenskit = nodes["concept:lenskit-legacy-role"]
+        self.assertEqual(lenskit["type"], "concept")
+        self.assertEqual(lenskit["lifecycle"]["state"], "transition")
+        self.assertEqual(lenskit["truthOwnership"], [])
+        self.assertIn("independent product or repository authority alongside RepoGround", lenskit["notResponsibleFor"])
+        lenskit_matches = [
+            node_id
+            for node_id, node in nodes.items()
+            if "lenskit" in f"{node_id} {node['name']}".lower()
+        ]
+        self.assertEqual(lenskit_matches, ["concept:lenskit-legacy-role"])
+
     def test_authority_and_relations_do_not_create_shadow_status(self) -> None:
         authorities = {item["domain"]: item for item in load("registry/ecosystem/authority-matrix.v1.json")["authorities"]}
         self.assertEqual(authorities["weltgewebe_target_architecture"]["owner"], "weltgewebe")
@@ -43,6 +74,9 @@ class WeltgewebeOsCatalogTests(unittest.TestCase):
         self.assertIn(("repo:weltgewebe", "concept:weltgewebe-os", "provides"), edges)
         self.assertIn(("repo:grabowski", "concept:weltgewebe-platform-target", "operates_on"), edges)
         self.assertEqual(edges[("concept:gewebezelle", "concept:weltgewebe-federation-planes", "operates_on")]["stability"], "bounded")
+        lenskit_boundary = edges[("repo:repoground", "concept:lenskit-legacy-role", "scope_boundary")]
+        self.assertEqual(lenskit_boundary["stability"], "bounded")
+        self.assertIn("remains only", lenskit_boundary["meaning"].lower())
         rendered = json.dumps([load("registry/ecosystem/nodes.json"), load("registry/ecosystem/authority-matrix.v1.json")]).lower()
         for forbidden in ("runtimehealth", "taskstatus", "mergeable", "clusterhealth"):
             self.assertNotIn(forbidden, rendered)
