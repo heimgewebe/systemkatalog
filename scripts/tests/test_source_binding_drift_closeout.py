@@ -26,7 +26,7 @@ EXPECTED = {
     },
     "repo:repoground": {
         "repository": "heimgewebe/repoground",
-        "commit": "40dd1088a642370c5a7cc0dfd19dbd59e6395a35",
+        "commit": "5548ca2d23a3d22ffe14fb1006363e4078e7c009",
         "sha256": "34de5eedbd3cc9c7340887c12c97e5241b8060c17f2ff90f9facc1e175f03d9c",
         "path": "README.md",
     },

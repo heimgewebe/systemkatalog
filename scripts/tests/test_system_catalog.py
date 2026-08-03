@@ -85,7 +85,7 @@ class SystemCatalogTests(unittest.TestCase):
             self.assertTrue(node["notResponsibleFor"])
             self.assertTrue(node["entrypoints"])
             self.assertIn(node["lifecycle"]["state"], {"active", "transition", "reference", "archived", "retired"})
-            self.assertIn(node["lifecycle"]["reviewedAt"], {"2026-07-26", "2026-07-28", "2026-07-29", "2026-08-01", "2026-08-02"})
+            self.assertIn(node["lifecycle"]["reviewedAt"], {"2026-07-26", "2026-07-28", "2026-07-29", "2026-08-01", "2026-08-02", "2026-08-03"})
             self.assertTrue(node["lifecycle"]["evidenceRefs"])
         self.assertIn("Nicht zuständig für", (ROOT / "rendered/system-catalog.md").read_text(encoding="utf-8"))
         rendered = (ROOT / "rendered/system-catalog.md").read_text(encoding="utf-8")
