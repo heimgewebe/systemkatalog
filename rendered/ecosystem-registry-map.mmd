@@ -33,7 +33,7 @@ flowchart TD
         repo_mitschreiber["Mitschreiber<br/>id: repo:mitschreiber<br/>repository<br/>lifecycle: active · reviewed: 2026-07-26<br/>Privacy-first on-device context capture and redacted event production"]
         repo_obsidian_bridge["Obsidian Bridge<br/>id: repo:obsidian-bridge<br/>repository<br/>lifecycle: active · reviewed: 2026-07-26<br/>deterministic CLI and artifact bridge for using Obsidian as a projection and observatory interface"]
         repo_plexer["Plexer<br/>id: repo:plexer<br/>repository<br/>lifecycle: active · reviewed: 2026-07-26<br/>bounded event delivery and queueing gateway"]
-        repo_repoground["RepoGround<br/>id: repo:repoground<br/>repository<br/>lifecycle: active · reviewed: 2026-07-26<br/>verifiable, citable codebase context for humans and AI systems"]
+        repo_repoground["RepoGround<br/>id: repo:repoground<br/>repository<br/>lifecycle: active · reviewed: 2026-08-03<br/>verifiable, citable repository context for humans and AI systems under one canonical RepoGround product identity"]
         repo_reposkop["Reposkop<br/>id: repo:reposkop<br/>repository<br/>lifecycle: active · reviewed: 2026-08-01<br/>canonical local checkout identity, transition and continuity truth for explicitly selected repository targets"]
         repo_schauwerk["Schauwerk<br/>id: repo:schauwerk<br/>repository<br/>lifecycle: active · reviewed: 2026-07-26<br/>visual surface and projection layer"]
         repo_semantAH["semantAH<br/>id: repo:semantAH<br/>repository<br/>lifecycle: active · reviewed: 2026-07-26<br/>Semantic index, embeddings and knowledge-graph pipeline"]
@@ -49,7 +49,6 @@ flowchart TD
     subgraph kind_concept[Konzepte]
         concept_gewebezelle["GewebeZelle<br/>id: concept:gewebezelle<br/>concept<br/>lifecycle: active · reviewed: 2026-08-01<br/>autonomous operational and social domain with local data sovereignty, moderation, rules, infrastructure boundaries and explicit federation relationships"]
         concept_gewebezelle_betreiberrolle["GewebeZell-Betreiberrolle<br/>id: concept:gewebezelle-betreiberrolle<br/>concept<br/>lifecycle: active · reviewed: 2026-08-01<br/>local responsibility for cell infrastructure, moderation, rules, data boundaries and explicitly allowed federation relationships"]
-        concept_lenskit_legacy_role["Lenskit-Legacyrolle<br/>id: concept:lenskit-legacy-role<br/>concept<br/>lifecycle: transition · reviewed: 2026-08-02<br/>bounded Lenskit/rLens compatibility and rollback role retained during the RepoGround cutover, not a separate product, repository or live-status authority"]
         concept_weltgewebe_federation_planes["Weltgewebe-Föderationsebenen<br/>id: concept:weltgewebe-federation-planes<br/>concept<br/>lifecycle: active · reviewed: 2026-08-01<br/>separation of same-operator infrastructure federation, trusted-neighbour event federation and public domain federation between independent cells"]
         concept_weltgewebe_os["Weltgewebe OS<br/>id: concept:weltgewebe-os<br/>concept<br/>lifecycle: active · reviewed: 2026-08-01<br/>canonical target architecture for a federated, locally sovereign and globally connected societal coordination layer"]
         concept_weltgewebe_platform_target["Weltgewebe-Plattformziel<br/>id: concept:weltgewebe-platform-target<br/>concept<br/>lifecycle: transition · reviewed: 2026-08-01<br/>Kubernetes- and GitOps-based target platform for staging and production while Compose remains a real, bounded development and recovery profile"]
@@ -99,7 +98,6 @@ flowchart TD
     repo_mitschreiber -->|provides / bounded| repo_semantAH
     repo_obsidian_bridge -->|provides / bounded| repo_vault_gewebe
     repo_plexer -->|delivers_to / stable| repo_chronik
-    repo_repoground -->|scope_boundary / bounded| concept_lenskit_legacy_role
     repo_repoground -->|provides / stable| repo_systemkatalog
     repo_reposkop -->|observes / stable| repo_systemkatalog
     repo_schauwerk -->|renders / stable| artifact_ecosystem_map
@@ -122,7 +120,7 @@ flowchart TD
     classDef lifecycleActive stroke-width:1.5px;
     class actor_alexander,artifact_ecosystem_map,repo_systemkatalog,repo_bureau,repo_grabowski,repo_weltgewebe,repo_repoground,repo_reposkop,repo_vibe_lab,repo_chronik,repo_schauwerk,repo_infra,repo_device_graph,service_github,service_ci,repo_leitstand,repo_plexer,repo_metarepo,repo_wgx,repo_contracts_mirror,repo_hausKI,repo_audio,repo_semantAH,repo_aussensensor,repo_mitschreiber,repo_sichter,repo_heim_pc,repo_vault_gewebe,repo_commonworld,repo_obsidian_bridge,repo_snippet_engine_control,repo_konvergenzregelkreis,concept_weltgewebe_os,concept_gewebezelle,concept_weltgewebe_federation_planes,concept_gewebezelle_betreiberrolle lifecycleActive;
     classDef lifecycleTransition stroke:#fbbf24,stroke-width:3px,stroke-dasharray:6 3;
-    class repo_heimgeist,repo_agent_control_surface,concept_weltgewebe_platform_target,concept_lenskit_legacy_role lifecycleTransition;
+    class repo_heimgeist,repo_agent_control_surface,concept_weltgewebe_platform_target lifecycleTransition;
     classDef lifecycleArchived fill:#1f2937,stroke:#64748b,color:#cbd5e1;
     class repo_heimlern,repo_leitwerk lifecycleArchived;
     classDef lifecycleRetired fill:#111827,stroke:#ef4444,stroke-width:2px,stroke-dasharray:8 4,color:#94a3b8;
