@@ -33,7 +33,7 @@ Er pflegt keine Aufgabenpriorität, keinen Taskstatus, keine Runtime-Gesundheit,
 - GitHub: Repositories, Branches, Pull Requests, Issues und Reviews.
 - CI und Review-Gates: technische Prüfsignale.
 - Runtime, systemd, Logs und Healthchecks: laufende Dienste.
-- RepoGround: verifizierbarer, zitierfähiger Codebase-Kontext; Lenskit und RepoBrief sind Legacy-Namen.
+- RepoGround: einzige aktive Identität für verifizierbaren, zitierfähigen Codebase-Kontext; frühere Namen begründen weder Alias noch Parallelprodukt.
 - Leitstand: allgemeine Live-Anzeige.
 - Metarepo: Mitgliedschaft in der Heimgewebe-Fleet.
 - Systemkatalog: stabile Ökosystem-Semantik, Repository-Abdeckung und Zuordnung der Wahrheitsdomänen.

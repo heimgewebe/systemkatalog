@@ -5,7 +5,7 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-REPOGROUND_COMMIT = "40dd1088a642370c5a7cc0dfd19dbd59e6395a35"
+REPOGROUND_COMMIT = "5548ca2d23a3d22ffe14fb1006363e4078e7c009"
 REPOGROUND_README_SHA256 = "34de5eedbd3cc9c7340887c12c97e5241b8060c17f2ff90f9facc1e175f03d9c"
 
 
@@ -21,6 +21,7 @@ class RepoGroundCatalogIdentityTests(unittest.TestCase):
         self.assertIn("repo:repoground", by_id)
         self.assertNotIn("repo:lenskit", by_id)
         self.assertNotIn("concept:repobrief", by_id)
+        self.assertNotIn("concept:lenskit-legacy-role", by_id)
         repoground = by_id["repo:repoground"]
         self.assertEqual(repoground["name"], "RepoGround")
         self.assertEqual(
@@ -66,6 +67,7 @@ class RepoGroundCatalogIdentityTests(unittest.TestCase):
         self.assertIn("repo:repoground", systems)
         self.assertNotIn("repo:lenskit", systems)
         self.assertNotIn("concept:repobrief", systems)
+        self.assertNotIn("concept:lenskit-legacy-role", systems)
         source = systems["repo:repoground"]["source"]
         self.assertEqual(source["repository"], "heimgewebe/repoground")
         self.assertEqual(source["commit"], REPOGROUND_COMMIT)
@@ -94,6 +96,37 @@ class RepoGroundCatalogIdentityTests(unittest.TestCase):
             self.assertNotIn("heimgewebe/lenskit", text, relative_path)
             self.assertNotIn("repo:lenskit", text, relative_path)
             self.assertNotIn("concept:repobrief", text, relative_path)
+
+
+    def test_active_catalog_has_no_former_product_or_runtime_identity(self) -> None:
+        resilience = _load("registry/ecosystem/resilience.v1.json")
+        failure_domains = {item["id"] for item in resilience["failureDomains"]}
+        recovery_modes = {item["id"]: item for item in resilience["recoveryModes"]}
+        self.assertNotIn("runtime:lenskit-legacy", failure_domains)
+        self.assertIn("runtime:repoground", failure_domains)
+        self.assertIn("repoground-release-rollback", recovery_modes)
+        self.assertNotIn("repoground-legacy-rollback", recovery_modes)
+        self.assertIn(
+            "permission to restore retired aliases",
+            recovery_modes["repoground-release-rollback"]["doesNotEstablish"],
+        )
+
+        active_paths = (
+            "README.md",
+            "AGENTS.md",
+            "registry/ecosystem/nodes.json",
+            "registry/ecosystem/edges.json",
+            "registry/ecosystem/resilience.v1.json",
+            "registry/ecosystem/source-bindings.v1.json",
+            "rendered/system-catalog.md",
+            "rendered/ecosystem-registry-map.mmd",
+        )
+        for relative_path in active_paths:
+            text = (ROOT / relative_path).read_text(encoding="utf-8").lower()
+            with self.subTest(path=relative_path):
+                self.assertNotIn("lenskit", text)
+                self.assertNotIn("rlens", text)
+
 
 
 if __name__ == "__main__":

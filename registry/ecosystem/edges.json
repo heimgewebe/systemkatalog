@@ -392,13 +392,6 @@
       "type": "operates_on",
       "stability": "bounded",
       "meaning": "Grabowski may execute scoped platform changes only through explicit authority, evidence and rollback boundaries."
-    },
-    {
-      "from": "repo:repoground",
-      "to": "concept:lenskit-legacy-role",
-      "type": "scope_boundary",
-      "stability": "bounded",
-      "meaning": "RepoGround is the current product and repository-context authority; Lenskit/rLens remains only a bounded compatibility and rollback runtime during cutover."
     }
   ]
 }

@@ -51,7 +51,7 @@ Dafür gelten die Primärquellen:
 | Verifizierbarer, zitierfähiger Codebase-Kontext | RepoGround |
 | Allgemeine Live-Anzeige | Leitstand |
 
-Lenskit und RepoBrief bleiben ausschließlich als Legacy-Namen und Kompatibilitätseinstiege erhalten; die kanonische Produkt- und Repositoryidentität ist RepoGround.
+RepoGround ist die einzige aktive Produkt-, Repository-, Befehls- und Runtimeidentität. Frühere Namen bleiben ausschließlich in unveränderlichen historischen Belegen oder versionierten Datenkennungen erhalten und sind keine aktiven Kompatibilitätseinstiege.
 
 ## Aktive Struktur
 
