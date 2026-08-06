@@ -83,9 +83,11 @@ python3 scripts/systemkatalog_query.py relations bureau
 python3 scripts/systemkatalog_query.py entrypoints leitstand
 python3 scripts/systemkatalog_query.py failure-domain host:heim-pc
 python3 scripts/systemkatalog_query.py recovery-mode grabowski-release-rollback
+python3 scripts/systemkatalog_query.py authority-matrix
+python3 scripts/systemkatalog_query.py manifest
 ```
 
-Jede Ausgabe nennt den gelesenen Katalogcommit, die Quellpfade und – soweit öffentlich zulässig – die zugehörige Quellenbindung. Die CLI besitzt keine Datenbank, keine Schreibschnittstelle und keine Runtime-Autorität.
+Jede erfolgreiche Ausgabe nennt den gelesenen Katalogcommit, die Identität des veröffentlichten Artefaktmanifests sowie nur die für die konkrete Abfrage gelesenen Quelldateien mit SHA-256 und Bytezahl. `manifest` prüft zusätzlich alle veröffentlichten Artefaktbytes gegen den Übergabevertrag. Fehlende, malformed, widersprüchliche oder veraltete Quellen liefern einen typisierten Zustand `degraded` und Exit-Code 3 statt einer Teilwahrheit. Die CLI besitzt weiterhin keine Datenbank, keine Schreibschnittstelle und keine Runtime-, Aufgaben-, CI- oder Merge-Autorität.
 
 ## Lebenszyklus ist kein Laufzeitstatus
 
