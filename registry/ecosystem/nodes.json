@@ -3,7 +3,7 @@
   "kind": "system_catalog_inventory",
   "owner": "repo:systemkatalog",
   "catalogRole": "canonical_system_inventory",
-  "updatedAt": "2026-08-01",
+  "updatedAt": "2026-08-07",
   "nodes": [
     {
       "id": "actor:alexander",
@@ -237,6 +237,30 @@
         "reviewedAt": "2026-07-26",
         "evidenceRefs": [
           "registry/ecosystem/organization-scope.v1.json"
+        ]
+      }
+    },
+    {
+      "id": "repo:alpha-lab",
+      "name": "Alpha Lab",
+      "type": "repository",
+      "purpose": "read-only research tool for reproducible point-in-time analysis of public filings and deterministic shadow evaluation",
+      "notResponsibleFor": [
+        "production execution",
+        "task state",
+        "ecosystem semantics",
+        "claims of proven research outcomes"
+      ],
+      "truthOwnership": [],
+      "entrypoints": {
+        "repository": "https://github.com/heimgewebe/alpha-lab"
+      },
+      "lifecycle": {
+        "state": "active",
+        "reviewedAt": "2026-08-07",
+        "evidenceRefs": [
+          "registry/ecosystem/source-bindings.v1.json",
+          "registry/ecosystem/component-admissions.v1.json"
         ]
       }
     },

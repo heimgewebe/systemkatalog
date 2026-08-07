@@ -3,7 +3,7 @@
   "kind": "system_catalog_resilience",
   "owner": "repo:systemkatalog",
   "catalogRole": "canonical_stable_resilience_semantics",
-  "updatedAt": "2026-08-03",
+  "updatedAt": "2026-08-07",
   "defaultCriticality": "unknown",
   "criticalityClasses": [
     "foundational",
@@ -349,6 +349,21 @@
         "registry/ecosystem/authority-matrix.v1.json"
       ],
       "uncertainty": 0.18
+    },
+    {
+      "system": "repo:alpha-lab",
+      "criticality": "optional",
+      "failureDomains": [
+        "identity:github",
+        "provider:github"
+      ],
+      "recoveryModeRefs": [],
+      "acceptedSinglePathRisks": [],
+      "evidence": [
+        "registry/ecosystem/source-bindings.v1.json",
+        "registry/ecosystem/component-admissions.v1.json"
+      ],
+      "uncertainty": 0.08
     },
     {
       "system": "repo:chronik",

@@ -2,25 +2,25 @@
   "artifactCount": 6,
   "artifacts": [
     {
-      "bytes": 14516,
+      "bytes": 14773,
       "contentType": "text/mermaid",
       "path": "rendered/ecosystem-registry-map.mmd",
       "role": "canonical_ecosystem_map_mermaid",
-      "sha256": "4cfa51f6795b0c28ae0bc38a5baa493969f0166beb67ad0a2178b05a40d9aff9"
+      "sha256": "b3188eb89c50d0ac637f7dc34ac3474550582834eb7b7156ccb5db9e7786d4e6"
     },
     {
-      "bytes": 51418,
+      "bytes": 51993,
       "contentType": "text/markdown",
       "path": "rendered/system-catalog.md",
       "role": "rendered_catalog_markdown",
-      "sha256": "ba5fdd943dccb1348a778bc47349542079289cd5a079167a714d0eceb34f10b9"
+      "sha256": "2541b8bd39ad07a36f555626e094992dbe7f2c64a428103bd63e7cfa07602f84"
     },
     {
-      "bytes": 38332,
+      "bytes": 39104,
       "contentType": "application/json",
       "path": "registry/ecosystem/nodes.json",
       "role": "registry_nodes",
-      "sha256": "955563ca17335b521822b81bec57c85ee399c1d77be8602e077c493062288430"
+      "sha256": "6f7ad38e26293d180c7e2a6f8d102990b6e5c402a1d410ef48a62a9759024262"
     },
     {
       "bytes": 13341,
@@ -37,11 +37,11 @@
       "sha256": "13d1163935c900763fef3b63b238eac0075089bb2fea4dd9130e9d36c105cdcd"
     },
     {
-      "bytes": 38739,
+      "bytes": 39141,
       "contentType": "application/json",
       "path": "registry/ecosystem/resilience.v1.json",
       "role": "resilience_semantics",
-      "sha256": "71fd37df610c9fc0bbed20f39bcd809628d8e34e47c2f93b8c6ca92c582fc3e4"
+      "sha256": "b38e6c231b804f2025f15900199c411593492712e50197998dc2ad3f3557d768"
     }
   ],
   "contractVersion": "1",
@@ -58,8 +58,8 @@
   "schemaPath": "catalog/ecosystem-map-artifact-manifest.schema.v1.json",
   "schemaVersion": 1,
   "source": {
-    "commit": "dcf6ac5dd2ca963d7017dbeb52f3c1c4da595120",
-    "generatedAt": "2026-08-03T05:23:36Z",
+    "commit": "a64e666d4ddd198d07509eb49c7c94c5bbc3e0e7",
+    "generatedAt": "2026-08-07T07:26:10Z",
     "repository": "heimgewebe/systemkatalog"
   }
 }
