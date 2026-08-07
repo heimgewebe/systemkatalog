@@ -67,6 +67,45 @@ class SystemkatalogQueryTests(unittest.TestCase):
         )
         self.assertEqual(len(manifest["source"]["commit"]), 40)
 
+    def test_foreign_manifest_repository_fails_closed(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = self._copy_catalog(Path(temporary))
+            path = root / "rendered/ecosystem-map-artifact-manifest.json"
+            payload = json.loads(path.read_text(encoding="utf-8"))
+            payload["source"]["repository"] = "heimgewebe/not-systemkatalog"
+            path.write_text(
+                json.dumps(payload, ensure_ascii=False, indent=2) + "\n",
+                encoding="utf-8",
+            )
+            result = query_safe(root, "system", "grabowski")
+        self.assertEqual(result["status"], "degraded")
+        self.assertEqual(result["error"]["code"], "inconsistent_catalog")
+        self.assertEqual(
+            result["error"]["details"]["field"], "source.repository"
+        )
+
+    def test_malformed_manifest_source_identity_fails_closed(self) -> None:
+        mutations = (
+            ("commit", "not-a-git-object", "source.commit"),
+            ("generatedAt", None, "source.generatedAt"),
+        )
+        for key, value, expected_field in mutations:
+            with self.subTest(field=key), tempfile.TemporaryDirectory() as temporary:
+                root = self._copy_catalog(Path(temporary))
+                path = root / "rendered/ecosystem-map-artifact-manifest.json"
+                payload = json.loads(path.read_text(encoding="utf-8"))
+                payload["source"][key] = value
+                path.write_text(
+                    json.dumps(payload, ensure_ascii=False, indent=2) + "\n",
+                    encoding="utf-8",
+                )
+                result = query_safe(root, "system", "grabowski")
+            self.assertEqual(result["status"], "degraded")
+            self.assertEqual(result["error"]["code"], "source_malformed")
+            self.assertEqual(
+                result["error"]["details"]["field"], expected_field
+            )
+
     def test_repository_query_exposes_target_criticality(self) -> None:
         result = query(ROOT, "repository", "weltgewebe")
         self.assertEqual(

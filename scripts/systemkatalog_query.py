@@ -179,6 +179,21 @@ def _documents(
 
 def _manifest_identity(root: Path) -> dict[str, Any]:
     manifest, evidence = _read_document(root, MANIFEST_PATH)
+    if manifest.get("kind") != "system_catalog_map_artifact_manifest":
+        raise CatalogQueryError(
+            "source_malformed",
+            f"{MANIFEST_PATH}: kind must identify the Systemkatalog artifact manifest",
+            path=MANIFEST_PATH,
+            details={"field": "kind"},
+        )
+    contract_version = manifest.get("contractVersion")
+    if not isinstance(contract_version, str) or not contract_version:
+        raise CatalogQueryError(
+            "source_malformed",
+            f"{MANIFEST_PATH}: contractVersion must be a non-empty string",
+            path=MANIFEST_PATH,
+            details={"field": "contractVersion"},
+        )
     source = manifest.get("source")
     if not isinstance(source, dict):
         raise CatalogQueryError(
@@ -187,13 +202,52 @@ def _manifest_identity(root: Path) -> dict[str, Any]:
             path=MANIFEST_PATH,
             details={"field": "source"},
         )
+    repository = source.get("repository")
+    if not isinstance(repository, str) or not repository:
+        raise CatalogQueryError(
+            "source_malformed",
+            f"{MANIFEST_PATH}: source.repository must be a non-empty string",
+            path=MANIFEST_PATH,
+            details={"field": "source.repository"},
+        )
+    if repository != CATALOG_REPOSITORY:
+        raise CatalogQueryError(
+            "inconsistent_catalog",
+            f"{MANIFEST_PATH}: source.repository does not match the catalog repository",
+            path=MANIFEST_PATH,
+            details={
+                "field": "source.repository",
+                "expected": CATALOG_REPOSITORY,
+                "actual": repository,
+            },
+        )
+    commit = source.get("commit")
+    if (
+        not isinstance(commit, str)
+        or len(commit) != 40
+        or any(character not in "0123456789abcdef" for character in commit)
+    ):
+        raise CatalogQueryError(
+            "source_malformed",
+            f"{MANIFEST_PATH}: source.commit must be a lowercase 40-character Git object id",
+            path=MANIFEST_PATH,
+            details={"field": "source.commit"},
+        )
+    generated_at = source.get("generatedAt")
+    if not isinstance(generated_at, str) or not generated_at:
+        raise CatalogQueryError(
+            "source_malformed",
+            f"{MANIFEST_PATH}: source.generatedAt must be a non-empty string",
+            path=MANIFEST_PATH,
+            details={"field": "source.generatedAt"},
+        )
     return {
         **evidence,
-        "contractVersion": manifest.get("contractVersion"),
+        "contractVersion": contract_version,
         "source": {
-            "repository": source.get("repository"),
-            "commit": source.get("commit"),
-            "generatedAt": source.get("generatedAt"),
+            "repository": repository,
+            "commit": commit,
+            "generatedAt": generated_at,
         },
     }
 
