@@ -11,6 +11,7 @@ flowchart TD
 
     subgraph kind_repository[Repos und Organe]
         repo_agent_control_surface["Agent Control Surface<br/>id: repo:agent-control-surface<br/>repository<br/>lifecycle: transition · reviewed: 2026-07-26<br/>local manual control surface for Jules sessions and guarded step-by-step Git workflows"]
+        repo_alpha_lab["Alpha Lab<br/>id: repo:alpha-lab<br/>repository<br/>lifecycle: active · reviewed: 2026-08-07<br/>read-only research tool for reproducible point-in-time analysis of public filings and deterministic shadow evaluation"]
         repo_audio["audio<br/>id: repo:audio<br/>repository<br/>lifecycle: active · reviewed: 2026-08-01<br/>Canonical Heim-PC audio configuration, recording, playback, instruments and experimental music systems"]
         repo_aussensensor["Außensensor<br/>id: repo:aussensensor<br/>repository<br/>lifecycle: active · reviewed: 2026-07-26<br/>Curated external signals and event feeds for Chronik"]
         repo_bureau["Bureau<br/>id: repo:bureau<br/>repository<br/>lifecycle: active · reviewed: 2026-07-26<br/>task cadence, delegation, run reporting"]
@@ -118,7 +119,7 @@ flowchart TD
 
     %% Lifecycle is stable catalog semantics, not runtime status.
     classDef lifecycleActive stroke-width:1.5px;
-    class actor_alexander,artifact_ecosystem_map,repo_systemkatalog,repo_bureau,repo_grabowski,repo_weltgewebe,repo_repoground,repo_reposkop,repo_vibe_lab,repo_chronik,repo_schauwerk,repo_infra,repo_device_graph,service_github,service_ci,repo_leitstand,repo_plexer,repo_metarepo,repo_wgx,repo_contracts_mirror,repo_hausKI,repo_audio,repo_semantAH,repo_aussensensor,repo_mitschreiber,repo_sichter,repo_heim_pc,repo_vault_gewebe,repo_commonworld,repo_obsidian_bridge,repo_snippet_engine_control,repo_konvergenzregelkreis,concept_weltgewebe_os,concept_gewebezelle,concept_weltgewebe_federation_planes,concept_gewebezelle_betreiberrolle lifecycleActive;
+    class actor_alexander,artifact_ecosystem_map,repo_systemkatalog,repo_bureau,repo_grabowski,repo_weltgewebe,repo_repoground,repo_reposkop,repo_vibe_lab,repo_alpha_lab,repo_chronik,repo_schauwerk,repo_infra,repo_device_graph,service_github,service_ci,repo_leitstand,repo_plexer,repo_metarepo,repo_wgx,repo_contracts_mirror,repo_hausKI,repo_audio,repo_semantAH,repo_aussensensor,repo_mitschreiber,repo_sichter,repo_heim_pc,repo_vault_gewebe,repo_commonworld,repo_obsidian_bridge,repo_snippet_engine_control,repo_konvergenzregelkreis,concept_weltgewebe_os,concept_gewebezelle,concept_weltgewebe_federation_planes,concept_gewebezelle_betreiberrolle lifecycleActive;
     classDef lifecycleTransition stroke:#fbbf24,stroke-width:3px,stroke-dasharray:6 3;
     class repo_heimgeist,repo_agent_control_surface,concept_weltgewebe_platform_target lifecycleTransition;
     classDef lifecycleArchived fill:#1f2937,stroke:#64748b,color:#cbd5e1;

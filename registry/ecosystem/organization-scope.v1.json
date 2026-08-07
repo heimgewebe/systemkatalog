@@ -1,16 +1,16 @@
 {
   "schemaVersion": 1,
   "kind": "system_catalog_organization_scope",
-  "updatedAt": "2026-08-01",
+  "updatedAt": "2026-08-07",
   "source": {
     "provider": "github",
     "organization": "heimgewebe",
-    "observedAt": "2026-07-28T19:39:27Z",
+    "observedAt": "2026-08-07T06:23:00Z",
     "selection": {
       "archived": "include",
       "fork": false
     },
-    "repositoryCount": 36
+    "repositoryCount": 37
   },
   "repositories": [
     {
@@ -20,6 +20,14 @@
       "classification": "catalog",
       "node": "repo:agent-control-surface",
       "reason": "local manual control surface for Jules sessions and guarded step-by-step Git workflows"
+    },
+    {
+      "name": "alpha-lab",
+      "repository": "heimgewebe/alpha-lab",
+      "visibility": "private",
+      "classification": "catalog",
+      "node": "repo:alpha-lab",
+      "reason": "Read-only research repository with reproducible point-in-time evidence and deterministic shadow evaluation."
     },
     {
       "name": "audio",

@@ -33,6 +33,35 @@
         "task priority",
         "merge authority"
       ]
+    },
+    {
+      "componentId": "repo:alpha-lab",
+      "componentKind": "repository",
+      "admissionClass": "enable",
+      "purpose": "read-only research tool for reproducible point-in-time analysis of public filings and deterministic shadow evaluation",
+      "consumers": [
+        "Alex",
+        "ChatGPT through Grabowski"
+      ],
+      "truthAuthority": "none: Alpha Lab owns its repository code and research artifacts but no ecosystem-wide truth domain.",
+      "operatingDependencies": [
+        "provider:github",
+        "explicitly approved public research sources for individual research runs"
+      ],
+      "maintenanceBurden": "Keep source-policy, reproducibility boundaries and the Systemkatalog purpose aligned when the research surface changes.",
+      "reviewOrRetirementPath": "Review when the repository gains operational execution, changes its evidence boundary or ceases to provide a distinct reproducible research capability; retire the catalog node when the repository is archived or superseded.",
+      "source": {
+        "kind": "private_repository_metadata_projection",
+        "ref": "registry/ecosystem/source-bindings.v1.json"
+      },
+      "doesNotEstablish": [
+        "research correctness",
+        "proven research outcomes",
+        "external source availability",
+        "production execution",
+        "task priority",
+        "merge authority"
+      ]
     }
   ],
   "doesNotEstablish": [

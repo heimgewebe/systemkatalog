@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "kind": "system_catalog_fleet_coverage",
-  "updatedAt": "2026-07-29",
+  "updatedAt": "2026-08-07",
   "membershipAuthority": {
     "repository": "heimgewebe/metarepo",
     "commit": "df3063d846d6751e668b65ec8e64a4fc34474401",
@@ -19,6 +19,12 @@
       "node": "repo:agent-control-surface",
       "repository": "heimgewebe/agent-control-surface",
       "entrypoint": "https://github.com/heimgewebe/agent-control-surface",
+      "membership": "catalog-only"
+    },
+    {
+      "node": "repo:alpha-lab",
+      "repository": "heimgewebe/alpha-lab",
+      "entrypoint": "https://github.com/heimgewebe/alpha-lab",
       "membership": "catalog-only"
     },
     {

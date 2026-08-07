@@ -25,14 +25,14 @@ class SystemCatalogTests(unittest.TestCase):
     def test_repository_catalog_is_valid_and_roomless(self) -> None:
         result = validate(ROOT)
         self.assertEqual(result["status"], "valid")
-        self.assertEqual(result["registrySystems"], 43)
+        self.assertEqual(result["registrySystems"], 44)
         self.assertEqual(result["registryRelations"], 52)
         self.assertEqual(result["authorityDomains"], 20)
-        self.assertEqual(result["catalogRepositories"], 34)
+        self.assertEqual(result["catalogRepositories"], 35)
         self.assertEqual(result["fleetRepositories"], 18)
         self.assertEqual(result["fleetExclusions"], 4)
-        self.assertEqual(result["organizationRepositories"], 36)
-        self.assertEqual(result["organizationCatalogRepositories"], 32)
+        self.assertEqual(result["organizationRepositories"], 37)
+        self.assertEqual(result["organizationCatalogRepositories"], 33)
         self.assertEqual(result["organizationArchivedReferences"], 2)
         self.assertEqual(result["organizationExclusions"], 2)
         self.assertEqual(result["activeLegacyRooms"], 0)
@@ -79,13 +79,13 @@ class SystemCatalogTests(unittest.TestCase):
             "id", "name", "type", "purpose", "lifecycle",
             "notResponsibleFor", "truthOwnership", "entrypoints",
         }
-        self.assertEqual(len(data["nodes"]), 43)
+        self.assertEqual(len(data["nodes"]), 44)
         for node in data["nodes"]:
             self.assertEqual(set(node), required)
             self.assertTrue(node["notResponsibleFor"])
             self.assertTrue(node["entrypoints"])
             self.assertIn(node["lifecycle"]["state"], {"active", "transition", "reference", "archived", "retired"})
-            self.assertIn(node["lifecycle"]["reviewedAt"], {"2026-07-26", "2026-07-28", "2026-07-29", "2026-08-01", "2026-08-02", "2026-08-03"})
+            self.assertIn(node["lifecycle"]["reviewedAt"], {"2026-07-26", "2026-07-28", "2026-07-29", "2026-08-01", "2026-08-02", "2026-08-03", "2026-08-07"})
             self.assertTrue(node["lifecycle"]["evidenceRefs"])
         self.assertIn("Nicht zuständig für", (ROOT / "rendered/system-catalog.md").read_text(encoding="utf-8"))
         rendered = (ROOT / "rendered/system-catalog.md").read_text(encoding="utf-8")

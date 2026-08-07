@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "kind": "system_catalog_source_bindings",
   "catalogRepository": "heimgewebe/systemkatalog",
-  "observedAt": "2026-08-03T07:22:31+02:00",
+  "observedAt": "2026-08-07T08:23:00+02:00",
   "systems": [
     {
       "system": "actor:alexander",
@@ -149,6 +149,21 @@
       "reviewedAt": "2026-07-26T18:09:02Z",
       "method": "repository_primary_document",
       "uncertainty": 0.08
+    },
+    {
+      "system": "repo:alpha-lab",
+      "source": {
+        "repository": "heimgewebe/alpha-lab",
+        "commit": "redacted",
+        "locator": {
+          "kind": "private_repository_metadata",
+          "contentSha256": "53b14e4c21464a543b0361e3cef85dd05e6f362dc78b382915598b695fc180b8"
+        },
+        "defaultBranch": "main"
+      },
+      "reviewedAt": "2026-08-07T08:23:00+02:00",
+      "method": "private_repository_metadata_projection",
+      "uncertainty": 0.25
     },
     {
       "system": "repo:chronik",
