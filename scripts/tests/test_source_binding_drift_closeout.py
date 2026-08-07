@@ -8,8 +8,8 @@ ROOT = Path(__file__).resolve().parents[2]
 EXPECTED = {
     "repo:systemkatalog": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "6ffd171ab11ae5dd2f45688ad1a86d2dcc5cfef0",
-        "sha256": "56272984ae4117af9cb04e0fcc1d73bed828ba04574a809a62876fdedcebbd92",
+        "commit": "2f1075b15ba79e8c7e435e7c40939dc89520922b",
+        "sha256": "aef625fa6dd2b7256893768a7cc244362a5b6961943b01a9988d5edb56d6c8c4",
         "path": "README.md",
     },
     "repo:bureau": {
@@ -68,8 +68,8 @@ EXPECTED = {
     },
     "repo:audio": {
         "repository": "heimgewebe/audio",
-        "commit": "404736337ec315eb0af556b412c68136e49c1159",
-        "sha256": "a176fa0df833d7835e9ad7f15d87a9ef57bea0e6b1061379a7cb87941a56959a",
+        "commit": "b6ad3ea306985f4c1bde7cbee244842f784abea3",
+        "sha256": "f16eb702ee47a776041f34d90843e6c1c149f81c2a5306e299c3780d4784a819",
         "path": "README.md",
     },
     "repo:semantAH": {
@@ -98,8 +98,8 @@ EXPECTED = {
     },
     "repo:commonworld": {
         "repository": "heimgewebe/commonworld",
-        "commit": "35b6b19529891d33f0b0db3f864256f7069bbba4",
-        "sha256": "48edacaa06c1380e6ad2d9e4603a223e0f5fd93c4d08b8ade718c57cadfebda1",
+        "commit": "43e773a9f118865d4177a763c2c6eae23db04487",
+        "sha256": "898b89cfa9c52985f58004f37f96d195aca151230cb7a6cadc2b596581f26c34",
         "path": "README.md",
     },
 }
