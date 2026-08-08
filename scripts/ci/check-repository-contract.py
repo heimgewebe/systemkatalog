@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+from collections import Counter
 import json
 import subprocess
 import tempfile
@@ -205,6 +206,42 @@ def active_gitignore_paths(tree: dict[str, dict[str, str]]) -> list[str]:
     )
 
 
+def check_maintained_catalog_surfaces(
+    tree: dict[str, dict[str, str]],
+    maintained: object,
+) -> None:
+    if not isinstance(maintained, list) or any(not isinstance(path, str) for path in maintained):
+        fail("maintainedCatalogSurfaces must be a string array")
+
+    duplicates = sorted(
+        path for path, count in Counter(maintained).items() if count > 1
+    )
+    if duplicates:
+        fail(
+            "maintainedCatalogSurfaces contains duplicate entries: "
+            + ", ".join(duplicates)
+        )
+
+    missing = sorted(
+        path
+        for path in maintained
+        if path not in tree or tree[path]["type"] != "blob"
+    )
+    if missing:
+        fail(
+            "maintainedCatalogSurfaces references missing or non-file surfaces: "
+            + ", ".join(missing)
+        )
+
+    stale = sorted(
+        path
+        for path in maintained
+        if path in RETIRED_RUNTIME_PATHS or path.rsplit("/", 1)[-1] in RUNTIME_BASENAMES
+    )
+    if stale:
+        fail("runtime surface remains in maintainedCatalogSurfaces: " + ", ".join(stale))
+
+
 def check_static_surface(tree: dict[str, dict[str, str]], repo: Path, treeish: str) -> None:
     missing = sorted(path for path in REQUIRED_STATIC_SURFACES if path not in tree or tree[path]["type"] != "blob")
     if missing:
@@ -231,16 +268,9 @@ def check_static_surface(tree: dict[str, dict[str, str]], repo: Path, treeish: s
     policy = json.loads(git_text(repo, treeish, "policy/system-catalog.v1.json"))
     if "runtimeProjection" in policy:
         fail("runtimeProjection must remain absent from the static catalog policy")
-    maintained = policy.get("maintainedCatalogSurfaces")
-    if not isinstance(maintained, list) or any(not isinstance(path, str) for path in maintained):
-        fail("maintainedCatalogSurfaces must be a string array")
-    stale = sorted(
-        path
-        for path in maintained
-        if path in RETIRED_RUNTIME_PATHS or path.rsplit("/", 1)[-1] in RUNTIME_BASENAMES
+    check_maintained_catalog_surfaces(
+        tree, policy.get("maintainedCatalogSurfaces")
     )
-    if stale:
-        fail("runtime surface remains in maintainedCatalogSurfaces: " + ", ".join(stale))
 
 
 def main() -> None:
