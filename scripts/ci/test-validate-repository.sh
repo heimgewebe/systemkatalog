@@ -71,6 +71,19 @@ git commit -m missing-static-surface >/dev/null
 expect_failure "static projection missing" "required static surface missing"
 
 reset_state
+git rm catalog/resilience.schema.v1.json >/dev/null
+git commit -m missing-maintained-surface >/dev/null
+expect_failure "maintained surface missing" "maintainedCatalogSurfaces references missing or non-file surfaces: catalog/resilience.schema.v1.json"
+
+reset_state
+python3 - <<'PY'
+import json
+p='policy/system-catalog.v1.json'; d=json.load(open(p)); d['maintainedCatalogSurfaces'].append('README.md'); json.dump(d,open(p,'w'))
+PY
+git commit -am duplicate-maintained-surface >/dev/null
+expect_failure "maintained surface duplicated" "maintainedCatalogSurfaces contains duplicate entries: README.md"
+
+reset_state
 printf '#!/usr/bin/env python3\nif True print("broken")\n' > scripts/render_system_catalog.py
 git add scripts/render_system_catalog.py
 git commit -m syntax-error >/dev/null
