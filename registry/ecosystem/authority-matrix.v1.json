@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "kind": "system_catalog_authority_matrix",
-  "updatedAt": "2026-08-01T20:20:27+02:00",
+  "updatedAt": "2026-08-09T06:54:57+02:00",
   "canonicalMap": "rendered/ecosystem-registry-map.mmd",
   "registryInputs": [
     "registry/ecosystem/nodes.json",
@@ -81,7 +81,7 @@
       ]
     },
     {
-      "domain": "shared_fleet_ci_checks",
+      "domain": "wgx_profile_runner_contract",
       "owner": "wgx",
       "projections": [
         "github_ci"

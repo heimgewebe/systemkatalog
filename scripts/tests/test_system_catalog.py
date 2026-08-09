@@ -85,7 +85,7 @@ class SystemCatalogTests(unittest.TestCase):
             self.assertTrue(node["notResponsibleFor"])
             self.assertTrue(node["entrypoints"])
             self.assertIn(node["lifecycle"]["state"], {"active", "transition", "reference", "archived", "retired"})
-            self.assertIn(node["lifecycle"]["reviewedAt"], {"2026-07-26", "2026-07-28", "2026-07-29", "2026-08-01", "2026-08-02", "2026-08-03", "2026-08-07"})
+            self.assertIn(node["lifecycle"]["reviewedAt"], {"2026-07-26", "2026-07-28", "2026-07-29", "2026-08-01", "2026-08-02", "2026-08-03", "2026-08-07", "2026-08-09"})
             self.assertTrue(node["lifecycle"]["evidenceRefs"])
         self.assertIn("Nicht zuständig für", (ROOT / "rendered/system-catalog.md").read_text(encoding="utf-8"))
         rendered = (ROOT / "rendered/system-catalog.md").read_text(encoding="utf-8")
@@ -105,8 +105,13 @@ class SystemCatalogTests(unittest.TestCase):
         by_id = {node["id"]: node for node in nodes}
         self.assertEqual(
             by_id["repo:wgx"]["purpose"],
-            "Repository verification adapter and reusable CI frontdoor router",
+            "WGX-v1 profile compatibility and repository-declared validation/task runner",
         )
+        self.assertEqual(
+            by_id["repo:wgx"]["truthOwnership"],
+            ["wgx_profile_runner_contract"],
+        )
+        self.assertIn("fleet or policy truth", by_id["repo:wgx"]["notResponsibleFor"])
         self.assertIn("task coordination or priority", by_id["repo:wgx"]["notResponsibleFor"])
         self.assertEqual(
             by_id["repo:commonworld"]["truthOwnership"],

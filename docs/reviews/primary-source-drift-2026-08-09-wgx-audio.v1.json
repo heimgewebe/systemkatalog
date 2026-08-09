@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "kind": "system_catalog_source_binding_review",
+  "decision": "approved_source_binding_refresh",
+  "reviewedAt": "2026-08-09T06:54:57+02:00",
+  "reportSha256": "c6257eff520aec6a3cd73fdda715f748c9c292ad297a8443081548d8d9013c4c",
+  "approvedChanges": [
+    {
+      "repository": "heimgewebe/wgx",
+      "system": "repo:wgx",
+      "locatorKind": "file",
+      "path": "README.md",
+      "boundCommit": "45611f094cd7c4019c7eda4bd36b6fa862503132",
+      "boundSha256": "f9696a4a65b51cffeefa16d146f0fdd785c7cc30db7b1a26d9f08b485f146729",
+      "observedCommit": "254d4fa821f50b88362793c9ccd37082e2d0ed9d",
+      "observedSha256": "c27918129cb962871cddfbb224d7d5bf9c3063af766dfbbe53231c1913879f05"
+    },
+    {
+      "repository": "heimgewebe/audio",
+      "system": "repo:audio",
+      "locatorKind": "file",
+      "path": "README.md",
+      "boundCommit": "b6ad3ea306985f4c1bde7cbee244842f784abea3",
+      "boundSha256": "f16eb702ee47a776041f34d90843e6c1c149f81c2a5306e299c3780d4784a819",
+      "observedCommit": "a9d2899f5ed415cafaaa99e6951aeace04d2525a",
+      "observedSha256": "c991fce442acaf58c6ee6ea604da06c0fab93b5175ba04ad0ebb71c0aa32d164"
+    }
+  ],
+  "doesNotEstablish": [
+    "semantic_change",
+    "merge",
+    "deploy",
+    "runtime_health",
+    "task_state"
+  ]
+}

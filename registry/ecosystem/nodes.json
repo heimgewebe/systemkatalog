@@ -3,7 +3,7 @@
   "kind": "system_catalog_inventory",
   "owner": "repo:systemkatalog",
   "catalogRole": "canonical_system_inventory",
-  "updatedAt": "2026-08-07",
+  "updatedAt": "2026-08-09",
   "nodes": [
     {
       "id": "actor:alexander",
@@ -506,24 +506,26 @@
       "id": "repo:wgx",
       "name": "WGX",
       "type": "repository",
-      "purpose": "Repository verification adapter and reusable CI frontdoor router",
+      "purpose": "WGX-v1 profile compatibility and repository-declared validation/task runner",
       "notResponsibleFor": [
         "repository purpose semantics",
+        "fleet or policy truth",
         "task coordination or priority",
-        "host, process or deployment effects",
-        "runtime or Fleet health"
+        "git, worktree, process or deployment authority",
+        "cross-repository code context",
+        "effects of repository-declared task commands"
       ],
       "truthOwnership": [
-        "shared_fleet_ci_checks"
+        "wgx_profile_runner_contract"
       ],
       "entrypoints": {
         "repository": "https://github.com/heimgewebe/wgx"
       },
       "lifecycle": {
         "state": "active",
-        "reviewedAt": "2026-08-01",
+        "reviewedAt": "2026-08-09",
         "evidenceRefs": [
-          "https://github.com/heimgewebe/wgx/blob/45611f094cd7c4019c7eda4bd36b6fa862503132/README.md"
+          "https://github.com/heimgewebe/wgx/blob/254d4fa821f50b88362793c9ccd37082e2d0ed9d/README.md"
         ]
       }
     },
