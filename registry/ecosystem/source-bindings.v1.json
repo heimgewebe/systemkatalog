@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "kind": "system_catalog_source_bindings",
   "catalogRepository": "heimgewebe/systemkatalog",
-  "observedAt": "2026-08-07T08:23:00+02:00",
+  "observedAt": "2026-08-09T04:54:57.061610Z",
   "systems": [
     {
       "system": "actor:alexander",
@@ -330,15 +330,15 @@
       "system": "repo:wgx",
       "source": {
         "repository": "heimgewebe/wgx",
-        "commit": "45611f094cd7c4019c7eda4bd36b6fa862503132",
+        "commit": "254d4fa821f50b88362793c9ccd37082e2d0ed9d",
         "locator": {
           "kind": "file",
           "path": "README.md",
-          "contentSha256": "f9696a4a65b51cffeefa16d146f0fdd785c7cc30db7b1a26d9f08b485f146729"
+          "contentSha256": "c27918129cb962871cddfbb224d7d5bf9c3063af766dfbbe53231c1913879f05"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-08-01T07:17:09+02:00",
+      "reviewedAt": "2026-08-09T06:54:57+02:00",
       "method": "repository_primary_document",
       "uncertainty": 0.01
     },
@@ -378,15 +378,15 @@
       "system": "repo:audio",
       "source": {
         "repository": "heimgewebe/audio",
-        "commit": "b6ad3ea306985f4c1bde7cbee244842f784abea3",
+        "commit": "a9d2899f5ed415cafaaa99e6951aeace04d2525a",
         "locator": {
           "kind": "file",
           "path": "README.md",
-          "contentSha256": "f16eb702ee47a776041f34d90843e6c1c149f81c2a5306e299c3780d4784a819"
+          "contentSha256": "c991fce442acaf58c6ee6ea604da06c0fab93b5175ba04ad0ebb71c0aa32d164"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-08-07T07:45:16.263100Z",
+      "reviewedAt": "2026-08-09T06:54:57+02:00",
       "method": "repository_primary_document",
       "uncertainty": 0.01
     },

@@ -62,14 +62,14 @@ EXPECTED = {
     },
     "repo:wgx": {
         "repository": "heimgewebe/wgx",
-        "commit": "45611f094cd7c4019c7eda4bd36b6fa862503132",
-        "sha256": "f9696a4a65b51cffeefa16d146f0fdd785c7cc30db7b1a26d9f08b485f146729",
+        "commit": "254d4fa821f50b88362793c9ccd37082e2d0ed9d",
+        "sha256": "c27918129cb962871cddfbb224d7d5bf9c3063af766dfbbe53231c1913879f05",
         "path": "README.md",
     },
     "repo:audio": {
         "repository": "heimgewebe/audio",
-        "commit": "b6ad3ea306985f4c1bde7cbee244842f784abea3",
-        "sha256": "f16eb702ee47a776041f34d90843e6c1c149f81c2a5306e299c3780d4784a819",
+        "commit": "a9d2899f5ed415cafaaa99e6951aeace04d2525a",
+        "sha256": "c991fce442acaf58c6ee6ea604da06c0fab93b5175ba04ad0ebb71c0aa32d164",
         "path": "README.md",
     },
     "repo:semantAH": {
