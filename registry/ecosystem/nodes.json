@@ -740,7 +740,7 @@
       "id": "repo:heim-pc",
       "name": "heim-pc",
       "type": "repository",
-      "purpose": "Versioned local operator entry and host orientation",
+      "purpose": "Versioned local operator entry, host orientation and host-local capability locators",
       "notResponsibleFor": [
         "fleet task authority",
         "service runtime truth",
@@ -748,13 +748,18 @@
       ],
       "truthOwnership": [],
       "entrypoints": {
-        "repository": "https://github.com/heimgewebe/heim-pc"
+        "repository": "https://github.com/heimgewebe/heim-pc",
+        "operatorEntry": "https://github.com/heimgewebe/heim-pc/blob/671565d78b115cf2205d8a05bdeb709ac998f428/manifest/operator-entry.v1.json",
+        "asrArchitecture": "https://github.com/heimgewebe/heim-pc/blob/671565d78b115cf2205d8a05bdeb709ac998f428/architecture/asr-engine.md",
+        "asrPolicy": "https://github.com/heimgewebe/heim-pc/blob/671565d78b115cf2205d8a05bdeb709ac998f428/manifest/asr-engine-policy.v1.json",
+        "asrEntrypoint": "https://github.com/heimgewebe/heim-pc/blob/671565d78b115cf2205d8a05bdeb709ac998f428/scripts/asr_engine.py"
       },
       "lifecycle": {
         "state": "active",
-        "reviewedAt": "2026-07-26",
+        "reviewedAt": "2026-08-13",
         "evidenceRefs": [
-          "registry/ecosystem/organization-scope.v1.json"
+          "registry/ecosystem/organization-scope.v1.json",
+          "registry/ecosystem/source-bindings.v1.json"
         ]
       }
     },
