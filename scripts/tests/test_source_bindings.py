@@ -52,9 +52,9 @@ class SourceBindingTests(unittest.TestCase):
                 "sha256": "bbf1d19865812b9584a3645ecd031f0854ee6110849d249692b4ac62d8f8d1e0",
             },
             "repo:heim-pc": {
-                "commit": "446dcef499147970ca3bc7abc1d95f551be8d279",
+                "commit": "671565d78b115cf2205d8a05bdeb709ac998f428",
                 "path": "manifest/operator-entry.v1.json",
-                "sha256": "480a23722c17a0ec8cfa67a69389ebba22a95f83ccac0631b6a2a3b44eeb03bb",
+                "sha256": "b8539db377f17808719f59efc33a63fae8fa2ca97f29f674f0824fc843033b94",
             },
         }
         for system, source in expected.items():

@@ -85,7 +85,7 @@ class SystemCatalogTests(unittest.TestCase):
             self.assertTrue(node["notResponsibleFor"])
             self.assertTrue(node["entrypoints"])
             self.assertIn(node["lifecycle"]["state"], {"active", "transition", "reference", "archived", "retired"})
-            self.assertIn(node["lifecycle"]["reviewedAt"], {"2026-07-26", "2026-07-28", "2026-07-29", "2026-08-01", "2026-08-02", "2026-08-03", "2026-08-07", "2026-08-09"})
+            self.assertIn(node["lifecycle"]["reviewedAt"], {"2026-07-26", "2026-07-28", "2026-07-29", "2026-08-01", "2026-08-02", "2026-08-03", "2026-08-07", "2026-08-09", "2026-08-13"})
             self.assertTrue(node["lifecycle"]["evidenceRefs"])
         self.assertIn("Nicht zuständig für", (ROOT / "rendered/system-catalog.md").read_text(encoding="utf-8"))
         rendered = (ROOT / "rendered/system-catalog.md").read_text(encoding="utf-8")
@@ -127,6 +127,29 @@ class SystemCatalogTests(unittest.TestCase):
             "remote repository freshness",
             by_id["repo:reposkop"]["notResponsibleFor"],
         )
+        heim_pc = by_id["repo:heim-pc"]
+        self.assertIn("host-local capability locators", heim_pc["purpose"])
+        self.assertEqual(heim_pc["truthOwnership"], [])
+        self.assertEqual(
+            heim_pc["entrypoints"]["operatorEntry"],
+            "https://github.com/heimgewebe/heim-pc/blob/671565d78b115cf2205d8a05bdeb709ac998f428/manifest/operator-entry.v1.json",
+        )
+        self.assertEqual(
+            heim_pc["entrypoints"]["asrPolicy"],
+            "https://github.com/heimgewebe/heim-pc/blob/671565d78b115cf2205d8a05bdeb709ac998f428/manifest/asr-engine-policy.v1.json",
+        )
+        self.assertEqual(
+            heim_pc["entrypoints"]["asrEntrypoint"],
+            "https://github.com/heimgewebe/heim-pc/blob/671565d78b115cf2205d8a05bdeb709ac998f428/scripts/asr_engine.py",
+        )
+        self.assertIn(
+            "registry/ecosystem/source-bindings.v1.json",
+            heim_pc["lifecycle"]["evidenceRefs"],
+        )
+        rendered_heim_pc = json.dumps(heim_pc, ensure_ascii=False).lower()
+        self.assertNotIn("faster-whisper", rendered_heim_pc)
+        self.assertNotIn("qwen", rendered_heim_pc)
+        self.assertNotIn("parakeet", rendered_heim_pc)
         edges = json.loads(
             (ROOT / "registry/ecosystem/edges.json").read_text(encoding="utf-8")
         )["edges"]
