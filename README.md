@@ -109,6 +109,8 @@ python3 scripts/system_catalog_drift.py \
   --check
 ```
 
+Der GitHub-Reader besitzt standardmäßig ein globales, fail-closed Laufzeitbudget von 25 Sekunden. Es lässt sich mit `--budget-seconds` explizit ändern. Ist das Gesamtbudget ausgeschöpft, bricht der Reader ab, statt eine unvollständige Observation als frischen Katalogstand auszugeben.
+
 Der Systemkatalog bleibt damit statisch. Laufzustand und Alarmanzeige gehören weiterhin in Bureau, Leitstand, CI und die lokale Operatorumgebung.
 
 ## Bereitstellung
