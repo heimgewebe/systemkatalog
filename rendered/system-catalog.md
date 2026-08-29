@@ -107,7 +107,7 @@ Explizit ohne aktive Fleet-Mitgliedschaft:
 
 ## Organisationsumfang
 
-Der GitHub-Snapshot umfasst 37 nicht geforkte Repositories. Davon sind 33 aktive Katalogsysteme, 2 archivierte Referenzen und 2 begründet ausgeschlossen.
+Der GitHub-Snapshot umfasst 38 nicht geforkte Repositories. Davon sind 33 aktive Katalogsysteme, 2 archivierte Referenzen und 3 begründet ausgeschlossen.
 
 Archivierte Referenzen ohne aktive Betriebsautorität:
 
@@ -116,6 +116,7 @@ Archivierte Referenzen ohne aktive Betriebsautorität:
 
 Begründete Ausschlüsse:
 
+- `heimgewebe/capacity-marketplace` (`private`) — Active companion/control repository for an external Bubble-based B2B product. Bubble is runtime truth. The repository is not yet admitted as a Systemkatalog system; exclusion records complete GitHub organization scope without granting catalog authority pending explicit component admission and truth-owner modeling.
 - `heimgewebe/demo-repository` (`public`) — GitHub demonstration scaffold; it is not a Heimgewebe system, authority source or production component.
 - `heimgewebe/vault-privat` (`private`) — Private content repository; it contains personal and domain material rather than system implementation or canonical ecosystem semantics.
 

@@ -31,10 +31,10 @@ class SystemCatalogTests(unittest.TestCase):
         self.assertEqual(result["catalogRepositories"], 35)
         self.assertEqual(result["fleetRepositories"], 18)
         self.assertEqual(result["fleetExclusions"], 4)
-        self.assertEqual(result["organizationRepositories"], 37)
+        self.assertEqual(result["organizationRepositories"], 38)
         self.assertEqual(result["organizationCatalogRepositories"], 33)
         self.assertEqual(result["organizationArchivedReferences"], 2)
-        self.assertEqual(result["organizationExclusions"], 2)
+        self.assertEqual(result["organizationExclusions"], 3)
         self.assertEqual(result["activeLegacyRooms"], 0)
         for room in (
             "bestand",
