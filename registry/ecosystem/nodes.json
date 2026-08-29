@@ -1130,7 +1130,7 @@
       ],
       "truthOwnership": [],
       "entrypoints": {
-        "chatgptApp": "Heim-PC Dashboard"
+        "boundary": "docs/architecture/heim-pc-chatgpt-dashboard-boundary.md"
       }
     }
   ]
