@@ -25,8 +25,8 @@ class SystemCatalogTests(unittest.TestCase):
     def test_repository_catalog_is_valid_and_roomless(self) -> None:
         result = validate(ROOT)
         self.assertEqual(result["status"], "valid")
-        self.assertEqual(result["registrySystems"], 44)
-        self.assertEqual(result["registryRelations"], 52)
+        self.assertEqual(result["registrySystems"], 45)
+        self.assertEqual(result["registryRelations"], 55)
         self.assertEqual(result["authorityDomains"], 20)
         self.assertEqual(result["catalogRepositories"], 35)
         self.assertEqual(result["fleetRepositories"], 18)
@@ -79,14 +79,18 @@ class SystemCatalogTests(unittest.TestCase):
             "id", "name", "type", "purpose", "lifecycle",
             "notResponsibleFor", "truthOwnership", "entrypoints",
         }
-        self.assertEqual(len(data["nodes"]), 44)
+        self.assertEqual(len(data["nodes"]), 45)
         for node in data["nodes"]:
             self.assertEqual(set(node), required)
             self.assertTrue(node["notResponsibleFor"])
             self.assertTrue(node["entrypoints"])
             self.assertIn(node["lifecycle"]["state"], {"active", "transition", "reference", "archived", "retired"})
-            self.assertIn(node["lifecycle"]["reviewedAt"], {"2026-07-26", "2026-07-28", "2026-07-29", "2026-08-01", "2026-08-02", "2026-08-03", "2026-08-07", "2026-08-09", "2026-08-13"})
+            self.assertIn(node["lifecycle"]["reviewedAt"], {"2026-07-26", "2026-07-28", "2026-07-29", "2026-08-01", "2026-08-02", "2026-08-03", "2026-08-07", "2026-08-09", "2026-08-13", "2026-08-29"})
             self.assertTrue(node["lifecycle"]["evidenceRefs"])
+        dashboard = next(node for node in data["nodes"] if node["id"] == "service:heim-pc-chatgpt-dashboard")
+        self.assertEqual(dashboard["truthOwnership"], [])
+        self.assertIn("task authorization or prioritization", dashboard["notResponsibleFor"])
+        self.assertEqual(dashboard["entrypoints"], {"chatgptApp": "Heim-PC Dashboard"})
         self.assertIn("Nicht zuständig für", (ROOT / "rendered/system-catalog.md").read_text(encoding="utf-8"))
         rendered = (ROOT / "rendered/system-catalog.md").read_text(encoding="utf-8")
         self.assertIn("Wahrheitsbesitz", rendered)
