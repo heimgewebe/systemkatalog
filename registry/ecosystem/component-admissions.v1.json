@@ -62,6 +62,36 @@
         "task priority",
         "merge authority"
       ]
+    },
+    {
+      "componentId": "service:heim-pc-chatgpt-dashboard",
+      "componentKind": "service",
+      "admissionClass": "enable",
+      "purpose": "local read-only ChatGPT access and presentation layer for Heim-PC metrics and canonical Bureau/Grabowski projections",
+      "consumers": [
+        "Alex",
+        "ChatGPT through the private Heim-PC dashboard connection"
+      ],
+      "truthAuthority": "none: Bureau, Grabowski, Leitstand, GitHub, CI and Runtime retain their existing truth domains; this service only presents bounded read-only projections.",
+      "operatingDependencies": [
+        "host:heim-pc",
+        "Bureau read-only control-plane contract",
+        "Grabowski bounded read-only operator projections",
+        "private ChatGPT MCP delivery path"
+      ],
+      "maintenanceBurden": "Keep the local presentation adapter aligned with upstream projection contracts while preventing duplicated task, blocker, priority or execution semantics.",
+      "reviewOrRetirementPath": "Review if the ChatGPT surface gains mutation authority or substantially duplicates Leitstand; retire this component when its local access role is absorbed by Leitstand or another canonical read-only surface.",
+      "source": {
+        "kind": "catalog_boundary_review",
+        "ref": "docs/architecture/heim-pc-chatgpt-dashboard-boundary.md"
+      },
+      "doesNotEstablish": [
+        "task or queue authority",
+        "claim or dispatch authority",
+        "runtime mutation authority",
+        "general operator display ownership",
+        "merge or deployment authority"
+      ]
     }
   ],
   "doesNotEstablish": [
