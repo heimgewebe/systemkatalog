@@ -3,7 +3,7 @@
   "kind": "system_catalog_inventory",
   "owner": "repo:systemkatalog",
   "catalogRole": "canonical_system_inventory",
-  "updatedAt": "2026-08-09",
+  "updatedAt": "2026-08-29",
   "nodes": [
     {
       "id": "actor:alexander",
@@ -1108,6 +1108,29 @@
           "https://github.com/heimgewebe/weltgewebe/blob/322655285b520d04363e48487ae64d57264de573/architecture/weltgewebe-os.md",
           "bureau:WELTGEWEBE-OS-V1-T010"
         ]
+      }
+    },
+    {
+      "id": "service:heim-pc-chatgpt-dashboard",
+      "name": "Heim-PC ChatGPT Dashboard",
+      "type": "service",
+      "purpose": "local read-only ChatGPT access and presentation layer for Heim-PC metrics and canonical Bureau/Grabowski projections",
+      "lifecycle": {
+        "state": "active",
+        "reviewedAt": "2026-08-29",
+        "evidenceRefs": [
+          "docs/architecture/heim-pc-chatgpt-dashboard-boundary.md"
+        ]
+      },
+      "notResponsibleFor": [
+        "canonical truth ownership",
+        "task authorization or prioritization",
+        "claim or dispatch authority",
+        "runtime mutation or execution"
+      ],
+      "truthOwnership": [],
+      "entrypoints": {
+        "chatgptApp": "Heim-PC Dashboard"
       }
     }
   ]
