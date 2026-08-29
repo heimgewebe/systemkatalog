@@ -164,6 +164,18 @@ def validate_node(raw_node: Any, index: int) -> dict[str, Any]:
     return raw_node
 
 
+def _validate_entrypoints_resolve(root: Path, nodes: list[dict[str, Any]]) -> None:
+    for node in nodes:
+        for key, value in node["entrypoints"].items():
+            if value.startswith(("https://", "http://")):
+                continue
+            target = _path(root, value)
+            if not target.exists():
+                raise RegistryValidationError(
+                    f"entrypoint missing: {node['id']}.{key} -> {value}"
+                )
+
+
 def validate_edge(raw_edge: Any, index: int) -> dict[str, Any]:
     label = f"edge {index}"
     if not isinstance(raw_edge, dict) or set(raw_edge) != EDGE_FIELDS:
@@ -456,6 +468,7 @@ def validate(root: Path = ROOT) -> dict[str, Any]:
         raise ValueError("system inventory role mismatch")
     registry = load_registry(root)
     nodes = registry.nodes
+    _validate_entrypoints_resolve(root, nodes)
     component_admissions = validate_component_admissions(root, nodes)
     node_ids = [node["id"] for node in nodes]
     if "repo:systemkatalog" not in node_ids:

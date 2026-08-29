@@ -27,6 +27,7 @@ class SystemCatalogResilienceTests(unittest.TestCase):
         root = Path(temp.name)
         (root / "registry/ecosystem").mkdir(parents=True)
         (root / "docs/audits").mkdir(parents=True)
+        (root / "docs/architecture").mkdir(parents=True)
         shutil.copy(ROOT / "registry/ecosystem/authority-matrix.v1.json", root / "registry/ecosystem/authority-matrix.v1.json")
         for relative in (
             "registry/ecosystem/edges.json",
@@ -37,6 +38,7 @@ class SystemCatalogResilienceTests(unittest.TestCase):
             shutil.copy(ROOT / relative, root / relative)
         shutil.copy(ROOT / "docs/audits/heimgewebe-resilience-gap-matrix-v1.md", root / "docs/audits/heimgewebe-resilience-gap-matrix-v1.md")
         shutil.copy(ROOT / "docs/audits/leitwerk-archival-closeout-2026-07-29.v1.json", root / "docs/audits/leitwerk-archival-closeout-2026-07-29.v1.json")
+        shutil.copy(ROOT / "docs/architecture/heim-pc-chatgpt-dashboard-boundary.md", root / "docs/architecture/heim-pc-chatgpt-dashboard-boundary.md")
         (root / "registry/ecosystem/resilience.v1.json").write_text(json.dumps(document))
         return temp, root
 

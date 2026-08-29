@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "kind": "system_catalog_relations",
   "catalogRole": "canonical_stable_relations",
-  "updatedAt": "2026-08-09",
+  "updatedAt": "2026-08-29",
   "relationTypes": [
     "owns",
     "steers",
@@ -392,6 +392,27 @@
       "type": "operates_on",
       "stability": "bounded",
       "meaning": "Grabowski may execute scoped platform changes only through explicit authority, evidence and rollback boundaries."
+    },
+    {
+      "from": "repo:bureau",
+      "to": "service:heim-pc-chatgpt-dashboard",
+      "type": "provides",
+      "meaning": "Bureau provides canonical read-only control-plane metrics; any queue compatibility view remains non-authoritative for claims, dispatch and priority.",
+      "stability": "stable"
+    },
+    {
+      "from": "repo:grabowski",
+      "to": "service:heim-pc-chatgpt-dashboard",
+      "type": "provides",
+      "meaning": "Grabowski provides bounded read-only runtime, checkout, friction and operator-work projections without delegating execution authority.",
+      "stability": "stable"
+    },
+    {
+      "from": "service:heim-pc-chatgpt-dashboard",
+      "to": "repo:leitstand",
+      "type": "scope_boundary",
+      "meaning": "The local ChatGPT dashboard is a convenience access surface; Leitstand remains the owner of general operator display and neither surface creates canonical task or runtime truth.",
+      "stability": "stable"
     }
   ]
 }

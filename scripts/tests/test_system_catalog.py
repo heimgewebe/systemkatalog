@@ -25,16 +25,16 @@ class SystemCatalogTests(unittest.TestCase):
     def test_repository_catalog_is_valid_and_roomless(self) -> None:
         result = validate(ROOT)
         self.assertEqual(result["status"], "valid")
-        self.assertEqual(result["registrySystems"], 44)
-        self.assertEqual(result["registryRelations"], 52)
+        self.assertEqual(result["registrySystems"], 45)
+        self.assertEqual(result["registryRelations"], 55)
         self.assertEqual(result["authorityDomains"], 20)
         self.assertEqual(result["catalogRepositories"], 35)
         self.assertEqual(result["fleetRepositories"], 18)
         self.assertEqual(result["fleetExclusions"], 4)
-        self.assertEqual(result["organizationRepositories"], 37)
+        self.assertEqual(result["organizationRepositories"], 38)
         self.assertEqual(result["organizationCatalogRepositories"], 33)
         self.assertEqual(result["organizationArchivedReferences"], 2)
-        self.assertEqual(result["organizationExclusions"], 2)
+        self.assertEqual(result["organizationExclusions"], 3)
         self.assertEqual(result["activeLegacyRooms"], 0)
         for room in (
             "bestand",
@@ -79,14 +79,21 @@ class SystemCatalogTests(unittest.TestCase):
             "id", "name", "type", "purpose", "lifecycle",
             "notResponsibleFor", "truthOwnership", "entrypoints",
         }
-        self.assertEqual(len(data["nodes"]), 44)
+        self.assertEqual(len(data["nodes"]), 45)
         for node in data["nodes"]:
             self.assertEqual(set(node), required)
             self.assertTrue(node["notResponsibleFor"])
             self.assertTrue(node["entrypoints"])
             self.assertIn(node["lifecycle"]["state"], {"active", "transition", "reference", "archived", "retired"})
-            self.assertIn(node["lifecycle"]["reviewedAt"], {"2026-07-26", "2026-07-28", "2026-07-29", "2026-08-01", "2026-08-02", "2026-08-03", "2026-08-07", "2026-08-09", "2026-08-13"})
+            self.assertIn(node["lifecycle"]["reviewedAt"], {"2026-07-26", "2026-07-28", "2026-07-29", "2026-08-01", "2026-08-02", "2026-08-03", "2026-08-07", "2026-08-09", "2026-08-13", "2026-08-29"})
             self.assertTrue(node["lifecycle"]["evidenceRefs"])
+        dashboard = next(node for node in data["nodes"] if node["id"] == "service:heim-pc-chatgpt-dashboard")
+        self.assertEqual(dashboard["truthOwnership"], [])
+        self.assertIn("task authorization or prioritization", dashboard["notResponsibleFor"])
+        self.assertEqual(
+            dashboard["entrypoints"],
+            {"boundary": "docs/architecture/heim-pc-chatgpt-dashboard-boundary.md"},
+        )
         self.assertIn("Nicht zuständig für", (ROOT / "rendered/system-catalog.md").read_text(encoding="utf-8"))
         rendered = (ROOT / "rendered/system-catalog.md").read_text(encoding="utf-8")
         self.assertIn("Wahrheitsbesitz", rendered)
@@ -99,6 +106,27 @@ class SystemCatalogTests(unittest.TestCase):
             "| HausKI Audio | repository | `retired` · geprüft 2026-07-28 |",
             rendered,
         )
+
+    def test_repository_relative_entrypoints_must_resolve(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = self._copy_repository(directory)
+            nodes_path = root / "registry/ecosystem/nodes.json"
+            data = json.loads(nodes_path.read_text(encoding="utf-8"))
+            dashboard = next(
+                node
+                for node in data["nodes"]
+                if node["id"] == "service:heim-pc-chatgpt-dashboard"
+            )
+            dashboard["entrypoints"] = {"chatgptApp": "Heim-PC Dashboard"}
+            nodes_path.write_text(
+                json.dumps(data, indent=2, ensure_ascii=False) + "\n",
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(
+                ValueError,
+                r"entrypoint missing: service:heim-pc-chatgpt-dashboard\.chatgptApp",
+            ):
+                validate(root)
 
     def test_reviewed_role_boundaries_are_explicit(self) -> None:
         nodes = json.loads((ROOT / "registry/ecosystem/nodes.json").read_text(encoding="utf-8"))["nodes"]

@@ -51,6 +51,8 @@ Dafür gelten die Primärquellen:
 | Verifizierbarer, zitierfähiger Codebase-Kontext | RepoGround |
 | Allgemeine Live-Anzeige | Leitstand |
 
+Das lokale **Heim-PC ChatGPT Dashboard** ist zusätzlich als read-only Zugriffssicht katalogisiert. Es projiziert ausgewählte Bureau-/Grabowski-/Hostdaten, besitzt aber keine eigene Wahrheitsdomäne und ersetzt Leitstand nicht.
+
 RepoGround ist die einzige aktive Produkt-, Repository-, Befehls- und Runtimeidentität. Frühere Namen bleiben ausschließlich in unveränderlichen historischen Belegen oder versionierten Datenkennungen erhalten und sind keine aktiven Kompatibilitätseinstiege.
 
 ## Aktive Struktur

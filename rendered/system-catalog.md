@@ -54,6 +54,7 @@ Der Katalog beantwortet, welche Systeme existieren, welchem Zweck sie dienen, we
 | WGX | repository | `active` · geprüft 2026-08-09 | `unknown` | identity:github<br>provider:github | WGX-v1 profile compatibility and repository-declared validation/task runner | repository purpose semantics<br>fleet or policy truth<br>task coordination or priority<br>git, worktree, process or deployment authority<br>cross-repository code context<br>effects of repository-declared task commands | wgx_profile_runner_contract | `repository`: [https://github.com/heimgewebe/wgx](https://github.com/heimgewebe/wgx) |
 | CI / Checks | service | `active` · geprüft 2026-07-26 | `supporting` | provider:github<br>network:public-internet | automated tests, lint, gates and review signals | merge authorization<br>runtime health<br>task priority | technical_check_results | `checks`: [https://github.com/heimgewebe](https://github.com/heimgewebe) |
 | GitHub | service | `active` · geprüft 2026-07-26 | `foundational` | provider:github<br>network:public-internet<br>credentials:operator | repository, PR, issue and review state | local runtime health<br>task priority<br>ecosystem semantics | branches_prs_reviews | `organization`: [https://github.com/heimgewebe](https://github.com/heimgewebe) |
+| Heim-PC ChatGPT Dashboard | service | `active` · geprüft 2026-08-29 | `supporting` | host:heim-pc<br>network:public-internet | local read-only ChatGPT access and presentation layer for Heim-PC metrics and canonical Bureau/Grabowski projections | canonical truth ownership<br>task authorization or prioritization<br>claim or dispatch authority<br>runtime mutation or execution | — | `boundary`: [docs/architecture/heim-pc-chatgpt-dashboard-boundary.md](../docs/architecture/heim-pc-chatgpt-dashboard-boundary.md) |
 
 ## Repository-Abdeckung
 
@@ -106,7 +107,7 @@ Explizit ohne aktive Fleet-Mitgliedschaft:
 
 ## Organisationsumfang
 
-Der GitHub-Snapshot umfasst 37 nicht geforkte Repositories. Davon sind 33 aktive Katalogsysteme, 2 archivierte Referenzen und 2 begründet ausgeschlossen.
+Der GitHub-Snapshot umfasst 38 nicht geforkte Repositories. Davon sind 33 aktive Katalogsysteme, 2 archivierte Referenzen und 3 begründet ausgeschlossen.
 
 Archivierte Referenzen ohne aktive Betriebsautorität:
 
@@ -115,6 +116,7 @@ Archivierte Referenzen ohne aktive Betriebsautorität:
 
 Begründete Ausschlüsse:
 
+- `heimgewebe/capacity-marketplace` (`private`) — Active companion/control repository for an external Bubble-based B2B product. Bubble is runtime truth. The repository is not yet admitted as a Systemkatalog system; exclusion records complete GitHub organization scope without granting catalog authority pending explicit component admission and truth-owner modeling.
 - `heimgewebe/demo-repository` (`public`) — GitHub demonstration scaffold; it is not a Heimgewebe system, authority source or production component.
 - `heimgewebe/vault-privat` (`private`) — Private content repository; it contains personal and domain material rather than system implementation or canonical ecosystem semantics.
 
@@ -125,19 +127,19 @@ Begründete Ausschlüsse:
 | `agent_routing` | `grabowski` | bureau, systemkatalog |
 | `append_only_history` | `chronik` | leitstand |
 | `bounded_experiments` | `vibe_lab` | systemkatalog |
-| `branches_prs_reviews` | `github` | bureau, leitstand |
+| `branches_prs_reviews` | `github` | bureau, leitstand, heim-pc-chatgpt-dashboard |
 | `commonworld_commons_admission` | `commonworld` | — |
 | `convergence_protocol` | `konvergenzregelkreis` | — |
 | `ecosystem_semantics` | `systemkatalog` | leitstand, schauwerk |
 | `fleet_membership` | `metarepo` | systemkatalog |
-| `general_operator_display` | `leitstand` | — |
-| `live_service_state` | `runtime` | leitstand |
-| `local_fleet_execution` | `grabowski` | leitstand |
+| `general_operator_display` | `leitstand` | heim-pc-chatgpt-dashboard |
+| `live_service_state` | `runtime` | leitstand, heim-pc-chatgpt-dashboard |
+| `local_fleet_execution` | `grabowski` | leitstand, heim-pc-chatgpt-dashboard |
 | `repository_checkout_identity_continuity` | `reposkop` | grabowski, leitstand |
 | `repository_context_citations` | `repoground` | repoground, systemkatalog |
 | `reviewed_learning_proposals` | `vibe_lab` | bureau, systemkatalog |
 | `specialized_visual_rendering` | `schauwerk` | — |
-| `tasks_claims_completion` | `bureau` | leitstand |
+| `tasks_claims_completion` | `bureau` | leitstand, heim-pc-chatgpt-dashboard |
 | `technical_check_results` | `ci` | github, leitstand |
 | `weltgewebe_cell_domain_truth` | `gewebezelle` | weltgewebe |
 | `weltgewebe_target_architecture` | `weltgewebe` | systemkatalog |
@@ -159,6 +161,7 @@ Nur Beziehungen der Klassen `stable`, `bounded` oder `related` werden angezeigt.
 | Außensensor | `delivers_to` | Chronik | `stable` | `—` | `—` | `—` | `—` | Curated external events are delivered to Chronik as the historical ingest authority. |
 | Bureau | `delegates_to` | Grabowski | `stable` | `synchronous-blocking` | `block` | `from-to` | `—` | Bureau can hand scoped work to the operator layer. |
 | Bureau | `provides` | Leitstand | `stable` | `observational` | `degrade` | `from-to` | `—` | Bureau may provide read-only task status artifacts. |
+| Bureau | `provides` | Heim-PC ChatGPT Dashboard | `stable` | `observational` | `degrade` | `from-to` | `—` | Bureau provides canonical read-only control-plane metrics; any queue compatibility view remains non-authoritative for claims, dispatch and priority. |
 | Chronik | `displayed_by` | Leitstand | `stable` | `—` | `—` | `—` | `—` | Leitstand may display Chronik state without treating the display as authority. |
 | Chronik | `evidence_for` | Bureau | `bounded` | `observational` | `degrade` | `from-to` | `—` | Chronik event presence can support evidence references; Bureau still owns task and verification truth. |
 | Chronik | `learning_input_for` | Vibe-Lab | `bounded` | `observational` | `degrade` | `from-to` | `—` | Chronik may supply frozen historical outcome cohorts as evidence for prospectively registered Vibe-Lab experiments; no policy or task is auto-applied. |
@@ -170,6 +173,7 @@ Nur Beziehungen der Klassen `stable`, `bounded` oder `related` werden angezeigt.
 | Grabowski | `emits_to` | Chronik | `bounded` | `asynchronous-durable` | `queue` | `from-to` | `chronik-durable-outbox` | Grabowski may write task-local agent-run events through an explicit Chronik outbox path. |
 | Grabowski | `operates_on` | Weltgewebe-Plattformziel | `bounded` | `—` | `—` | `—` | `—` | Grabowski may execute scoped platform changes only through explicit authority, evidence and rollback boundaries. |
 | Grabowski | `operates_on` | GitHub | `stable` | `synchronous-blocking` | `block` | `to-from` | `—` | PRs, branches, issues and reviews remain GitHub-owned state. |
+| Grabowski | `provides` | Heim-PC ChatGPT Dashboard | `stable` | `observational` | `degrade` | `from-to` | `—` | Grabowski provides bounded read-only runtime, checkout, friction and operator-work projections without delegating execution authority. |
 | HausKI Audio | `provides` | audio | `related` | `—` | `—` | `—` | `—` | HausKI Audio is retained only as a reviewed historical donor and provenance source for the canonical audio repository. |
 | heim-pc | `observes` | Ecosystem Map v0 | `stable` | `—` | `—` | `—` | `—` | The local operator entry points to the canonical ecosystem map without duplicating it. |
 | Heimgeist | `observes` | Ecosystem Map v0 | `related` | `—` | `—` | `—` | `—` | Heimgeist may inspect catalog projections for reflection but does not own catalog truth. |
@@ -201,6 +205,7 @@ Nur Beziehungen der Klassen `stable`, `bounded` oder `related` werden angezeigt.
 | CI / Checks | `provides` | Leitstand | `stable` | `observational` | `degrade` | `from-to` | `—` | Primary check state can be reflected. |
 | GitHub | `provides` | Leitstand | `stable` | `observational` | `degrade` | `from-to` | `—` | Primary repo state can be reflected. |
 | GitHub | `validated_by` | CI / Checks | `stable` | `synchronous-blocking` | `block` | `to-from` | `—` | Checks and review gates provide hard technical feedback. |
+| Heim-PC ChatGPT Dashboard | `scope_boundary` | Leitstand | `stable` | `manual` | `degrade` | `none` | `—` | The local ChatGPT dashboard is a convenience access surface; Leitstand remains the owner of general operator display and neither surface creates canonical task or runtime truth. |
 
 ## Ausfalldomänen
 

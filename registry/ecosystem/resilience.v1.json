@@ -3,7 +3,7 @@
   "kind": "system_catalog_resilience",
   "owner": "repo:systemkatalog",
   "catalogRole": "canonical_stable_resilience_semantics",
-  "updatedAt": "2026-08-07",
+  "updatedAt": "2026-08-29",
   "defaultCriticality": "unknown",
   "criticalityClasses": [
     "foundational",
@@ -864,6 +864,23 @@
         "registry/ecosystem/source-bindings.v1.json"
       ],
       "uncertainty": 0.12
+    },
+    {
+      "system": "service:heim-pc-chatgpt-dashboard",
+      "criticality": "supporting",
+      "failureDomains": [
+        "host:heim-pc",
+        "network:public-internet"
+      ],
+      "recoveryModeRefs": [],
+      "acceptedSinglePathRisks": [
+        "This local ChatGPT read surface depends on the Heim-PC and its private delivery path, but its loss does not affect Bureau, Grabowski or Leitstand authority and execution."
+      ],
+      "evidence": [
+        "docs/architecture/heim-pc-chatgpt-dashboard-boundary.md",
+        "registry/ecosystem/authority-matrix.v1.json"
+      ],
+      "uncertainty": 0.12
     }
   ],
   "relations": [
@@ -1154,6 +1171,54 @@
         "registry/ecosystem/edges.json"
       ],
       "uncertainty": 0.16
+    },
+    {
+      "relation": {
+        "from": "repo:bureau",
+        "to": "service:heim-pc-chatgpt-dashboard",
+        "type": "provides"
+      },
+      "coupling": "observational",
+      "failurePolicy": "degrade",
+      "authorityDirection": "from-to",
+      "recoveryModeRef": null,
+      "evidence": [
+        "docs/architecture/heim-pc-chatgpt-dashboard-boundary.md",
+        "registry/ecosystem/edges.json"
+      ],
+      "uncertainty": 0.12
+    },
+    {
+      "relation": {
+        "from": "repo:grabowski",
+        "to": "service:heim-pc-chatgpt-dashboard",
+        "type": "provides"
+      },
+      "coupling": "observational",
+      "failurePolicy": "degrade",
+      "authorityDirection": "from-to",
+      "recoveryModeRef": null,
+      "evidence": [
+        "docs/architecture/heim-pc-chatgpt-dashboard-boundary.md",
+        "registry/ecosystem/edges.json"
+      ],
+      "uncertainty": 0.12
+    },
+    {
+      "relation": {
+        "from": "service:heim-pc-chatgpt-dashboard",
+        "to": "repo:leitstand",
+        "type": "scope_boundary"
+      },
+      "coupling": "manual",
+      "failurePolicy": "degrade",
+      "authorityDirection": "none",
+      "recoveryModeRef": null,
+      "evidence": [
+        "docs/architecture/heim-pc-chatgpt-dashboard-boundary.md",
+        "registry/ecosystem/edges.json"
+      ],
+      "uncertainty": 0.12
     }
   ],
   "recoveryModes": [

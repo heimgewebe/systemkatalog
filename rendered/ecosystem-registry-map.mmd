@@ -62,6 +62,7 @@ flowchart TD
     subgraph kind_service[Primäre Dienste]
         service_ci["CI / Checks<br/>id: service:ci<br/>service<br/>lifecycle: active · reviewed: 2026-07-26<br/>automated tests, lint, gates and review signals"]
         service_github["GitHub<br/>id: service:github<br/>service<br/>lifecycle: active · reviewed: 2026-07-26<br/>repository, PR, issue and review state"]
+        service_heim_pc_chatgpt_dashboard["Heim-PC ChatGPT Dashboard<br/>id: service:heim-pc-chatgpt-dashboard<br/>service<br/>lifecycle: active · reviewed: 2026-08-29<br/>local read-only ChatGPT access and presentation layer for Heim-PC metrics and canonical Bureau/Grabowski projections"]
     end
 
     actor_alexander -->|steers / stable| repo_systemkatalog
@@ -74,6 +75,7 @@ flowchart TD
     repo_aussensensor -->|delivers_to / stable| repo_chronik
     repo_bureau -->|delegates_to / stable| repo_grabowski
     repo_bureau -->|provides / stable| repo_leitstand
+    repo_bureau -->|provides / stable| service_heim_pc_chatgpt_dashboard
     repo_chronik -->|evidence_for / bounded| repo_bureau
     repo_chronik -->|displayed_by / stable| repo_leitstand
     repo_chronik -->|provides / stable| repo_leitstand
@@ -85,6 +87,7 @@ flowchart TD
     repo_grabowski -->|operates_on / bounded| concept_weltgewebe_platform_target
     repo_grabowski -->|emits_to / bounded| repo_chronik
     repo_grabowski -->|operates_on / stable| service_github
+    repo_grabowski -->|provides / stable| service_heim_pc_chatgpt_dashboard
     repo_hausKI_audio -->|provides / related| repo_audio
     repo_heim_pc -->|observes / stable| artifact_ecosystem_map
     repo_heimgeist -->|observes / related| artifact_ecosystem_map
@@ -116,10 +119,11 @@ flowchart TD
     service_ci -->|provides / stable| repo_leitstand
     service_github -->|provides / stable| repo_leitstand
     service_github -->|validated_by / stable| service_ci
+    service_heim_pc_chatgpt_dashboard -->|scope_boundary / stable| repo_leitstand
 
     %% Lifecycle is stable catalog semantics, not runtime status.
     classDef lifecycleActive stroke-width:1.5px;
-    class actor_alexander,artifact_ecosystem_map,repo_systemkatalog,repo_bureau,repo_grabowski,repo_weltgewebe,repo_repoground,repo_reposkop,repo_vibe_lab,repo_alpha_lab,repo_chronik,repo_schauwerk,repo_infra,repo_device_graph,service_github,service_ci,repo_leitstand,repo_plexer,repo_metarepo,repo_wgx,repo_contracts_mirror,repo_hausKI,repo_audio,repo_semantAH,repo_aussensensor,repo_mitschreiber,repo_sichter,repo_heim_pc,repo_vault_gewebe,repo_commonworld,repo_obsidian_bridge,repo_snippet_engine_control,repo_konvergenzregelkreis,concept_weltgewebe_os,concept_gewebezelle,concept_weltgewebe_federation_planes,concept_gewebezelle_betreiberrolle lifecycleActive;
+    class actor_alexander,artifact_ecosystem_map,repo_systemkatalog,repo_bureau,repo_grabowski,repo_weltgewebe,repo_repoground,repo_reposkop,repo_vibe_lab,repo_alpha_lab,repo_chronik,repo_schauwerk,repo_infra,repo_device_graph,service_github,service_ci,repo_leitstand,repo_plexer,repo_metarepo,repo_wgx,repo_contracts_mirror,repo_hausKI,repo_audio,repo_semantAH,repo_aussensensor,repo_mitschreiber,repo_sichter,repo_heim_pc,repo_vault_gewebe,repo_commonworld,repo_obsidian_bridge,repo_snippet_engine_control,repo_konvergenzregelkreis,concept_weltgewebe_os,concept_gewebezelle,concept_weltgewebe_federation_planes,concept_gewebezelle_betreiberrolle,service_heim_pc_chatgpt_dashboard lifecycleActive;
     classDef lifecycleTransition stroke:#fbbf24,stroke-width:3px,stroke-dasharray:6 3;
     class repo_heimgeist,repo_agent_control_surface,concept_weltgewebe_platform_target lifecycleTransition;
     classDef lifecycleArchived fill:#1f2937,stroke:#64748b,color:#cbd5e1;
