@@ -90,7 +90,10 @@ class SystemCatalogTests(unittest.TestCase):
         dashboard = next(node for node in data["nodes"] if node["id"] == "service:heim-pc-chatgpt-dashboard")
         self.assertEqual(dashboard["truthOwnership"], [])
         self.assertIn("task authorization or prioritization", dashboard["notResponsibleFor"])
-        self.assertEqual(dashboard["entrypoints"], {"chatgptApp": "Heim-PC Dashboard"})
+        self.assertEqual(
+            dashboard["entrypoints"],
+            {"boundary": "docs/architecture/heim-pc-chatgpt-dashboard-boundary.md"},
+        )
         self.assertIn("Nicht zuständig für", (ROOT / "rendered/system-catalog.md").read_text(encoding="utf-8"))
         rendered = (ROOT / "rendered/system-catalog.md").read_text(encoding="utf-8")
         self.assertIn("Wahrheitsbesitz", rendered)
@@ -103,6 +106,27 @@ class SystemCatalogTests(unittest.TestCase):
             "| HausKI Audio | repository | `retired` · geprüft 2026-07-28 |",
             rendered,
         )
+
+    def test_repository_relative_entrypoints_must_resolve(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = self._copy_repository(directory)
+            nodes_path = root / "registry/ecosystem/nodes.json"
+            data = json.loads(nodes_path.read_text(encoding="utf-8"))
+            dashboard = next(
+                node
+                for node in data["nodes"]
+                if node["id"] == "service:heim-pc-chatgpt-dashboard"
+            )
+            dashboard["entrypoints"] = {"chatgptApp": "Heim-PC Dashboard"}
+            nodes_path.write_text(
+                json.dumps(data, indent=2, ensure_ascii=False) + "\n",
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(
+                ValueError,
+                r"entrypoint missing: service:heim-pc-chatgpt-dashboard\.chatgptApp",
+            ):
+                validate(root)
 
     def test_reviewed_role_boundaries_are_explicit(self) -> None:
         nodes = json.loads((ROOT / "registry/ecosystem/nodes.json").read_text(encoding="utf-8"))["nodes"]
