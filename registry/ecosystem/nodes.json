@@ -3,7 +3,7 @@
   "kind": "system_catalog_inventory",
   "owner": "repo:systemkatalog",
   "catalogRole": "canonical_system_inventory",
-  "updatedAt": "2026-08-29",
+  "updatedAt": "2026-08-31",
   "nodes": [
     {
       "id": "actor:alexander",
@@ -717,11 +717,15 @@
       "id": "repo:heimgeist",
       "name": "Heimgeist",
       "type": "repository",
-      "purpose": "System self-reflection and meta-agent experimentation",
+      "purpose": "decommissioned historical reference for the former Heimgewebe system-reflection meta-agent, pending GitHub archive flag",
       "notResponsibleFor": [
         "production authority",
-        "task state",
-        "merge approval"
+        "task or claim state",
+        "merge approval",
+        "runtime execution",
+        "event delivery",
+        "agent orchestration",
+        "current ecosystem semantics"
       ],
       "truthOwnership": [],
       "entrypoints": {
@@ -729,10 +733,12 @@
       },
       "lifecycle": {
         "state": "transition",
-        "reviewedAt": "2026-07-26",
+        "reviewedAt": "2026-08-31",
         "evidenceRefs": [
-          "docs/audits/repository-lifecycle-classification-2026-07-19.v1.json",
-          "bureau:OPERATOR-ECOSYSTEM-REDUNDANCY-V1-T034"
+          "https://github.com/heimgewebe/heimgeist/pull/100",
+          "https://github.com/heimgewebe/plexer/pull/104",
+          "https://github.com/heimgewebe/metarepo/pull/727",
+          "bureau:OPERATOR-ECOSYSTEM-REDUNDANCY-V1-T067"
         ]
       }
     },
