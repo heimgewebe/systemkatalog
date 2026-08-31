@@ -62,6 +62,7 @@ jobs:
           current_edges_bytes = edges_path.read_bytes()
           current_edges = json.loads(current_edges_bytes)['edges']
           current_digest = hashlib.sha256(current_edges_bytes).hexdigest()
+          reviewed_at = '2026-08-31T11:58:00+02:00'
 
           expected_keys = {
               ('repo:bureau', 'service:heim-pc-chatgpt-dashboard', 'provides'),
@@ -166,7 +167,7 @@ jobs:
               source['commit'] = data_commit
               locator['pointer'] = f'/edges/{new_index}'
               locator['contentSha256'] = current_digest
-              item['reviewedAt'] = '2026-08-31'
+              item['reviewedAt'] = reviewed_at
               patched.append(
                   {
                       'relationIndex': relation_index,
@@ -178,7 +179,7 @@ jobs:
                   }
               )
 
-          doc['observedAt'] = '2026-08-31T11:58:00+02:00'
+          doc['observedAt'] = reviewed_at
           bindings_path.write_text(
               json.dumps(doc, indent=2, ensure_ascii=False) + '\n', encoding='utf-8'
           )
