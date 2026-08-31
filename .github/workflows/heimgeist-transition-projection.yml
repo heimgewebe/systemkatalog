@@ -29,10 +29,14 @@ jobs:
       - name: Patch source bindings and generated projections
         env:
           EXPECTED_BASE: b33082ad7a805fb9020e6e980a47b5997cb1c43f
+          TRANSITION_DATA_COMMIT: e67844a688cf5cf59e927053b53568cbee6a2955
           GENERATOR_PATH: .github/workflows/heimgeist-transition-projection.yml
         run: |
           set -euo pipefail
           git merge-base --is-ancestor "${EXPECTED_BASE}" HEAD
+          git merge-base --is-ancestor "${TRANSITION_DATA_COMMIT}" HEAD
+          git diff --quiet "${TRANSITION_DATA_COMMIT}" -- registry/ecosystem/nodes.json registry/ecosystem/edges.json
+
           mapfile -t paths < <(git diff --name-only "${EXPECTED_BASE}"..HEAD | sort)
           expected=(
             "${GENERATOR_PATH}"
@@ -46,26 +50,30 @@ jobs:
             exit 1
           fi
 
+          tag="systemkatalog-provenance-v1/${TRANSITION_DATA_COMMIT}"
+          if git show-ref --verify --quiet "refs/tags/${tag}"; then
+            test "$(git rev-parse "refs/tags/${tag}^{commit}")" = "${TRANSITION_DATA_COMMIT}"
+          else
+            git tag "${tag}" "${TRANSITION_DATA_COMMIT}"
+            git push origin "refs/tags/${tag}"
+          fi
+
           python - <<'PY'
           import hashlib
           import json
           import subprocess
           from pathlib import Path
 
-          base = 'b33082ad7a805fb9020e6e980a47b5997cb1c43f'
+          target_commit = 'e67844a688cf5cf59e927053b53568cbee6a2955'
           old_dashboard_commit = '98e05aae50357326e965bd944ce58680434ed60e'
           old_dashboard_digest = '121b94f3f8a542a0ce7707a29ab2dba124154f7f82d47aa9754660911d83bea8'
           path = Path('registry/ecosystem/source-bindings.v1.json')
           doc = json.loads(path.read_text(encoding='utf-8'))
 
-          base_nodes = subprocess.check_output(
-              ['git', 'show', f'{base}:registry/ecosystem/nodes.json']
+          target_nodes = subprocess.check_output(
+              ['git', 'show', f'{target_commit}:registry/ecosystem/nodes.json']
           )
-          base_digest = hashlib.sha256(base_nodes).hexdigest()
-          if base_digest != old_dashboard_digest:
-              raise SystemExit(
-                  f'base nodes digest drift: expected {old_dashboard_digest}, got {base_digest}'
-              )
+          target_digest = hashlib.sha256(target_nodes).hexdigest()
 
           systems = [item for item in doc['systems'] if item.get('system') == 'service:heim-pc-chatgpt-dashboard']
           if len(systems) != 1:
@@ -81,13 +89,10 @@ jobs:
               or locator.get('contentSha256') != old_dashboard_digest
           ):
               raise SystemExit(f'unexpected dashboard source binding: {source!r}')
-          source['commit'] = base
+          source['commit'] = target_commit
+          locator['contentSha256'] = target_digest
 
-          target = (
-              'repo:heimgeist',
-              'artifact:ecosystem-map',
-              'observes',
-          )
+          target = ('repo:heimgeist', 'artifact:ecosystem-map', 'observes')
           matches = [
               item for item in doc['relations']
               if (
@@ -99,7 +104,7 @@ jobs:
           if len(matches) != 1:
               raise SystemExit(f'expected one Heimgeist relation source binding, got {len(matches)}')
           doc['relations'].remove(matches[0])
-          doc['observedAt'] = '2026-08-31T11:45:00+02:00'
+          doc['observedAt'] = '2026-08-31T11:48:00+02:00'
           path.write_text(json.dumps(doc, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
           PY
 
