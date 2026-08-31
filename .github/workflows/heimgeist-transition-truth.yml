@@ -24,9 +24,16 @@ jobs:
       - name: Verify branch ancestry and patch exact records
         env:
           EXPECTED_BASE: b33082ad7a805fb9020e6e980a47b5997cb1c43f
+          GENERATOR_PATH: .github/workflows/heimgeist-transition-truth.yml
         run: |
           set -euo pipefail
-          test "$(git rev-parse HEAD^)" = "${EXPECTED_BASE}"
+          git merge-base --is-ancestor "${EXPECTED_BASE}" HEAD
+          mapfile -t staged_paths < <(git diff --name-only "${EXPECTED_BASE}"..HEAD)
+          if [[ ${#staged_paths[@]} -ne 1 || "${staged_paths[0]}" != "${GENERATOR_PATH}" ]]; then
+            printf 'unexpected pre-generator paths since base:\n' >&2
+            printf '  %s\n' "${staged_paths[@]}" >&2
+            exit 1
+          fi
 
           python - <<'PY'
           import json
@@ -85,7 +92,10 @@ jobs:
           PY
 
           git diff --check
-          git diff --exit-code --quiet && { echo 'expected catalog diff missing' >&2; exit 1; }
+          if git diff --exit-code --quiet; then
+            echo 'expected catalog diff missing' >&2
+            exit 1
+          fi
 
       - name: Commit bounded catalog correction
         run: |
