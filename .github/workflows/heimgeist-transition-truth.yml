@@ -1,0 +1,97 @@
+name: Stage Heimgeist transition truth correction
+
+on:
+  push:
+    branches:
+      - chore/heimgeist-transition-truth
+    paths:
+      - .github/workflows/heimgeist-transition-truth.yml
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    name: Apply bounded Heimgeist catalog correction
+    if: github.repository == 'heimgewebe/systemkatalog'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+        with:
+          ref: chore/heimgeist-transition-truth
+          fetch-depth: 0
+
+      - name: Verify branch ancestry and patch exact records
+        env:
+          EXPECTED_BASE: b33082ad7a805fb9020e6e980a47b5997cb1c43f
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD^)" = "${EXPECTED_BASE}"
+
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          nodes_path = Path('registry/ecosystem/nodes.json')
+          edges_path = Path('registry/ecosystem/edges.json')
+          nodes = json.loads(nodes_path.read_text(encoding='utf-8'))
+          edges = json.loads(edges_path.read_text(encoding='utf-8'))
+
+          matches = [node for node in nodes['nodes'] if node.get('id') == 'repo:heimgeist']
+          if len(matches) != 1:
+              raise SystemExit(f'expected exactly one Heimgeist node, got {len(matches)}')
+          node = matches[0]
+          if node.get('purpose') != 'System self-reflection and meta-agent experimentation':
+              raise SystemExit(f'unexpected Heimgeist purpose: {node.get("purpose")!r}')
+          if node.get('lifecycle', {}).get('state') != 'transition':
+              raise SystemExit(f'unexpected Heimgeist lifecycle: {node.get("lifecycle")!r}')
+
+          node['purpose'] = 'decommissioned historical reference for the former Heimgewebe system-reflection meta-agent, pending GitHub archive flag'
+          node['notResponsibleFor'] = [
+              'production authority',
+              'task or claim state',
+              'merge approval',
+              'runtime execution',
+              'event delivery',
+              'agent orchestration',
+              'current ecosystem semantics',
+          ]
+          node['lifecycle']['reviewedAt'] = '2026-08-31'
+          node['lifecycle']['evidenceRefs'] = [
+              'https://github.com/heimgewebe/heimgeist/pull/100',
+              'https://github.com/heimgewebe/plexer/pull/104',
+              'https://github.com/heimgewebe/metarepo/pull/727',
+              'bureau:OPERATOR-ECOSYSTEM-REDUNDANCY-V1-T067',
+          ]
+          nodes['updatedAt'] = '2026-08-31'
+
+          target_edges = [
+              edge for edge in edges['edges']
+              if edge.get('from') == 'repo:heimgeist'
+              and edge.get('to') == 'artifact:ecosystem-map'
+              and edge.get('type') == 'observes'
+          ]
+          if len(target_edges) != 1:
+              raise SystemExit(f'expected exactly one Heimgeist observer edge, got {len(target_edges)}')
+          target = target_edges[0]
+          expected_meaning = 'Heimgeist may inspect catalog projections for reflection but does not own catalog truth.'
+          if target.get('meaning') != expected_meaning:
+              raise SystemExit(f'unexpected Heimgeist edge meaning: {target.get("meaning")!r}')
+          edges['edges'].remove(target)
+          edges['updatedAt'] = '2026-08-31'
+
+          nodes_path.write_text(json.dumps(nodes, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+          edges_path.write_text(json.dumps(edges, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+          PY
+
+          git diff --check
+          git diff --exit-code --quiet && { echo 'expected catalog diff missing' >&2; exit 1; }
+
+      - name: Commit bounded catalog correction
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add registry/ecosystem/nodes.json registry/ecosystem/edges.json
+          git commit -m 'chore(catalog): reflect Heimgeist decommission transition'
+          git push origin HEAD:chore/heimgeist-transition-truth
