@@ -26,7 +26,7 @@ class SystemCatalogTests(unittest.TestCase):
         result = validate(ROOT)
         self.assertEqual(result["status"], "valid")
         self.assertEqual(result["registrySystems"], 45)
-        self.assertEqual(result["registryRelations"], 55)
+        self.assertEqual(result["registryRelations"], 54)
         self.assertEqual(result["authorityDomains"], 20)
         self.assertEqual(result["catalogRepositories"], 35)
         self.assertEqual(result["fleetRepositories"], 18)
@@ -85,7 +85,7 @@ class SystemCatalogTests(unittest.TestCase):
             self.assertTrue(node["notResponsibleFor"])
             self.assertTrue(node["entrypoints"])
             self.assertIn(node["lifecycle"]["state"], {"active", "transition", "reference", "archived", "retired"})
-            self.assertIn(node["lifecycle"]["reviewedAt"], {"2026-07-26", "2026-07-28", "2026-07-29", "2026-08-01", "2026-08-02", "2026-08-03", "2026-08-07", "2026-08-09", "2026-08-13", "2026-08-29"})
+            self.assertRegex(node["lifecycle"]["reviewedAt"], r"^\d{4}-\d{2}-\d{2}$")
             self.assertTrue(node["lifecycle"]["evidenceRefs"])
         dashboard = next(node for node in data["nodes"] if node["id"] == "service:heim-pc-chatgpt-dashboard")
         self.assertEqual(dashboard["truthOwnership"], [])
@@ -189,6 +189,19 @@ class SystemCatalogTests(unittest.TestCase):
         )
         self.assertIn("checkout identity", reposkop_relation["meaning"])
         self.assertIn("no effect authority", reposkop_relation["meaning"])
+
+    def test_decommissioned_heimgeist_has_no_active_map_observer_relation(self) -> None:
+        edges = json.loads(
+            (ROOT / "registry/ecosystem/edges.json").read_text(encoding="utf-8")
+        )["edges"]
+        self.assertFalse(
+            any(
+                edge["from"] == "repo:heimgeist"
+                and edge["to"] == "artifact:ecosystem-map"
+                and edge["type"] == "observes"
+                for edge in edges
+            )
+        )
 
     def test_missing_canonical_system_field_fails_closed(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
