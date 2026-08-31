@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "kind": "system_catalog_source_bindings",
   "catalogRepository": "heimgewebe/systemkatalog",
-  "observedAt": "2026-08-31T11:58:00+02:00",
+  "observedAt": "2026-08-31T12:05:00+02:00",
   "systems": [
     {
       "system": "actor:alexander",
@@ -474,17 +474,17 @@
       "system": "repo:heimgeist",
       "source": {
         "repository": "heimgewebe/heimgeist",
-        "commit": "2d657297e9875cf0ec12932b3391fc4c0d8a246a",
+        "commit": "4b92bae2c684860399b333cd908878726e6ef4e8",
         "locator": {
           "kind": "file",
           "path": "README.md",
-          "contentSha256": "be7264d0ac459bc06a131c4e357361dcee25d836cad907ba645f2a4f7ad91e32"
+          "contentSha256": "dfb149f18364ed868cb51c1fd1a82f130afd7444dc6846e454836bae5e63c905"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-13T07:55:00+02:00",
+      "reviewedAt": "2026-08-31T12:05:00+02:00",
       "method": "repository_primary_document",
-      "uncertainty": 0.08
+      "uncertainty": 0.01
     },
     {
       "system": "repo:heim-pc",
