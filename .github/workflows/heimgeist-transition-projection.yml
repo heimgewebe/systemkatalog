@@ -1,4 +1,4 @@
-name: Repair Heimgeist transition test contract
+name: Bind Heimgeist transition to primary freeze source
 
 on:
   push:
@@ -12,7 +12,7 @@ permissions:
 
 jobs:
   repair:
-    name: Patch and fully validate exact V2 test contract
+    name: Bind exact Heimgeist source and fully validate V2
     if: github.repository == 'heimgewebe/systemkatalog'
     runs-on: ubuntu-latest
     steps:
@@ -29,8 +29,9 @@ jobs:
       - name: Patch, commit locally, fully validate, then push
         env:
           CLEAN_BRANCH: chore/heimgeist-transition-truth-v2
-          EXPECTED_HEAD: 8c0441e09d55ffe920d7c13b4db90b750db95a97
-          EXPECTED_TEST_BLOB: 96101034d9bf1dae1df8fa30089c8cee9cd7248a
+          EXPECTED_HEAD: c71cbd6c404ff9125fa4da7c8682e1086334f30e
+          EXPECTED_BINDINGS_BLOB: 09d2e1d1e47aea3eba3f2c02d7fcaeba96c5d4a8
+          HEIMGEIST_FREEZE: 4b92bae2c684860399b333cd908878726e6ef4e8
         run: |
           set -euo pipefail
           git fetch origin "+refs/heads/${CLEAN_BRANCH}:refs/remotes/origin/${CLEAN_BRANCH}"
@@ -40,53 +41,74 @@ jobs:
             exit 1
           fi
 
-          clean="${RUNNER_TEMP}/heimgeist-transition-v2-tests"
+          clean="${RUNNER_TEMP}/heimgeist-transition-v2-source"
           git worktree add --detach "${clean}" "refs/remotes/origin/${CLEAN_BRANCH}"
-          git -C "${clean}" switch -c repair-tests
-          test "$(git -C "${clean}" rev-parse HEAD:scripts/tests/test_system_catalog.py)" = "${EXPECTED_TEST_BLOB}"
+          git -C "${clean}" switch -c repair-source
+          test "$(git -C "${clean}" rev-parse HEAD:registry/ecosystem/source-bindings.v1.json)" = "${EXPECTED_BINDINGS_BLOB}"
 
-          TEST_PATH="${clean}/scripts/tests/test_system_catalog.py" python - <<'PY'
+          source_repo="${RUNNER_TEMP}/heimgeist-source"
+          git init "${source_repo}"
+          git -C "${source_repo}" remote add origin https://github.com/heimgewebe/heimgeist.git
+          git -C "${source_repo}" fetch --depth=1 origin "${HEIMGEIST_FREEZE}"
+          git -C "${source_repo}" show "${HEIMGEIST_FREEZE}:README.md" > "${RUNNER_TEMP}/heimgeist-freeze-README.md"
+          readme_sha256="$(sha256sum "${RUNNER_TEMP}/heimgeist-freeze-README.md" | awk '{print $1}')"
+          if [[ ! "${readme_sha256}" =~ ^[0-9a-f]{64}$ ]]; then
+            echo "invalid Heimgeist README SHA-256" >&2
+            exit 1
+          fi
+
+          BINDINGS_PATH="${clean}/registry/ecosystem/source-bindings.v1.json" \
+          README_SHA256="${readme_sha256}" \
+          HEIMGEIST_FREEZE="${HEIMGEIST_FREEZE}" python - <<'PY'
+          import json
           import os
           from pathlib import Path
 
-          path = Path(os.environ['TEST_PATH'])
-          text = path.read_text(encoding='utf-8')
+          path = Path(os.environ['BINDINGS_PATH'])
+          digest = os.environ['README_SHA256']
+          freeze = os.environ['HEIMGEIST_FREEZE']
+          doc = json.loads(path.read_text(encoding='utf-8'))
+          matches = [item for item in doc['systems'] if item.get('system') == 'repo:heimgeist']
+          if len(matches) != 1:
+              raise SystemExit(f'expected exactly one Heimgeist system binding, got {len(matches)}')
+          item = matches[0]
+          source = item.get('source', {})
+          locator = source.get('locator', {})
+          expected = {
+              'repository': 'heimgewebe/heimgeist',
+              'commit': '2d657297e9875cf0ec12932b3391fc4c0d8a246a',
+              'defaultBranch': 'main',
+          }
+          for key, value in expected.items():
+              if source.get(key) != value:
+                  raise SystemExit(f'Heimgeist source {key} drift: {source.get(key)!r} != {value!r}')
+          if (
+              locator.get('kind') != 'file'
+              or locator.get('path') != 'README.md'
+              or locator.get('contentSha256') != 'be7264d0ac459bc06a131c4e357361dcee25d836cad907ba645f2a4f7ad91e32'
+              or item.get('method') != 'repository_primary_document'
+          ):
+              raise SystemExit(f'unexpected Heimgeist source binding: {item!r}')
 
-          replacements = [
-              (
-                  '        self.assertEqual(result["registryRelations"], 55)\n',
-                  '        self.assertEqual(result["registryRelations"], 54)\n',
-              ),
-              (
-                  '            self.assertIn(node["lifecycle"]["reviewedAt"], {"2026-07-26", "2026-07-28", "2026-07-29", "2026-08-01", "2026-08-02", "2026-08-03", "2026-08-07", "2026-08-09", "2026-08-13", "2026-08-29"})\n',
-                  '            self.assertRegex(node["lifecycle"]["reviewedAt"], r"^\\d{4}-\\d{2}-\\d{2}$")\n',
-              ),
-          ]
-          for old, new in replacements:
-              count = text.count(old)
-              if count != 1:
-                  raise SystemExit(f'expected exactly one replacement target, got {count}: {old!r}')
-              text = text.replace(old, new, 1)
-
-          marker = '    def test_missing_canonical_system_field_fails_closed(self) -> None:\n'
-          if text.count(marker) != 1:
-              raise SystemExit('expected one insertion marker for Heimgeist relation regression')
-          regression = '''    def test_decommissioned_heimgeist_has_no_active_map_observer_relation(self) -> None:\n        edges = json.loads(\n            (ROOT / "registry/ecosystem/edges.json").read_text(encoding="utf-8")\n        )["edges"]\n        self.assertFalse(\n            any(\n                edge["from"] == "repo:heimgeist"\n                and edge["to"] == "artifact:ecosystem-map"\n                and edge["type"] == "observes"\n                for edge in edges\n            )\n        )\n\n'''
-          text = text.replace(marker, regression + marker, 1)
-          path.write_text(text, encoding='utf-8')
+          source['commit'] = freeze
+          locator['contentSha256'] = digest
+          item['reviewedAt'] = '2026-08-31T12:05:00+02:00'
+          item['uncertainty'] = 0.01
+          doc['observedAt'] = '2026-08-31T12:05:00+02:00'
+          path.write_text(json.dumps(doc, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
           PY
 
           mapfile -t changed < <(git -C "${clean}" diff --name-only)
-          if [[ ${#changed[@]} -ne 1 || "${changed[0]}" != "scripts/tests/test_system_catalog.py" ]]; then
-            printf 'unexpected test repair paths:\n' >&2
+          if [[ ${#changed[@]} -ne 1 || "${changed[0]}" != "registry/ecosystem/source-bindings.v1.json" ]]; then
+            printf 'unexpected source repair paths:\n' >&2
             printf '  %s\n' "${changed[@]}" >&2
             exit 1
           fi
 
           git -C "${clean}" config user.name 'github-actions[bot]'
           git -C "${clean}" config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git -C "${clean}" add scripts/tests/test_system_catalog.py
-          git -C "${clean}" commit -m 'test: align catalog invariants with Heimgeist decommission'
+          git -C "${clean}" add registry/ecosystem/source-bindings.v1.json
+          git -C "${clean}" commit -m 'review: bind Heimgeist transition to freeze README'
           candidate="$(git -C "${clean}" rev-parse HEAD)"
           test -z "$(git -C "${clean}" status --porcelain)"
 
