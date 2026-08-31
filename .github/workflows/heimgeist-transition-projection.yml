@@ -1,4 +1,4 @@
-name: Stage Heimgeist transition projection reconciliation
+name: Publish clean Heimgeist transition branch
 
 on:
   push:
@@ -11,8 +11,8 @@ permissions:
   contents: write
 
 jobs:
-  reconcile:
-    name: Reconcile bounded Heimgeist catalog projections
+  publish:
+    name: Build clean catalog-only transition branch
     if: github.repository == 'heimgewebe/systemkatalog'
     runs-on: ubuntu-latest
     steps:
@@ -26,56 +26,58 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Patch source bindings and generated projections
+      - name: Build clean catalog data commit
         env:
           EXPECTED_BASE: b33082ad7a805fb9020e6e980a47b5997cb1c43f
-          TRANSITION_DATA_COMMIT: e67844a688cf5cf59e927053b53568cbee6a2955
-          GENERATOR_PATH: .github/workflows/heimgeist-transition-projection.yml
+          EXPECTED_TRANSITION_DATA: e67844a688cf5cf59e927053b53568cbee6a2955
+          CLEAN_BRANCH: chore/heimgeist-transition-truth-v2
         run: |
           set -euo pipefail
           git merge-base --is-ancestor "${EXPECTED_BASE}" HEAD
-          git merge-base --is-ancestor "${TRANSITION_DATA_COMMIT}" HEAD
-          git diff --quiet "${TRANSITION_DATA_COMMIT}" -- registry/ecosystem/nodes.json registry/ecosystem/edges.json
+          git merge-base --is-ancestor "${EXPECTED_TRANSITION_DATA}" HEAD
+          git diff --quiet "${EXPECTED_TRANSITION_DATA}" -- \
+            registry/ecosystem/nodes.json registry/ecosystem/edges.json
 
-          mapfile -t paths < <(git diff --name-only "${EXPECTED_BASE}"..HEAD | sort)
-          expected=(
-            "${GENERATOR_PATH}"
-            registry/ecosystem/edges.json
-            registry/ecosystem/nodes.json
-          )
-          mapfile -t expected < <(printf '%s\n' "${expected[@]}" | sort)
-          if [[ "$(printf '%s\n' "${paths[@]}")" != "$(printf '%s\n' "${expected[@]}")" ]]; then
-            printf 'unexpected pre-reconcile paths since base:\n' >&2
-            printf '  %s\n' "${paths[@]}" >&2
+          if git ls-remote --exit-code --heads origin "refs/heads/${CLEAN_BRANCH}" >/dev/null 2>&1; then
+            echo "clean target branch already exists: ${CLEAN_BRANCH}" >&2
             exit 1
           fi
 
-          tag="systemkatalog-provenance-v1/${TRANSITION_DATA_COMMIT}"
-          if git show-ref --verify --quiet "refs/tags/${tag}"; then
-            test "$(git rev-parse "refs/tags/${tag}^{commit}")" = "${TRANSITION_DATA_COMMIT}"
-          else
-            git tag "${tag}" "${TRANSITION_DATA_COMMIT}"
-            git push origin "refs/tags/${tag}"
-          fi
+          clean="${RUNNER_TEMP}/heimgeist-transition-clean"
+          git worktree add --detach "${clean}" "${EXPECTED_BASE}"
+          git -C "${clean}" switch -c "${CLEAN_BRANCH}"
 
-          python - <<'PY'
+          cp registry/ecosystem/nodes.json "${clean}/registry/ecosystem/nodes.json"
+          cp registry/ecosystem/edges.json "${clean}/registry/ecosystem/edges.json"
+
+          CLEAN_ROOT="${clean}" python - <<'PY'
           import hashlib
           import json
+          import os
           import subprocess
           from pathlib import Path
 
-          target_commit = 'e67844a688cf5cf59e927053b53568cbee6a2955'
+          root = Path(os.environ['CLEAN_ROOT'])
+          base = 'b33082ad7a805fb9020e6e980a47b5997cb1c43f'
           old_dashboard_commit = '98e05aae50357326e965bd944ce58680434ed60e'
           old_dashboard_digest = '121b94f3f8a542a0ce7707a29ab2dba124154f7f82d47aa9754660911d83bea8'
-          path = Path('registry/ecosystem/source-bindings.v1.json')
-          doc = json.loads(path.read_text(encoding='utf-8'))
 
-          target_nodes = subprocess.check_output(
-              ['git', 'show', f'{target_commit}:registry/ecosystem/nodes.json']
+          base_nodes_bytes = subprocess.check_output(
+              ['git', 'show', f'{base}:registry/ecosystem/nodes.json'], cwd=root
           )
-          target_digest = hashlib.sha256(target_nodes).hexdigest()
+          base_nodes = json.loads(base_nodes_bytes)
+          if base_nodes['nodes'][44].get('id') != 'service:heim-pc-chatgpt-dashboard':
+              raise SystemExit(
+                  f"base /nodes/44 identity drift: {base_nodes['nodes'][44].get('id')!r}"
+              )
+          base_digest = hashlib.sha256(base_nodes_bytes).hexdigest()
 
-          systems = [item for item in doc['systems'] if item.get('system') == 'service:heim-pc-chatgpt-dashboard']
+          path = root / 'registry/ecosystem/source-bindings.v1.json'
+          doc = json.loads(path.read_text(encoding='utf-8'))
+          systems = [
+              item for item in doc['systems']
+              if item.get('system') == 'service:heim-pc-chatgpt-dashboard'
+          ]
           if len(systems) != 1:
               raise SystemExit(f'expected one dashboard source binding, got {len(systems)}')
           source = systems[0]['source']
@@ -89,8 +91,8 @@ jobs:
               or locator.get('contentSha256') != old_dashboard_digest
           ):
               raise SystemExit(f'unexpected dashboard source binding: {source!r}')
-          source['commit'] = target_commit
-          locator['contentSha256'] = target_digest
+          source['commit'] = base
+          locator['contentSha256'] = base_digest
 
           target = ('repo:heimgeist', 'artifact:ecosystem-map', 'observes')
           matches = [
@@ -104,59 +106,77 @@ jobs:
           if len(matches) != 1:
               raise SystemExit(f'expected one Heimgeist relation source binding, got {len(matches)}')
           doc['relations'].remove(matches[0])
-          doc['observedAt'] = '2026-08-31T11:48:00+02:00'
+          doc['observedAt'] = '2026-08-31T11:50:00+02:00'
           path.write_text(json.dumps(doc, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
           PY
 
-          python3 scripts/render_ecosystem_registry_map.py
-          python3 scripts/render_system_catalog.py
-          python3 scripts/validate_ecosystem_map.py
-          git diff --check
+          (
+            cd "${clean}"
+            python3 scripts/validate_ecosystem_map.py
+            python3 scripts/render_ecosystem_registry_map.py
+            python3 scripts/render_system_catalog.py
+            python3 scripts/validate_ecosystem_map.py
+            git diff --check
+          )
 
-          mapfile -t generated < <(git diff --name-only | sort)
-          expected_generated=(
+          mapfile -t changed < <(git -C "${clean}" diff --name-only | sort)
+          expected=(
+            registry/ecosystem/edges.json
+            registry/ecosystem/nodes.json
             registry/ecosystem/source-bindings.v1.json
             rendered/ecosystem-registry-map.mmd
             rendered/system-catalog.md
           )
-          mapfile -t expected_generated < <(printf '%s\n' "${expected_generated[@]}" | sort)
-          if [[ "$(printf '%s\n' "${generated[@]}")" != "$(printf '%s\n' "${expected_generated[@]}")" ]]; then
-            printf 'unexpected generated paths:\n' >&2
-            printf '  %s\n' "${generated[@]}" >&2
+          mapfile -t expected < <(printf '%s\n' "${expected[@]}" | sort)
+          if [[ "$(printf '%s\n' "${changed[@]}")" != "$(printf '%s\n' "${expected[@]}")" ]]; then
+            printf 'unexpected clean data paths:\n' >&2
+            printf '  %s\n' "${changed[@]}" >&2
             exit 1
           fi
 
-      - name: Commit projections, bind provenance, and write manifest
-        env:
-          BRANCH: chore/heimgeist-transition-truth
-        run: |
-          set -euo pipefail
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git -C "${clean}" config user.name 'github-actions[bot]'
+          git -C "${clean}" config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git -C "${clean}" add "${expected[@]}"
+          git -C "${clean}" commit -m 'chore(catalog): reflect Heimgeist decommission transition'
+          data_commit="$(git -C "${clean}" rev-parse HEAD)"
 
-          git add \
-            registry/ecosystem/source-bindings.v1.json \
-            rendered/ecosystem-registry-map.mmd \
-            rendered/system-catalog.md
-          git commit -m 'chore(catalog): reconcile Heimgeist projection provenance'
-          source_commit="$(git rev-parse HEAD)"
-          git push origin "HEAD:${BRANCH}"
+          git -C "${clean}" push origin "HEAD:refs/heads/${CLEAN_BRANCH}"
 
-          tag="systemkatalog-provenance-v1/${source_commit}"
-          git tag "${tag}" "${source_commit}"
-          git push origin "refs/tags/${tag}"
+          tag="systemkatalog-provenance-v1/${data_commit}"
+          if git ls-remote --exit-code --tags origin "refs/tags/${tag}" >/dev/null 2>&1; then
+            echo "provenance tag unexpectedly already exists: ${tag}" >&2
+            exit 1
+          fi
+          git -C "${clean}" tag "${tag}" "${data_commit}"
+          git -C "${clean}" push origin "refs/tags/${tag}"
 
-          git fetch origin "+refs/heads/${BRANCH}:refs/remotes/origin/${BRANCH}"
-          remote_head="$(git rev-parse "refs/remotes/origin/${BRANCH}")"
-          if [[ "${remote_head}" != "${source_commit}" ]]; then
-            echo "remote branch did not converge to source commit" >&2
+          git -C "${clean}" fetch origin \
+            "+refs/heads/${CLEAN_BRANCH}:refs/remotes/origin/${CLEAN_BRANCH}"
+          remote_data="$(git -C "${clean}" rev-parse "refs/remotes/origin/${CLEAN_BRANCH}")"
+          if [[ "${remote_data}" != "${data_commit}" ]]; then
+            echo "clean branch did not converge to data commit" >&2
             exit 1
           fi
 
-          python3 scripts/write_ecosystem_map_artifact_manifest.py \
-            --source-commit "${source_commit}" \
-            --durable-source-ref "refs/remotes/origin/${BRANCH}"
-          git diff --check
-          git add rendered/ecosystem-map-artifact-manifest.json
-          git commit -m 'chore(catalog): refresh ecosystem map manifest'
-          git push origin "HEAD:${BRANCH}"
+          (
+            cd "${clean}"
+            python3 scripts/write_ecosystem_map_artifact_manifest.py \
+              --source-commit "${data_commit}" \
+              --durable-source-ref "refs/remotes/origin/${CLEAN_BRANCH}"
+            git diff --check
+          )
+          mapfile -t manifest_paths < <(git -C "${clean}" diff --name-only | sort)
+          if [[ ${#manifest_paths[@]} -ne 1 || "${manifest_paths[0]}" != "rendered/ecosystem-map-artifact-manifest.json" ]]; then
+            printf 'unexpected manifest paths:\n' >&2
+            printf '  %s\n' "${manifest_paths[@]}" >&2
+            exit 1
+          fi
+
+          git -C "${clean}" add rendered/ecosystem-map-artifact-manifest.json
+          git -C "${clean}" commit -m 'chore(catalog): refresh ecosystem map manifest'
+          final_commit="$(git -C "${clean}" rev-parse HEAD)"
+          git -C "${clean}" push origin "HEAD:refs/heads/${CLEAN_BRANCH}"
+
+          echo "clean_branch=${CLEAN_BRANCH}" >> "${GITHUB_OUTPUT}"
+          echo "data_commit=${data_commit}" >> "${GITHUB_OUTPUT}"
+          echo "final_commit=${final_commit}" >> "${GITHUB_OUTPUT}"
