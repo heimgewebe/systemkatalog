@@ -1,4 +1,4 @@
-name: Publish clean Heimgeist transition branch
+name: Repair one stale Heimgeist transition relation binding
 
 on:
   push:
@@ -11,8 +11,8 @@ permissions:
   contents: write
 
 jobs:
-  publish:
-    name: Build clean catalog-only transition branch
+  repair:
+    name: Repair exactly one stale local relation source binding
     if: github.repository == 'heimgewebe/systemkatalog'
     runs-on: ubuntu-latest
     steps:
@@ -26,31 +26,28 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Build clean catalog data commit
+      - name: Patch one validator-proven stale relation binding on V2
         env:
-          EXPECTED_BASE: b33082ad7a805fb9020e6e980a47b5997cb1c43f
-          EXPECTED_TRANSITION_DATA: e67844a688cf5cf59e927053b53568cbee6a2955
           CLEAN_BRANCH: chore/heimgeist-transition-truth-v2
+          EXPECTED_HEAD: 41a8c900577f82329da819c98960f585b72dbc0c
+          DATA_COMMIT: d5a4a6cf5c0addda429d9610bada6ac456fae2a9
         run: |
           set -euo pipefail
-          git merge-base --is-ancestor "${EXPECTED_BASE}" HEAD
-          git merge-base --is-ancestor "${EXPECTED_TRANSITION_DATA}" HEAD
-          git diff --quiet "${EXPECTED_TRANSITION_DATA}" -- \
-            registry/ecosystem/nodes.json registry/ecosystem/edges.json
-
-          if git ls-remote --exit-code --heads origin "refs/heads/${CLEAN_BRANCH}" >/dev/null 2>&1; then
-            echo "clean target branch already exists: ${CLEAN_BRANCH}" >&2
+          git fetch origin "+refs/heads/${CLEAN_BRANCH}:refs/remotes/origin/${CLEAN_BRANCH}"
+          observed="$(git rev-parse "refs/remotes/origin/${CLEAN_BRANCH}")"
+          if [[ "${observed}" != "${EXPECTED_HEAD}" ]]; then
+            echo "V2 head moved: expected ${EXPECTED_HEAD}, got ${observed}" >&2
             exit 1
           fi
 
-          clean="${RUNNER_TEMP}/heimgeist-transition-clean"
-          git worktree add --detach "${clean}" "${EXPECTED_BASE}"
-          git -C "${clean}" switch -c "${CLEAN_BRANCH}"
+          clean="${RUNNER_TEMP}/heimgeist-transition-v2-repair"
+          git worktree add --detach "${clean}" "refs/remotes/origin/${CLEAN_BRANCH}"
+          git -C "${clean}" switch -c repair-local
+          git -C "${clean}" merge-base --is-ancestor "${DATA_COMMIT}" HEAD
+          tag="systemkatalog-provenance-v1/${DATA_COMMIT}"
+          test "$(git -C "${clean}" rev-parse "refs/tags/${tag}^{commit}")" = "${DATA_COMMIT}"
 
-          cp registry/ecosystem/nodes.json "${clean}/registry/ecosystem/nodes.json"
-          cp registry/ecosystem/edges.json "${clean}/registry/ecosystem/edges.json"
-
-          CLEAN_ROOT="${clean}" python - <<'PY'
+          CLEAN_ROOT="${clean}" DATA_COMMIT="${DATA_COMMIT}" python - <<'PY'
           import hashlib
           import json
           import os
@@ -58,125 +55,147 @@ jobs:
           from pathlib import Path
 
           root = Path(os.environ['CLEAN_ROOT'])
-          base = 'b33082ad7a805fb9020e6e980a47b5997cb1c43f'
-          old_dashboard_commit = '98e05aae50357326e965bd944ce58680434ed60e'
-          old_dashboard_digest = '121b94f3f8a542a0ce7707a29ab2dba124154f7f82d47aa9754660911d83bea8'
+          data_commit = os.environ['DATA_COMMIT']
+          bindings_path = root / 'registry/ecosystem/source-bindings.v1.json'
+          edges_path = root / 'registry/ecosystem/edges.json'
+          doc = json.loads(bindings_path.read_text(encoding='utf-8'))
+          current_edges_bytes = edges_path.read_bytes()
+          current_edges = json.loads(current_edges_bytes)['edges']
+          current_digest = hashlib.sha256(current_edges_bytes).hexdigest()
 
-          base_nodes_bytes = subprocess.check_output(
-              ['git', 'show', f'{base}:registry/ecosystem/nodes.json'], cwd=root
-          )
-          base_nodes = json.loads(base_nodes_bytes)
-          if base_nodes['nodes'][44].get('id') != 'service:heim-pc-chatgpt-dashboard':
-              raise SystemExit(
-                  f"base /nodes/44 identity drift: {base_nodes['nodes'][44].get('id')!r}"
+          def is_ancestor(commit: str) -> bool:
+              result = subprocess.run(
+                  ['git', 'merge-base', '--is-ancestor', commit, 'HEAD'],
+                  cwd=root,
+                  stdout=subprocess.DEVNULL,
+                  stderr=subprocess.DEVNULL,
               )
-          base_digest = hashlib.sha256(base_nodes_bytes).hexdigest()
+              if result.returncode == 0:
+                  return True
+              if result.returncode == 1:
+                  return False
+              raise SystemExit(f'cannot classify source commit ancestry: {commit}')
 
-          path = root / 'registry/ecosystem/source-bindings.v1.json'
-          doc = json.loads(path.read_text(encoding='utf-8'))
-          systems = [
-              item for item in doc['systems']
-              if item.get('system') == 'service:heim-pc-chatgpt-dashboard'
-          ]
-          if len(systems) != 1:
-              raise SystemExit(f'expected one dashboard source binding, got {len(systems)}')
-          source = systems[0]['source']
-          locator = source.get('locator', {})
-          if (
-              source.get('repository') != 'heimgewebe/systemkatalog'
-              or source.get('commit') != old_dashboard_commit
-              or locator.get('kind') != 'json_pointer'
-              or locator.get('path') != 'registry/ecosystem/nodes.json'
-              or locator.get('pointer') != '/nodes/44'
-              or locator.get('contentSha256') != old_dashboard_digest
-          ):
-              raise SystemExit(f'unexpected dashboard source binding: {source!r}')
-          source['commit'] = base
-          locator['contentSha256'] = base_digest
-
-          target = ('repo:heimgeist', 'artifact:ecosystem-map', 'observes')
-          matches = [
-              item for item in doc['relations']
+          candidates = []
+          for index, item in enumerate(doc['relations']):
+              source = item.get('source', {})
+              locator = source.get('locator', {})
               if (
-                  item.get('relation', {}).get('from'),
-                  item.get('relation', {}).get('to'),
-                  item.get('relation', {}).get('type'),
-              ) == target
+                  source.get('repository') != 'heimgewebe/systemkatalog'
+                  or locator.get('kind') != 'json_pointer'
+                  or locator.get('path') != 'registry/ecosystem/edges.json'
+              ):
+                  continue
+              commit = source.get('commit')
+              if not isinstance(commit, str) or commit == 'redacted':
+                  continue
+              if is_ancestor(commit):
+                  continue
+              if locator.get('contentSha256') == current_digest:
+                  continue
+              candidates.append((index, item))
+
+          if len(candidates) != 1:
+              rendered = [
+                  {
+                      'index': index,
+                      'relation': item.get('relation'),
+                      'commit': item.get('source', {}).get('commit'),
+                      'pointer': item.get('source', {}).get('locator', {}).get('pointer'),
+                  }
+                  for index, item in candidates
+              ]
+              raise SystemExit(
+                  'expected exactly one non-ancestor, byte-drifted local relation binding; '
+                  f'got {len(candidates)}: {rendered!r}'
+              )
+
+          relation_index, item = candidates[0]
+          relation = item['relation']
+          key = (relation['from'], relation['to'], relation['type'])
+          source = item['source']
+          locator = source['locator']
+          old_commit = source['commit']
+          pointer = locator['pointer']
+          prefix = '/edges/'
+          if not isinstance(pointer, str) or not pointer.startswith(prefix):
+              raise SystemExit(f'unexpected source pointer: {pointer!r}')
+          raw_index = pointer[len(prefix):]
+          if not raw_index.isdigit():
+              raise SystemExit(f'unexpected source pointer index: {pointer!r}')
+          old_index = int(raw_index)
+
+          old_edges_bytes = subprocess.check_output(
+              ['git', 'show', f'{old_commit}:registry/ecosystem/edges.json'], cwd=root
+          )
+          old_digest = hashlib.sha256(old_edges_bytes).hexdigest()
+          if old_digest != locator.get('contentSha256'):
+              raise SystemExit(
+                  f'source relation {relation_index} old digest mismatch: '
+                  f'{old_digest} != {locator.get("contentSha256")}'
+              )
+          old_edges = json.loads(old_edges_bytes)['edges']
+          if old_index >= len(old_edges):
+              raise SystemExit(f'source relation {relation_index} old pointer out of range')
+          old_edge = old_edges[old_index]
+          old_key = (old_edge.get('from'), old_edge.get('to'), old_edge.get('type'))
+          if old_key != key:
+              raise SystemExit(
+                  f'source relation {relation_index} old pointer identity mismatch: {old_key!r} != {key!r}'
+              )
+
+          matches = [
+              index for index, edge in enumerate(current_edges)
+              if (edge.get('from'), edge.get('to'), edge.get('type')) == key
           ]
           if len(matches) != 1:
-              raise SystemExit(f'expected one Heimgeist relation source binding, got {len(matches)}')
-          doc['relations'].remove(matches[0])
-          doc['observedAt'] = '2026-08-31T11:50:00+02:00'
-          path.write_text(json.dumps(doc, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+              raise SystemExit(
+                  f'source relation {relation_index} current identity count is {len(matches)} for {key!r}'
+              )
+          new_index = matches[0]
+          source['commit'] = data_commit
+          locator['pointer'] = f'/edges/{new_index}'
+          locator['contentSha256'] = current_digest
+          item['reviewedAt'] = '2026-08-31'
+          doc['observedAt'] = '2026-08-31T11:55:00+02:00'
+          bindings_path.write_text(
+              json.dumps(doc, indent=2, ensure_ascii=False) + '\n', encoding='utf-8'
+          )
+          print(
+              json.dumps(
+                  {
+                      'patchedRelationIndex': relation_index,
+                      'relation': relation,
+                      'oldCommit': old_commit,
+                      'newCommit': data_commit,
+                      'oldPointer': pointer,
+                      'newPointer': locator['pointer'],
+                  },
+                  sort_keys=True,
+              )
+          )
           PY
 
           (
             cd "${clean}"
             python3 scripts/validate_ecosystem_map.py
-            python3 scripts/render_ecosystem_registry_map.py
-            python3 scripts/render_system_catalog.py
-            python3 scripts/validate_ecosystem_map.py
+            python3 scripts/render_ecosystem_registry_map.py --check
+            python3 scripts/render_system_catalog.py --check
+            python3 scripts/write_ecosystem_map_artifact_manifest.py \
+              --check \
+              --durable-source-ref "refs/remotes/origin/${CLEAN_BRANCH}"
             git diff --check
           )
 
-          mapfile -t changed < <(git -C "${clean}" diff --name-only | sort)
-          expected=(
-            registry/ecosystem/edges.json
-            registry/ecosystem/nodes.json
-            registry/ecosystem/source-bindings.v1.json
-            rendered/ecosystem-registry-map.mmd
-            rendered/system-catalog.md
-          )
-          mapfile -t expected < <(printf '%s\n' "${expected[@]}" | sort)
-          if [[ "$(printf '%s\n' "${changed[@]}")" != "$(printf '%s\n' "${expected[@]}")" ]]; then
-            printf 'unexpected clean data paths:\n' >&2
+          mapfile -t changed < <(git -C "${clean}" diff --name-only)
+          if [[ ${#changed[@]} -ne 1 || "${changed[0]}" != "registry/ecosystem/source-bindings.v1.json" ]]; then
+            printf 'unexpected repair paths:\n' >&2
             printf '  %s\n' "${changed[@]}" >&2
             exit 1
           fi
 
           git -C "${clean}" config user.name 'github-actions[bot]'
           git -C "${clean}" config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git -C "${clean}" add "${expected[@]}"
-          git -C "${clean}" commit -m 'chore(catalog): reflect Heimgeist decommission transition'
-          data_commit="$(git -C "${clean}" rev-parse HEAD)"
-
+          git -C "${clean}" add registry/ecosystem/source-bindings.v1.json
+          git -C "${clean}" commit -m 'chore(catalog): repair Heimgeist transition relation provenance'
           git -C "${clean}" push origin "HEAD:refs/heads/${CLEAN_BRANCH}"
-
-          tag="systemkatalog-provenance-v1/${data_commit}"
-          if git ls-remote --exit-code --tags origin "refs/tags/${tag}" >/dev/null 2>&1; then
-            echo "provenance tag unexpectedly already exists: ${tag}" >&2
-            exit 1
-          fi
-          git -C "${clean}" tag "${tag}" "${data_commit}"
-          git -C "${clean}" push origin "refs/tags/${tag}"
-
-          git -C "${clean}" fetch origin \
-            "+refs/heads/${CLEAN_BRANCH}:refs/remotes/origin/${CLEAN_BRANCH}"
-          remote_data="$(git -C "${clean}" rev-parse "refs/remotes/origin/${CLEAN_BRANCH}")"
-          if [[ "${remote_data}" != "${data_commit}" ]]; then
-            echo "clean branch did not converge to data commit" >&2
-            exit 1
-          fi
-
-          (
-            cd "${clean}"
-            python3 scripts/write_ecosystem_map_artifact_manifest.py \
-              --source-commit "${data_commit}" \
-              --durable-source-ref "refs/remotes/origin/${CLEAN_BRANCH}"
-            git diff --check
-          )
-          mapfile -t manifest_paths < <(git -C "${clean}" diff --name-only | sort)
-          if [[ ${#manifest_paths[@]} -ne 1 || "${manifest_paths[0]}" != "rendered/ecosystem-map-artifact-manifest.json" ]]; then
-            printf 'unexpected manifest paths:\n' >&2
-            printf '  %s\n' "${manifest_paths[@]}" >&2
-            exit 1
-          fi
-
-          git -C "${clean}" add rendered/ecosystem-map-artifact-manifest.json
-          git -C "${clean}" commit -m 'chore(catalog): refresh ecosystem map manifest'
-          final_commit="$(git -C "${clean}" rev-parse HEAD)"
-          git -C "${clean}" push origin "HEAD:refs/heads/${CLEAN_BRANCH}"
-
-          echo "clean_branch=${CLEAN_BRANCH}" >> "${GITHUB_OUTPUT}"
-          echo "data_commit=${data_commit}" >> "${GITHUB_OUTPUT}"
-          echo "final_commit=${final_commit}" >> "${GITHUB_OUTPUT}"
