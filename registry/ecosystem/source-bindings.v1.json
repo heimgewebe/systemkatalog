@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "kind": "system_catalog_source_bindings",
   "catalogRepository": "heimgewebe/systemkatalog",
-  "observedAt": "2026-08-29T10:30:33+02:00",
+  "observedAt": "2026-08-31T11:50:00+02:00",
   "systems": [
     {
       "system": "actor:alexander",
@@ -718,13 +718,13 @@
       "system": "service:heim-pc-chatgpt-dashboard",
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "98e05aae50357326e965bd944ce58680434ed60e",
+        "commit": "b33082ad7a805fb9020e6e980a47b5997cb1c43f",
         "defaultBranch": "main",
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/nodes.json",
           "pointer": "/nodes/44",
-          "contentSha256": "121b94f3f8a542a0ce7707a29ab2dba124154f7f82d47aa9754660911d83bea8"
+          "contentSha256": "85d878cce5eb5b64b0ba8041dd9ef92ca582b3e03f3a42a386d4d042bc524175"
         }
       },
       "reviewedAt": "2026-08-29T10:30:33+02:00",
@@ -1418,27 +1418,6 @@
           "kind": "json_pointer",
           "path": "registry/ecosystem/edges.json",
           "pointer": "/edges/32",
-          "contentSha256": "f5909b40ef1c6ba560bbeadee78db405d58e9e36565a948df6ce368226a2b604"
-        },
-        "defaultBranch": "main"
-      },
-      "reviewedAt": "2026-08-01T20:20:27+02:00",
-      "method": "catalog_curator_review",
-      "uncertainty": 0.18
-    },
-    {
-      "relation": {
-        "from": "repo:heimgeist",
-        "to": "artifact:ecosystem-map",
-        "type": "observes"
-      },
-      "source": {
-        "repository": "heimgewebe/systemkatalog",
-        "commit": "3556d586c96f80fe2582437c9ffe3f452d6d82ff",
-        "locator": {
-          "kind": "json_pointer",
-          "path": "registry/ecosystem/edges.json",
-          "pointer": "/edges/33",
           "contentSha256": "f5909b40ef1c6ba560bbeadee78db405d58e9e36565a948df6ce368226a2b604"
         },
         "defaultBranch": "main"

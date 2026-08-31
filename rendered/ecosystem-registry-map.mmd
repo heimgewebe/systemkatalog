@@ -23,7 +23,7 @@ flowchart TD
         repo_hausKI["HausKI<br/>id: repo:hausKI<br/>repository<br/>lifecycle: active · reviewed: 2026-07-26<br/>Local offline-first AI orchestration and policy-controlled memory"]
         repo_hausKI_audio["HausKI Audio<br/>id: repo:hausKI-audio<br/>repository<br/>lifecycle: retired · reviewed: 2026-07-28<br/>Retired historical donor and provenance reference for the canonical heimgewebe/audio repository"]
         repo_heim_pc["heim-pc<br/>id: repo:heim-pc<br/>repository<br/>lifecycle: active · reviewed: 2026-08-13<br/>Versioned local operator entry, host orientation and host-local capability locators"]
-        repo_heimgeist["Heimgeist<br/>id: repo:heimgeist<br/>repository<br/>lifecycle: transition · reviewed: 2026-07-26<br/>System self-reflection and meta-agent experimentation"]
+        repo_heimgeist["Heimgeist<br/>id: repo:heimgeist<br/>repository<br/>lifecycle: transition · reviewed: 2026-08-31<br/>decommissioned historical reference for the former Heimgewebe system-reflection meta-agent, pending GitHub archive flag"]
         repo_heimlern["heimlern<br/>id: repo:heimlern<br/>repository<br/>lifecycle: archived · reviewed: 2026-07-26<br/>archived historical reference for the former offline operator-learning implementation"]
         repo_heimserver["Heimserver<br/>id: repo:heimserver<br/>repository<br/>lifecycle: retired · reviewed: 2026-08-01<br/>retired historical operations and contract reference for the former home-network service layer, edge gateway, DDNS and Weltgewebe infrastructure"]
         repo_infra["Infra<br/>id: repo:infra<br/>repository<br/>lifecycle: active · reviewed: 2026-07-26<br/>host, network, cockpit and operational runbooks"]
@@ -90,7 +90,6 @@ flowchart TD
     repo_grabowski -->|provides / stable| service_heim_pc_chatgpt_dashboard
     repo_hausKI_audio -->|provides / related| repo_audio
     repo_heim_pc -->|observes / stable| artifact_ecosystem_map
-    repo_heimgeist -->|observes / related| artifact_ecosystem_map
     repo_heimserver -->|scope_boundary / related| repo_infra
     repo_konvergenzregelkreis -->|scope_boundary / stable| repo_bureau
     repo_leitstand -->|observes / stable| artifact_ecosystem_map

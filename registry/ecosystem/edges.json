@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "kind": "system_catalog_relations",
   "catalogRole": "canonical_stable_relations",
-  "updatedAt": "2026-08-29",
+  "updatedAt": "2026-08-31",
   "relationTypes": [
     "owns",
     "steers",
@@ -259,13 +259,6 @@
       "type": "operates_on",
       "stability": "bounded",
       "meaning": "Sichter reviews repository changes and may prepare pull requests within policy boundaries."
-    },
-    {
-      "from": "repo:heimgeist",
-      "to": "artifact:ecosystem-map",
-      "type": "observes",
-      "stability": "related",
-      "meaning": "Heimgeist may inspect catalog projections for reflection but does not own catalog truth."
     },
     {
       "from": "repo:heim-pc",
