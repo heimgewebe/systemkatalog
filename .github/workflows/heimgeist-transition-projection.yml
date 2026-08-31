@@ -1,4 +1,4 @@
-name: Repair one stale Heimgeist transition relation binding
+name: Repair exact dashboard relation provenance set
 
 on:
   push:
@@ -12,7 +12,7 @@ permissions:
 
 jobs:
   repair:
-    name: Repair exactly one stale local relation source binding
+    name: Repair three exact stale dashboard relation bindings
     if: github.repository == 'heimgewebe/systemkatalog'
     runs-on: ubuntu-latest
     steps:
@@ -26,7 +26,7 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Patch one validator-proven stale relation binding on V2
+      - name: Patch validator-proven stale dashboard relations on V2
         env:
           CLEAN_BRANCH: chore/heimgeist-transition-truth-v2
           EXPECTED_HEAD: 41a8c900577f82329da819c98960f585b72dbc0c
@@ -63,6 +63,12 @@ jobs:
           current_edges = json.loads(current_edges_bytes)['edges']
           current_digest = hashlib.sha256(current_edges_bytes).hexdigest()
 
+          expected_keys = {
+              ('repo:bureau', 'service:heim-pc-chatgpt-dashboard', 'provides'),
+              ('repo:grabowski', 'service:heim-pc-chatgpt-dashboard', 'provides'),
+              ('service:heim-pc-chatgpt-dashboard', 'repo:leitstand', 'scope_boundary'),
+          }
+
           def is_ancestor(commit: str) -> bool:
               result = subprocess.run(
                   ['git', 'merge-base', '--is-ancestor', commit, 'HEAD'],
@@ -93,9 +99,12 @@ jobs:
                   continue
               if locator.get('contentSha256') == current_digest:
                   continue
-              candidates.append((index, item))
+              relation = item.get('relation', {})
+              key = (relation.get('from'), relation.get('to'), relation.get('type'))
+              candidates.append((index, key, item))
 
-          if len(candidates) != 1:
+          candidate_keys = {key for _, key, _ in candidates}
+          if len(candidates) != 3 or candidate_keys != expected_keys:
               rendered = [
                   {
                       'index': index,
@@ -103,77 +112,77 @@ jobs:
                       'commit': item.get('source', {}).get('commit'),
                       'pointer': item.get('source', {}).get('locator', {}).get('pointer'),
                   }
-                  for index, item in candidates
+                  for index, _, item in candidates
               ]
               raise SystemExit(
-                  'expected exactly one non-ancestor, byte-drifted local relation binding; '
+                  'expected exactly the three known dashboard relation bindings; '
                   f'got {len(candidates)}: {rendered!r}'
               )
 
-          relation_index, item = candidates[0]
-          relation = item['relation']
-          key = (relation['from'], relation['to'], relation['type'])
-          source = item['source']
-          locator = source['locator']
-          old_commit = source['commit']
-          pointer = locator['pointer']
-          prefix = '/edges/'
-          if not isinstance(pointer, str) or not pointer.startswith(prefix):
-              raise SystemExit(f'unexpected source pointer: {pointer!r}')
-          raw_index = pointer[len(prefix):]
-          if not raw_index.isdigit():
-              raise SystemExit(f'unexpected source pointer index: {pointer!r}')
-          old_index = int(raw_index)
+          patched = []
+          for relation_index, key, item in candidates:
+              source = item['source']
+              locator = source['locator']
+              old_commit = source['commit']
+              pointer = locator['pointer']
+              prefix = '/edges/'
+              if not isinstance(pointer, str) or not pointer.startswith(prefix):
+                  raise SystemExit(f'unexpected source pointer: {pointer!r}')
+              raw_index = pointer[len(prefix):]
+              if not raw_index.isdigit():
+                  raise SystemExit(f'unexpected source pointer index: {pointer!r}')
+              old_index = int(raw_index)
 
-          old_edges_bytes = subprocess.check_output(
-              ['git', 'show', f'{old_commit}:registry/ecosystem/edges.json'], cwd=root
-          )
-          old_digest = hashlib.sha256(old_edges_bytes).hexdigest()
-          if old_digest != locator.get('contentSha256'):
-              raise SystemExit(
-                  f'source relation {relation_index} old digest mismatch: '
-                  f'{old_digest} != {locator.get("contentSha256")}'
+              old_edges_bytes = subprocess.check_output(
+                  ['git', 'show', f'{old_commit}:registry/ecosystem/edges.json'], cwd=root
               )
-          old_edges = json.loads(old_edges_bytes)['edges']
-          if old_index >= len(old_edges):
-              raise SystemExit(f'source relation {relation_index} old pointer out of range')
-          old_edge = old_edges[old_index]
-          old_key = (old_edge.get('from'), old_edge.get('to'), old_edge.get('type'))
-          if old_key != key:
-              raise SystemExit(
-                  f'source relation {relation_index} old pointer identity mismatch: {old_key!r} != {key!r}'
-              )
+              old_digest = hashlib.sha256(old_edges_bytes).hexdigest()
+              if old_digest != locator.get('contentSha256'):
+                  raise SystemExit(
+                      f'source relation {relation_index} old digest mismatch: '
+                      f'{old_digest} != {locator.get("contentSha256")}'
+                  )
+              old_edges = json.loads(old_edges_bytes)['edges']
+              if old_index >= len(old_edges):
+                  raise SystemExit(f'source relation {relation_index} old pointer out of range')
+              old_edge = old_edges[old_index]
+              old_key = (old_edge.get('from'), old_edge.get('to'), old_edge.get('type'))
+              if old_key != key:
+                  raise SystemExit(
+                      f'source relation {relation_index} old pointer identity mismatch: '
+                      f'{old_key!r} != {key!r}'
+                  )
 
-          matches = [
-              index for index, edge in enumerate(current_edges)
-              if (edge.get('from'), edge.get('to'), edge.get('type')) == key
-          ]
-          if len(matches) != 1:
-              raise SystemExit(
-                  f'source relation {relation_index} current identity count is {len(matches)} for {key!r}'
-              )
-          new_index = matches[0]
-          source['commit'] = data_commit
-          locator['pointer'] = f'/edges/{new_index}'
-          locator['contentSha256'] = current_digest
-          item['reviewedAt'] = '2026-08-31'
-          doc['observedAt'] = '2026-08-31T11:55:00+02:00'
-          bindings_path.write_text(
-              json.dumps(doc, indent=2, ensure_ascii=False) + '\n', encoding='utf-8'
-          )
-          print(
-              json.dumps(
+              matches = [
+                  index for index, edge in enumerate(current_edges)
+                  if (edge.get('from'), edge.get('to'), edge.get('type')) == key
+              ]
+              if len(matches) != 1:
+                  raise SystemExit(
+                      f'source relation {relation_index} current identity count is '
+                      f'{len(matches)} for {key!r}'
+                  )
+              new_index = matches[0]
+              source['commit'] = data_commit
+              locator['pointer'] = f'/edges/{new_index}'
+              locator['contentSha256'] = current_digest
+              item['reviewedAt'] = '2026-08-31'
+              patched.append(
                   {
-                      'patchedRelationIndex': relation_index,
-                      'relation': relation,
+                      'relationIndex': relation_index,
+                      'relation': item['relation'],
                       'oldCommit': old_commit,
                       'newCommit': data_commit,
                       'oldPointer': pointer,
                       'newPointer': locator['pointer'],
-                  },
-                  sort_keys=True,
+                  }
               )
+
+          doc['observedAt'] = '2026-08-31T11:58:00+02:00'
+          bindings_path.write_text(
+              json.dumps(doc, indent=2, ensure_ascii=False) + '\n', encoding='utf-8'
           )
+          print(json.dumps({'patched': patched}, sort_keys=True))
           PY
 
           (
@@ -197,5 +206,5 @@ jobs:
           git -C "${clean}" config user.name 'github-actions[bot]'
           git -C "${clean}" config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git -C "${clean}" add registry/ecosystem/source-bindings.v1.json
-          git -C "${clean}" commit -m 'chore(catalog): repair Heimgeist transition relation provenance'
+          git -C "${clean}" commit -m 'chore(catalog): repair dashboard relation provenance'
           git -C "${clean}" push origin "HEAD:refs/heads/${CLEAN_BRANCH}"
