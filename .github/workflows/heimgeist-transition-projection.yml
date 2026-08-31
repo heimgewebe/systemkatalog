@@ -26,7 +26,7 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Patch brittle snapshot tests and validate repository
+      - name: Patch, commit locally, fully validate, then push
         env:
           CLEAN_BRANCH: chore/heimgeist-transition-truth-v2
           EXPECTED_HEAD: 8c0441e09d55ffe920d7c13b4db90b750db95a97
@@ -83,16 +83,21 @@ jobs:
             exit 1
           fi
 
+          git -C "${clean}" config user.name 'github-actions[bot]'
+          git -C "${clean}" config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git -C "${clean}" add scripts/tests/test_system_catalog.py
+          git -C "${clean}" commit -m 'test: align catalog invariants with Heimgeist decommission'
+          candidate="$(git -C "${clean}" rev-parse HEAD)"
+          test -z "$(git -C "${clean}" status --porcelain)"
+
           (
             cd "${clean}"
             export PYTHONDONTWRITEBYTECODE=1
             export SYSTEMKATALOG_DURABLE_SOURCE_REF="refs/remotes/origin/${CLEAN_BRANCH}"
             ./scripts/ci/validate-repository.sh
-            git diff --check
+            git diff --check "${EXPECTED_HEAD}".."${candidate}"
           )
 
-          git -C "${clean}" config user.name 'github-actions[bot]'
-          git -C "${clean}" config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git -C "${clean}" add scripts/tests/test_system_catalog.py
-          git -C "${clean}" commit -m 'test: align catalog invariants with Heimgeist decommission'
+          test "$(git -C "${clean}" rev-parse HEAD)" = "${candidate}"
+          test -z "$(git -C "${clean}" status --porcelain)"
           git -C "${clean}" push origin "HEAD:refs/heads/${CLEAN_BRANCH}"
