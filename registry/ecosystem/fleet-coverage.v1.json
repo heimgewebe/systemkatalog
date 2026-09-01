@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "kind": "system_catalog_fleet_coverage",
-  "updatedAt": "2026-08-07",
+  "updatedAt": "2026-09-01",
   "membershipAuthority": {
     "repository": "heimgewebe/metarepo",
     "commit": "df3063d846d6751e668b65ec8e64a4fc34474401",
@@ -92,6 +92,12 @@
       "repository": "heimgewebe/heim-pc",
       "entrypoint": "https://github.com/heimgewebe/heim-pc",
       "membership": "fleet"
+    },
+    {
+      "node": "repo:heim-pc-dashboard-chatgpt-app",
+      "repository": "heimgewebe/heim-pc-dashboard-chatgpt-app",
+      "entrypoint": "https://github.com/heimgewebe/heim-pc-dashboard-chatgpt-app",
+      "membership": "catalog-only"
     },
     {
       "node": "repo:heimgeist",

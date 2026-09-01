@@ -3,7 +3,7 @@
   "kind": "system_catalog_inventory",
   "owner": "repo:systemkatalog",
   "catalogRole": "canonical_system_inventory",
-  "updatedAt": "2026-08-31",
+  "updatedAt": "2026-09-01",
   "nodes": [
     {
       "id": "actor:alexander",
@@ -1113,6 +1113,32 @@
         "evidenceRefs": [
           "https://github.com/heimgewebe/weltgewebe/blob/322655285b520d04363e48487ae64d57264de573/architecture/weltgewebe-os.md",
           "bureau:WELTGEWEBE-OS-V1-T010"
+        ]
+      }
+    },
+    {
+      "id": "repo:heim-pc-dashboard-chatgpt-app",
+      "name": "Heim-PC Dashboard ChatGPT App",
+      "type": "repository",
+      "purpose": "private source repository implementing the local read-only ChatGPT dashboard service",
+      "notResponsibleFor": [
+        "canonical truth ownership",
+        "task authorization or prioritization",
+        "claim or dispatch authority",
+        "runtime mutation or execution",
+        "general operator display ownership"
+      ],
+      "truthOwnership": [],
+      "entrypoints": {
+        "repository": "https://github.com/heimgewebe/heim-pc-dashboard-chatgpt-app",
+        "boundary": "docs/architecture/heim-pc-chatgpt-dashboard-boundary.md"
+      },
+      "lifecycle": {
+        "state": "active",
+        "reviewedAt": "2026-09-01",
+        "evidenceRefs": [
+          "docs/architecture/heim-pc-chatgpt-dashboard-boundary.md",
+          "registry/ecosystem/source-bindings.v1.json"
         ]
       }
     },

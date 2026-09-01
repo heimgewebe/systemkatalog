@@ -64,6 +64,36 @@
       ]
     },
     {
+      "componentId": "repo:heim-pc-dashboard-chatgpt-app",
+      "componentKind": "repository",
+      "admissionClass": "enable",
+      "purpose": "private source repository implementing the local read-only ChatGPT dashboard service",
+      "consumers": [
+        "Alex",
+        "ChatGPT through the private Heim-PC dashboard connection",
+        "Systemkatalog readers"
+      ],
+      "truthAuthority": "none: the repository owns implementation code only; Bureau, Grabowski, Leitstand, GitHub, CI and Runtime retain their existing truth domains.",
+      "operatingDependencies": [
+        "provider:github",
+        "service:heim-pc-chatgpt-dashboard",
+        "host:heim-pc for live operation of the service"
+      ],
+      "maintenanceBurden": "Keep the implementation aligned with the service boundary and canonical Bureau/Grabowski read contracts without duplicating task, blocker, priority or execution semantics.",
+      "reviewOrRetirementPath": "Review if the repository gains mutation authority or the local service is absorbed by Leitstand; archive or retire this repository identity only after the implementation source has an explicit successor.",
+      "source": {
+        "kind": "private_repository_metadata_projection",
+        "ref": "registry/ecosystem/source-bindings.v1.json"
+      },
+      "doesNotEstablish": [
+        "task or queue authority",
+        "claim or dispatch authority",
+        "runtime mutation authority",
+        "general operator display ownership",
+        "merge or deployment authority"
+      ]
+    },
+    {
       "componentId": "service:heim-pc-chatgpt-dashboard",
       "componentKind": "service",
       "admissionClass": "enable",

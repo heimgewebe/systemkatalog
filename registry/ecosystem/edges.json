@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "kind": "system_catalog_relations",
   "catalogRole": "canonical_stable_relations",
-  "updatedAt": "2026-08-31",
+  "updatedAt": "2026-09-01",
   "relationTypes": [
     "owns",
     "steers",
@@ -406,6 +406,13 @@
       "type": "scope_boundary",
       "meaning": "The local ChatGPT dashboard is a convenience access surface; Leitstand remains the owner of general operator display and neither surface creates canonical task or runtime truth.",
       "stability": "stable"
+    },
+    {
+      "from": "repo:heim-pc-dashboard-chatgpt-app",
+      "to": "service:heim-pc-chatgpt-dashboard",
+      "type": "implements",
+      "stability": "stable",
+      "meaning": "The private repository contains the implementation of the local ChatGPT access surface; this code-source relation grants no task, priority, claim, dispatch, execution or general operator-display authority."
     }
   ]
 }

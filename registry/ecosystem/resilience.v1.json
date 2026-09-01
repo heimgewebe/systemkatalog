@@ -3,7 +3,7 @@
   "kind": "system_catalog_resilience",
   "owner": "repo:systemkatalog",
   "catalogRole": "canonical_stable_resilience_semantics",
-  "updatedAt": "2026-08-29",
+  "updatedAt": "2026-09-01",
   "defaultCriticality": "unknown",
   "criticalityClasses": [
     "foundational",
@@ -866,6 +866,21 @@
       "uncertainty": 0.12
     },
     {
+      "system": "repo:heim-pc-dashboard-chatgpt-app",
+      "criticality": "optional",
+      "failureDomains": [
+        "identity:github",
+        "provider:github"
+      ],
+      "recoveryModeRefs": [],
+      "acceptedSinglePathRisks": [],
+      "evidence": [
+        "docs/architecture/heim-pc-chatgpt-dashboard-boundary.md",
+        "registry/ecosystem/component-admissions.v1.json"
+      ],
+      "uncertainty": 0.08
+    },
+    {
       "system": "service:heim-pc-chatgpt-dashboard",
       "criticality": "supporting",
       "failureDomains": [
@@ -1219,6 +1234,22 @@
         "registry/ecosystem/edges.json"
       ],
       "uncertainty": 0.12
+    },
+    {
+      "relation": {
+        "from": "repo:heim-pc-dashboard-chatgpt-app",
+        "to": "service:heim-pc-chatgpt-dashboard",
+        "type": "implements"
+      },
+      "coupling": "manual",
+      "failurePolicy": "degrade",
+      "authorityDirection": "from-to",
+      "recoveryModeRef": null,
+      "evidence": [
+        "docs/architecture/heim-pc-chatgpt-dashboard-boundary.md",
+        "registry/ecosystem/edges.json"
+      ],
+      "uncertainty": 0.08
     }
   ],
   "recoveryModes": [
