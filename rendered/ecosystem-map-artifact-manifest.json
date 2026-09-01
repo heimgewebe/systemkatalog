@@ -9,11 +9,11 @@
       "sha256": "04dabe6094e1392c6067f40ff262a830db719167806070ad18042e19191d319f"
     },
     {
-      "bytes": 56174,
+      "bytes": 56163,
       "contentType": "text/markdown",
       "path": "rendered/system-catalog.md",
       "role": "rendered_catalog_markdown",
-      "sha256": "1b4240d298dbe86bd1908129e8bf78515d8bc1d8362cdd34cae58730170509e8"
+      "sha256": "dfe0aa32da74cdceba8ad5f11951f2112bcbdb864d7ebed95329f3b0b86796eb"
     },
     {
       "bytes": 41947,
@@ -37,11 +37,11 @@
       "sha256": "5a77db80d2c11a94885f056f13213b138b5bb7bcb89c7587a490bd0bea348038"
     },
     {
-      "bytes": 42029,
+      "bytes": 41559,
       "contentType": "application/json",
       "path": "registry/ecosystem/resilience.v1.json",
       "role": "resilience_semantics",
-      "sha256": "a27af13e1228b57bc935ed77b1f157929b1aada1e3bea4da88922155ca5a3858"
+      "sha256": "232c4d1b09dd521d11f9ff2667ac1c4e8407967e24c0f79a3a487225029ce581"
     }
   ],
   "contractVersion": "1",
@@ -58,8 +58,8 @@
   "schemaPath": "catalog/ecosystem-map-artifact-manifest.schema.v1.json",
   "schemaVersion": 1,
   "source": {
-    "commit": "0c9bed120a87ecc987c2dda660066fae90c41e9d",
-    "generatedAt": "2026-09-01T15:46:53Z",
+    "commit": "d4e0d96442cc3432cb57547c8db98a67fb51481d",
+    "generatedAt": "2026-09-01T16:05:13Z",
     "repository": "heimgewebe/systemkatalog"
   }
 }
