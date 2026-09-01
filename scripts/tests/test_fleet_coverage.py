@@ -67,7 +67,7 @@ class FleetCoverageTests(unittest.TestCase):
 static:
   include:
     - name: weltgewebe
-      url: "https://github.com/heimgewebe/weltgewebe"
+      url: "https://github.com/heimgewebe/commonthing"
       status: related
     - name: vault-privat
       status: related

@@ -100,11 +100,11 @@
       "meaning": "Schauwerk may render map views without owning the map canon."
     },
     {
-      "from": "repo:weltgewebe",
+      "from": "repo:commonthing",
       "to": "service:github",
       "type": "operates_on",
       "stability": "stable",
-      "meaning": "Weltgewebe product work is still validated through repo, PR and CI state."
+      "meaning": "commonThing repository work is validated through GitHub repository, PR and CI state."
     },
     {
       "from": "repo:device-graph",
@@ -338,11 +338,11 @@
       "meaning": "Archived Leitwerk is historical provenance only; Konvergenzregelkreis is an independent protocol and inherits no Leitwerk authority."
     },
     {
-      "from": "repo:weltgewebe",
+      "from": "repo:commonthing",
       "to": "concept:weltgewebe-os",
       "type": "provides",
       "stability": "stable",
-      "meaning": "The Weltgewebe repository carries the normative Weltgewebe OS target architecture and its product implementation."
+      "meaning": "The commonThing repository carries the normative Weltgewebe OS target architecture and its product implementation."
     },
     {
       "from": "concept:weltgewebe-os",

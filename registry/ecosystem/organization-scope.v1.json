@@ -5,7 +5,7 @@
   "source": {
     "provider": "github",
     "organization": "heimgewebe",
-    "observedAt": "2026-09-01T15:37:22Z",
+    "observedAt": "2026-09-01T16:28:04Z",
     "selection": {
       "archived": "include",
       "fork": false
@@ -68,6 +68,14 @@
       "classification": "catalog",
       "node": "repo:chronik",
       "reason": "append-only event ledger and historical evidence axis"
+    },
+    {
+      "name": "commonthing",
+      "repository": "heimgewebe/commonthing",
+      "visibility": "public",
+      "classification": "catalog",
+      "node": "repo:commonthing",
+      "reason": "Canonical GitHub repository identity after the weltgewebe-to-commonthing rename; Weltgewebe remains the product/domain concept rather than a parallel repository node."
     },
     {
       "name": "commonworld",
@@ -308,14 +316,6 @@
       "classification": "catalog",
       "node": "repo:vibe-lab",
       "reason": "method lab and evidence experiments"
-    },
-    {
-      "name": "weltgewebe",
-      "repository": "heimgewebe/weltgewebe",
-      "visibility": "public",
-      "classification": "catalog",
-      "node": "repo:weltgewebe",
-      "reason": "product and domain core"
     },
     {
       "name": "wgx",

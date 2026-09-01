@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "kind": "system_catalog_source_bindings",
   "catalogRepository": "heimgewebe/systemkatalog",
-  "observedAt": "2026-09-01T15:45:31Z",
+  "observedAt": "2026-09-01T16:28:04Z",
   "systems": [
     {
       "system": "actor:alexander",
@@ -87,9 +87,9 @@
       "uncertainty": 0.08
     },
     {
-      "system": "repo:weltgewebe",
+      "system": "repo:commonthing",
       "source": {
-        "repository": "heimgewebe/weltgewebe",
+        "repository": "heimgewebe/commonthing",
         "commit": "322655285b520d04363e48487ae64d57264de573",
         "locator": {
           "kind": "file",
@@ -98,7 +98,7 @@
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-08-01T03:35:00+02:00",
+      "reviewedAt": "2026-09-01T16:28:04Z",
       "method": "repository_normative_contract",
       "uncertainty": 0.01
     },
@@ -960,7 +960,7 @@
     },
     {
       "relation": {
-        "from": "repo:weltgewebe",
+        "from": "repo:commonthing",
         "to": "service:github",
         "type": "operates_on"
       },
@@ -1674,7 +1674,7 @@
     },
     {
       "relation": {
-        "from": "repo:weltgewebe",
+        "from": "repo:commonthing",
         "to": "concept:weltgewebe-os",
         "type": "provides"
       },

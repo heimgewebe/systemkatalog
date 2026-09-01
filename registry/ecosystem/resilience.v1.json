@@ -283,7 +283,7 @@
       "uncertainty": 0.18
     },
     {
-      "system": "repo:weltgewebe",
+      "system": "repo:commonthing",
       "criticality": "essential",
       "failureDomains": [
         "host:wg-prod-1",
@@ -965,7 +965,7 @@
     },
     {
       "relation": {
-        "from": "repo:weltgewebe",
+        "from": "repo:commonthing",
         "to": "service:github",
         "type": "operates_on"
       },
@@ -1339,7 +1339,7 @@
     },
     {
       "id": "weltgewebe-postgresql-restore",
-      "system": "repo:weltgewebe",
+      "system": "repo:commonthing",
       "kind": "restore",
       "failureDomains": [
         "host:wg-prod-1",
@@ -1364,7 +1364,7 @@
     },
     {
       "id": "weltgewebe-jetstream-recovery",
-      "system": "repo:weltgewebe",
+      "system": "repo:commonthing",
       "kind": "restore",
       "failureDomains": [
         "host:wg-prod-1",

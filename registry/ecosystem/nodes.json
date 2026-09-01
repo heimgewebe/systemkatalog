@@ -125,10 +125,10 @@
       }
     },
     {
-      "id": "repo:weltgewebe",
-      "name": "Weltgewebe",
+      "id": "repo:commonthing",
+      "name": "commonThing",
       "type": "repository",
-      "purpose": "federated map and coordination system implementing the Weltgewebe OS product and domain core",
+      "purpose": "canonical source repository implementing the Weltgewebe OS product and domain core",
       "notResponsibleFor": [
         "ecosystem governance",
         "fleet task orchestration",
@@ -139,18 +139,18 @@
         "weltgewebe_target_architecture"
       ],
       "entrypoints": {
-        "repository": "https://github.com/heimgewebe/weltgewebe",
-        "targetArchitecture": "https://github.com/heimgewebe/weltgewebe/blob/322655285b520d04363e48487ae64d57264de573/architecture/weltgewebe-os.md",
-        "foundationStatus": "https://github.com/heimgewebe/weltgewebe/blob/322655285b520d04363e48487ae64d57264de573/docs/reports/weltgewebe-os-foundation-status.md",
-        "operatorRunbook": "https://github.com/heimgewebe/weltgewebe/blob/322655285b520d04363e48487ae64d57264de573/docs/runbook.md",
-        "recoveryRunbook": "https://github.com/heimgewebe/weltgewebe/blob/322655285b520d04363e48487ae64d57264de573/docs/runbooks/kubernetes-ha-recovery-proof.md",
-        "federationContract": "https://github.com/heimgewebe/weltgewebe/blob/322655285b520d04363e48487ae64d57264de573/contracts/federation/v1"
+        "repository": "https://github.com/heimgewebe/commonthing",
+        "targetArchitecture": "https://github.com/heimgewebe/commonthing/blob/322655285b520d04363e48487ae64d57264de573/architecture/weltgewebe-os.md",
+        "foundationStatus": "https://github.com/heimgewebe/commonthing/blob/322655285b520d04363e48487ae64d57264de573/docs/reports/weltgewebe-os-foundation-status.md",
+        "operatorRunbook": "https://github.com/heimgewebe/commonthing/blob/322655285b520d04363e48487ae64d57264de573/docs/runbook.md",
+        "recoveryRunbook": "https://github.com/heimgewebe/commonthing/blob/322655285b520d04363e48487ae64d57264de573/docs/runbooks/kubernetes-ha-recovery-proof.md",
+        "federationContract": "https://github.com/heimgewebe/commonthing/blob/322655285b520d04363e48487ae64d57264de573/contracts/federation/v1"
       },
       "lifecycle": {
         "state": "active",
         "reviewedAt": "2026-08-01",
         "evidenceRefs": [
-          "https://github.com/heimgewebe/weltgewebe/blob/322655285b520d04363e48487ae64d57264de573/architecture/weltgewebe-os.md",
+          "https://github.com/heimgewebe/commonthing/blob/322655285b520d04363e48487ae64d57264de573/architecture/weltgewebe-os.md",
           "bureau:WELTGEWEBE-OS-V1-T010"
         ]
       }
@@ -998,15 +998,15 @@
       ],
       "truthOwnership": [],
       "entrypoints": {
-        "architecture": "https://github.com/heimgewebe/weltgewebe/blob/322655285b520d04363e48487ae64d57264de573/architecture/weltgewebe-os.md",
-        "masterplan": "https://github.com/heimgewebe/weltgewebe/blob/322655285b520d04363e48487ae64d57264de573/docs/blueprints/weltgewebe-os-masterplan.md",
-        "foundationStatus": "https://github.com/heimgewebe/weltgewebe/blob/322655285b520d04363e48487ae64d57264de573/docs/reports/weltgewebe-os-foundation-status.md"
+        "architecture": "https://github.com/heimgewebe/commonthing/blob/322655285b520d04363e48487ae64d57264de573/architecture/weltgewebe-os.md",
+        "masterplan": "https://github.com/heimgewebe/commonthing/blob/322655285b520d04363e48487ae64d57264de573/docs/blueprints/weltgewebe-os-masterplan.md",
+        "foundationStatus": "https://github.com/heimgewebe/commonthing/blob/322655285b520d04363e48487ae64d57264de573/docs/reports/weltgewebe-os-foundation-status.md"
       },
       "lifecycle": {
         "state": "active",
         "reviewedAt": "2026-08-01",
         "evidenceRefs": [
-          "https://github.com/heimgewebe/weltgewebe/blob/322655285b520d04363e48487ae64d57264de573/architecture/weltgewebe-os.md",
+          "https://github.com/heimgewebe/commonthing/blob/322655285b520d04363e48487ae64d57264de573/architecture/weltgewebe-os.md",
           "bureau:WELTGEWEBE-OS-V1-T010"
         ]
       }
@@ -1026,15 +1026,15 @@
         "weltgewebe_cell_domain_truth"
       ],
       "entrypoints": {
-        "architecture": "https://github.com/heimgewebe/weltgewebe/blob/322655285b520d04363e48487ae64d57264de573/architecture/weltgewebe-os.md",
-        "federationDecision": "https://github.com/heimgewebe/weltgewebe/blob/322655285b520d04363e48487ae64d57264de573/docs/adr/ADR-0011__foederierte-gewebezellen.md",
-        "cellDescriptor": "https://github.com/heimgewebe/weltgewebe/blob/322655285b520d04363e48487ae64d57264de573/contracts/federation/v1/cell-descriptor.schema.json"
+        "architecture": "https://github.com/heimgewebe/commonthing/blob/322655285b520d04363e48487ae64d57264de573/architecture/weltgewebe-os.md",
+        "federationDecision": "https://github.com/heimgewebe/commonthing/blob/322655285b520d04363e48487ae64d57264de573/docs/adr/ADR-0011__foederierte-gewebezellen.md",
+        "cellDescriptor": "https://github.com/heimgewebe/commonthing/blob/322655285b520d04363e48487ae64d57264de573/contracts/federation/v1/cell-descriptor.schema.json"
       },
       "lifecycle": {
         "state": "active",
         "reviewedAt": "2026-08-01",
         "evidenceRefs": [
-          "https://github.com/heimgewebe/weltgewebe/blob/322655285b520d04363e48487ae64d57264de573/architecture/weltgewebe-os.md",
+          "https://github.com/heimgewebe/commonthing/blob/322655285b520d04363e48487ae64d57264de573/architecture/weltgewebe-os.md",
           "bureau:WELTGEWEBE-OS-V1-T010"
         ]
       }
@@ -1051,16 +1051,16 @@
       ],
       "truthOwnership": [],
       "entrypoints": {
-        "architecture": "https://github.com/heimgewebe/weltgewebe/blob/322655285b520d04363e48487ae64d57264de573/architecture/weltgewebe-os.md",
-        "platformDecision": "https://github.com/heimgewebe/weltgewebe/blob/322655285b520d04363e48487ae64d57264de573/docs/adr/ADR-0010__kubernetes-kanonische-plattform.md",
-        "foundationStatus": "https://github.com/heimgewebe/weltgewebe/blob/322655285b520d04363e48487ae64d57264de573/docs/reports/kubernetes-platform-foundation-status.md",
-        "recoveryProof": "https://github.com/heimgewebe/weltgewebe/blob/322655285b520d04363e48487ae64d57264de573/docs/runbooks/kubernetes-ha-recovery-proof.md"
+        "architecture": "https://github.com/heimgewebe/commonthing/blob/322655285b520d04363e48487ae64d57264de573/architecture/weltgewebe-os.md",
+        "platformDecision": "https://github.com/heimgewebe/commonthing/blob/322655285b520d04363e48487ae64d57264de573/docs/adr/ADR-0010__kubernetes-kanonische-plattform.md",
+        "foundationStatus": "https://github.com/heimgewebe/commonthing/blob/322655285b520d04363e48487ae64d57264de573/docs/reports/kubernetes-platform-foundation-status.md",
+        "recoveryProof": "https://github.com/heimgewebe/commonthing/blob/322655285b520d04363e48487ae64d57264de573/docs/runbooks/kubernetes-ha-recovery-proof.md"
       },
       "lifecycle": {
         "state": "transition",
         "reviewedAt": "2026-08-01",
         "evidenceRefs": [
-          "https://github.com/heimgewebe/weltgewebe/blob/322655285b520d04363e48487ae64d57264de573/architecture/weltgewebe-os.md",
+          "https://github.com/heimgewebe/commonthing/blob/322655285b520d04363e48487ae64d57264de573/architecture/weltgewebe-os.md",
           "bureau:WELTGEWEBE-OS-V1-T010"
         ]
       }
@@ -1077,15 +1077,15 @@
       ],
       "truthOwnership": [],
       "entrypoints": {
-        "architecture": "https://github.com/heimgewebe/weltgewebe/blob/322655285b520d04363e48487ae64d57264de573/architecture/weltgewebe-os.md",
-        "federationDecision": "https://github.com/heimgewebe/weltgewebe/blob/322655285b520d04363e48487ae64d57264de573/docs/adr/ADR-0011__foederierte-gewebezellen.md",
-        "wireContract": "https://github.com/heimgewebe/weltgewebe/blob/322655285b520d04363e48487ae64d57264de573/docs/specs/federation-wire-v1.md"
+        "architecture": "https://github.com/heimgewebe/commonthing/blob/322655285b520d04363e48487ae64d57264de573/architecture/weltgewebe-os.md",
+        "federationDecision": "https://github.com/heimgewebe/commonthing/blob/322655285b520d04363e48487ae64d57264de573/docs/adr/ADR-0011__foederierte-gewebezellen.md",
+        "wireContract": "https://github.com/heimgewebe/commonthing/blob/322655285b520d04363e48487ae64d57264de573/docs/specs/federation-wire-v1.md"
       },
       "lifecycle": {
         "state": "active",
         "reviewedAt": "2026-08-01",
         "evidenceRefs": [
-          "https://github.com/heimgewebe/weltgewebe/blob/322655285b520d04363e48487ae64d57264de573/architecture/weltgewebe-os.md",
+          "https://github.com/heimgewebe/commonthing/blob/322655285b520d04363e48487ae64d57264de573/architecture/weltgewebe-os.md",
           "bureau:WELTGEWEBE-OS-V1-T010"
         ]
       }
@@ -1103,15 +1103,15 @@
       ],
       "truthOwnership": [],
       "entrypoints": {
-        "architecture": "https://github.com/heimgewebe/weltgewebe/blob/322655285b520d04363e48487ae64d57264de573/architecture/weltgewebe-os.md",
-        "operatorRunbook": "https://github.com/heimgewebe/weltgewebe/blob/322655285b520d04363e48487ae64d57264de573/docs/runbook.md",
-        "incidentResponse": "https://github.com/heimgewebe/weltgewebe/blob/322655285b520d04363e48487ae64d57264de573/docs/runbooks/incident-response.md"
+        "architecture": "https://github.com/heimgewebe/commonthing/blob/322655285b520d04363e48487ae64d57264de573/architecture/weltgewebe-os.md",
+        "operatorRunbook": "https://github.com/heimgewebe/commonthing/blob/322655285b520d04363e48487ae64d57264de573/docs/runbook.md",
+        "incidentResponse": "https://github.com/heimgewebe/commonthing/blob/322655285b520d04363e48487ae64d57264de573/docs/runbooks/incident-response.md"
       },
       "lifecycle": {
         "state": "active",
         "reviewedAt": "2026-08-01",
         "evidenceRefs": [
-          "https://github.com/heimgewebe/weltgewebe/blob/322655285b520d04363e48487ae64d57264de573/architecture/weltgewebe-os.md",
+          "https://github.com/heimgewebe/commonthing/blob/322655285b520d04363e48487ae64d57264de573/architecture/weltgewebe-os.md",
           "bureau:WELTGEWEBE-OS-V1-T010"
         ]
       }
