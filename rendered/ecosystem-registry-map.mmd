@@ -23,6 +23,7 @@ flowchart TD
         repo_hausKI["HausKI<br/>id: repo:hausKI<br/>repository<br/>lifecycle: active · reviewed: 2026-07-26<br/>Local offline-first AI orchestration and policy-controlled memory"]
         repo_hausKI_audio["HausKI Audio<br/>id: repo:hausKI-audio<br/>repository<br/>lifecycle: retired · reviewed: 2026-07-28<br/>Retired historical donor and provenance reference for the canonical heimgewebe/audio repository"]
         repo_heim_pc["heim-pc<br/>id: repo:heim-pc<br/>repository<br/>lifecycle: active · reviewed: 2026-08-13<br/>Versioned local operator entry, host orientation and host-local capability locators"]
+        repo_heim_pc_dashboard_chatgpt_app["Heim-PC Dashboard ChatGPT App<br/>id: repo:heim-pc-dashboard-chatgpt-app<br/>repository<br/>lifecycle: active · reviewed: 2026-09-01<br/>private source repository implementing the local read-only ChatGPT dashboard service"]
         repo_heimgeist["Heimgeist<br/>id: repo:heimgeist<br/>repository<br/>lifecycle: transition · reviewed: 2026-08-31<br/>decommissioned historical reference for the former Heimgewebe system-reflection meta-agent, pending GitHub archive flag"]
         repo_heimlern["heimlern<br/>id: repo:heimlern<br/>repository<br/>lifecycle: archived · reviewed: 2026-07-26<br/>archived historical reference for the former offline operator-learning implementation"]
         repo_heimserver["Heimserver<br/>id: repo:heimserver<br/>repository<br/>lifecycle: retired · reviewed: 2026-08-01<br/>retired historical operations and contract reference for the former home-network service layer, edge gateway, DDNS and Weltgewebe infrastructure"]
@@ -90,6 +91,7 @@ flowchart TD
     repo_grabowski -->|provides / stable| service_heim_pc_chatgpt_dashboard
     repo_hausKI_audio -->|provides / related| repo_audio
     repo_heim_pc -->|observes / stable| artifact_ecosystem_map
+    repo_heim_pc_dashboard_chatgpt_app -->|implements / stable| service_heim_pc_chatgpt_dashboard
     repo_heimserver -->|scope_boundary / related| repo_infra
     repo_konvergenzregelkreis -->|scope_boundary / stable| repo_bureau
     repo_leitstand -->|observes / stable| artifact_ecosystem_map
@@ -122,7 +124,7 @@ flowchart TD
 
     %% Lifecycle is stable catalog semantics, not runtime status.
     classDef lifecycleActive stroke-width:1.5px;
-    class actor_alexander,artifact_ecosystem_map,repo_systemkatalog,repo_bureau,repo_grabowski,repo_weltgewebe,repo_repoground,repo_reposkop,repo_vibe_lab,repo_alpha_lab,repo_chronik,repo_schauwerk,repo_infra,repo_device_graph,service_github,service_ci,repo_leitstand,repo_plexer,repo_metarepo,repo_wgx,repo_contracts_mirror,repo_hausKI,repo_audio,repo_semantAH,repo_aussensensor,repo_mitschreiber,repo_sichter,repo_heim_pc,repo_vault_gewebe,repo_commonworld,repo_obsidian_bridge,repo_snippet_engine_control,repo_konvergenzregelkreis,concept_weltgewebe_os,concept_gewebezelle,concept_weltgewebe_federation_planes,concept_gewebezelle_betreiberrolle,service_heim_pc_chatgpt_dashboard lifecycleActive;
+    class actor_alexander,artifact_ecosystem_map,repo_systemkatalog,repo_bureau,repo_grabowski,repo_weltgewebe,repo_repoground,repo_reposkop,repo_vibe_lab,repo_alpha_lab,repo_chronik,repo_schauwerk,repo_infra,repo_device_graph,service_github,service_ci,repo_leitstand,repo_plexer,repo_metarepo,repo_wgx,repo_contracts_mirror,repo_hausKI,repo_audio,repo_semantAH,repo_aussensensor,repo_mitschreiber,repo_sichter,repo_heim_pc,repo_vault_gewebe,repo_commonworld,repo_obsidian_bridge,repo_snippet_engine_control,repo_konvergenzregelkreis,concept_weltgewebe_os,concept_gewebezelle,concept_weltgewebe_federation_planes,concept_gewebezelle_betreiberrolle,repo_heim_pc_dashboard_chatgpt_app,service_heim_pc_chatgpt_dashboard lifecycleActive;
     classDef lifecycleTransition stroke:#fbbf24,stroke-width:3px,stroke-dasharray:6 3;
     class repo_heimgeist,repo_agent_control_surface,concept_weltgewebe_platform_target lifecycleTransition;
     classDef lifecycleArchived fill:#1f2937,stroke:#64748b,color:#cbd5e1;

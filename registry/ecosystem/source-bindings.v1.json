@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "kind": "system_catalog_source_bindings",
   "catalogRepository": "heimgewebe/systemkatalog",
-  "observedAt": "2026-09-01T15:37:22Z",
+  "observedAt": "2026-09-01T15:45:31Z",
   "systems": [
     {
       "system": "actor:alexander",
@@ -1881,6 +1881,27 @@
       "reviewedAt": "2026-08-31T11:58:00+02:00",
       "method": "catalog_curator_review",
       "uncertainty": 0.12
+    },
+    {
+      "relation": {
+        "from": "repo:heim-pc-dashboard-chatgpt-app",
+        "to": "service:heim-pc-chatgpt-dashboard",
+        "type": "implements"
+      },
+      "source": {
+        "repository": "heimgewebe/systemkatalog",
+        "commit": "2a6cb7472b1851385885728f8677d3cde3e74e68",
+        "defaultBranch": "main",
+        "locator": {
+          "kind": "json_pointer",
+          "path": "registry/ecosystem/edges.json",
+          "pointer": "/edges/54",
+          "contentSha256": "89097a44c9ab88a39ea9bd06964f3e1979e9ebd3c7b5f67d4aa972476645c32d"
+        }
+      },
+      "reviewedAt": "2026-09-01T15:45:31Z",
+      "method": "catalog_curator_review",
+      "uncertainty": 0.08
     }
   ],
   "doesNotEstablish": [
