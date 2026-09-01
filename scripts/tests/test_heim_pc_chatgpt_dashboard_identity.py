@@ -60,6 +60,17 @@ class HeimPcChatgptDashboardIdentityTests(unittest.TestCase):
         ]
         self.assertEqual(len(service_boundaries), 1)
 
+        resilience_relations = load("registry/ecosystem/resilience.v1.json")["relations"]
+        self.assertFalse(
+            any(
+                item["relation"]["from"] == REPO_ID
+                and item["relation"]["to"] == SERVICE_ID
+                and item["relation"]["type"] == "implements"
+                for item in resilience_relations
+            ),
+            "a code-source implements edge must not imply a direction of operational truth",
+        )
+
     def test_private_repository_metadata_and_admission_are_explicit(self) -> None:
         scope = load("registry/ecosystem/organization-scope.v1.json")["repositories"]
         row = next(item for item in scope if item["repository"] == REPOSITORY)

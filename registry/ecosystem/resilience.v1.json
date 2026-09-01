@@ -1234,22 +1234,6 @@
         "registry/ecosystem/edges.json"
       ],
       "uncertainty": 0.12
-    },
-    {
-      "relation": {
-        "from": "repo:heim-pc-dashboard-chatgpt-app",
-        "to": "service:heim-pc-chatgpt-dashboard",
-        "type": "implements"
-      },
-      "coupling": "manual",
-      "failurePolicy": "degrade",
-      "authorityDirection": "from-to",
-      "recoveryModeRef": null,
-      "evidence": [
-        "docs/architecture/heim-pc-chatgpt-dashboard-boundary.md",
-        "registry/ecosystem/edges.json"
-      ],
-      "uncertainty": 0.08
     }
   ],
   "recoveryModes": [
