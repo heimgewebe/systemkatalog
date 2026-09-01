@@ -64,6 +64,38 @@
       ]
     },
     {
+      "componentId": "repo:commonthing",
+      "componentKind": "repository",
+      "admissionClass": "replace",
+      "purpose": "canonical source repository implementing the Weltgewebe OS product and domain core",
+      "consumers": [
+        "Alex",
+        "ChatGPT through Grabowski",
+        "Systemkatalog readers",
+        "Weltgewebe implementation and operations work"
+      ],
+      "truthAuthority": "Weltgewebe owns weltgewebe_target_architecture through the canonical commonThing repository; Systemkatalog projects only stable ecosystem identity and authority boundaries.",
+      "operatingDependencies": [
+        "provider:github",
+        "concept:weltgewebe-os",
+        "Systemkatalog source-binding and provenance contracts"
+      ],
+      "maintenanceBurden": "Keep the commonThing repository identity, normative Weltgewebe architecture entrypoints and source provenance aligned across future repository or product-boundary changes.",
+      "reviewOrRetirementPath": "Review when commonThing is renamed, superseded or stops carrying the normative Weltgewebe target architecture; retire this repository identity only after a canonical successor and preserved Weltgewebe product/domain provenance are evidenced.",
+      "source": {
+        "kind": "repository_normative_contract",
+        "ref": "https://github.com/heimgewebe/commonthing/blob/322655285b520d04363e48487ae64d57264de573/architecture/weltgewebe-os.md"
+      },
+      "doesNotEstablish": [
+        "task priority or closeout authority",
+        "claim or dispatch authority",
+        "runtime or deployment status",
+        "merge authority",
+        "global multi-primary domain truth",
+        "live Kubernetes, high-availability or public federation readiness"
+      ]
+    },
+    {
       "componentId": "repo:heim-pc-dashboard-chatgpt-app",
       "componentKind": "repository",
       "admissionClass": "enable",
