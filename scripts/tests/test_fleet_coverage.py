@@ -31,7 +31,7 @@ class FleetCoverageTests(unittest.TestCase):
 
     def test_repository_coverage_is_complete(self) -> None:
         coverage = validate_coverage(ROOT, self._repository_nodes())
-        self.assertEqual(len(coverage["repositories"]), 35)
+        self.assertEqual(len(coverage["repositories"]), 36)
         self.assertEqual(
             coverage["membershipAuthority"],
             {
@@ -180,7 +180,7 @@ repos:
             }
             for item in coverage["repositories"]
         ]
-        self.assertEqual(validate_github_inventory(coverage, inventory), 35)
+        self.assertEqual(validate_github_inventory(coverage, inventory), 36)
 
     def test_missing_github_repository_fails_closed(self) -> None:
         coverage = load_coverage(ROOT)
