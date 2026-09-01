@@ -16,6 +16,7 @@ flowchart TD
         repo_aussensensor["Außensensor<br/>id: repo:aussensensor<br/>repository<br/>lifecycle: active · reviewed: 2026-07-26<br/>Curated external signals and event feeds for Chronik"]
         repo_bureau["Bureau<br/>id: repo:bureau<br/>repository<br/>lifecycle: active · reviewed: 2026-07-26<br/>task cadence, delegation, run reporting"]
         repo_chronik["Chronik<br/>id: repo:chronik<br/>repository<br/>lifecycle: active · reviewed: 2026-07-26<br/>append-only event ledger and historical evidence axis"]
+        repo_commonthing["commonThing<br/>id: repo:commonthing<br/>repository<br/>lifecycle: active · reviewed: 2026-08-01<br/>canonical source repository implementing the Weltgewebe OS product and domain core"]
         repo_commonworld["Commonworld<br/>id: repo:commonworld<br/>repository<br/>lifecycle: active · reviewed: 2026-08-01<br/>Interactive globe and evidence-bound catalog and admission rules for physical, digital, local and global commons"]
         repo_contracts_mirror["Contracts Mirror<br/>id: repo:contracts-mirror<br/>repository<br/>lifecycle: active · reviewed: 2026-07-26<br/>Validated mirror and publication surface for canonical Metarepo contracts"]
         repo_device_graph["Device Graph<br/>id: repo:device-graph<br/>repository<br/>lifecycle: active · reviewed: 2026-07-26<br/>infrastructure device graph; adjacent but not ecosystem-governance canon"]
@@ -44,7 +45,6 @@ flowchart TD
         repo_systemkatalog["Systemkatalog<br/>id: repo:systemkatalog<br/>repository<br/>lifecycle: active · reviewed: 2026-08-01<br/>app-independent catalog for system purposes, truth ownership, stable relations and entrypoints"]
         repo_vault_gewebe["Vault Gewebe<br/>id: repo:vault-gewebe<br/>repository<br/>lifecycle: active · reviewed: 2026-07-26<br/>Versioned shared knowledge vault and design source material"]
         repo_vibe_lab["Vibe-Lab<br/>id: repo:vibe-lab<br/>repository<br/>lifecycle: active · reviewed: 2026-07-26<br/>bounded prospective experiments, evidence review and proposal-ready learning candidates"]
-        repo_weltgewebe["Weltgewebe<br/>id: repo:weltgewebe<br/>repository<br/>lifecycle: active · reviewed: 2026-08-01<br/>federated map and coordination system implementing the Weltgewebe OS product and domain core"]
         repo_wgx["WGX<br/>id: repo:wgx<br/>repository<br/>lifecycle: active · reviewed: 2026-08-09<br/>WGX-v1 profile compatibility and repository-declared validation/task runner"]
     end
 
@@ -82,6 +82,8 @@ flowchart TD
     repo_chronik -->|provides / stable| repo_leitstand
     repo_chronik -->|provides / stable| repo_systemkatalog
     repo_chronik -->|learning_input_for / bounded| repo_vibe_lab
+    repo_commonthing -->|provides / stable| concept_weltgewebe_os
+    repo_commonthing -->|operates_on / stable| service_github
     repo_commonworld -->|operates_on / stable| service_github
     repo_contracts_mirror -->|validated_by / stable| service_ci
     repo_device_graph -->|scope_boundary / related| artifact_ecosystem_map
@@ -114,8 +116,6 @@ flowchart TD
     repo_vault_gewebe -->|scope_boundary / related| repo_systemkatalog
     repo_vibe_lab -->|exports_candidate_to / bounded| repo_bureau
     repo_vibe_lab -->|provides / stable| repo_systemkatalog
-    repo_weltgewebe -->|provides / stable| concept_weltgewebe_os
-    repo_weltgewebe -->|operates_on / stable| service_github
     repo_wgx -->|provides / stable| service_ci
     service_ci -->|provides / stable| repo_leitstand
     service_github -->|provides / stable| repo_leitstand
@@ -124,7 +124,7 @@ flowchart TD
 
     %% Lifecycle is stable catalog semantics, not runtime status.
     classDef lifecycleActive stroke-width:1.5px;
-    class actor_alexander,artifact_ecosystem_map,repo_systemkatalog,repo_bureau,repo_grabowski,repo_weltgewebe,repo_repoground,repo_reposkop,repo_vibe_lab,repo_alpha_lab,repo_chronik,repo_schauwerk,repo_infra,repo_device_graph,service_github,service_ci,repo_leitstand,repo_plexer,repo_metarepo,repo_wgx,repo_contracts_mirror,repo_hausKI,repo_audio,repo_semantAH,repo_aussensensor,repo_mitschreiber,repo_sichter,repo_heim_pc,repo_vault_gewebe,repo_commonworld,repo_obsidian_bridge,repo_snippet_engine_control,repo_konvergenzregelkreis,concept_weltgewebe_os,concept_gewebezelle,concept_weltgewebe_federation_planes,concept_gewebezelle_betreiberrolle,repo_heim_pc_dashboard_chatgpt_app,service_heim_pc_chatgpt_dashboard lifecycleActive;
+    class actor_alexander,artifact_ecosystem_map,repo_systemkatalog,repo_bureau,repo_grabowski,repo_commonthing,repo_repoground,repo_reposkop,repo_vibe_lab,repo_alpha_lab,repo_chronik,repo_schauwerk,repo_infra,repo_device_graph,service_github,service_ci,repo_leitstand,repo_plexer,repo_metarepo,repo_wgx,repo_contracts_mirror,repo_hausKI,repo_audio,repo_semantAH,repo_aussensensor,repo_mitschreiber,repo_sichter,repo_heim_pc,repo_vault_gewebe,repo_commonworld,repo_obsidian_bridge,repo_snippet_engine_control,repo_konvergenzregelkreis,concept_weltgewebe_os,concept_gewebezelle,concept_weltgewebe_federation_planes,concept_gewebezelle_betreiberrolle,repo_heim_pc_dashboard_chatgpt_app,service_heim_pc_chatgpt_dashboard lifecycleActive;
     classDef lifecycleTransition stroke:#fbbf24,stroke-width:3px,stroke-dasharray:6 3;
     class repo_heimgeist,repo_agent_control_surface,concept_weltgewebe_platform_target lifecycleTransition;
     classDef lifecycleArchived fill:#1f2937,stroke:#64748b,color:#cbd5e1;
