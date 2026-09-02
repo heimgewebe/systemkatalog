@@ -7,7 +7,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 ARCH_SHA = "322655285b520d04363e48487ae64d57264de573"
 ARCH_PATH = "architecture/weltgewebe-os.md"
-ARCH_URL = f"https://github.com/heimgewebe/weltgewebe/blob/{ARCH_SHA}/{ARCH_PATH}"
+ARCH_URL = f"https://github.com/heimgewebe/commonthing/blob/{ARCH_SHA}/{ARCH_PATH}"
 
 
 def load(relative: str):
@@ -18,7 +18,7 @@ class WeltgewebeOsCatalogTests(unittest.TestCase):
     def test_roles_truths_and_boundaries_are_explicit(self) -> None:
         nodes = {item["id"]: item for item in load("registry/ecosystem/nodes.json")["nodes"]}
         required = {
-            "repo:weltgewebe",
+            "repo:commonthing",
             "concept:weltgewebe-os",
             "concept:gewebezelle",
             "concept:weltgewebe-platform-target",
@@ -26,8 +26,8 @@ class WeltgewebeOsCatalogTests(unittest.TestCase):
             "concept:gewebezelle-betreiberrolle",
         }
         self.assertTrue(required <= set(nodes))
-        self.assertEqual(nodes["repo:weltgewebe"]["entrypoints"]["targetArchitecture"], ARCH_URL)
-        self.assertEqual(nodes["repo:weltgewebe"]["truthOwnership"], ["weltgewebe_target_architecture"])
+        self.assertEqual(nodes["repo:commonthing"]["entrypoints"]["targetArchitecture"], ARCH_URL)
+        self.assertEqual(nodes["repo:commonthing"]["truthOwnership"], ["weltgewebe_target_architecture"])
         self.assertEqual(nodes["concept:gewebezelle"]["truthOwnership"], ["weltgewebe_cell_domain_truth"])
         platform = nodes["concept:weltgewebe-platform-target"]
         self.assertEqual(platform["lifecycle"]["state"], "transition")
@@ -36,7 +36,7 @@ class WeltgewebeOsCatalogTests(unittest.TestCase):
         self.assertIn("claims that public cell federation is already operational", federation["notResponsibleFor"])
 
         required_roles = {
-            "Weltgewebe": "repo:weltgewebe",
+            "commonThing": "repo:commonthing",
             "Grabowski": "repo:grabowski",
             "Bureau": "repo:bureau",
             "Chronik": "repo:chronik",
@@ -74,7 +74,7 @@ class WeltgewebeOsCatalogTests(unittest.TestCase):
         self.assertEqual(authorities["weltgewebe_target_architecture"]["owner"], "weltgewebe")
         self.assertEqual(authorities["weltgewebe_cell_domain_truth"]["owner"], "gewebezelle")
         edges = {(e["from"], e["to"], e["type"]): e for e in load("registry/ecosystem/edges.json")["edges"]}
-        self.assertIn(("repo:weltgewebe", "concept:weltgewebe-os", "provides"), edges)
+        self.assertIn(("repo:commonthing", "concept:weltgewebe-os", "provides"), edges)
         self.assertIn(("repo:grabowski", "concept:weltgewebe-platform-target", "operates_on"), edges)
         self.assertEqual(edges[("concept:gewebezelle", "concept:weltgewebe-federation-planes", "operates_on")]["stability"], "bounded")
         self.assertNotIn(("repo:repoground", "concept:lenskit-legacy-role", "scope_boundary"), edges)

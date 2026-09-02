@@ -1,16 +1,16 @@
 {
   "schemaVersion": 1,
   "kind": "system_catalog_organization_scope",
-  "updatedAt": "2026-08-29",
+  "updatedAt": "2026-09-01",
   "source": {
     "provider": "github",
     "organization": "heimgewebe",
-    "observedAt": "2026-08-29T08:44:14Z",
+    "observedAt": "2026-09-01T16:28:04Z",
     "selection": {
       "archived": "include",
       "fork": false
     },
-    "repositoryCount": 38
+    "repositoryCount": 39
   },
   "repositories": [
     {
@@ -68,6 +68,14 @@
       "classification": "catalog",
       "node": "repo:chronik",
       "reason": "append-only event ledger and historical evidence axis"
+    },
+    {
+      "name": "commonthing",
+      "repository": "heimgewebe/commonthing",
+      "visibility": "public",
+      "classification": "catalog",
+      "node": "repo:commonthing",
+      "reason": "Canonical GitHub repository identity after the weltgewebe-to-commonthing rename; Weltgewebe remains the product/domain concept rather than a parallel repository node."
     },
     {
       "name": "commonworld",
@@ -132,6 +140,14 @@
       "classification": "catalog",
       "node": "repo:heim-pc",
       "reason": "Versioned local operator entry and host orientation"
+    },
+    {
+      "name": "heim-pc-dashboard-chatgpt-app",
+      "repository": "heimgewebe/heim-pc-dashboard-chatgpt-app",
+      "visibility": "private",
+      "classification": "catalog",
+      "node": "repo:heim-pc-dashboard-chatgpt-app",
+      "reason": "Private implementation source for the local read-only ChatGPT dashboard service; it owns no task, claim, priority, execution or general operator truth."
     },
     {
       "name": "heimgeist",
@@ -300,14 +316,6 @@
       "classification": "catalog",
       "node": "repo:vibe-lab",
       "reason": "method lab and evidence experiments"
-    },
-    {
-      "name": "weltgewebe",
-      "repository": "heimgewebe/weltgewebe",
-      "visibility": "public",
-      "classification": "catalog",
-      "node": "repo:weltgewebe",
-      "reason": "product and domain core"
     },
     {
       "name": "wgx",

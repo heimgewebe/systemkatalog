@@ -64,6 +64,68 @@
       ]
     },
     {
+      "componentId": "repo:commonthing",
+      "componentKind": "repository",
+      "admissionClass": "replace",
+      "purpose": "canonical source repository implementing the Weltgewebe OS product and domain core",
+      "consumers": [
+        "Alex",
+        "ChatGPT through Grabowski",
+        "Systemkatalog readers",
+        "Weltgewebe implementation and operations work"
+      ],
+      "truthAuthority": "Weltgewebe owns weltgewebe_target_architecture through the canonical commonThing repository; Systemkatalog projects only stable ecosystem identity and authority boundaries.",
+      "operatingDependencies": [
+        "provider:github",
+        "concept:weltgewebe-os",
+        "Systemkatalog source-binding and provenance contracts"
+      ],
+      "maintenanceBurden": "Keep the commonThing repository identity, normative Weltgewebe architecture entrypoints and source provenance aligned across future repository or product-boundary changes.",
+      "reviewOrRetirementPath": "Review when commonThing is renamed, superseded or stops carrying the normative Weltgewebe target architecture; retire this repository identity only after a canonical successor and preserved Weltgewebe product/domain provenance are evidenced.",
+      "source": {
+        "kind": "repository_normative_contract",
+        "ref": "https://github.com/heimgewebe/commonthing/blob/322655285b520d04363e48487ae64d57264de573/architecture/weltgewebe-os.md"
+      },
+      "doesNotEstablish": [
+        "task priority or closeout authority",
+        "claim or dispatch authority",
+        "runtime or deployment status",
+        "merge authority",
+        "global multi-primary domain truth",
+        "live Kubernetes, high-availability or public federation readiness"
+      ]
+    },
+    {
+      "componentId": "repo:heim-pc-dashboard-chatgpt-app",
+      "componentKind": "repository",
+      "admissionClass": "enable",
+      "purpose": "private source repository implementing the local read-only ChatGPT dashboard service",
+      "consumers": [
+        "Alex",
+        "ChatGPT through the private Heim-PC dashboard connection",
+        "Systemkatalog readers"
+      ],
+      "truthAuthority": "none: the repository owns implementation code only; Bureau, Grabowski, Leitstand, GitHub, CI and Runtime retain their existing truth domains.",
+      "operatingDependencies": [
+        "provider:github",
+        "service:heim-pc-chatgpt-dashboard",
+        "host:heim-pc for live operation of the service"
+      ],
+      "maintenanceBurden": "Keep the implementation aligned with the service boundary and canonical Bureau/Grabowski read contracts without duplicating task, blocker, priority or execution semantics.",
+      "reviewOrRetirementPath": "Review if the repository gains mutation authority or the local service is absorbed by Leitstand; archive or retire this repository identity only after the implementation source has an explicit successor.",
+      "source": {
+        "kind": "private_repository_metadata_projection",
+        "ref": "registry/ecosystem/source-bindings.v1.json"
+      },
+      "doesNotEstablish": [
+        "task or queue authority",
+        "claim or dispatch authority",
+        "runtime mutation authority",
+        "general operator display ownership",
+        "merge or deployment authority"
+      ]
+    },
+    {
       "componentId": "service:heim-pc-chatgpt-dashboard",
       "componentKind": "service",
       "admissionClass": "enable",

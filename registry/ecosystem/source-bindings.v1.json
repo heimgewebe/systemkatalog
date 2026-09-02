@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "kind": "system_catalog_source_bindings",
   "catalogRepository": "heimgewebe/systemkatalog",
-  "observedAt": "2026-08-31T12:05:00+02:00",
+  "observedAt": "2026-09-01T16:28:04Z",
   "systems": [
     {
       "system": "actor:alexander",
@@ -87,9 +87,9 @@
       "uncertainty": 0.08
     },
     {
-      "system": "repo:weltgewebe",
+      "system": "repo:commonthing",
       "source": {
-        "repository": "heimgewebe/weltgewebe",
+        "repository": "heimgewebe/commonthing",
         "commit": "322655285b520d04363e48487ae64d57264de573",
         "locator": {
           "kind": "file",
@@ -98,7 +98,7 @@
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-08-01T03:35:00+02:00",
+      "reviewedAt": "2026-09-01T16:28:04Z",
       "method": "repository_normative_contract",
       "uncertainty": 0.01
     },
@@ -715,6 +715,21 @@
       "uncertainty": 0.04
     },
     {
+      "system": "repo:heim-pc-dashboard-chatgpt-app",
+      "source": {
+        "repository": "heimgewebe/heim-pc-dashboard-chatgpt-app",
+        "commit": "redacted",
+        "locator": {
+          "kind": "private_repository_metadata",
+          "contentSha256": "19857e1dae3be67c8f86ed23da3180769edb70c8d350900c2ce1b87801d06423"
+        },
+        "defaultBranch": "main"
+      },
+      "reviewedAt": "2026-09-01T15:37:22Z",
+      "method": "private_repository_metadata_projection",
+      "uncertainty": 0.08
+    },
+    {
       "system": "service:heim-pc-chatgpt-dashboard",
       "source": {
         "repository": "heimgewebe/systemkatalog",
@@ -945,24 +960,24 @@
     },
     {
       "relation": {
-        "from": "repo:weltgewebe",
+        "from": "repo:commonthing",
         "to": "service:github",
         "type": "operates_on"
       },
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "3556d586c96f80fe2582437c9ffe3f452d6d82ff",
+        "commit": "63c45012c6966f204e76f90bbca23cd381b3d3a6",
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/edges.json",
           "pointer": "/edges/10",
-          "contentSha256": "f5909b40ef1c6ba560bbeadee78db405d58e9e36565a948df6ce368226a2b604"
+          "contentSha256": "1995cf10102dcb3e846a13721a07d7cf997134d87770c62b6f40f12f0698ada4"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-08-01T20:20:27+02:00",
+      "reviewedAt": "2026-09-01T16:28:04Z",
       "method": "catalog_curator_review",
-      "uncertainty": 0.18
+      "uncertainty": 0.08
     },
     {
       "relation": {
@@ -1659,24 +1674,24 @@
     },
     {
       "relation": {
-        "from": "repo:weltgewebe",
+        "from": "repo:commonthing",
         "to": "concept:weltgewebe-os",
         "type": "provides"
       },
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "3556d586c96f80fe2582437c9ffe3f452d6d82ff",
+        "commit": "63c45012c6966f204e76f90bbca23cd381b3d3a6",
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/edges.json",
-          "pointer": "/edges/45",
-          "contentSha256": "f5909b40ef1c6ba560bbeadee78db405d58e9e36565a948df6ce368226a2b604"
+          "pointer": "/edges/44",
+          "contentSha256": "1995cf10102dcb3e846a13721a07d7cf997134d87770c62b6f40f12f0698ada4"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-08-01T20:20:27+02:00",
+      "reviewedAt": "2026-09-01T16:28:04Z",
       "method": "catalog_curator_review",
-      "uncertainty": 0.04
+      "uncertainty": 0.08
     },
     {
       "relation": {
@@ -1866,6 +1881,27 @@
       "reviewedAt": "2026-08-31T11:58:00+02:00",
       "method": "catalog_curator_review",
       "uncertainty": 0.12
+    },
+    {
+      "relation": {
+        "from": "repo:heim-pc-dashboard-chatgpt-app",
+        "to": "service:heim-pc-chatgpt-dashboard",
+        "type": "implements"
+      },
+      "source": {
+        "repository": "heimgewebe/systemkatalog",
+        "commit": "2a6cb7472b1851385885728f8677d3cde3e74e68",
+        "defaultBranch": "main",
+        "locator": {
+          "kind": "json_pointer",
+          "path": "registry/ecosystem/edges.json",
+          "pointer": "/edges/54",
+          "contentSha256": "89097a44c9ab88a39ea9bd06964f3e1979e9ebd3c7b5f67d4aa972476645c32d"
+        }
+      },
+      "reviewedAt": "2026-09-01T15:45:31Z",
+      "method": "catalog_curator_review",
+      "uncertainty": 0.08
     }
   ],
   "doesNotEstablish": [

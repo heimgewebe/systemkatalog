@@ -107,10 +107,16 @@ class SystemkatalogQueryTests(unittest.TestCase):
             )
 
     def test_repository_query_exposes_target_criticality(self) -> None:
-        result = query(ROOT, "repository", "weltgewebe")
+        result = query(ROOT, "repository", "commonthing")
         self.assertEqual(
             result["result"]["resilience"]["criticality"], "essential"
         )
+
+    def test_superseded_weltgewebe_repository_alias_fails_closed(self) -> None:
+        result = query_safe(ROOT, "repository", "weltgewebe")
+        self.assertEqual(result["status"], "degraded")
+        self.assertEqual(result["error"]["code"], "query_not_unique")
+        self.assertEqual(result["error"]["details"]["matchCount"], 0)
 
     def test_truth_owner_uses_authority_matrix_and_node_truth_ownership(self) -> None:
         result = query(ROOT, "truth-owner", "agent_routing")

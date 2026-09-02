@@ -3,7 +3,7 @@
   "kind": "system_catalog_resilience",
   "owner": "repo:systemkatalog",
   "catalogRole": "canonical_stable_resilience_semantics",
-  "updatedAt": "2026-08-29",
+  "updatedAt": "2026-09-01",
   "defaultCriticality": "unknown",
   "criticalityClasses": [
     "foundational",
@@ -283,7 +283,7 @@
       "uncertainty": 0.18
     },
     {
-      "system": "repo:weltgewebe",
+      "system": "repo:commonthing",
       "criticality": "essential",
       "failureDomains": [
         "host:wg-prod-1",
@@ -866,6 +866,21 @@
       "uncertainty": 0.12
     },
     {
+      "system": "repo:heim-pc-dashboard-chatgpt-app",
+      "criticality": "optional",
+      "failureDomains": [
+        "identity:github",
+        "provider:github"
+      ],
+      "recoveryModeRefs": [],
+      "acceptedSinglePathRisks": [],
+      "evidence": [
+        "docs/architecture/heim-pc-chatgpt-dashboard-boundary.md",
+        "registry/ecosystem/component-admissions.v1.json"
+      ],
+      "uncertainty": 0.08
+    },
+    {
       "system": "service:heim-pc-chatgpt-dashboard",
       "criticality": "supporting",
       "failureDomains": [
@@ -950,7 +965,7 @@
     },
     {
       "relation": {
-        "from": "repo:weltgewebe",
+        "from": "repo:commonthing",
         "to": "service:github",
         "type": "operates_on"
       },
@@ -1324,7 +1339,7 @@
     },
     {
       "id": "weltgewebe-postgresql-restore",
-      "system": "repo:weltgewebe",
+      "system": "repo:commonthing",
       "kind": "restore",
       "failureDomains": [
         "host:wg-prod-1",
@@ -1349,7 +1364,7 @@
     },
     {
       "id": "weltgewebe-jetstream-recovery",
-      "system": "repo:weltgewebe",
+      "system": "repo:commonthing",
       "kind": "restore",
       "failureDomains": [
         "host:wg-prod-1",

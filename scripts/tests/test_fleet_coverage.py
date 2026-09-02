@@ -31,14 +31,14 @@ class FleetCoverageTests(unittest.TestCase):
 
     def test_repository_coverage_is_complete(self) -> None:
         coverage = validate_coverage(ROOT, self._repository_nodes())
-        self.assertEqual(len(coverage["repositories"]), 35)
+        self.assertEqual(len(coverage["repositories"]), 36)
         self.assertEqual(
             coverage["membershipAuthority"],
             {
                 "repository": "heimgewebe/metarepo",
-                "commit": "df3063d846d6751e668b65ec8e64a4fc34474401",
+                "commit": "e3f423579cb920c0872efcc4fe401f9ce54ca0e1",
                 "path": "fleet/repos.yml",
-                "contentSha256": "4fc8803f7acc91eb1967cf325eb25638328e31dffdca49e35aeea17f2bee8ce9",
+                "contentSha256": "90be7a74d7179b750879460379ebb61789ce6245536f1e1fd4c86f1807fc7c3f",
                 "scope": "fleet_membership_only",
             },
         )
@@ -67,7 +67,7 @@ class FleetCoverageTests(unittest.TestCase):
 static:
   include:
     - name: weltgewebe
-      url: "https://github.com/heimgewebe/weltgewebe"
+      url: "https://github.com/heimgewebe/commonthing"
       status: related
     - name: vault-privat
       status: related
@@ -180,7 +180,7 @@ repos:
             }
             for item in coverage["repositories"]
         ]
-        self.assertEqual(validate_github_inventory(coverage, inventory), 35)
+        self.assertEqual(validate_github_inventory(coverage, inventory), 36)
 
     def test_missing_github_repository_fails_closed(self) -> None:
         coverage = load_coverage(ROOT)

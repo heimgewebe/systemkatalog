@@ -45,7 +45,7 @@ ALLOWED_NODE_TYPES = {"human", "repository", "concept", "artifact", "service", "
 AUTHORITY_OWNER_NODES = {
     "bureau": "repo:bureau",
     "grabowski": "repo:grabowski",
-    "weltgewebe": "repo:weltgewebe",
+    "weltgewebe": "repo:commonthing",
     "gewebezelle": "concept:gewebezelle",
     "repoground": "repo:repoground",
     "systemkatalog": "repo:systemkatalog",

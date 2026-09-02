@@ -18,8 +18,8 @@ EXPECTED = {
         "sha256": "395960b2ca6a06310216123b7c311ad58fb0fa3adc55837fc26a649ea7c0358c",
         "path": "README.md",
     },
-    "repo:weltgewebe": {
-        "repository": "heimgewebe/weltgewebe",
+    "repo:commonthing": {
+        "repository": "heimgewebe/commonthing",
         "commit": "322655285b520d04363e48487ae64d57264de573",
         "sha256": "a8afc647c472cb16aedd0a5f63a499db4c00676a6bdac800ded531855e26a65f",
         "path": "architecture/weltgewebe-os.md",
