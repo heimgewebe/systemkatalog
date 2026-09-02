@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
   "kind": "system_catalog_fleet_coverage",
-  "updatedAt": "2026-09-01",
+  "updatedAt": "2026-09-02",
   "membershipAuthority": {
     "repository": "heimgewebe/metarepo",
-    "commit": "df3063d846d6751e668b65ec8e64a4fc34474401",
+    "commit": "e3f423579cb920c0872efcc4fe401f9ce54ca0e1",
     "path": "fleet/repos.yml",
-    "contentSha256": "4fc8803f7acc91eb1967cf325eb25638328e31dffdca49e35aeea17f2bee8ce9",
+    "contentSha256": "90be7a74d7179b750879460379ebb61789ce6245536f1e1fd4c86f1807fc7c3f",
     "scope": "fleet_membership_only"
   },
   "catalogAuthority": {

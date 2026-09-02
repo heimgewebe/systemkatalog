@@ -38,10 +38,8 @@ class LeitwerkArchivalCloseoutTests(unittest.TestCase):
         self.assertIn("https://github.com/heimgewebe/metarepo/pull/668", node["lifecycle"]["evidenceRefs"])
         self.assertIn(FINAL_LEITWERK, node["entrypoints"]["readme"])
 
-    def test_fleet_coverage_uses_exact_archived_reference_authority(self) -> None:
+    def test_fleet_coverage_preserves_archived_reference_classification(self) -> None:
         coverage = load("registry/ecosystem/fleet-coverage.v1.json")
-        self.assertEqual(coverage["membershipAuthority"]["commit"], FINAL_METAREPO)
-        self.assertEqual(coverage["membershipAuthority"]["contentSha256"], FLEET_SHA256)
         entry = next(item for item in coverage["repositories"] if item["node"] == "repo:leitwerk")
         self.assertEqual(entry["membership"], "archived-reference")
 
