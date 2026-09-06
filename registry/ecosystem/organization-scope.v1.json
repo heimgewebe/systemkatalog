@@ -190,6 +190,14 @@
       "reason": "public convergence protocol and evidence conformance core"
     },
     {
+      "name": "labor",
+      "repository": "heimgewebe/labor",
+      "visibility": "public",
+      "classification": "catalog",
+      "node": "repo:labor",
+      "reason": "method lab and evidence experiments"
+    },
+    {
       "name": "leitstand",
       "repository": "heimgewebe/leitstand",
       "visibility": "public",
@@ -308,14 +316,6 @@
       "classification": "excluded",
       "node": null,
       "reason": "Private content repository; it contains personal and domain material rather than system implementation or canonical ecosystem semantics."
-    },
-    {
-      "name": "labor",
-      "repository": "heimgewebe/labor",
-      "visibility": "public",
-      "classification": "catalog",
-      "node": "repo:labor",
-      "reason": "method lab and evidence experiments"
     },
     {
       "name": "wgx",
