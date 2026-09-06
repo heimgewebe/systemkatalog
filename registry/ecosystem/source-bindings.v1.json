@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "kind": "system_catalog_source_bindings",
   "catalogRepository": "heimgewebe/systemkatalog",
-  "observedAt": "2026-09-01T16:28:04Z",
+  "observedAt": "2026-09-06T11:46:30Z",
   "systems": [
     {
       "system": "actor:alexander",
@@ -135,9 +135,9 @@
       "uncertainty": 0.02
     },
     {
-      "system": "repo:vibe-lab",
+      "system": "repo:labor",
       "source": {
-        "repository": "heimgewebe/vibe-lab",
+        "repository": "heimgewebe/labor",
         "commit": "63c3d533dad4d51775aba7746915b5c8c5086f42",
         "locator": {
           "kind": "file",
@@ -146,7 +146,7 @@
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-26T18:09:02Z",
+      "reviewedAt": "2026-09-06T11:46:30Z",
       "method": "repository_primary_document",
       "uncertainty": 0.08
     },
@@ -897,7 +897,7 @@
     },
     {
       "relation": {
-        "from": "repo:vibe-lab",
+        "from": "repo:labor",
         "to": "repo:systemkatalog",
         "type": "provides"
       },
@@ -1213,7 +1213,7 @@
     {
       "relation": {
         "from": "repo:chronik",
-        "to": "repo:vibe-lab",
+        "to": "repo:labor",
         "type": "learning_input_for"
       },
       "source": {
@@ -1611,7 +1611,7 @@
     },
     {
       "relation": {
-        "from": "repo:vibe-lab",
+        "from": "repo:labor",
         "to": "repo:bureau",
         "type": "exports_candidate_to"
       },

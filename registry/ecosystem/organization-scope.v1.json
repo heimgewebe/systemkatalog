@@ -5,7 +5,7 @@
   "source": {
     "provider": "github",
     "organization": "heimgewebe",
-    "observedAt": "2026-09-01T16:28:04Z",
+    "observedAt": "2026-09-06T11:46:30Z",
     "selection": {
       "archived": "include",
       "fork": false
@@ -310,11 +310,11 @@
       "reason": "Private content repository; it contains personal and domain material rather than system implementation or canonical ecosystem semantics."
     },
     {
-      "name": "vibe-lab",
-      "repository": "heimgewebe/vibe-lab",
+      "name": "labor",
+      "repository": "heimgewebe/labor",
       "visibility": "public",
       "classification": "catalog",
-      "node": "repo:vibe-lab",
+      "node": "repo:labor",
       "reason": "method lab and evidence experiments"
     },
     {

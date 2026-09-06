@@ -54,7 +54,7 @@ AUTHORITY_OWNER_NODES = {
     "schauwerk": "repo:schauwerk",
     "chronik": "repo:chronik",
     "heimlern": "repo:heimlern",
-    "vibe_lab": "repo:vibe-lab",
+    "labor": "repo:labor",
     "wgx": "repo:wgx",
     "github": "service:github",
     "ci": "service:ci",
