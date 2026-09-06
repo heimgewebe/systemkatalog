@@ -214,9 +214,9 @@
       "membership": "fleet"
     },
     {
-      "node": "repo:vibe-lab",
-      "repository": "heimgewebe/vibe-lab",
-      "entrypoint": "https://github.com/heimgewebe/vibe-lab",
+      "node": "repo:labor",
+      "repository": "heimgewebe/labor",
+      "entrypoint": "https://github.com/heimgewebe/labor",
       "membership": "catalog-only"
     },
     {

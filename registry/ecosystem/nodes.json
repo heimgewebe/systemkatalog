@@ -215,8 +215,8 @@
       }
     },
     {
-      "id": "repo:vibe-lab",
-      "name": "Vibe-Lab",
+      "id": "repo:labor",
+      "name": "Labor",
       "type": "repository",
       "purpose": "bounded prospective experiments, evidence review and proposal-ready learning candidates",
       "notResponsibleFor": [
@@ -230,7 +230,7 @@
         "reviewed_learning_proposals"
       ],
       "entrypoints": {
-        "repository": "https://github.com/heimgewebe/vibe-lab"
+        "repository": "https://github.com/heimgewebe/labor"
       },
       "lifecycle": {
         "state": "active",

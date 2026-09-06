@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "kind": "system_catalog_source_bindings",
   "catalogRepository": "heimgewebe/systemkatalog",
-  "observedAt": "2026-09-01T16:28:04Z",
+  "observedAt": "2026-09-06T11:46:30Z",
   "systems": [
     {
       "system": "actor:alexander",
@@ -135,9 +135,9 @@
       "uncertainty": 0.02
     },
     {
-      "system": "repo:vibe-lab",
+      "system": "repo:labor",
       "source": {
-        "repository": "heimgewebe/vibe-lab",
+        "repository": "heimgewebe/labor",
         "commit": "63c3d533dad4d51775aba7746915b5c8c5086f42",
         "locator": {
           "kind": "file",
@@ -146,7 +146,7 @@
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-07-26T18:09:02Z",
+      "reviewedAt": "2026-09-06T11:46:30Z",
       "method": "repository_primary_document",
       "uncertainty": 0.08
     },
@@ -897,24 +897,24 @@
     },
     {
       "relation": {
-        "from": "repo:vibe-lab",
+        "from": "repo:labor",
         "to": "repo:systemkatalog",
         "type": "provides"
       },
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "3556d586c96f80fe2582437c9ffe3f452d6d82ff",
+        "commit": "b2c452121860c72a6caf7bc72e7e0ec9b86b3767",
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/edges.json",
           "pointer": "/edges/7",
-          "contentSha256": "f5909b40ef1c6ba560bbeadee78db405d58e9e36565a948df6ce368226a2b604"
+          "contentSha256": "0b72a27b24dd6ed8f0623e3fdf37c209f648f7a4943784c91a4bc4f29c88ae21"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-08-01T20:20:27+02:00",
+      "reviewedAt": "2026-09-06T11:49:00Z",
       "method": "catalog_curator_review",
-      "uncertainty": 0.18
+      "uncertainty": 0.08
     },
     {
       "relation": {
@@ -1213,21 +1213,21 @@
     {
       "relation": {
         "from": "repo:chronik",
-        "to": "repo:vibe-lab",
+        "to": "repo:labor",
         "type": "learning_input_for"
       },
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "3556d586c96f80fe2582437c9ffe3f452d6d82ff",
+        "commit": "b2c452121860c72a6caf7bc72e7e0ec9b86b3767",
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/edges.json",
           "pointer": "/edges/22",
-          "contentSha256": "f5909b40ef1c6ba560bbeadee78db405d58e9e36565a948df6ce368226a2b604"
+          "contentSha256": "0b72a27b24dd6ed8f0623e3fdf37c209f648f7a4943784c91a4bc4f29c88ae21"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-08-01T20:20:27+02:00",
+      "reviewedAt": "2026-09-06T11:49:00Z",
       "method": "catalog_curator_review",
       "uncertainty": 0.08
     },
@@ -1611,22 +1611,22 @@
     },
     {
       "relation": {
-        "from": "repo:vibe-lab",
+        "from": "repo:labor",
         "to": "repo:bureau",
         "type": "exports_candidate_to"
       },
       "source": {
         "repository": "heimgewebe/systemkatalog",
-        "commit": "3556d586c96f80fe2582437c9ffe3f452d6d82ff",
+        "commit": "b2c452121860c72a6caf7bc72e7e0ec9b86b3767",
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/edges.json",
-          "pointer": "/edges/42",
-          "contentSha256": "f5909b40ef1c6ba560bbeadee78db405d58e9e36565a948df6ce368226a2b604"
+          "pointer": "/edges/41",
+          "contentSha256": "0b72a27b24dd6ed8f0623e3fdf37c209f648f7a4943784c91a4bc4f29c88ae21"
         },
         "defaultBranch": "main"
       },
-      "reviewedAt": "2026-08-01T20:20:27+02:00",
+      "reviewedAt": "2026-09-06T11:49:00Z",
       "method": "catalog_curator_review",
       "uncertainty": 0.08
     },

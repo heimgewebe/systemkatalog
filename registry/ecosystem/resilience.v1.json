@@ -336,7 +336,7 @@
       "uncertainty": 1.0
     },
     {
-      "system": "repo:vibe-lab",
+      "system": "repo:labor",
       "criticality": "optional",
       "failureDomains": [
         "identity:github",
@@ -1110,7 +1110,7 @@
     {
       "relation": {
         "from": "repo:chronik",
-        "to": "repo:vibe-lab",
+        "to": "repo:labor",
         "type": "learning_input_for"
       },
       "coupling": "observational",
@@ -1141,7 +1141,7 @@
     },
     {
       "relation": {
-        "from": "repo:vibe-lab",
+        "from": "repo:labor",
         "to": "repo:bureau",
         "type": "exports_candidate_to"
       },

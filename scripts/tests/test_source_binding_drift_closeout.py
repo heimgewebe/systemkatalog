@@ -36,8 +36,8 @@ EXPECTED = {
         "sha256": "a6b63794cd4ec41e30e979fd524349386d207673700c3bc4c369f3fa0619ae94",
         "path": "README.md",
     },
-    "repo:vibe-lab": {
-        "repository": "heimgewebe/vibe-lab",
+    "repo:labor": {
+        "repository": "heimgewebe/labor",
         "commit": "63c3d533dad4d51775aba7746915b5c8c5086f42",
         "sha256": "0949d20b07df77ec2d1976b754258e837ef4b4a0b9a799daa4560f9413300bd8",
         "path": "README.md",

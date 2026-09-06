@@ -71,7 +71,7 @@
     },
     {
       "domain": "reviewed_learning_proposals",
-      "owner": "vibe_lab",
+      "owner": "labor",
       "projections": [
         "bureau",
         "systemkatalog"
@@ -79,7 +79,7 @@
     },
     {
       "domain": "bounded_experiments",
-      "owner": "vibe_lab",
+      "owner": "labor",
       "projections": [
         "systemkatalog"
       ]

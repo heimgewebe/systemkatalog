@@ -79,11 +79,11 @@
       "meaning": "Reposkop provides canonical, target-bound local checkout identity, transition and continuity truth for Systemkatalog checkouts, but no effect authority."
     },
     {
-      "from": "repo:vibe-lab",
+      "from": "repo:labor",
       "to": "repo:systemkatalog",
       "type": "provides",
       "stability": "stable",
-      "meaning": "Vibe-Lab provides method experiments and evidence patterns."
+      "meaning": "Labor provides method experiments and evidence patterns."
     },
     {
       "from": "repo:chronik",
@@ -185,10 +185,10 @@
     },
     {
       "from": "repo:chronik",
-      "to": "repo:vibe-lab",
+      "to": "repo:labor",
       "type": "learning_input_for",
       "stability": "bounded",
-      "meaning": "Chronik may supply frozen historical outcome cohorts as evidence for prospectively registered Vibe-Lab experiments; no policy or task is auto-applied."
+      "meaning": "Chronik may supply frozen historical outcome cohorts as evidence for prospectively registered Labor experiments; no policy or task is auto-applied."
     },
     {
       "from": "repo:metarepo",
@@ -317,11 +317,11 @@
       "meaning": "Snippet Engine Control provides contract-first diagnostics and export planning for the local interaction layer."
     },
     {
-      "from": "repo:vibe-lab",
+      "from": "repo:labor",
       "to": "repo:bureau",
       "type": "exports_candidate_to",
       "stability": "bounded",
-      "meaning": "Vibe-Lab may export reviewed proposal-ready candidates; Bureau alone decides whether they become work."
+      "meaning": "Labor may export reviewed proposal-ready candidates; Bureau alone decides whether they become work."
     },
     {
       "from": "repo:konvergenzregelkreis",

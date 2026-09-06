@@ -46,7 +46,7 @@
     "repo:snippet-engine-control",
     "repo:systemkatalog",
     "repo:vault-gewebe",
-    "repo:vibe-lab",
+    "repo:labor",
     "repo:weltgewebe",
     "repo:wgx",
     "service:ci",
@@ -83,5 +83,5 @@
       "global complexity score"
     ]
   },
-  "grandfatheredBaselineSha256": "691223849841ced5ed0f360c6d829da28f79eaaa85f3078ce165ac7a2b92ae91"
+  "grandfatheredBaselineSha256": "2c5f253e1e5149533a2237f3b62a95d8c2bcea32c70522c8ff415789055ba43b"
 }
