@@ -1621,7 +1621,7 @@
         "locator": {
           "kind": "json_pointer",
           "path": "registry/ecosystem/edges.json",
-          "pointer": "/edges/42",
+          "pointer": "/edges/41",
           "contentSha256": "0b72a27b24dd6ed8f0623e3fdf37c209f648f7a4943784c91a4bc4f29c88ae21"
         },
         "defaultBranch": "main"
