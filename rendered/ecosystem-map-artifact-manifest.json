@@ -6,28 +6,28 @@
       "contentType": "text/mermaid",
       "path": "rendered/ecosystem-registry-map.mmd",
       "role": "canonical_ecosystem_map_mermaid",
-      "sha256": "64cd2e7892155e1b373a42daf70a5a0e98f665dccdcf9eb3693a29e81c8e806f"
+      "sha256": "acf0131a8281763e2d448ee6d0bc7d99106d32f1746487899743adbfda130e6f"
     },
     {
-      "bytes": 56173,
+      "bytes": 56401,
       "contentType": "text/markdown",
       "path": "rendered/system-catalog.md",
       "role": "rendered_catalog_markdown",
-      "sha256": "dfef7102925181e6b4eff8bd99dd4d47e83ac8fde5bf4757b0d5529d7b70a4da"
+      "sha256": "033ff1502f818e2344ac0b6b705086663e81a2502f3166ecec04ea3678bc359b"
     },
     {
-      "bytes": 41958,
+      "bytes": 42296,
       "contentType": "application/json",
       "path": "registry/ecosystem/nodes.json",
       "role": "registry_nodes",
-      "sha256": "3465c3c0d3750e5c0ce267e67589700eabd3ae3bdac722a733309d8c865278ea"
+      "sha256": "4bf0e9a173ec8d0bb6b1e2c83b480f9e5aa6ac4f28e7e92be91896ce88120b94"
     },
     {
-      "bytes": 14459,
+      "bytes": 14234,
       "contentType": "application/json",
       "path": "registry/ecosystem/edges.json",
       "role": "registry_edges",
-      "sha256": "0b72a27b24dd6ed8f0623e3fdf37c209f648f7a4943784c91a4bc4f29c88ae21"
+      "sha256": "f2188441b970a553feceb796a58779cbd1d67d1ad531c849b084b46a7804d529"
     },
     {
       "bytes": 3431,
@@ -58,8 +58,8 @@
   "schemaPath": "catalog/ecosystem-map-artifact-manifest.schema.v1.json",
   "schemaVersion": 1,
   "source": {
-    "commit": "371601c87c6ec8faed82f500c104d5a8fea54ca5",
-    "generatedAt": "2026-09-06T11:55:08Z",
+    "commit": "df3cebd33a232d6c1eaa2093433358549101de28",
+    "generatedAt": "2026-09-14T19:55:46Z",
     "repository": "heimgewebe/systemkatalog"
   }
 }

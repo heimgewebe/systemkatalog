@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "kind": "system_catalog_relations",
   "catalogRole": "canonical_stable_relations",
-  "updatedAt": "2026-09-01",
+  "updatedAt": "2026-09-14",
   "relationTypes": [
     "owns",
     "steers",
@@ -217,13 +217,6 @@
       "type": "validated_by",
       "stability": "stable",
       "meaning": "Mirrored contracts are checked against their fixtures and source contract."
-    },
-    {
-      "from": "repo:semantAH",
-      "to": "repo:hausKI",
-      "type": "provides",
-      "stability": "stable",
-      "meaning": "semantAH provides the semantic memory and knowledge-graph layer used by HausKI."
     },
     {
       "from": "repo:hausKI-audio",
