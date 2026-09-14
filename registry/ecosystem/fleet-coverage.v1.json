@@ -4,7 +4,7 @@
   "updatedAt": "2026-09-14",
   "membershipAuthority": {
     "repository": "heimgewebe/metarepo",
-    "commit": "6a9d37b68df10bdbc7de963fffbd90950944f37a",
+    "commit": "6a9d37b9b8a558fae74d3087fbfe5a3a72dd0d37",
     "path": "fleet/repos.yml",
     "contentSha256": "5bafc4e94b740c015a1270d2bc5ee1bffb22a1c786aebea752287f7b6ce8beaa",
     "scope": "fleet_membership_only"

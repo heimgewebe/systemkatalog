@@ -36,9 +36,9 @@ class FleetCoverageTests(unittest.TestCase):
             coverage["membershipAuthority"],
             {
                 "repository": "heimgewebe/metarepo",
-                "commit": "e3f423579cb920c0872efcc4fe401f9ce54ca0e1",
+                "commit": "6a9d37b9b8a558fae74d3087fbfe5a3a72dd0d37",
                 "path": "fleet/repos.yml",
-                "contentSha256": "90be7a74d7179b750879460379ebb61789ce6245536f1e1fd4c86f1807fc7c3f",
+                "contentSha256": "5bafc4e94b740c015a1270d2bc5ee1bffb22a1c786aebea752287f7b6ce8beaa",
                 "scope": "fleet_membership_only",
             },
         )
@@ -47,11 +47,11 @@ class FleetCoverageTests(unittest.TestCase):
                 item["membership"] in {"fleet", "related"}
                 for item in coverage["repositories"]
             ),
-            18,
+            17,
         )
         self.assertEqual(
             {item["name"] for item in coverage["sourceExclusions"]},
-            {"hausKI-audio", "heimlern", "leitwerk", "vault-privat"},
+            {"hausKI", "hausKI-audio", "heimlern", "leitwerk", "vault-privat"},
         )
         self.assertEqual(
             next(
@@ -97,7 +97,7 @@ repos:
             },
             {
                 item["name"]: (
-                    "archived-reference" if item["name"] == "heimlern" else "excluded"
+                    "archived-reference" if item["name"] in {"hausKI", "heimlern"} else "excluded"
                 )
                 for item in coverage["sourceExclusions"]
             },
@@ -122,7 +122,7 @@ repos:
                 for item in coverage["repositories"]
                 if item["membership"] in {"fleet", "related"}
             },
-            {"hausKI-audio": "excluded", "heimlern": "excluded", "leitwerk": "archived-reference", "vault-privat": "excluded"},
+            {"hausKI": "archived-reference", "hausKI-audio": "excluded", "heimlern": "excluded", "leitwerk": "archived-reference", "vault-privat": "excluded"},
         )
         with self.assertRaisesRegex(FleetCoverageError, "archived-reference drift"):
             compare_with_source(coverage, source)
