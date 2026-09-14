@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "kind": "system_catalog_organization_scope",
-  "updatedAt": "2026-09-01",
+  "updatedAt": "2026-09-14",
   "source": {
     "provider": "github",
     "organization": "heimgewebe",
@@ -123,7 +123,7 @@
       "visibility": "public",
       "classification": "catalog",
       "node": "repo:hausKI",
-      "reason": "Local offline-first AI orchestration and policy-controlled memory"
+      "reason": "Retired historical reference with no active Fleet, runtime, routing or policy authority; GitHub repository archive bit is pending external administration."
     },
     {
       "name": "hausKI-audio",

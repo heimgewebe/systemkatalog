@@ -3,7 +3,7 @@
   "kind": "system_catalog_inventory",
   "owner": "repo:systemkatalog",
   "catalogRole": "canonical_system_inventory",
-  "updatedAt": "2026-09-01",
+  "updatedAt": "2026-09-14",
   "nodes": [
     {
       "id": "actor:alexander",
@@ -555,9 +555,12 @@
       "id": "repo:hausKI",
       "name": "HausKI",
       "type": "repository",
-      "purpose": "Local offline-first AI orchestration and policy-controlled memory",
+      "purpose": "retired historical reference for former local offline-first AI orchestration and policy-controlled memory experiments",
       "notResponsibleFor": [
-        "fleet task authority",
+        "current operator execution or routing",
+        "active Fleet membership or deployment",
+        "current memory or policy authority",
+        "runtime health or service availability",
         "ecosystem catalog semantics",
         "merge approval"
       ],
@@ -566,10 +569,11 @@
         "repository": "https://github.com/heimgewebe/hausKI"
       },
       "lifecycle": {
-        "state": "active",
-        "reviewedAt": "2026-07-26",
+        "state": "retired",
+        "reviewedAt": "2026-09-14",
         "evidenceRefs": [
-          "registry/ecosystem/organization-scope.v1.json"
+          "https://github.com/heimgewebe/hausKI/blob/a265afce24b6f7106c524da71ddd87ab51ba2e7c/docs/archive-readiness.v1.json",
+          "registry/ecosystem/fleet-coverage.v1.json"
         ]
       }
     },

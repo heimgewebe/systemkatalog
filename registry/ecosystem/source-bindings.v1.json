@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "kind": "system_catalog_source_bindings",
   "catalogRepository": "heimgewebe/systemkatalog",
-  "observedAt": "2026-09-06T11:46:30Z",
+  "observedAt": "2026-09-14T19:30:00Z",
   "systems": [
     {
       "system": "actor:alexander",
@@ -362,16 +362,16 @@
       "system": "repo:hausKI",
       "source": {
         "repository": "heimgewebe/hausKI",
-        "commit": "7ae329ed5cee56666a9f6571e7ebee1c9df59441",
+        "commit": "a265afce24b6f7106c524da71ddd87ab51ba2e7c",
+        "defaultBranch": "main",
         "locator": {
           "kind": "file",
-          "path": "README.md",
-          "contentSha256": "9bcb01379557fac7b2274021dc4c16894160849858c405cd861ab3022711d726"
-        },
-        "defaultBranch": "main"
+          "path": "docs/archive-readiness.v1.json",
+          "contentSha256": "42f5ded06265155f5d2d199673ecb4a8495b3cfa14b4d8ac939891093a0dc84a"
+        }
       },
-      "reviewedAt": "2026-07-15T21:18:00Z",
-      "method": "repository_primary_document",
+      "reviewedAt": "2026-09-14T19:30:00Z",
+      "method": "repository_normative_contract",
       "uncertainty": 0.01
     },
     {
@@ -1307,27 +1307,6 @@
           "kind": "json_pointer",
           "path": "registry/ecosystem/edges.json",
           "pointer": "/edges/26",
-          "contentSha256": "f5909b40ef1c6ba560bbeadee78db405d58e9e36565a948df6ce368226a2b604"
-        },
-        "defaultBranch": "main"
-      },
-      "reviewedAt": "2026-08-01T20:20:27+02:00",
-      "method": "catalog_curator_review",
-      "uncertainty": 0.18
-    },
-    {
-      "relation": {
-        "from": "repo:semantAH",
-        "to": "repo:hausKI",
-        "type": "provides"
-      },
-      "source": {
-        "repository": "heimgewebe/systemkatalog",
-        "commit": "3556d586c96f80fe2582437c9ffe3f452d6d82ff",
-        "locator": {
-          "kind": "json_pointer",
-          "path": "registry/ecosystem/edges.json",
-          "pointer": "/edges/27",
           "contentSha256": "f5909b40ef1c6ba560bbeadee78db405d58e9e36565a948df6ce368226a2b604"
         },
         "defaultBranch": "main"
