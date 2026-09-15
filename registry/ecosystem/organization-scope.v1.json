@@ -121,9 +121,9 @@
       "name": "hausKI",
       "repository": "heimgewebe/hausKI",
       "visibility": "public",
-      "classification": "catalog",
+      "classification": "archived_reference",
       "node": "repo:hausKI",
-      "reason": "Retired historical reference with no active Fleet, runtime, routing or policy authority; GitHub repository archive bit is pending external administration."
+      "reason": "Retired historical reference; GitHub repository is archived and no active Fleet, runtime, routing or policy authority remains."
     },
     {
       "name": "hausKI-audio",
