@@ -43,11 +43,11 @@ class HausKIRetirementTests(unittest.TestCase):
             )
         )
 
-    def test_scope_stays_catalog_until_github_archive_bit_is_true(self) -> None:
+    def test_scope_is_archived_reference_after_github_archive_bit_is_true(self) -> None:
         scope = self._load("registry/ecosystem/organization-scope.v1.json")["repositories"]
         hauski = next(item for item in scope if item["repository"] == "heimgewebe/hausKI")
-        self.assertEqual(hauski["classification"], "catalog")
-        self.assertIn("archive bit is pending", hauski["reason"])
+        self.assertEqual(hauski["classification"], "archived_reference")
+        self.assertIn("GitHub repository is archived", hauski["reason"])
 
     def test_source_binding_points_to_exact_retirement_evidence(self) -> None:
         bindings = self._load("registry/ecosystem/source-bindings.v1.json")["systems"]

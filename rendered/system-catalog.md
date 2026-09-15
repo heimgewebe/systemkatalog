@@ -110,10 +110,11 @@ Explizit ohne aktive Fleet-Mitgliedschaft:
 
 ## Organisationsumfang
 
-Der GitHub-Snapshot umfasst 39 nicht geforkte Repositories. Davon sind 34 aktive Katalogsysteme, 2 archivierte Referenzen und 3 begründet ausgeschlossen.
+Der GitHub-Snapshot umfasst 39 nicht geforkte Repositories. Davon sind 33 aktive Katalogsysteme, 3 archivierte Referenzen und 3 begründet ausgeschlossen.
 
 Archivierte Referenzen ohne aktive Betriebsautorität:
 
+- `heimgewebe/hausKI` (`public`) — Retired historical reference; GitHub repository is archived and no active Fleet, runtime, routing or policy authority remains.
 - `heimgewebe/heimlern` (`public`) — archived historical reference for retired offline learning and proposal experiments; no active runtime or contract authority
 - `heimgewebe/leitwerk` (`public`) — archived historical reference for the retired Leitwerk coordination model; no active runtime, task, policy or contract authority
 

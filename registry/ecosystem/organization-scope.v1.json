@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
   "kind": "system_catalog_organization_scope",
-  "updatedAt": "2026-09-14",
+  "updatedAt": "2026-09-15",
   "source": {
     "provider": "github",
     "organization": "heimgewebe",
-    "observedAt": "2026-09-06T11:46:30Z",
+    "observedAt": "2026-09-15T12:47:52Z",
     "selection": {
       "archived": "include",
       "fork": false
@@ -121,9 +121,9 @@
       "name": "hausKI",
       "repository": "heimgewebe/hausKI",
       "visibility": "public",
-      "classification": "catalog",
+      "classification": "archived_reference",
       "node": "repo:hausKI",
-      "reason": "Retired historical reference with no active Fleet, runtime, routing or policy authority; GitHub repository archive bit is pending external administration."
+      "reason": "Retired historical reference; GitHub repository is archived and no active Fleet, runtime, routing or policy authority remains."
     },
     {
       "name": "hausKI-audio",

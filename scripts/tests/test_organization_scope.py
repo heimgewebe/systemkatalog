@@ -37,7 +37,7 @@ class OrganizationScopeTests(unittest.TestCase):
         self.assertEqual(len(scope["repositories"]), 39)
         self.assertEqual(
             sum(row["classification"] == "catalog" for row in scope["repositories"]),
-            34,
+            33,
         )
         self.assertEqual(
             {
@@ -45,7 +45,7 @@ class OrganizationScopeTests(unittest.TestCase):
                 for row in scope["repositories"]
                 if row["classification"] == "archived_reference"
             },
-            {"heimlern", "leitwerk"},
+            {"hausKI", "heimlern", "leitwerk"},
         )
         self.assertEqual(
             {
