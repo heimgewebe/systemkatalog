@@ -1168,6 +1168,30 @@
       "entrypoints": {
         "boundary": "docs/architecture/heim-pc-chatgpt-dashboard-boundary.md"
       }
+    },
+    {
+      "id": "repo:grosser-adler",
+      "name": "Großer Adler",
+      "type": "repository",
+      "purpose": "independent read-mostly observer for evidence-bound cross-system inspection and append-only advisory findings",
+      "notResponsibleFor": [
+        "task state",
+        "operational execution",
+        "merge or deployment authority",
+        "automatic remediation"
+      ],
+      "truthOwnership": [],
+      "entrypoints": {
+        "repository": "https://github.com/heimgewebe/grosser-adler"
+      },
+      "lifecycle": {
+        "state": "active",
+        "reviewedAt": "2026-09-16",
+        "evidenceRefs": [
+          "registry/ecosystem/source-bindings.v1.json",
+          "registry/ecosystem/component-admissions.v1.json"
+        ]
+      }
     }
   ]
 }
