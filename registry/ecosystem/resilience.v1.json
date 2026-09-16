@@ -896,6 +896,21 @@
         "registry/ecosystem/authority-matrix.v1.json"
       ],
       "uncertainty": 0.12
+    },
+    {
+      "system": "repo:grosser-adler",
+      "criticality": "optional",
+      "failureDomains": [
+        "identity:github",
+        "provider:github"
+      ],
+      "recoveryModeRefs": [],
+      "acceptedSinglePathRisks": [],
+      "evidence": [
+        "registry/ecosystem/source-bindings.v1.json",
+        "registry/ecosystem/component-admissions.v1.json"
+      ],
+      "uncertainty": 0.08
     }
   ],
   "relations": [

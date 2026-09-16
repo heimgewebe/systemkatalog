@@ -154,6 +154,35 @@
         "general operator display ownership",
         "merge or deployment authority"
       ]
+    },
+    {
+      "componentId": "repo:grosser-adler",
+      "componentKind": "repository",
+      "admissionClass": "enable",
+      "purpose": "independent read-mostly observer for evidence-bound cross-system inspection and append-only advisory findings",
+      "consumers": [
+        "Alex",
+        "ChatGPT"
+      ],
+      "truthAuthority": "none: Großer Adler owns its repository code and append-only advisory findings but no operational or ecosystem-wide truth domain.",
+      "operatingDependencies": [
+        "provider:github",
+        "read-only repository and service observation surfaces"
+      ],
+      "maintenanceBurden": "Keep the observer boundary, source bindings and advisory-only finding contract aligned when its observation surface changes.",
+      "reviewOrRetirementPath": "Review when Großer Adler gains new effects, changes its trust boundary or ceases to provide an independent observer role; retire the catalog node when the repository is archived or superseded.",
+      "source": {
+        "kind": "repository_primary_document",
+        "ref": "registry/ecosystem/source-bindings.v1.json"
+      },
+      "doesNotEstablish": [
+        "runtime health",
+        "task state",
+        "execution authority",
+        "merge authority",
+        "deployment authority",
+        "automatic remediation"
+      ]
     }
   ],
   "doesNotEstablish": [

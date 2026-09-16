@@ -230,6 +230,12 @@
       "repository": "heimgewebe/wgx",
       "entrypoint": "https://github.com/heimgewebe/wgx",
       "membership": "fleet"
+    },
+    {
+      "node": "repo:grosser-adler",
+      "repository": "heimgewebe/grosser-adler",
+      "entrypoint": "https://github.com/heimgewebe/grosser-adler",
+      "membership": "catalog-only"
     }
   ],
   "sourceExclusions": [

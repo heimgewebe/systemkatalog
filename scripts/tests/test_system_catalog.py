@@ -25,16 +25,16 @@ class SystemCatalogTests(unittest.TestCase):
     def test_repository_catalog_is_valid_and_roomless(self) -> None:
         result = validate(ROOT)
         self.assertEqual(result["status"], "valid")
-        self.assertEqual(result["registrySystems"], 46)
+        self.assertEqual(result["registrySystems"], 47)
         self.assertEqual(result["registryRelations"], 54)
         self.assertEqual(result["authorityDomains"], 20)
-        self.assertEqual(result["catalogRepositories"], 36)
+        self.assertEqual(result["catalogRepositories"], 37)
         self.assertEqual(result["fleetRepositories"], 17)
         self.assertEqual(result["fleetExclusions"], 5)
-        self.assertEqual(result["organizationRepositories"], 39)
-        self.assertEqual(result["organizationCatalogRepositories"], 33)
+        self.assertEqual(result["organizationRepositories"], 41)
+        self.assertEqual(result["organizationCatalogRepositories"], 34)
         self.assertEqual(result["organizationArchivedReferences"], 3)
-        self.assertEqual(result["organizationExclusions"], 3)
+        self.assertEqual(result["organizationExclusions"], 4)
         self.assertEqual(result["activeLegacyRooms"], 0)
         for room in (
             "bestand",
@@ -79,7 +79,7 @@ class SystemCatalogTests(unittest.TestCase):
             "id", "name", "type", "purpose", "lifecycle",
             "notResponsibleFor", "truthOwnership", "entrypoints",
         }
-        self.assertEqual(len(data["nodes"]), 46)
+        self.assertEqual(len(data["nodes"]), 47)
         for node in data["nodes"]:
             self.assertEqual(set(node), required)
             self.assertTrue(node["notResponsibleFor"])

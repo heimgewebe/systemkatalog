@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "kind": "system_catalog_source_bindings",
   "catalogRepository": "heimgewebe/systemkatalog",
-  "observedAt": "2026-09-14T19:30:00Z",
+  "observedAt": "2026-09-16T04:14:27Z",
   "systems": [
     {
       "system": "actor:alexander",
@@ -745,6 +745,22 @@
       "reviewedAt": "2026-08-29T10:30:33+02:00",
       "method": "catalog_curator_review",
       "uncertainty": 0.12
+    },
+    {
+      "system": "repo:grosser-adler",
+      "source": {
+        "repository": "heimgewebe/grosser-adler",
+        "commit": "5f4899696cc0d5f4cc07e0842fcb3a25f20c44a6",
+        "locator": {
+          "kind": "file",
+          "path": "AUTHORITY.md",
+          "contentSha256": "2b1fc1a27e406a6397334ba6f8e630c4e6173b71180d81f28989db13b7327924"
+        },
+        "defaultBranch": "main"
+      },
+      "reviewedAt": "2026-09-16T04:14:27Z",
+      "method": "repository_primary_document",
+      "uncertainty": 0.04
     }
   ],
   "relations": [
