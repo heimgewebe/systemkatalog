@@ -124,7 +124,7 @@ Begründete Ausschlüsse:
 
 - `heimgewebe/capacity-marketplace` (`private`) — Active companion/control repository for an external Bubble-based B2B product. Bubble is runtime truth. The repository is not yet admitted as a Systemkatalog system; exclusion records complete GitHub organization scope without granting catalog authority pending explicit component admission and truth-owner modeling.
 - `heimgewebe/demo-repository` (`public`) — GitHub demonstration scaffold; it is not a Heimgewebe system, authority source or production component.
-- `heimgewebe/nixer` (`public`) — Repository is present in the GitHub organization but is outside this Adler-scoped admission; recorded only to keep organization inventory complete pending its own explicit Systemkatalog admission.
+- `heimgewebe/nixer` (`public`) — Nix/Nixpkgs/NixOS specialist repository with no Repo, PR, Bureau, Deploy or Service authority; kept excluded from this catalog change pending its own explicit Systemkatalog admission (source: repository README.md).
 - `heimgewebe/vault-privat` (`private`) — Private content repository; it contains personal and domain material rather than system implementation or canonical ecosystem semantics.
 
 ## Wahrheitszuständigkeiten

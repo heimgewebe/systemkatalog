@@ -243,7 +243,7 @@
       "visibility": "public",
       "classification": "excluded",
       "node": null,
-      "reason": "Repository is present in the GitHub organization but is outside this Adler-scoped admission; recorded only to keep organization inventory complete pending its own explicit Systemkatalog admission."
+      "reason": "Nix/Nixpkgs/NixOS specialist repository with no Repo, PR, Bureau, Deploy or Service authority; kept excluded from this catalog change pending its own explicit Systemkatalog admission (source: repository README.md)."
     },
     {
       "name": "obsidian-bridge",

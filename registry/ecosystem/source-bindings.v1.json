@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "kind": "system_catalog_source_bindings",
   "catalogRepository": "heimgewebe/systemkatalog",
-  "observedAt": "2026-09-14T19:30:00Z",
+  "observedAt": "2026-09-16T04:14:27Z",
   "systems": [
     {
       "system": "actor:alexander",
