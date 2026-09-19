@@ -76,17 +76,19 @@ class SystemCatalogDriftTests(unittest.TestCase):
         report = build_report(ROOT, data)
         self.assertIn("repository_unclassified", {item["kind"] for item in report["changes"]})
 
-    def test_archived_reference_status_change_is_reported(self) -> None:
+    def test_deleted_repository_reappearance_is_reported(self) -> None:
         data = matching_observations()
-        heimlern = next(
-            item
-            for item in data["repositories"]
-            if item["nameWithOwner"] == "heimgewebe/heimlern"
+        data["repositories"].append(
+            {
+                "nameWithOwner": "heimgewebe/heimlern",
+                "isArchived": False,
+                "isFork": False,
+                "visibility": "public",
+            }
         )
-        heimlern["isArchived"] = False
         report = build_report(ROOT, data)
         self.assertIn(
-            "repository_archive_status_changed",
+            "repository_unclassified",
             {item["kind"] for item in report["changes"]},
         )
 

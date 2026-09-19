@@ -7,7 +7,8 @@ ROOT = Path(__file__).resolve().parents[2]
 FINAL_LEITWERK = "1449145af543b78c0d3813942f1d6d95ddb33c4a"
 FINAL_METAREPO = "df3063d846d6751e668b65ec8e64a4fc34474401"
 FLEET_SHA256 = "4fc8803f7acc91eb1967cf325eb25638328e31dffdca49e35aeea17f2bee8ce9"
-README_SHA256 = "192c8ebb41e0af26792696e677758bbdfc5b5466148980265ff3677fbf6bf012"
+CURRENT_METAREPO = "bb32f569ca35bdfdc9d956b31709c86cd83eb685"
+CURRENT_FLEET_SHA256 = "a089df0e8f45d4a4c73da3517a0cebe1644bf3a83bb0e8460c08924b512379dc"
 
 
 def load(path: str) -> dict:
@@ -15,12 +16,15 @@ def load(path: str) -> dict:
 
 
 class LeitwerkArchivalCloseoutTests(unittest.TestCase):
-    def test_closeout_binds_github_migration_and_fleet_authority(self) -> None:
+    def test_closeout_binds_historical_github_migration_and_fleet_authority(self) -> None:
         audit = load("docs/audits/leitwerk-archival-closeout-2026-07-29.v1.json")
         self.assertEqual(audit["decision"], "archived_reference")
         self.assertIs(audit["github_readback"]["archived"], True)
         self.assertEqual(audit["github_readback"]["main_commit"], FINAL_LEITWERK)
-        self.assertEqual(audit["migration"]["merge_commit"], "74ce9202952d00b0d2fef0587255c92a9cd05dee")
+        self.assertEqual(
+            audit["migration"]["merge_commit"],
+            "74ce9202952d00b0d2fef0587255c92a9cd05dee",
+        )
         fleet = audit["fleet_registration"]
         self.assertEqual(fleet["pull_request"], 668)
         self.assertEqual(fleet["merge_commit"], FINAL_METAREPO)
@@ -29,44 +33,43 @@ class LeitwerkArchivalCloseoutTests(unittest.TestCase):
         self.assertIs(fleet["fleet"], False)
         self.assertEqual(fleet["active_fleet_count"], 18)
 
-    def test_catalog_node_is_archived_and_owns_no_truth(self) -> None:
-        nodes = load("registry/ecosystem/nodes.json")["nodes"]
-        node = next(item for item in nodes if item["id"] == "repo:leitwerk")
-        self.assertEqual(node["lifecycle"]["state"], "archived")
-        self.assertEqual(node["truthOwnership"], [])
-        self.assertIn("active contract or policy authority", node["notResponsibleFor"])
-        self.assertIn("https://github.com/heimgewebe/metarepo/pull/668", node["lifecycle"]["evidenceRefs"])
-        self.assertIn(FINAL_LEITWERK, node["entrypoints"]["readme"])
+    def test_leitwerk_is_absent_from_current_catalog_truth(self) -> None:
+        nodes = {item["id"] for item in load("registry/ecosystem/nodes.json")["nodes"]}
+        coverage = {
+            item["node"]
+            for item in load("registry/ecosystem/fleet-coverage.v1.json")["repositories"]
+        }
+        scope = {
+            item["name"]
+            for item in load("registry/ecosystem/organization-scope.v1.json")["repositories"]
+        }
+        bindings = {
+            item["system"]
+            for item in load("registry/ecosystem/source-bindings.v1.json")["systems"]
+        }
+        resilience = {
+            item["system"]
+            for item in load("registry/ecosystem/resilience.v1.json")["systems"]
+        }
+        for current in (nodes, coverage, bindings, resilience):
+            self.assertNotIn("repo:leitwerk", current)
+        self.assertNotIn("leitwerk", scope)
+        edges = load("registry/ecosystem/edges.json")["edges"]
+        self.assertFalse(
+            any(edge["from"] == "repo:leitwerk" or edge["to"] == "repo:leitwerk" for edge in edges)
+        )
 
-    def test_fleet_coverage_preserves_archived_reference_classification(self) -> None:
+    def test_current_fleet_authority_has_no_leitwerk_exclusion(self) -> None:
         coverage = load("registry/ecosystem/fleet-coverage.v1.json")
-        entry = next(item for item in coverage["repositories"] if item["node"] == "repo:leitwerk")
-        self.assertEqual(entry["membership"], "archived-reference")
+        self.assertEqual(coverage["membershipAuthority"]["commit"], CURRENT_METAREPO)
+        self.assertEqual(
+            coverage["membershipAuthority"]["contentSha256"], CURRENT_FLEET_SHA256
+        )
+        self.assertEqual(coverage["sourceExclusions"], [])
 
-    def test_source_binding_is_final_commit_and_readme_digest(self) -> None:
-        bindings = load("registry/ecosystem/source-bindings.v1.json")["systems"]
-        binding = next(item for item in bindings if item["system"] == "repo:leitwerk")
-        self.assertEqual(binding["source"]["commit"], FINAL_LEITWERK)
-        self.assertEqual(binding["source"]["locator"]["path"], "README.md")
-        self.assertEqual(binding["source"]["locator"]["contentSha256"], README_SHA256)
-        self.assertLessEqual(binding["uncertainty"], 0.01)
-
-    def test_scope_resilience_and_relations_preserve_non_authority(self) -> None:
-        scope = load("registry/ecosystem/organization-scope.v1.json")["repositories"]
-        entry = next(item for item in scope if item["name"] == "leitwerk")
-        self.assertEqual(entry["classification"], "archived_reference")
-
-        resilience = load("registry/ecosystem/resilience.v1.json")["systems"]
-        item = next(entry for entry in resilience if entry["system"] == "repo:leitwerk")
-        self.assertEqual(item["criticality"], "optional")
-
-        edges = [
-            edge for edge in load("registry/ecosystem/edges.json")["edges"]
-            if edge["from"] == "repo:leitwerk"
-        ]
-        self.assertTrue(edges)
-        self.assertTrue(all(edge["type"] == "scope_boundary" for edge in edges))
-        self.assertTrue(all("inherits no Leitwerk authority" in edge["meaning"] for edge in edges))
+    def test_historical_admission_baseline_preserves_leitwerk_identity(self) -> None:
+        policy = load("policy/component-admission.v1.json")
+        self.assertIn("repo:leitwerk", policy["grandfatheredNodeIds"])
 
 
 if __name__ == "__main__":

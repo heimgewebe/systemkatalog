@@ -25,16 +25,16 @@ class SystemCatalogTests(unittest.TestCase):
     def test_repository_catalog_is_valid_and_roomless(self) -> None:
         result = validate(ROOT)
         self.assertEqual(result["status"], "valid")
-        self.assertEqual(result["registrySystems"], 47)
-        self.assertEqual(result["registryRelations"], 54)
+        self.assertEqual(result["registrySystems"], 37)
+        self.assertEqual(result["registryRelations"], 44)
         self.assertEqual(result["authorityDomains"], 20)
-        self.assertEqual(result["catalogRepositories"], 37)
-        self.assertEqual(result["fleetRepositories"], 17)
-        self.assertEqual(result["fleetExclusions"], 5)
-        self.assertEqual(result["organizationRepositories"], 41)
-        self.assertEqual(result["organizationCatalogRepositories"], 34)
-        self.assertEqual(result["organizationArchivedReferences"], 3)
-        self.assertEqual(result["organizationExclusions"], 4)
+        self.assertEqual(result["catalogRepositories"], 27)
+        self.assertEqual(result["fleetRepositories"], 13)
+        self.assertEqual(result["fleetExclusions"], 0)
+        self.assertEqual(result["organizationRepositories"], 29)
+        self.assertEqual(result["organizationCatalogRepositories"], 27)
+        self.assertEqual(result["organizationArchivedReferences"], 0)
+        self.assertEqual(result["organizationExclusions"], 2)
         self.assertEqual(result["activeLegacyRooms"], 0)
         for room in (
             "bestand",
@@ -57,13 +57,16 @@ class SystemCatalogTests(unittest.TestCase):
         self.assertNotIn("# Heimgewebe-Systemkatalog", actual)
         self.assertIn("## Repository-Abdeckung", actual)
         self.assertIn("`heimgewebe/metarepo`", actual)
-        self.assertIn("`vault-privat`", actual)
-        self.assertIn("`heimgewebe/demo-repository`", actual)
-        self.assertIn("## Organisationsumfang", actual)
-        self.assertIn("Archivierte Referenzen ohne aktive Betriebsautorität", actual)
-        self.assertIn("`heimgewebe/heimlern` (`public`)", actual)
-        self.assertIn("`archived-reference`", actual)
-        self.assertNotIn("35 aktive, nicht geforkte Repositories", actual)
+        for deleted in (
+            "vault-privat",
+            "demo-repository",
+            "heimlern",
+            "hausKI",
+            "leitwerk",
+            "agent-control-surface",
+        ):
+            self.assertNotIn(f"heimgewebe/{deleted}", actual)
+        self.assertIn("29 nicht geforkte Repositories", actual)
 
     def test_entrypoint_href_uses_raw_target_not_markdown_escape(self) -> None:
         from render_system_catalog import _entrypoints_cell
@@ -79,7 +82,7 @@ class SystemCatalogTests(unittest.TestCase):
             "id", "name", "type", "purpose", "lifecycle",
             "notResponsibleFor", "truthOwnership", "entrypoints",
         }
-        self.assertEqual(len(data["nodes"]), 47)
+        self.assertEqual(len(data["nodes"]), 37)
         for node in data["nodes"]:
             self.assertEqual(set(node), required)
             self.assertTrue(node["notResponsibleFor"])
@@ -98,14 +101,22 @@ class SystemCatalogTests(unittest.TestCase):
         rendered = (ROOT / "rendered/system-catalog.md").read_text(encoding="utf-8")
         self.assertIn("Wahrheitsbesitz", rendered)
         self.assertIn("Lebenszyklus", rendered)
-        self.assertIn(
-            "| Heimserver | repository | `retired` · geprüft 2026-08-01 |",
-            rendered,
-        )
-        self.assertIn(
-            "| HausKI Audio | repository | `retired` · geprüft 2026-07-28 |",
-            rendered,
-        )
+        self.assertNotIn("| Heimserver | repository |", rendered)
+        self.assertNotIn("| HausKI Audio | repository |", rendered)
+        deleted_nodes = {
+            "repo:agent-control-surface",
+            "repo:aussensensor",
+            "repo:hausKI",
+            "repo:hausKI-audio",
+            "repo:heimgeist",
+            "repo:heimlern",
+            "repo:heimserver",
+            "repo:leitwerk",
+            "repo:mitschreiber",
+            "repo:vault-gewebe",
+        }
+        self.assertTrue(deleted_nodes.isdisjoint({node["id"] for node in data["nodes"]}))
+
 
     def test_repository_relative_entrypoints_must_resolve(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

@@ -1,26 +1,18 @@
 {
   "schemaVersion": 1,
   "kind": "system_catalog_organization_scope",
-  "updatedAt": "2026-09-16",
+  "updatedAt": "2026-09-19",
   "source": {
     "provider": "github",
     "organization": "heimgewebe",
-    "observedAt": "2026-09-16T04:14:27Z",
+    "observedAt": "2026-09-19T11:28:49Z",
     "selection": {
       "archived": "include",
       "fork": false
     },
-    "repositoryCount": 41
+    "repositoryCount": 29
   },
   "repositories": [
-    {
-      "name": "agent-control-surface",
-      "repository": "heimgewebe/agent-control-surface",
-      "visibility": "public",
-      "classification": "catalog",
-      "node": "repo:agent-control-surface",
-      "reason": "local manual control surface for Jules sessions and guarded step-by-step Git workflows"
-    },
     {
       "name": "alpha-lab",
       "repository": "heimgewebe/alpha-lab",
@@ -36,14 +28,6 @@
       "classification": "catalog",
       "node": "repo:audio",
       "reason": "Canonical Heim-PC audio configuration, recording, playback, instruments and experimental music systems"
-    },
-    {
-      "name": "aussensensor",
-      "repository": "heimgewebe/aussensensor",
-      "visibility": "public",
-      "classification": "catalog",
-      "node": "repo:aussensensor",
-      "reason": "Curated external signals and event feeds for Chronik"
     },
     {
       "name": "bureau",
@@ -94,14 +78,6 @@
       "reason": "Validated mirror and publication surface for canonical Metarepo contracts"
     },
     {
-      "name": "demo-repository",
-      "repository": "heimgewebe/demo-repository",
-      "visibility": "public",
-      "classification": "excluded",
-      "node": null,
-      "reason": "GitHub demonstration scaffold; it is not a Heimgewebe system, authority source or production component."
-    },
-    {
       "name": "device-graph",
       "repository": "heimgewebe/device-graph",
       "visibility": "public",
@@ -126,22 +102,6 @@
       "reason": "Independent read-mostly observer with evidence-bound advisory findings and no operational mutation authority."
     },
     {
-      "name": "hausKI",
-      "repository": "heimgewebe/hausKI",
-      "visibility": "public",
-      "classification": "archived_reference",
-      "node": "repo:hausKI",
-      "reason": "Retired historical reference; GitHub repository is archived and no active Fleet, runtime, routing or policy authority remains."
-    },
-    {
-      "name": "hausKI-audio",
-      "repository": "heimgewebe/hausKI-audio",
-      "visibility": "public",
-      "classification": "catalog",
-      "node": "repo:hausKI-audio",
-      "reason": "Retired historical donor and provenance reference for heimgewebe/audio; not the current audio product"
-    },
-    {
       "name": "heim-pc",
       "repository": "heimgewebe/heim-pc",
       "visibility": "public",
@@ -156,30 +116,6 @@
       "classification": "catalog",
       "node": "repo:heim-pc-dashboard-chatgpt-app",
       "reason": "Private implementation source for the local read-only ChatGPT dashboard service; it owns no task, claim, priority, execution or general operator truth."
-    },
-    {
-      "name": "heimgeist",
-      "repository": "heimgewebe/heimgeist",
-      "visibility": "public",
-      "classification": "catalog",
-      "node": "repo:heimgeist",
-      "reason": "System self-reflection and meta-agent experimentation"
-    },
-    {
-      "name": "heimlern",
-      "repository": "heimgewebe/heimlern",
-      "visibility": "public",
-      "classification": "archived_reference",
-      "node": "repo:heimlern",
-      "reason": "archived historical reference for retired offline learning and proposal experiments; no active runtime or contract authority"
-    },
-    {
-      "name": "heimserver",
-      "repository": "heimgewebe/heimserver",
-      "visibility": "public",
-      "classification": "catalog",
-      "node": "repo:heimserver",
-      "reason": "retired historical operations and contract reference for the former home-network service layer, edge gateway, DDNS and Weltgewebe infrastructure"
     },
     {
       "name": "infra",
@@ -214,28 +150,12 @@
       "reason": "read-only ecosystem observability and status projection"
     },
     {
-      "name": "leitwerk",
-      "repository": "heimgewebe/leitwerk",
-      "visibility": "public",
-      "classification": "archived_reference",
-      "node": "repo:leitwerk",
-      "reason": "archived historical reference for the retired Leitwerk coordination model; no active runtime, task, policy or contract authority"
-    },
-    {
       "name": "metarepo",
       "repository": "heimgewebe/metarepo",
       "visibility": "public",
       "classification": "catalog",
       "node": "repo:metarepo",
       "reason": "Fleet membership, canonical shared contracts and repository templates"
-    },
-    {
-      "name": "mitschreiber",
-      "repository": "heimgewebe/mitschreiber",
-      "visibility": "public",
-      "classification": "catalog",
-      "node": "repo:mitschreiber",
-      "reason": "Privacy-first on-device context capture and redacted event production"
     },
     {
       "name": "nixer",
@@ -316,22 +236,6 @@
       "classification": "catalog",
       "node": "repo:systemkatalog",
       "reason": "app-independent catalog for system purposes, truth ownership, stable relations and entrypoints"
-    },
-    {
-      "name": "vault-gewebe",
-      "repository": "heimgewebe/vault-gewebe",
-      "visibility": "public",
-      "classification": "catalog",
-      "node": "repo:vault-gewebe",
-      "reason": "Versioned shared knowledge vault and design source material"
-    },
-    {
-      "name": "vault-privat",
-      "repository": "heimgewebe/vault-privat",
-      "visibility": "private",
-      "classification": "excluded",
-      "node": null,
-      "reason": "Private content repository; it contains personal and domain material rather than system implementation or canonical ecosystem semantics."
     },
     {
       "name": "wgx",

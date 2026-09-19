@@ -3,7 +3,7 @@
   "kind": "system_catalog_inventory",
   "owner": "repo:systemkatalog",
   "catalogRole": "canonical_system_inventory",
-  "updatedAt": "2026-09-14",
+  "updatedAt": "2026-09-19",
   "nodes": [
     {
       "id": "actor:alexander",
@@ -451,34 +451,6 @@
       }
     },
     {
-      "id": "repo:heimlern",
-      "name": "heimlern",
-      "type": "repository",
-      "purpose": "archived historical reference for the former offline operator-learning implementation",
-      "notResponsibleFor": [
-        "active learning proposals",
-        "runtime operation",
-        "automatic policy application",
-        "task dispatch",
-        "merge authorization",
-        "active contract authority",
-        "new feature development without a separately registered experiment"
-      ],
-      "truthOwnership": [],
-      "entrypoints": {
-        "repository": "https://github.com/heimgewebe/heimlern"
-      },
-      "lifecycle": {
-        "state": "archived",
-        "reviewedAt": "2026-07-26",
-        "evidenceRefs": [
-          "registry/ecosystem/organization-scope.v1.json",
-          "registry/ecosystem/fleet-coverage.v1.json",
-          "bureau:OPERATOR-ECOSYSTEM-REDUNDANCY-V1-T036"
-        ]
-      }
-    },
-    {
       "id": "repo:metarepo",
       "name": "Metarepo",
       "type": "repository",
@@ -552,32 +524,6 @@
       }
     },
     {
-      "id": "repo:hausKI",
-      "name": "HausKI",
-      "type": "repository",
-      "purpose": "retired historical reference for former local offline-first AI orchestration and policy-controlled memory experiments",
-      "notResponsibleFor": [
-        "current operator execution or routing",
-        "active Fleet membership or deployment",
-        "current memory or policy authority",
-        "runtime health or service availability",
-        "ecosystem catalog semantics",
-        "merge approval"
-      ],
-      "truthOwnership": [],
-      "entrypoints": {
-        "repository": "https://github.com/heimgewebe/hausKI"
-      },
-      "lifecycle": {
-        "state": "retired",
-        "reviewedAt": "2026-09-14",
-        "evidenceRefs": [
-          "https://github.com/heimgewebe/hausKI/blob/a265afce24b6f7106c524da71ddd87ab51ba2e7c/docs/archive-readiness.v1.json",
-          "registry/ecosystem/fleet-coverage.v1.json"
-        ]
-      }
-    },
-    {
       "id": "repo:audio",
       "name": "audio",
       "type": "repository",
@@ -604,32 +550,6 @@
       }
     },
     {
-      "id": "repo:hausKI-audio",
-      "name": "HausKI Audio",
-      "type": "repository",
-      "purpose": "Retired historical donor and provenance reference for the canonical heimgewebe/audio repository",
-      "notResponsibleFor": [
-        "current audio product truth",
-        "runtime audio configuration",
-        "new maintenance work",
-        "task authority",
-        "merge approval"
-      ],
-      "truthOwnership": [],
-      "entrypoints": {
-        "repository": "https://github.com/heimgewebe/hausKI-audio"
-      },
-      "lifecycle": {
-        "state": "retired",
-        "reviewedAt": "2026-07-28",
-        "evidenceRefs": [
-          "https://github.com/heimgewebe/audio/blob/58935598706e24438c95ae092d802709b0ae2203/README.md",
-          "https://github.com/heimgewebe/bureau/blob/702fd606235494c2bd3a151555b2a2b9169f745c/docs/plans/operator-platform-masterplan-v2.md",
-          "bureau:OPERATOR-ECOSYSTEM-REDUNDANCY-V1-T065"
-        ]
-      }
-    },
-    {
       "id": "repo:semantAH",
       "name": "semantAH",
       "type": "repository",
@@ -642,50 +562,6 @@
       "truthOwnership": [],
       "entrypoints": {
         "repository": "https://github.com/heimgewebe/semantAH"
-      },
-      "lifecycle": {
-        "state": "active",
-        "reviewedAt": "2026-07-26",
-        "evidenceRefs": [
-          "registry/ecosystem/organization-scope.v1.json"
-        ]
-      }
-    },
-    {
-      "id": "repo:aussensensor",
-      "name": "Außensensor",
-      "type": "repository",
-      "purpose": "Curated external signals and event feeds for Chronik",
-      "notResponsibleFor": [
-        "task authority",
-        "canonical event history",
-        "merge approval"
-      ],
-      "truthOwnership": [],
-      "entrypoints": {
-        "repository": "https://github.com/heimgewebe/aussensensor"
-      },
-      "lifecycle": {
-        "state": "active",
-        "reviewedAt": "2026-07-26",
-        "evidenceRefs": [
-          "registry/ecosystem/organization-scope.v1.json"
-        ]
-      }
-    },
-    {
-      "id": "repo:mitschreiber",
-      "name": "Mitschreiber",
-      "type": "repository",
-      "purpose": "Privacy-first on-device context capture and redacted event production",
-      "notResponsibleFor": [
-        "task authority",
-        "ecosystem semantics",
-        "merge approval"
-      ],
-      "truthOwnership": [],
-      "entrypoints": {
-        "repository": "https://github.com/heimgewebe/mitschreiber"
       },
       "lifecycle": {
         "state": "active",
@@ -718,35 +594,6 @@
       }
     },
     {
-      "id": "repo:heimgeist",
-      "name": "Heimgeist",
-      "type": "repository",
-      "purpose": "decommissioned historical reference for the former Heimgewebe system-reflection meta-agent, pending GitHub archive flag",
-      "notResponsibleFor": [
-        "production authority",
-        "task or claim state",
-        "merge approval",
-        "runtime execution",
-        "event delivery",
-        "agent orchestration",
-        "current ecosystem semantics"
-      ],
-      "truthOwnership": [],
-      "entrypoints": {
-        "repository": "https://github.com/heimgewebe/heimgeist"
-      },
-      "lifecycle": {
-        "state": "transition",
-        "reviewedAt": "2026-08-31",
-        "evidenceRefs": [
-          "https://github.com/heimgewebe/heimgeist/pull/100",
-          "https://github.com/heimgewebe/plexer/pull/104",
-          "https://github.com/heimgewebe/metarepo/pull/727",
-          "bureau:OPERATOR-ECOSYSTEM-REDUNDANCY-V1-T067"
-        ]
-      }
-    },
-    {
       "id": "repo:heim-pc",
       "name": "heim-pc",
       "type": "repository",
@@ -774,28 +621,6 @@
       }
     },
     {
-      "id": "repo:vault-gewebe",
-      "name": "Vault Gewebe",
-      "type": "repository",
-      "purpose": "Versioned shared knowledge vault and design source material",
-      "notResponsibleFor": [
-        "task status",
-        "runtime truth",
-        "merge authority"
-      ],
-      "truthOwnership": [],
-      "entrypoints": {
-        "repository": "https://github.com/heimgewebe/vault-gewebe"
-      },
-      "lifecycle": {
-        "state": "active",
-        "reviewedAt": "2026-07-26",
-        "evidenceRefs": [
-          "registry/ecosystem/organization-scope.v1.json"
-        ]
-      }
-    },
-    {
       "id": "repo:commonworld",
       "name": "Commonworld",
       "type": "repository",
@@ -818,90 +643,6 @@
         "evidenceRefs": [
           "https://github.com/heimgewebe/commonworld/blob/35b6b19529891d33f0b0db3f864256f7069bbba4/README.md",
           "https://github.com/heimgewebe/commonworld/blob/35b6b19529891d33f0b0db3f864256f7069bbba4/contracts/commonworld/commons-definition.contract.json"
-        ]
-      }
-    },
-    {
-      "id": "repo:agent-control-surface",
-      "name": "Agent Control Surface",
-      "type": "repository",
-      "purpose": "local manual control surface for Jules sessions and guarded step-by-step Git workflows",
-      "notResponsibleFor": [
-        "autonomous task dispatch",
-        "task priority",
-        "merge authorization",
-        "remote access security"
-      ],
-      "truthOwnership": [],
-      "entrypoints": {
-        "repository": "https://github.com/heimgewebe/agent-control-surface",
-        "readme": "https://github.com/heimgewebe/agent-control-surface/blob/main/README.md",
-        "runbook": "https://github.com/heimgewebe/agent-control-surface/blob/main/RUNBOOK.md"
-      },
-      "lifecycle": {
-        "state": "transition",
-        "reviewedAt": "2026-07-26",
-        "evidenceRefs": [
-          "docs/audits/repository-lifecycle-classification-2026-07-19.v1.json",
-          "bureau:OPERATOR-ECOSYSTEM-REDUNDANCY-V1-T034"
-        ]
-      }
-    },
-    {
-      "id": "repo:heimserver",
-      "name": "Heimserver",
-      "type": "repository",
-      "purpose": "retired historical operations and contract reference for the former home-network service layer, edge gateway, DDNS and Weltgewebe infrastructure",
-      "notResponsibleFor": [
-        "runtime health claims without live checks",
-        "task state",
-        "ecosystem semantics",
-        "secret storage in Git"
-      ],
-      "truthOwnership": [],
-      "entrypoints": {
-        "repository": "https://github.com/heimgewebe/heimserver",
-        "readme": "https://github.com/heimgewebe/heimserver/blob/main/README.md",
-        "agentEntry": "https://github.com/heimgewebe/heimserver/blob/main/AGENTS.md",
-        "systemMap": "https://github.com/heimgewebe/heimserver/blob/main/SYSTEM_MAP.md"
-      },
-      "lifecycle": {
-        "state": "retired",
-        "reviewedAt": "2026-08-01",
-        "evidenceRefs": [
-          "https://github.com/heimgewebe/heimserver/blob/4c4099e234a277b5ea48a28939f0ec4d08711f2a/repo.meta.yaml",
-          "https://github.com/heimgewebe/infra/blob/e1245b502393edcdb42d0f20317c8a5a2c2defbe/INFRA_CONSTITUTION.md"
-        ]
-      }
-    },
-    {
-      "id": "repo:leitwerk",
-      "name": "Leitwerk",
-      "type": "repository",
-      "purpose": "archived historical reference for the former pre-Bureau and pre-Grabowski coordination model",
-      "notResponsibleFor": [
-        "active contract or policy authority",
-        "current task or claim state",
-        "runtime execution",
-        "merge authorization",
-        "agent dispatch",
-        "new feature development"
-      ],
-      "truthOwnership": [],
-      "entrypoints": {
-        "repository": "https://github.com/heimgewebe/leitwerk",
-        "readme": "https://github.com/heimgewebe/leitwerk/blob/1449145af543b78c0d3813942f1d6d95ddb33c4a/README.md",
-        "archiveEvidence": "https://github.com/heimgewebe/leitwerk/blob/1449145af543b78c0d3813942f1d6d95ddb33c4a/ARCHIVE.md"
-      },
-      "lifecycle": {
-        "state": "archived",
-        "reviewedAt": "2026-07-29",
-        "evidenceRefs": [
-          "https://github.com/heimgewebe/leitwerk/tree/1449145af543b78c0d3813942f1d6d95ddb33c4a",
-          "https://github.com/heimgewebe/metarepo/pull/667",
-          "https://github.com/heimgewebe/metarepo/pull/668",
-          "https://github.com/heimgewebe/leitwerk/pull/27",
-          "bureau:OPERATOR-ECOSYSTEM-REDUNDANCY-V1-T037"
         ]
       }
     },

@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
   "kind": "system_catalog_fleet_coverage",
-  "updatedAt": "2026-09-14",
+  "updatedAt": "2026-09-19",
   "membershipAuthority": {
     "repository": "heimgewebe/metarepo",
-    "commit": "6a9d37b9b8a558fae74d3087fbfe5a3a72dd0d37",
+    "commit": "bb32f569ca35bdfdc9d956b31709c86cd83eb685",
     "path": "fleet/repos.yml",
-    "contentSha256": "5bafc4e94b740c015a1270d2bc5ee1bffb22a1c786aebea752287f7b6ce8beaa",
+    "contentSha256": "a089df0e8f45d4a4c73da3517a0cebe1644bf3a83bb0e8460c08924b512379dc",
     "scope": "fleet_membership_only"
   },
   "catalogAuthority": {
@@ -16,22 +16,10 @@
   },
   "repositories": [
     {
-      "node": "repo:agent-control-surface",
-      "repository": "heimgewebe/agent-control-surface",
-      "entrypoint": "https://github.com/heimgewebe/agent-control-surface",
-      "membership": "catalog-only"
-    },
-    {
       "node": "repo:alpha-lab",
       "repository": "heimgewebe/alpha-lab",
       "entrypoint": "https://github.com/heimgewebe/alpha-lab",
       "membership": "catalog-only"
-    },
-    {
-      "node": "repo:aussensensor",
-      "repository": "heimgewebe/aussensensor",
-      "entrypoint": "https://github.com/heimgewebe/aussensensor",
-      "membership": "fleet"
     },
     {
       "node": "repo:bureau",
@@ -70,22 +58,10 @@
       "membership": "catalog-only"
     },
     {
-      "node": "repo:hausKI",
-      "repository": "heimgewebe/hausKI",
-      "entrypoint": "https://github.com/heimgewebe/hausKI",
-      "membership": "archived-reference"
-    },
-    {
       "node": "repo:audio",
       "repository": "heimgewebe/audio",
       "entrypoint": "https://github.com/heimgewebe/audio",
       "membership": "fleet"
-    },
-    {
-      "node": "repo:hausKI-audio",
-      "repository": "heimgewebe/hausKI-audio",
-      "entrypoint": "https://github.com/heimgewebe/hausKI-audio",
-      "membership": "catalog-only"
     },
     {
       "node": "repo:heim-pc",
@@ -97,24 +73,6 @@
       "node": "repo:heim-pc-dashboard-chatgpt-app",
       "repository": "heimgewebe/heim-pc-dashboard-chatgpt-app",
       "entrypoint": "https://github.com/heimgewebe/heim-pc-dashboard-chatgpt-app",
-      "membership": "catalog-only"
-    },
-    {
-      "node": "repo:heimgeist",
-      "repository": "heimgewebe/heimgeist",
-      "entrypoint": "https://github.com/heimgewebe/heimgeist",
-      "membership": "fleet"
-    },
-    {
-      "node": "repo:heimlern",
-      "repository": "heimgewebe/heimlern",
-      "entrypoint": "https://github.com/heimgewebe/heimlern",
-      "membership": "archived-reference"
-    },
-    {
-      "node": "repo:heimserver",
-      "repository": "heimgewebe/heimserver",
-      "entrypoint": "https://github.com/heimgewebe/heimserver",
       "membership": "catalog-only"
     },
     {
@@ -136,21 +94,9 @@
       "membership": "fleet"
     },
     {
-      "node": "repo:leitwerk",
-      "repository": "heimgewebe/leitwerk",
-      "entrypoint": "https://github.com/heimgewebe/leitwerk",
-      "membership": "archived-reference"
-    },
-    {
       "node": "repo:metarepo",
       "repository": "heimgewebe/metarepo",
       "entrypoint": "https://github.com/heimgewebe/metarepo",
-      "membership": "fleet"
-    },
-    {
-      "node": "repo:mitschreiber",
-      "repository": "heimgewebe/mitschreiber",
-      "entrypoint": "https://github.com/heimgewebe/mitschreiber",
       "membership": "fleet"
     },
     {
@@ -208,12 +154,6 @@
       "membership": "catalog-only"
     },
     {
-      "node": "repo:vault-gewebe",
-      "repository": "heimgewebe/vault-gewebe",
-      "entrypoint": "https://github.com/heimgewebe/vault-gewebe",
-      "membership": "fleet"
-    },
-    {
       "node": "repo:labor",
       "repository": "heimgewebe/labor",
       "entrypoint": "https://github.com/heimgewebe/labor",
@@ -238,28 +178,7 @@
       "membership": "catalog-only"
     }
   ],
-  "sourceExclusions": [
-    {
-      "name": "hausKI",
-      "reason": "Retired historical reference explicitly marked status: archived-reference and fleet: false in the bound Metarepo source; no active Fleet, runtime or dispatch authority."
-    },
-    {
-      "name": "hausKI-audio",
-      "reason": "Historical donor repository explicitly marked status: related and fleet: false in the bound Metarepo source; current audio product truth belongs to heimgewebe/audio."
-    },
-    {
-      "name": "heimlern",
-      "reason": "Archived historical reference explicitly marked status: archived-reference and fleet: false in the bound Metarepo source."
-    },
-    {
-      "name": "leitwerk",
-      "reason": "Archived historical reference explicitly marked status: archived-reference and fleet: false in the bound Metarepo source."
-    },
-    {
-      "name": "vault-privat",
-      "reason": "Private related repository explicitly marked fleet: false in Metarepo."
-    }
-  ],
+  "sourceExclusions": [],
   "doesNotEstablish": [
     "repository_health",
     "checkout_presence",
