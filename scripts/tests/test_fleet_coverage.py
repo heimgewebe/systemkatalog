@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import copy
 import json
 import shutil
 import sys
@@ -31,14 +32,14 @@ class FleetCoverageTests(unittest.TestCase):
 
     def test_repository_coverage_is_complete(self) -> None:
         coverage = validate_coverage(ROOT, self._repository_nodes())
-        self.assertEqual(len(coverage["repositories"]), 37)
+        self.assertEqual(len(coverage["repositories"]), 27)
         self.assertEqual(
             coverage["membershipAuthority"],
             {
                 "repository": "heimgewebe/metarepo",
-                "commit": "6a9d37b9b8a558fae74d3087fbfe5a3a72dd0d37",
+                "commit": "bb32f569ca35bdfdc9d956b31709c86cd83eb685",
                 "path": "fleet/repos.yml",
-                "contentSha256": "5bafc4e94b740c015a1270d2bc5ee1bffb22a1c786aebea752287f7b6ce8beaa",
+                "contentSha256": "a089df0e8f45d4a4c73da3517a0cebe1644bf3a83bb0e8460c08924b512379dc",
                 "scope": "fleet_membership_only",
             },
         )
@@ -47,20 +48,12 @@ class FleetCoverageTests(unittest.TestCase):
                 item["membership"] in {"fleet", "related"}
                 for item in coverage["repositories"]
             ),
-            17,
+            13,
         )
-        self.assertEqual(
-            {item["name"] for item in coverage["sourceExclusions"]},
-            {"hausKI", "hausKI-audio", "heimlern", "leitwerk", "vault-privat"},
-        )
-        self.assertEqual(
-            next(
-                item["membership"]
-                for item in coverage["repositories"]
-                if item["repository"] == "heimgewebe/heimlern"
-            ),
-            "archived-reference",
-        )
+        self.assertEqual(coverage["sourceExclusions"], [])
+        repositories = {item["repository"] for item in coverage["repositories"]}
+        for deleted in ("heimlern", "hausKI", "leitwerk", "vault-gewebe"):
+            self.assertNotIn(f"heimgewebe/{deleted}", repositories)
 
     def test_parser_and_comparison_accept_authority_shape(self) -> None:
         source_text = """---
@@ -115,15 +108,15 @@ repos:
                 parse_fleet_source(path, expected_sha256="0" * 64)
 
     def test_archived_reference_status_drift_fails_closed(self) -> None:
-        coverage = load_coverage(ROOT)
-        source = (
-            {
-                item["repository"].split("/", 1)[1]: item["membership"]
-                for item in coverage["repositories"]
-                if item["membership"] in {"fleet", "related"}
-            },
-            {"hausKI": "archived-reference", "hausKI-audio": "excluded", "heimlern": "excluded", "leitwerk": "archived-reference", "vault-privat": "excluded"},
-        )
+        coverage = copy.deepcopy(load_coverage(ROOT))
+        alpha = next(item for item in coverage["repositories"] if item["repository"] == "heimgewebe/alpha-lab")
+        alpha["membership"] = "archived-reference"
+        coverage["sourceExclusions"] = [{"name": "alpha-lab", "reason": "synthetic archived fixture"}]
+        source = ({
+            item["repository"].split("/", 1)[1]: item["membership"]
+            for item in coverage["repositories"]
+            if item["membership"] in {"fleet", "related"}
+        }, {"alpha-lab": "excluded"})
         with self.assertRaisesRegex(FleetCoverageError, "archived-reference drift"):
             compare_with_source(coverage, source)
 
@@ -180,7 +173,7 @@ repos:
             }
             for item in coverage["repositories"]
         ]
-        self.assertEqual(validate_github_inventory(coverage, inventory), 37)
+        self.assertEqual(validate_github_inventory(coverage, inventory), 27)
 
     def test_missing_github_repository_fails_closed(self) -> None:
         coverage = load_coverage(ROOT)
@@ -192,12 +185,14 @@ repos:
             validate_github_inventory(coverage, inventory)
 
     def test_archived_reference_mismatch_fails_closed(self) -> None:
-        coverage = load_coverage(ROOT)
+        coverage = copy.deepcopy(load_coverage(ROOT))
+        alpha = next(item for item in coverage["repositories"] if item["repository"] == "heimgewebe/alpha-lab")
+        alpha["membership"] = "archived-reference"
         inventory = [
             {"nameWithOwner": item["repository"], "isArchived": False}
             for item in coverage["repositories"]
         ]
-        with self.assertRaisesRegex(FleetCoverageError, "archived_mismatch=.*heimgewebe/heimlern"):
+        with self.assertRaisesRegex(FleetCoverageError, "archived_mismatch=.*heimgewebe/alpha-lab"):
             validate_github_inventory(coverage, inventory)
 
     def test_non_array_github_inventory_fails_closed(self) -> None:

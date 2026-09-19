@@ -6,56 +6,53 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[2]
-HAUSKI_COMMIT = "a265afce24b6f7106c524da71ddd87ab51ba2e7c"
-HAUSKI_EVIDENCE_SHA256 = "42f5ded06265155f5d2d199673ecb4a8495b3cfa14b4d8ac939891093a0dc84a"
-METAREPO_COMMIT = "6a9d37b9b8a558fae74d3087fbfe5a3a72dd0d37"
+METAREPO_COMMIT = "bb32f569ca35bdfdc9d956b31709c86cd83eb685"
+FLEET_SHA256 = "a089df0e8f45d4a4c73da3517a0cebe1644bf3a83bb0e8460c08924b512379dc"
 
 
 class HausKIRetirementTests(unittest.TestCase):
     def _load(self, relative: str):
         return json.loads((ROOT / relative).read_text(encoding="utf-8"))
 
-    def test_hauski_is_retired_without_current_truth_ownership(self) -> None:
-        nodes = self._load("registry/ecosystem/nodes.json")["nodes"]
-        hauski = next(item for item in nodes if item["id"] == "repo:hausKI")
-        self.assertEqual(hauski["lifecycle"]["state"], "retired")
-        self.assertEqual(hauski["truthOwnership"], [])
-        self.assertIn("current operator execution or routing", hauski["notResponsibleFor"])
-        self.assertIn("active Fleet membership or deployment", hauski["notResponsibleFor"])
+    def test_hauski_is_absent_from_current_catalog_truth(self) -> None:
+        nodes = {item["id"] for item in self._load("registry/ecosystem/nodes.json")["nodes"]}
+        coverage = {
+            item["node"]
+            for item in self._load("registry/ecosystem/fleet-coverage.v1.json")["repositories"]
+        }
+        scope = {
+            item["name"]
+            for item in self._load("registry/ecosystem/organization-scope.v1.json")["repositories"]
+        }
+        bindings = {
+            item["system"]
+            for item in self._load("registry/ecosystem/source-bindings.v1.json")["systems"]
+        }
+        resilience = {
+            item["system"]
+            for item in self._load("registry/ecosystem/resilience.v1.json")["systems"]
+        }
+        for current in (nodes, coverage, bindings, resilience):
+            self.assertNotIn("repo:hausKI", current)
+        self.assertNotIn("hausKI", scope)
 
-    def test_hauski_is_archived_reference_in_fleet_coverage(self) -> None:
+    def test_fleet_authority_records_physical_removal(self) -> None:
         coverage = self._load("registry/ecosystem/fleet-coverage.v1.json")
         self.assertEqual(coverage["membershipAuthority"]["commit"], METAREPO_COMMIT)
-        hauski = next(
-            item for item in coverage["repositories"] if item["node"] == "repo:hausKI"
+        self.assertEqual(
+            coverage["membershipAuthority"]["contentSha256"], FLEET_SHA256
         )
-        self.assertEqual(hauski["membership"], "archived-reference")
-        self.assertIn("hausKI", {item["name"] for item in coverage["sourceExclusions"]})
+        self.assertEqual(coverage["sourceExclusions"], [])
 
     def test_semantah_no_longer_provides_an_active_hauski_layer(self) -> None:
         edges = self._load("registry/ecosystem/edges.json")["edges"]
         self.assertFalse(
-            any(
-                item["from"] == "repo:semantAH"
-                and item["to"] == "repo:hausKI"
-                and item["type"] == "provides"
-                for item in edges
-            )
+            any(item["from"] == "repo:hausKI" or item["to"] == "repo:hausKI" for item in edges)
         )
 
-    def test_scope_is_archived_reference_after_github_archive_bit_is_true(self) -> None:
-        scope = self._load("registry/ecosystem/organization-scope.v1.json")["repositories"]
-        hauski = next(item for item in scope if item["repository"] == "heimgewebe/hausKI")
-        self.assertEqual(hauski["classification"], "archived_reference")
-        self.assertIn("GitHub repository is archived", hauski["reason"])
-
-    def test_source_binding_points_to_exact_retirement_evidence(self) -> None:
-        bindings = self._load("registry/ecosystem/source-bindings.v1.json")["systems"]
-        hauski = next(item for item in bindings if item["system"] == "repo:hausKI")
-        self.assertEqual(hauski["source"]["commit"], HAUSKI_COMMIT)
-        locator = hauski["source"]["locator"]
-        self.assertEqual(locator["path"], "docs/archive-readiness.v1.json")
-        self.assertEqual(locator["contentSha256"], HAUSKI_EVIDENCE_SHA256)
+    def test_historical_admission_baseline_preserves_hauski_identity(self) -> None:
+        policy = self._load("policy/component-admission.v1.json")
+        self.assertIn("repo:hausKI", policy["grandfatheredNodeIds"])
 
 
 if __name__ == "__main__":

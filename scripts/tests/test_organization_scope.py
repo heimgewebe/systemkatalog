@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import copy
 import json
 import shutil
 import sys
@@ -34,10 +35,10 @@ class OrganizationScopeTests(unittest.TestCase):
 
     def test_all_organization_repositories_are_classified(self) -> None:
         scope = self._validate()
-        self.assertEqual(len(scope["repositories"]), 41)
+        self.assertEqual(len(scope["repositories"]), 29)
         self.assertEqual(
             sum(row["classification"] == "catalog" for row in scope["repositories"]),
-            34,
+            27,
         )
         self.assertEqual(
             {
@@ -45,7 +46,7 @@ class OrganizationScopeTests(unittest.TestCase):
                 for row in scope["repositories"]
                 if row["classification"] == "archived_reference"
             },
-            {"hausKI", "heimlern", "leitwerk"},
+            set(),
         )
         self.assertEqual(
             {
@@ -53,7 +54,7 @@ class OrganizationScopeTests(unittest.TestCase):
                 for row in scope["repositories"]
                 if row["classification"] == "excluded"
             },
-            {"capacity-marketplace", "demo-repository", "nixer", "vault-privat"},
+            {"capacity-marketplace", "nixer"},
         )
 
     def test_unclassified_snapshot_repository_fails_closed(self) -> None:
@@ -80,8 +81,8 @@ class OrganizationScopeTests(unittest.TestCase):
             )
             path = target / "registry/ecosystem/organization-scope.v1.json"
             data = json.loads(path.read_text(encoding="utf-8"))
-            demo = next(row for row in data["repositories"] if row["name"] == "demo-repository")
-            demo["node"] = "repo:demo-repository"
+            demo = next(row for row in data["repositories"] if row["name"] == "capacity-marketplace")
+            demo["node"] = "repo:capacity-marketplace"
             path.write_text(json.dumps(data), encoding="utf-8")
             with self.assertRaisesRegex(
                 OrganizationScopeError, "excluded node must be null"
@@ -100,7 +101,7 @@ class OrganizationScopeTests(unittest.TestCase):
             }
             for row in scope["repositories"]
         ]
-        self.assertEqual(validate_github_inventory(scope, inventory), 41)
+        self.assertEqual(validate_github_inventory(scope, inventory), 29)
 
     def test_public_github_drift_fails_closed(self) -> None:
         scope = load_scope(ROOT)
@@ -113,15 +114,17 @@ class OrganizationScopeTests(unittest.TestCase):
                 "isFork": False,
             }
             for row in scope["repositories"]
-            if row["visibility"] == "public" and row["name"] != "demo-repository"
+            if row["visibility"] == "public" and row["name"] != "sichter"
         ]
         with self.assertRaisesRegex(
-            OrganizationScopeError, "missing=.*demo-repository"
+            OrganizationScopeError, "missing=.*sichter"
         ):
             validate_github_inventory(scope, inventory, visibility="public")
 
     def test_archived_reference_mismatch_fails_closed(self) -> None:
-        scope = load_scope(ROOT)
+        scope = copy.deepcopy(load_scope(ROOT))
+        alpha = next(row for row in scope["repositories"] if row["name"] == "alpha-lab")
+        alpha["classification"] = "archived_reference"
         inventory = [
             {
                 "name": row["name"],
@@ -133,7 +136,7 @@ class OrganizationScopeTests(unittest.TestCase):
             for row in scope["repositories"]
         ]
         with self.assertRaisesRegex(
-            OrganizationScopeError, "identity or visibility drift: .*heimlern"
+            OrganizationScopeError, "identity or visibility drift: .*alpha-lab"
         ):
             validate_github_inventory(scope, inventory)
 

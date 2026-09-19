@@ -90,12 +90,6 @@ EXPECTED = {
         "sha256": "b8539db377f17808719f59efc33a63fae8fa2ca97f29f674f0824fc843033b94",
         "path": "manifest/operator-entry.v1.json",
     },
-    "repo:heimserver": {
-        "repository": "heimgewebe/heimserver",
-        "commit": "4c4099e234a277b5ea48a28939f0ec4d08711f2a",
-        "sha256": "1a6555386d9e641c17485fc76dc6ca00bae3956f78115a06ec10a63095dc02b2",
-        "path": "repo.meta.yaml",
-    },
     "repo:commonworld": {
         "repository": "heimgewebe/commonworld",
         "commit": "43e773a9f118865d4177a763c2c6eae23db04487",
@@ -127,6 +121,8 @@ class SourceBindingDriftCloseoutTests(unittest.TestCase):
                     source["locator"]["contentSha256"], expected["sha256"]
                 )
                 self.assertIsInstance(binding["reviewedAt"], str)
+
+        self.assertNotIn("repo:heimserver", systems)
 
 
 if __name__ == "__main__":

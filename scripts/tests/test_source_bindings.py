@@ -46,11 +46,6 @@ class SourceBindingTests(unittest.TestCase):
                 "path": "system/metarepo-role.v1.json",
                 "sha256": "9f22e6414f841ed017589586d655fbcbe636c14a54ad02c09a7408c095fe9ffe",
             },
-            "repo:heimlern": {
-                "commit": "f74579cbe46d5f5f7b95c4c3431da03efb67cc85",
-                "path": "docs/archive-readiness.v1.json",
-                "sha256": "bbf1d19865812b9584a3645ecd031f0854ee6110849d249692b4ac62d8f8d1e0",
-            },
             "repo:heim-pc": {
                 "commit": "671565d78b115cf2205d8a05bdeb709ac998f428",
                 "path": "manifest/operator-entry.v1.json",
@@ -69,6 +64,7 @@ class SourceBindingTests(unittest.TestCase):
                     item["source"]["locator"]["contentSha256"], source["sha256"]
                 )
                 self.assertLessEqual(item["uncertainty"], 0.03)
+        self.assertNotIn("repo:heimlern", {item["system"] for item in bindings["systems"]})
 
     def test_private_repository_bindings_publish_no_commit(self) -> None:
         bindings = json.loads((ROOT / "registry/ecosystem/source-bindings.v1.json").read_text(encoding="utf-8"))
