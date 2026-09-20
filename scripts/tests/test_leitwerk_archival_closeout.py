@@ -67,9 +67,9 @@ class LeitwerkArchivalCloseoutTests(unittest.TestCase):
         )
         self.assertEqual(coverage["sourceExclusions"], [])
 
-    def test_historical_admission_baseline_preserves_leitwerk_identity(self) -> None:
+    def test_retired_admission_policy_drops_leitwerk_identity(self) -> None:
         policy = load("policy/component-admission.v1.json")
-        self.assertIn("repo:leitwerk", policy["grandfatheredNodeIds"])
+        self.assertNotIn("repo:leitwerk", policy["grandfatheredNodeIds"])
 
 
 if __name__ == "__main__":

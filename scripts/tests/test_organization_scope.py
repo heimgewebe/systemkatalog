@@ -35,7 +35,7 @@ class OrganizationScopeTests(unittest.TestCase):
 
     def test_all_organization_repositories_are_classified(self) -> None:
         scope = self._validate()
-        self.assertEqual(len(scope["repositories"]), 29)
+        self.assertEqual(len(scope["repositories"]), 30)
         self.assertEqual(
             sum(row["classification"] == "catalog" for row in scope["repositories"]),
             27,
@@ -54,7 +54,7 @@ class OrganizationScopeTests(unittest.TestCase):
                 for row in scope["repositories"]
                 if row["classification"] == "excluded"
             },
-            {"capacity-marketplace", "nixer"},
+            {"capacity-marketplace", "gegner", "nixer"},
         )
 
     def test_unclassified_snapshot_repository_fails_closed(self) -> None:
@@ -101,7 +101,7 @@ class OrganizationScopeTests(unittest.TestCase):
             }
             for row in scope["repositories"]
         ]
-        self.assertEqual(validate_github_inventory(scope, inventory), 29)
+        self.assertEqual(validate_github_inventory(scope, inventory), 30)
 
     def test_public_github_drift_fails_closed(self) -> None:
         scope = load_scope(ROOT)
