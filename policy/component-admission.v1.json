@@ -16,26 +16,17 @@
     "experimental"
   ],
   "grandfatheredNodeIds": [
-    "repo:agent-control-surface",
-    "repo:aussensensor",
     "repo:bureau",
     "repo:chronik",
     "repo:commonworld",
     "repo:contracts-mirror",
     "repo:device-graph",
     "repo:grabowski",
-    "repo:hausKI",
-    "repo:hausKI-audio",
     "repo:heim-pc",
-    "repo:heimgeist",
-    "repo:heimlern",
-    "repo:heimserver",
     "repo:infra",
     "repo:konvergenzregelkreis",
     "repo:leitstand",
-    "repo:leitwerk",
     "repo:metarepo",
-    "repo:mitschreiber",
     "repo:obsidian-bridge",
     "repo:plexer",
     "repo:repoground",
@@ -45,7 +36,6 @@
     "repo:sichter",
     "repo:snippet-engine-control",
     "repo:systemkatalog",
-    "repo:vault-gewebe",
     "repo:labor",
     "repo:weltgewebe",
     "repo:wgx",
@@ -83,5 +73,5 @@
       "global complexity score"
     ]
   },
-  "grandfatheredBaselineSha256": "2c5f253e1e5149533a2237f3b62a95d8c2bcea32c70522c8ff415789055ba43b"
+  "grandfatheredBaselineSha256": "88dcb560123c8c8d09b8d25b568d34c12ad254eda35efe285bdca9d87511a81d"
 }

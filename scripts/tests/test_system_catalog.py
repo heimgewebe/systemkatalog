@@ -31,10 +31,10 @@ class SystemCatalogTests(unittest.TestCase):
         self.assertEqual(result["catalogRepositories"], 27)
         self.assertEqual(result["fleetRepositories"], 13)
         self.assertEqual(result["fleetExclusions"], 0)
-        self.assertEqual(result["organizationRepositories"], 29)
+        self.assertEqual(result["organizationRepositories"], 30)
         self.assertEqual(result["organizationCatalogRepositories"], 27)
         self.assertEqual(result["organizationArchivedReferences"], 0)
-        self.assertEqual(result["organizationExclusions"], 2)
+        self.assertEqual(result["organizationExclusions"], 3)
         self.assertEqual(result["activeLegacyRooms"], 0)
         for room in (
             "bestand",
@@ -66,7 +66,7 @@ class SystemCatalogTests(unittest.TestCase):
             "agent-control-surface",
         ):
             self.assertNotIn(f"heimgewebe/{deleted}", actual)
-        self.assertIn("29 nicht geforkte Repositories", actual)
+        self.assertIn("30 nicht geforkte Repositories", actual)
 
     def test_entrypoint_href_uses_raw_target_not_markdown_escape(self) -> None:
         from render_system_catalog import _entrypoints_cell
@@ -116,6 +116,25 @@ class SystemCatalogTests(unittest.TestCase):
             "repo:vault-gewebe",
         }
         self.assertTrue(deleted_nodes.isdisjoint({node["id"] for node in data["nodes"]}))
+
+
+    def test_deleted_repositories_are_not_grandfathered_components(self) -> None:
+        policy = json.loads(
+            (ROOT / "policy/component-admission.v1.json").read_text(encoding="utf-8")
+        )
+        deleted = {
+            "repo:agent-control-surface",
+            "repo:aussensensor",
+            "repo:hausKI",
+            "repo:hausKI-audio",
+            "repo:heimgeist",
+            "repo:heimlern",
+            "repo:heimserver",
+            "repo:leitwerk",
+            "repo:mitschreiber",
+            "repo:vault-gewebe",
+        }
+        self.assertTrue(deleted.isdisjoint(set(policy["grandfatheredNodeIds"])))
 
 
     def test_repository_relative_entrypoints_must_resolve(self) -> None:
