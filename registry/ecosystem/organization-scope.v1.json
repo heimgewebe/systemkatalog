@@ -1,16 +1,16 @@
 {
   "schemaVersion": 1,
   "kind": "system_catalog_organization_scope",
-  "updatedAt": "2026-09-19",
+  "updatedAt": "2026-09-20",
   "source": {
     "provider": "github",
     "organization": "heimgewebe",
-    "observedAt": "2026-09-19T11:28:49Z",
+    "observedAt": "2026-09-20T16:48:47Z",
     "selection": {
       "archived": "include",
       "fork": false
     },
-    "repositoryCount": 29
+    "repositoryCount": 30
   },
   "repositories": [
     {
@@ -84,6 +84,14 @@
       "classification": "catalog",
       "node": "repo:device-graph",
       "reason": "infrastructure device graph; adjacent but not ecosystem-governance canon"
+    },
+    {
+      "name": "gegner",
+      "repository": "heimgewebe/gegner",
+      "visibility": "public",
+      "classification": "excluded",
+      "node": null,
+      "reason": "Minimal same-thread countercheck surface. It is not a reviewer, evidence source, decision authority or execution authority; inclusion in GitHub organization scope does not grant Systemkatalog admission."
     },
     {
       "name": "grabowski",

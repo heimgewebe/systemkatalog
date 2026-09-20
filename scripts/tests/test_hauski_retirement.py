@@ -50,9 +50,9 @@ class HausKIRetirementTests(unittest.TestCase):
             any(item["from"] == "repo:hausKI" or item["to"] == "repo:hausKI" for item in edges)
         )
 
-    def test_historical_admission_baseline_preserves_hauski_identity(self) -> None:
+    def test_retired_admission_policy_drops_hauski_identity(self) -> None:
         policy = self._load("policy/component-admission.v1.json")
-        self.assertIn("repo:hausKI", policy["grandfatheredNodeIds"])
+        self.assertNotIn("repo:hausKI", policy["grandfatheredNodeIds"])
 
 
 if __name__ == "__main__":
