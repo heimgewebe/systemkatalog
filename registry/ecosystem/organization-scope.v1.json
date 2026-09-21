@@ -5,12 +5,12 @@
   "source": {
     "provider": "github",
     "organization": "heimgewebe",
-    "observedAt": "2026-09-21T08:36:58Z",
+    "observedAt": "2026-09-21T08:57:12Z",
     "selection": {
       "archived": "include",
       "fork": false
     },
-    "repositoryCount": 29
+    "repositoryCount": 30
   },
   "repositories": [
     {
@@ -132,6 +132,14 @@
       "classification": "catalog",
       "node": "repo:infra",
       "reason": "host, network, cockpit and operational runbooks"
+    },
+    {
+      "name": "kindeswohlgefaehrdung",
+      "repository": "heimgewebe/kindeswohlgefaehrdung",
+      "visibility": "public",
+      "classification": "excluded",
+      "node": null,
+      "reason": "Public learning and source-organization repository for exam preparation; it is content/project material, not a Heimgewebe runtime, Fleet member, governance component or truth-authority system."
     },
     {
       "name": "konvergenzregelkreis",
