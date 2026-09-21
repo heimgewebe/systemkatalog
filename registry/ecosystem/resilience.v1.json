@@ -3,7 +3,7 @@
   "kind": "system_catalog_resilience",
   "owner": "repo:systemkatalog",
   "catalogRole": "canonical_stable_resilience_semantics",
-  "updatedAt": "2026-09-19",
+  "updatedAt": "2026-09-21",
   "defaultCriticality": "unknown",
   "criticalityClasses": [
     "foundational",
@@ -554,20 +554,6 @@
     },
     {
       "system": "repo:semantAH",
-      "criticality": "unknown",
-      "failureDomains": [
-        "identity:github",
-        "provider:github"
-      ],
-      "recoveryModeRefs": [],
-      "acceptedSinglePathRisks": [],
-      "evidence": [
-        "docs/audits/heimgewebe-resilience-gap-matrix-v1.md"
-      ],
-      "uncertainty": 1.0
-    },
-    {
-      "system": "repo:sichter",
       "criticality": "unknown",
       "failureDomains": [
         "identity:github",

@@ -33,7 +33,6 @@ flowchart TD
         repo_reposkop["Reposkop<br/>id: repo:reposkop<br/>repository<br/>lifecycle: active · reviewed: 2026-08-01<br/>canonical local checkout identity, transition and continuity truth for explicitly selected repository targets"]
         repo_schauwerk["Schauwerk<br/>id: repo:schauwerk<br/>repository<br/>lifecycle: active · reviewed: 2026-07-26<br/>visual surface and projection layer"]
         repo_semantAH["semantAH<br/>id: repo:semantAH<br/>repository<br/>lifecycle: active · reviewed: 2026-07-26<br/>Semantic index, embeddings and knowledge-graph pipeline"]
-        repo_sichter["Sichter<br/>id: repo:sichter<br/>repository<br/>lifecycle: active · reviewed: 2026-07-26<br/>Code-review and pull-request automation prototype"]
         repo_snippet_engine_control["Snippet Engine Control<br/>id: repo:snippet-engine-control<br/>repository<br/>lifecycle: active · reviewed: 2026-07-26<br/>engine-neutral contract, diagnostics and diffable export-planning layer for text-expansion systems"]
         repo_systemkatalog["Systemkatalog<br/>id: repo:systemkatalog<br/>repository<br/>lifecycle: active · reviewed: 2026-08-01<br/>app-independent catalog for system purposes, truth ownership, stable relations and entrypoints"]
         repo_wgx["WGX<br/>id: repo:wgx<br/>repository<br/>lifecycle: active · reviewed: 2026-08-09<br/>WGX-v1 profile compatibility and repository-declared validation/task runner"]
@@ -92,7 +91,6 @@ flowchart TD
     repo_repoground -->|provides / stable| repo_systemkatalog
     repo_reposkop -->|observes / stable| repo_systemkatalog
     repo_schauwerk -->|renders / stable| artifact_ecosystem_map
-    repo_sichter -->|operates_on / bounded| service_github
     repo_snippet_engine_control -->|provides / bounded| repo_heim_pc
     repo_systemkatalog -->|owns / stable| artifact_ecosystem_map
     repo_systemkatalog -->|provides / stable| repo_leitstand
@@ -104,7 +102,7 @@ flowchart TD
 
     %% Lifecycle is stable catalog semantics, not runtime status.
     classDef lifecycleActive stroke-width:1.5px;
-    class actor_alexander,artifact_ecosystem_map,repo_systemkatalog,repo_bureau,repo_grabowski,repo_commonthing,repo_repoground,repo_reposkop,repo_labor,repo_alpha_lab,repo_chronik,repo_schauwerk,repo_infra,repo_device_graph,service_github,service_ci,repo_leitstand,repo_plexer,repo_metarepo,repo_wgx,repo_contracts_mirror,repo_audio,repo_semantAH,repo_sichter,repo_heim_pc,repo_commonworld,repo_obsidian_bridge,repo_snippet_engine_control,repo_konvergenzregelkreis,concept_weltgewebe_os,concept_gewebezelle,concept_weltgewebe_federation_planes,concept_gewebezelle_betreiberrolle,repo_heim_pc_dashboard_chatgpt_app,service_heim_pc_chatgpt_dashboard,repo_grosser_adler lifecycleActive;
+    class actor_alexander,artifact_ecosystem_map,repo_systemkatalog,repo_bureau,repo_grabowski,repo_commonthing,repo_repoground,repo_reposkop,repo_labor,repo_alpha_lab,repo_chronik,repo_schauwerk,repo_infra,repo_device_graph,service_github,service_ci,repo_leitstand,repo_plexer,repo_metarepo,repo_wgx,repo_contracts_mirror,repo_audio,repo_semantAH,repo_heim_pc,repo_commonworld,repo_obsidian_bridge,repo_snippet_engine_control,repo_konvergenzregelkreis,concept_weltgewebe_os,concept_gewebezelle,concept_weltgewebe_federation_planes,concept_gewebezelle_betreiberrolle,repo_heim_pc_dashboard_chatgpt_app,service_heim_pc_chatgpt_dashboard,repo_grosser_adler lifecycleActive;
     classDef lifecycleTransition stroke:#fbbf24,stroke-width:3px,stroke-dasharray:6 3;
     class concept_weltgewebe_platform_target lifecycleTransition;
 

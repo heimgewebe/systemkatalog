@@ -32,14 +32,14 @@ class FleetCoverageTests(unittest.TestCase):
 
     def test_repository_coverage_is_complete(self) -> None:
         coverage = validate_coverage(ROOT, self._repository_nodes())
-        self.assertEqual(len(coverage["repositories"]), 27)
+        self.assertEqual(len(coverage["repositories"]), 26)
         self.assertEqual(
             coverage["membershipAuthority"],
             {
                 "repository": "heimgewebe/metarepo",
-                "commit": "bb32f569ca35bdfdc9d956b31709c86cd83eb685",
+                "commit": "7b3e2dd7ee6f437cd6fb09647e57ab1c392dad8b",
                 "path": "fleet/repos.yml",
-                "contentSha256": "a089df0e8f45d4a4c73da3517a0cebe1644bf3a83bb0e8460c08924b512379dc",
+                "contentSha256": "055fbda9e55ab915d5d5a2035693a5cd601ce7c959ee184bb33f09f6205e8bd3",
                 "scope": "fleet_membership_only",
             },
         )
@@ -48,11 +48,11 @@ class FleetCoverageTests(unittest.TestCase):
                 item["membership"] in {"fleet", "related"}
                 for item in coverage["repositories"]
             ),
-            13,
+            12,
         )
         self.assertEqual(coverage["sourceExclusions"], [])
         repositories = {item["repository"] for item in coverage["repositories"]}
-        for deleted in ("heimlern", "hausKI", "leitwerk", "vault-gewebe"):
+        for deleted in ("heimlern", "hausKI", "leitwerk", "vault-gewebe", "sichter"):
             self.assertNotIn(f"heimgewebe/{deleted}", repositories)
 
     def test_parser_and_comparison_accept_authority_shape(self) -> None:
@@ -173,7 +173,7 @@ repos:
             }
             for item in coverage["repositories"]
         ]
-        self.assertEqual(validate_github_inventory(coverage, inventory), 27)
+        self.assertEqual(validate_github_inventory(coverage, inventory), 26)
 
     def test_missing_github_repository_fails_closed(self) -> None:
         coverage = load_coverage(ROOT)

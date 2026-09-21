@@ -3,7 +3,7 @@
   "kind": "system_catalog_inventory",
   "owner": "repo:systemkatalog",
   "catalogRole": "canonical_system_inventory",
-  "updatedAt": "2026-09-19",
+  "updatedAt": "2026-09-21",
   "nodes": [
     {
       "id": "actor:alexander",
@@ -562,28 +562,6 @@
       "truthOwnership": [],
       "entrypoints": {
         "repository": "https://github.com/heimgewebe/semantAH"
-      },
-      "lifecycle": {
-        "state": "active",
-        "reviewedAt": "2026-07-26",
-        "evidenceRefs": [
-          "registry/ecosystem/organization-scope.v1.json"
-        ]
-      }
-    },
-    {
-      "id": "repo:sichter",
-      "name": "Sichter",
-      "type": "repository",
-      "purpose": "Code-review and pull-request automation prototype",
-      "notResponsibleFor": [
-        "merge authority",
-        "task priority",
-        "runtime truth"
-      ],
-      "truthOwnership": [],
-      "entrypoints": {
-        "repository": "https://github.com/heimgewebe/sichter"
       },
       "lifecycle": {
         "state": "active",

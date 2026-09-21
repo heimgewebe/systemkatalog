@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
   "kind": "system_catalog_organization_scope",
-  "updatedAt": "2026-09-20",
+  "updatedAt": "2026-09-21",
   "source": {
     "provider": "github",
     "organization": "heimgewebe",
-    "observedAt": "2026-09-20T16:48:47Z",
+    "observedAt": "2026-09-21T08:57:12Z",
     "selection": {
       "archived": "include",
       "fork": false
@@ -134,6 +134,14 @@
       "reason": "host, network, cockpit and operational runbooks"
     },
     {
+      "name": "kindeswohlgefaehrdung",
+      "repository": "heimgewebe/kindeswohlgefaehrdung",
+      "visibility": "public",
+      "classification": "excluded",
+      "node": null,
+      "reason": "Public learning and source-organization repository for exam preparation; it is content/project material, not a Heimgewebe runtime, Fleet member, governance component or truth-authority system."
+    },
+    {
       "name": "konvergenzregelkreis",
       "repository": "heimgewebe/konvergenzregelkreis",
       "visibility": "public",
@@ -220,14 +228,6 @@
       "classification": "catalog",
       "node": "repo:semantAH",
       "reason": "Semantic index, embeddings and knowledge-graph pipeline"
-    },
-    {
-      "name": "sichter",
-      "repository": "heimgewebe/sichter",
-      "visibility": "public",
-      "classification": "catalog",
-      "node": "repo:sichter",
-      "reason": "Code-review and pull-request automation prototype"
     },
     {
       "name": "snippet-engine-control",

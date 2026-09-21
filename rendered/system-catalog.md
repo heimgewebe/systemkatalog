@@ -40,7 +40,6 @@ Der Katalog beantwortet, welche Systeme existieren, welchem Zweck sie dienen, we
 | Reposkop | repository | `active` · geprüft 2026-08-01 | `unknown` | identity:github<br>provider:github | canonical local checkout identity, transition and continuity truth for explicitly selected repository targets | task authorization<br>pull request or merge truth<br>remote repository freshness<br>runtime mutation<br>effect authorization | repository_checkout_identity_continuity | `readme`: [https://github.com/heimgewebe/reposkop/blob/6c0847c2cbc6ee1d1cff52fc1b4a1c5ee17af487/README.md](https://github.com/heimgewebe/reposkop/blob/6c0847c2cbc6ee1d1cff52fc1b4a1c5ee17af487/README.md)<br>`repository`: [https://github.com/heimgewebe/reposkop](https://github.com/heimgewebe/reposkop) |
 | Schauwerk | repository | `active` · geprüft 2026-07-26 | `optional` | identity:github<br>provider:github | visual surface and projection layer | canonical ecosystem semantics<br>task state<br>execution authority | specialized_visual_rendering | `repository`: [https://github.com/heimgewebe/schauwerk](https://github.com/heimgewebe/schauwerk) |
 | semantAH | repository | `active` · geprüft 2026-07-26 | `unknown` | identity:github<br>provider:github | Semantic index, embeddings and knowledge-graph pipeline | task authority<br>canonical event history<br>runtime health | — | `repository`: [https://github.com/heimgewebe/semantAH](https://github.com/heimgewebe/semantAH) |
-| Sichter | repository | `active` · geprüft 2026-07-26 | `unknown` | identity:github<br>provider:github | Code-review and pull-request automation prototype | merge authority<br>task priority<br>runtime truth | — | `repository`: [https://github.com/heimgewebe/sichter](https://github.com/heimgewebe/sichter) |
 | Snippet Engine Control | repository | `active` · geprüft 2026-07-26 | `unknown` | identity:github<br>provider:github | engine-neutral contract, diagnostics and diffable export-planning layer for text-expansion systems | the text-expansion runtime itself<br>automatic writes without explicit apply<br>task state<br>ecosystem semantics | — | `contracts`: [https://github.com/heimgewebe/snippet-engine-control/tree/main/contracts](https://github.com/heimgewebe/snippet-engine-control/tree/main/contracts)<br>`readme`: [https://github.com/heimgewebe/snippet-engine-control/blob/main/README.md](https://github.com/heimgewebe/snippet-engine-control/blob/main/README.md)<br>`repository`: [https://github.com/heimgewebe/snippet-engine-control](https://github.com/heimgewebe/snippet-engine-control) |
 | Systemkatalog | repository | `active` · geprüft 2026-08-01 | `essential` | identity:github<br>provider:github | app-independent catalog for system purposes, truth ownership, stable relations and entrypoints | task priority or status<br>runtime health<br>merge readiness<br>agent dispatch | ecosystem_semantics | `agentEntry`: [AGENTS.md](../AGENTS.md)<br>`readme`: [README.md](../README.md)<br>`repository`: [https://github.com/heimgewebe/systemkatalog](https://github.com/heimgewebe/systemkatalog) |
 | WGX | repository | `active` · geprüft 2026-08-09 | `unknown` | identity:github<br>provider:github | WGX-v1 profile compatibility and repository-declared validation/task runner | repository purpose semantics<br>fleet or policy truth<br>task coordination or priority<br>git, worktree, process or deployment authority<br>cross-repository code context<br>effects of repository-declared task commands | wgx_profile_runner_contract | `repository`: [https://github.com/heimgewebe/wgx](https://github.com/heimgewebe/wgx) |
@@ -77,7 +76,6 @@ Metarepo ist Primärquelle für die Fleet-Mitgliedschaft. Der Systemkatalog blei
 | Reposkop | `heimgewebe/reposkop` | `catalog-only` | [https://github.com/heimgewebe/reposkop](https://github.com/heimgewebe/reposkop) |
 | Schauwerk | `heimgewebe/schauwerk` | `catalog-only` | [https://github.com/heimgewebe/schauwerk](https://github.com/heimgewebe/schauwerk) |
 | semantAH | `heimgewebe/semantAH` | `fleet` | [https://github.com/heimgewebe/semantAH](https://github.com/heimgewebe/semantAH) |
-| Sichter | `heimgewebe/sichter` | `fleet` | [https://github.com/heimgewebe/sichter](https://github.com/heimgewebe/sichter) |
 | Snippet Engine Control | `heimgewebe/snippet-engine-control` | `catalog-only` | [https://github.com/heimgewebe/snippet-engine-control](https://github.com/heimgewebe/snippet-engine-control) |
 | Systemkatalog | `heimgewebe/systemkatalog` | `catalog-only` | [https://github.com/heimgewebe/systemkatalog](https://github.com/heimgewebe/systemkatalog) |
 | WGX | `heimgewebe/wgx` | `fleet` | [https://github.com/heimgewebe/wgx](https://github.com/heimgewebe/wgx) |
@@ -87,7 +85,7 @@ Explizit ohne aktive Fleet-Mitgliedschaft:
 
 ## Organisationsumfang
 
-Der GitHub-Snapshot umfasst 30 nicht geforkte Repositories. Davon sind 27 aktive Katalogsysteme, 0 archivierte Referenzen und 3 begründet ausgeschlossen.
+Der GitHub-Snapshot umfasst 30 nicht geforkte Repositories. Davon sind 26 aktive Katalogsysteme, 0 archivierte Referenzen und 4 begründet ausgeschlossen.
 
 Archivierte Referenzen ohne aktive Betriebsautorität:
 
@@ -96,6 +94,7 @@ Begründete Ausschlüsse:
 
 - `heimgewebe/capacity-marketplace` (`private`) — Active companion/control repository for an external Bubble-based B2B product. Bubble is runtime truth. The repository is not yet admitted as a Systemkatalog system; exclusion records complete GitHub organization scope without granting catalog authority pending explicit component admission and truth-owner modeling.
 - `heimgewebe/gegner` (`public`) — Minimal same-thread countercheck surface. It is not a reviewer, evidence source, decision authority or execution authority; inclusion in GitHub organization scope does not grant Systemkatalog admission.
+- `heimgewebe/kindeswohlgefaehrdung` (`public`) — Public learning and source-organization repository for exam preparation; it is content/project material, not a Heimgewebe runtime, Fleet member, governance component or truth-authority system.
 - `heimgewebe/nixer` (`public`) — Nix/Nixpkgs/NixOS specialist repository with no Repo, PR, Bureau, Deploy or Service authority; kept excluded from this catalog change pending its own explicit Systemkatalog admission (source: repository README.md).
 
 ## Wahrheitszuständigkeiten
@@ -164,7 +163,6 @@ Nur Beziehungen der Klassen `stable`, `bounded` oder `related` werden angezeigt.
 | RepoGround | `provides` | Systemkatalog | `stable` | `—` | `—` | `—` | `—` | RepoGround provides Systemkatalog with verifiable, citable codebase context. |
 | Reposkop | `observes` | Systemkatalog | `stable` | `—` | `—` | `—` | `—` | Reposkop provides canonical, target-bound local checkout identity, transition and continuity truth for Systemkatalog checkouts, but no effect authority. |
 | Schauwerk | `renders` | Ecosystem Map v0 | `stable` | `observational` | `degrade` | `to-from` | `—` | Schauwerk may render map views without owning the map canon. |
-| Sichter | `operates_on` | GitHub | `bounded` | `—` | `—` | `—` | `—` | Sichter reviews repository changes and may prepare pull requests within policy boundaries. |
 | Snippet Engine Control | `provides` | heim-pc | `bounded` | `—` | `—` | `—` | `—` | Snippet Engine Control provides contract-first diagnostics and export planning for the local interaction layer. |
 | Systemkatalog | `owns` | Ecosystem Map v0 | `stable` | `—` | `—` | `—` | `—` | Systemkatalog owns the map semantics during v0. |
 | Systemkatalog | `provides` | Leitstand | `stable` | `asynchronous-durable` | `degrade` | `from-to` | `—` | Systemkatalog provides map artifacts for Leitstand display. |

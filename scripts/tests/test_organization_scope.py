@@ -38,7 +38,7 @@ class OrganizationScopeTests(unittest.TestCase):
         self.assertEqual(len(scope["repositories"]), 30)
         self.assertEqual(
             sum(row["classification"] == "catalog" for row in scope["repositories"]),
-            27,
+            26,
         )
         self.assertEqual(
             {
@@ -54,7 +54,7 @@ class OrganizationScopeTests(unittest.TestCase):
                 for row in scope["repositories"]
                 if row["classification"] == "excluded"
             },
-            {"capacity-marketplace", "gegner", "nixer"},
+            {"capacity-marketplace", "gegner", "kindeswohlgefaehrdung", "nixer"},
         )
 
     def test_unclassified_snapshot_repository_fails_closed(self) -> None:
@@ -114,10 +114,10 @@ class OrganizationScopeTests(unittest.TestCase):
                 "isFork": False,
             }
             for row in scope["repositories"]
-            if row["visibility"] == "public" and row["name"] != "sichter"
+            if row["visibility"] == "public" and row["name"] != "repoground"
         ]
         with self.assertRaisesRegex(
-            OrganizationScopeError, "missing=.*sichter"
+            OrganizationScopeError, "missing=.*repoground"
         ):
             validate_github_inventory(scope, inventory, visibility="public")
 
