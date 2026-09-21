@@ -33,7 +33,6 @@
     "repo:reposkop",
     "repo:schauwerk",
     "repo:semantAH",
-    "repo:sichter",
     "repo:snippet-engine-control",
     "repo:systemkatalog",
     "repo:labor",
@@ -73,5 +72,5 @@
       "global complexity score"
     ]
   },
-  "grandfatheredBaselineSha256": "88dcb560123c8c8d09b8d25b568d34c12ad254eda35efe285bdca9d87511a81d"
+  "grandfatheredBaselineSha256": "99632d0636d0224ff7509442b7c9651fb255c5541686b471b63d94fdf8aaf0d0"
 }

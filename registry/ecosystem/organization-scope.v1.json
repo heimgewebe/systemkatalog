@@ -1,16 +1,16 @@
 {
   "schemaVersion": 1,
   "kind": "system_catalog_organization_scope",
-  "updatedAt": "2026-09-20",
+  "updatedAt": "2026-09-21",
   "source": {
     "provider": "github",
     "organization": "heimgewebe",
-    "observedAt": "2026-09-20T16:48:47Z",
+    "observedAt": "2026-09-21T08:36:58Z",
     "selection": {
       "archived": "include",
       "fork": false
     },
-    "repositoryCount": 30
+    "repositoryCount": 29
   },
   "repositories": [
     {
@@ -220,14 +220,6 @@
       "classification": "catalog",
       "node": "repo:semantAH",
       "reason": "Semantic index, embeddings and knowledge-graph pipeline"
-    },
-    {
-      "name": "sichter",
-      "repository": "heimgewebe/sichter",
-      "visibility": "public",
-      "classification": "catalog",
-      "node": "repo:sichter",
-      "reason": "Code-review and pull-request automation prototype"
     },
     {
       "name": "snippet-engine-control",
