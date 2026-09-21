@@ -35,10 +35,10 @@ class OrganizationScopeTests(unittest.TestCase):
 
     def test_all_organization_repositories_are_classified(self) -> None:
         scope = self._validate()
-        self.assertEqual(len(scope["repositories"]), 30)
+        self.assertEqual(len(scope["repositories"]), 29)
         self.assertEqual(
             sum(row["classification"] == "catalog" for row in scope["repositories"]),
-            27,
+            26,
         )
         self.assertEqual(
             {
@@ -101,7 +101,7 @@ class OrganizationScopeTests(unittest.TestCase):
             }
             for row in scope["repositories"]
         ]
-        self.assertEqual(validate_github_inventory(scope, inventory), 30)
+        self.assertEqual(validate_github_inventory(scope, inventory), 29)
 
     def test_public_github_drift_fails_closed(self) -> None:
         scope = load_scope(ROOT)
@@ -114,10 +114,10 @@ class OrganizationScopeTests(unittest.TestCase):
                 "isFork": False,
             }
             for row in scope["repositories"]
-            if row["visibility"] == "public" and row["name"] != "sichter"
+            if row["visibility"] == "public" and row["name"] != "repoground"
         ]
         with self.assertRaisesRegex(
-            OrganizationScopeError, "missing=.*sichter"
+            OrganizationScopeError, "missing=.*repoground"
         ):
             validate_github_inventory(scope, inventory, visibility="public")
 

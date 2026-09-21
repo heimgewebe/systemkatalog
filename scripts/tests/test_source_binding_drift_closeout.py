@@ -78,12 +78,6 @@ EXPECTED = {
         "sha256": "c982af6c37a5fb316403724f7ce74ad7111e8f6b98f79d8dedadc49af55a4a2e",
         "path": "README.md",
     },
-    "repo:sichter": {
-        "repository": "heimgewebe/sichter",
-        "commit": "f4359f0817d7db6b3f821bcdce7be12c18e561cc",
-        "sha256": "4c2e3f51ef816373968b8857023446a0f7422615d22a9090cd7eeb608446f260",
-        "path": "README.md",
-    },
     "repo:heim-pc": {
         "repository": "heimgewebe/heim-pc",
         "commit": "671565d78b115cf2205d8a05bdeb709ac998f428",

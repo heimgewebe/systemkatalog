@@ -25,14 +25,14 @@ class SystemCatalogTests(unittest.TestCase):
     def test_repository_catalog_is_valid_and_roomless(self) -> None:
         result = validate(ROOT)
         self.assertEqual(result["status"], "valid")
-        self.assertEqual(result["registrySystems"], 37)
-        self.assertEqual(result["registryRelations"], 44)
+        self.assertEqual(result["registrySystems"], 36)
+        self.assertEqual(result["registryRelations"], 43)
         self.assertEqual(result["authorityDomains"], 20)
-        self.assertEqual(result["catalogRepositories"], 27)
-        self.assertEqual(result["fleetRepositories"], 13)
+        self.assertEqual(result["catalogRepositories"], 26)
+        self.assertEqual(result["fleetRepositories"], 12)
         self.assertEqual(result["fleetExclusions"], 0)
-        self.assertEqual(result["organizationRepositories"], 30)
-        self.assertEqual(result["organizationCatalogRepositories"], 27)
+        self.assertEqual(result["organizationRepositories"], 29)
+        self.assertEqual(result["organizationCatalogRepositories"], 26)
         self.assertEqual(result["organizationArchivedReferences"], 0)
         self.assertEqual(result["organizationExclusions"], 3)
         self.assertEqual(result["activeLegacyRooms"], 0)
@@ -64,9 +64,10 @@ class SystemCatalogTests(unittest.TestCase):
             "hausKI",
             "leitwerk",
             "agent-control-surface",
+            "sichter",
         ):
             self.assertNotIn(f"heimgewebe/{deleted}", actual)
-        self.assertIn("30 nicht geforkte Repositories", actual)
+        self.assertIn("29 nicht geforkte Repositories", actual)
 
     def test_entrypoint_href_uses_raw_target_not_markdown_escape(self) -> None:
         from render_system_catalog import _entrypoints_cell
@@ -82,7 +83,7 @@ class SystemCatalogTests(unittest.TestCase):
             "id", "name", "type", "purpose", "lifecycle",
             "notResponsibleFor", "truthOwnership", "entrypoints",
         }
-        self.assertEqual(len(data["nodes"]), 37)
+        self.assertEqual(len(data["nodes"]), 36)
         for node in data["nodes"]:
             self.assertEqual(set(node), required)
             self.assertTrue(node["notResponsibleFor"])
@@ -114,6 +115,7 @@ class SystemCatalogTests(unittest.TestCase):
             "repo:leitwerk",
             "repo:mitschreiber",
             "repo:vault-gewebe",
+            "repo:sichter",
         }
         self.assertTrue(deleted_nodes.isdisjoint({node["id"] for node in data["nodes"]}))
 
@@ -133,6 +135,7 @@ class SystemCatalogTests(unittest.TestCase):
             "repo:leitwerk",
             "repo:mitschreiber",
             "repo:vault-gewebe",
+            "repo:sichter",
         }
         self.assertTrue(deleted.isdisjoint(set(policy["grandfatheredNodeIds"])))
 
