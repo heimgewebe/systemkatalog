@@ -6,8 +6,8 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[2]
-METAREPO_COMMIT = "7b3e2dd7ee6f437cd6fb09647e57ab1c392dad8b"
-FLEET_SHA256 = "055fbda9e55ab915d5d5a2035693a5cd601ce7c959ee184bb33f09f6205e8bd3"
+METAREPO_COMMIT = "08967276c276c0024ec027e926c2b9a93ab9f15d"
+FLEET_SHA256 = "6fa4dfb2945a1461b8bf3ffabc48cdf3c477e4bb5c918a8cedc7c8ce758db8ac"
 
 
 class HausKIRetirementTests(unittest.TestCase):
