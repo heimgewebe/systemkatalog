@@ -61,7 +61,7 @@ Metarepo ist Primärquelle für die Fleet-Mitgliedschaft. Der Systemkatalog blei
 | Commonworld | `heimgewebe/commonworld` | `catalog-only` | [https://github.com/heimgewebe/commonworld](https://github.com/heimgewebe/commonworld) |
 | Contracts Mirror | `heimgewebe/contracts-mirror` | `fleet` | [https://github.com/heimgewebe/contracts-mirror](https://github.com/heimgewebe/contracts-mirror) |
 | Device Graph | `heimgewebe/device-graph` | `catalog-only` | [https://github.com/heimgewebe/device-graph](https://github.com/heimgewebe/device-graph) |
-| Grabowski | `heimgewebe/grabowski` | `catalog-only` | [https://github.com/heimgewebe/grabowski](https://github.com/heimgewebe/grabowski) |
+| Grabowski | `heimgewebe/grabowski` | `fleet` | [https://github.com/heimgewebe/grabowski](https://github.com/heimgewebe/grabowski) |
 | Großer Adler | `heimgewebe/grosser-adler` | `catalog-only` | [https://github.com/heimgewebe/grosser-adler](https://github.com/heimgewebe/grosser-adler) |
 | heim-pc | `heimgewebe/heim-pc` | `fleet` | [https://github.com/heimgewebe/heim-pc](https://github.com/heimgewebe/heim-pc) |
 | Heim-PC Dashboard ChatGPT App | `heimgewebe/heim-pc-dashboard-chatgpt-app` | `catalog-only` | [https://github.com/heimgewebe/heim-pc-dashboard-chatgpt-app](https://github.com/heimgewebe/heim-pc-dashboard-chatgpt-app) |
