@@ -54,7 +54,16 @@ class OrganizationScopeTests(unittest.TestCase):
                 for row in scope["repositories"]
                 if row["classification"] == "excluded"
             },
-            {"capacity-marketplace", "gegner", "kindeswohlgefaehrdung", "nixer"},
+            {
+                "asr",
+                "capacity-marketplace",
+                "digitalisierer",
+                "fotoatelier",
+                "gegner",
+                "hoerbuchfabrik",
+                "nixer",
+                "recovery-evidence-authority",
+            },
         )
 
     def test_unclassified_snapshot_repository_fails_closed(self) -> None:

@@ -1,16 +1,16 @@
 {
   "schemaVersion": 1,
   "kind": "system_catalog_organization_scope",
-  "updatedAt": "2026-09-21",
+  "updatedAt": "2026-11-09",
   "source": {
     "provider": "github",
     "organization": "heimgewebe",
-    "observedAt": "2026-09-21T08:57:12Z",
+    "observedAt": "2026-11-09T18:10:00Z",
     "selection": {
       "archived": "include",
       "fork": false
     },
-    "repositoryCount": 30
+    "repositoryCount": 34
   },
   "repositories": [
     {
@@ -20,6 +20,14 @@
       "classification": "catalog",
       "node": "repo:alpha-lab",
       "reason": "Read-only research repository with reproducible point-in-time evidence and deterministic shadow evaluation."
+    },
+    {
+      "name": "asr",
+      "repository": "heimgewebe/asr",
+      "visibility": "public",
+      "classification": "excluded",
+      "node": null,
+      "reason": "Canonical local-first ASR capability (engine routing, transcript contracts, policy) referenced by the heim-pc capability locator. Not yet admitted as a Systemkatalog system; exclusion records complete GitHub organization scope without granting catalog authority pending explicit component admission and truth-owner modeling."
     },
     {
       "name": "audio",
@@ -86,6 +94,22 @@
       "reason": "infrastructure device graph; adjacent but not ecosystem-governance canon"
     },
     {
+      "name": "digitalisierer",
+      "repository": "heimgewebe/digitalisierer",
+      "visibility": "public",
+      "classification": "excluded",
+      "node": null,
+      "reason": "Local-first workbench for scanning, OCR, transcription and media digitization. Not yet admitted as a Systemkatalog system; exclusion records complete GitHub organization scope without granting catalog authority pending explicit component admission and truth-owner modeling."
+    },
+    {
+      "name": "fotoatelier",
+      "repository": "heimgewebe/fotoatelier",
+      "visibility": "private",
+      "classification": "excluded",
+      "node": null,
+      "reason": "Private photo studio application for FOTOLABOR with off-machine backup on heim-pc. Not yet admitted as a Systemkatalog system; exclusion records complete GitHub organization scope without granting catalog authority pending explicit component admission and truth-owner modeling."
+    },
+    {
       "name": "gegner",
       "repository": "heimgewebe/gegner",
       "visibility": "public",
@@ -126,20 +150,20 @@
       "reason": "Private implementation source for the local read-only ChatGPT dashboard service; it owns no task, claim, priority, execution or general operator truth."
     },
     {
+      "name": "hoerbuchfabrik",
+      "repository": "heimgewebe/hoerbuchfabrik",
+      "visibility": "private",
+      "classification": "excluded",
+      "node": null,
+      "reason": "Local reproducible audiobook production pipeline (TTS, quality gates, assembly). Not yet admitted as a Systemkatalog system; exclusion records complete GitHub organization scope without granting catalog authority pending explicit component admission and truth-owner modeling."
+    },
+    {
       "name": "infra",
       "repository": "heimgewebe/infra",
       "visibility": "private",
       "classification": "catalog",
       "node": "repo:infra",
       "reason": "host, network, cockpit and operational runbooks"
-    },
-    {
-      "name": "kindeswohlgefaehrdung",
-      "repository": "heimgewebe/kindeswohlgefaehrdung",
-      "visibility": "public",
-      "classification": "excluded",
-      "node": null,
-      "reason": "Public learning and source-organization repository for exam preparation; it is content/project material, not a Heimgewebe runtime, Fleet member, governance component or truth-authority system."
     },
     {
       "name": "konvergenzregelkreis",
@@ -196,6 +220,14 @@
       "classification": "catalog",
       "node": "repo:plexer",
       "reason": "bounded event delivery and queueing gateway"
+    },
+    {
+      "name": "recovery-evidence-authority",
+      "repository": "heimgewebe/recovery-evidence-authority",
+      "visibility": "public",
+      "classification": "excluded",
+      "node": null,
+      "reason": "Independent fail-closed recovery evidence authority for Heim-PC NixOS cutover attestations. Not yet admitted as a Systemkatalog system; exclusion records complete GitHub organization scope without granting catalog authority pending explicit component admission and truth-owner modeling."
     },
     {
       "name": "repoground",

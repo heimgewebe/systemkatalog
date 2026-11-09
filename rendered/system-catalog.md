@@ -85,17 +85,21 @@ Explizit ohne aktive Fleet-Mitgliedschaft:
 
 ## Organisationsumfang
 
-Der GitHub-Snapshot umfasst 30 nicht geforkte Repositories. Davon sind 26 aktive Katalogsysteme, 0 archivierte Referenzen und 4 begründet ausgeschlossen.
+Der GitHub-Snapshot umfasst 34 nicht geforkte Repositories. Davon sind 26 aktive Katalogsysteme, 0 archivierte Referenzen und 8 begründet ausgeschlossen.
 
 Archivierte Referenzen ohne aktive Betriebsautorität:
 
 
 Begründete Ausschlüsse:
 
+- `heimgewebe/asr` (`public`) — Canonical local-first ASR capability (engine routing, transcript contracts, policy) referenced by the heim-pc capability locator. Not yet admitted as a Systemkatalog system; exclusion records complete GitHub organization scope without granting catalog authority pending explicit component admission and truth-owner modeling.
 - `heimgewebe/capacity-marketplace` (`private`) — Active companion/control repository for an external Bubble-based B2B product. Bubble is runtime truth. The repository is not yet admitted as a Systemkatalog system; exclusion records complete GitHub organization scope without granting catalog authority pending explicit component admission and truth-owner modeling.
+- `heimgewebe/digitalisierer` (`public`) — Local-first workbench for scanning, OCR, transcription and media digitization. Not yet admitted as a Systemkatalog system; exclusion records complete GitHub organization scope without granting catalog authority pending explicit component admission and truth-owner modeling.
+- `heimgewebe/fotoatelier` (`private`) — Private photo studio application for FOTOLABOR with off-machine backup on heim-pc. Not yet admitted as a Systemkatalog system; exclusion records complete GitHub organization scope without granting catalog authority pending explicit component admission and truth-owner modeling.
 - `heimgewebe/gegner` (`public`) — Minimal same-thread countercheck surface. It is not a reviewer, evidence source, decision authority or execution authority; inclusion in GitHub organization scope does not grant Systemkatalog admission.
-- `heimgewebe/kindeswohlgefaehrdung` (`public`) — Public learning and source-organization repository for exam preparation; it is content/project material, not a Heimgewebe runtime, Fleet member, governance component or truth-authority system.
+- `heimgewebe/hoerbuchfabrik` (`private`) — Local reproducible audiobook production pipeline (TTS, quality gates, assembly). Not yet admitted as a Systemkatalog system; exclusion records complete GitHub organization scope without granting catalog authority pending explicit component admission and truth-owner modeling.
 - `heimgewebe/nixer` (`public`) — Nix/Nixpkgs/NixOS specialist repository with no Repo, PR, Bureau, Deploy or Service authority; kept excluded from this catalog change pending its own explicit Systemkatalog admission (source: repository README.md).
+- `heimgewebe/recovery-evidence-authority` (`public`) — Independent fail-closed recovery evidence authority for Heim-PC NixOS cutover attestations. Not yet admitted as a Systemkatalog system; exclusion records complete GitHub organization scope without granting catalog authority pending explicit component admission and truth-owner modeling.
 
 ## Wahrheitszuständigkeiten
 
