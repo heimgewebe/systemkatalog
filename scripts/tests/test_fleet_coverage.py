@@ -37,9 +37,9 @@ class FleetCoverageTests(unittest.TestCase):
             coverage["membershipAuthority"],
             {
                 "repository": "heimgewebe/metarepo",
-                "commit": "7b3e2dd7ee6f437cd6fb09647e57ab1c392dad8b",
+                "commit": "08967276c276c0024ec027e926c2b9a93ab9f15d",
                 "path": "fleet/repos.yml",
-                "contentSha256": "055fbda9e55ab915d5d5a2035693a5cd601ce7c959ee184bb33f09f6205e8bd3",
+                "contentSha256": "6fa4dfb2945a1461b8bf3ffabc48cdf3c477e4bb5c918a8cedc7c8ce758db8ac",
                 "scope": "fleet_membership_only",
             },
         )
@@ -48,7 +48,7 @@ class FleetCoverageTests(unittest.TestCase):
                 item["membership"] in {"fleet", "related"}
                 for item in coverage["repositories"]
             ),
-            12,
+            13,
         )
         self.assertEqual(coverage["sourceExclusions"], [])
         repositories = {item["repository"] for item in coverage["repositories"]}

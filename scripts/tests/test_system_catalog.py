@@ -29,12 +29,12 @@ class SystemCatalogTests(unittest.TestCase):
         self.assertEqual(result["registryRelations"], 43)
         self.assertEqual(result["authorityDomains"], 20)
         self.assertEqual(result["catalogRepositories"], 26)
-        self.assertEqual(result["fleetRepositories"], 12)
+        self.assertEqual(result["fleetRepositories"], 13)
         self.assertEqual(result["fleetExclusions"], 0)
-        self.assertEqual(result["organizationRepositories"], 30)
+        self.assertEqual(result["organizationRepositories"], 34)
         self.assertEqual(result["organizationCatalogRepositories"], 26)
         self.assertEqual(result["organizationArchivedReferences"], 0)
-        self.assertEqual(result["organizationExclusions"], 4)
+        self.assertEqual(result["organizationExclusions"], 8)
         self.assertEqual(result["activeLegacyRooms"], 0)
         for room in (
             "bestand",
@@ -67,7 +67,7 @@ class SystemCatalogTests(unittest.TestCase):
             "sichter",
         ):
             self.assertNotIn(f"heimgewebe/{deleted}", actual)
-        self.assertIn("30 nicht geforkte Repositories", actual)
+        self.assertIn("34 nicht geforkte Repositories", actual)
 
     def test_entrypoint_href_uses_raw_target_not_markdown_escape(self) -> None:
         from render_system_catalog import _entrypoints_cell
