@@ -111,6 +111,17 @@ python3 scripts/system_catalog_drift.py \
   --check
 ```
 
+Die Option --check unterscheidet blockierende Abweichungen (z. B. neue
+unklassifizierte Repositories, GitHub-Archivstatus, Fleet-Mitgliedschaft,
+fehlende Quellbeobachtung oder abweichender Default-Branch) von Änderungen
+bereits gebundener Primärdokumente. Letztere bleiben mit
+materialDrift: true und einem deduplizierten Bureau-Kandidaten im
+unveränderten Berichtsschema sichtbar, erzwingen aber keinen roten
+CI-Lauf: ein neuer README-Commit entwertet keinen historischen,
+bereits geprüften Katalogbeleg. Exit-Code 2 gilt weiter für alle
+anderen Abweichungen. Ohne semantische Prüfung werden Quellenbindungen
+nicht automatisch aktualisiert.
+
 Der GitHub-Reader besitzt standardmäßig ein globales, fail-closed Laufzeitbudget von 25 Sekunden. Es lässt sich mit `--budget-seconds` explizit ändern. Ist das Gesamtbudget ausgeschöpft, bricht der Reader ab, statt eine unvollständige Observation als frischen Katalogstand auszugeben.
 
 Der Systemkatalog bleibt damit statisch. Laufzustand und Alarmanzeige gehören weiterhin in Bureau, Leitstand, CI und die lokale Operatorumgebung.

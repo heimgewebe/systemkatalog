@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -183,7 +184,16 @@ def main() -> int:
     if args.proposal_output:
         args.proposal_output.parent.mkdir(parents=True, exist_ok=True)
         args.proposal_output.write_text(json.dumps(report["proposal"], ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    return 2 if args.check and report["materialDrift"] else 0
+    # Changed primary documents are review proposals, not automatic proof
+    # that historical, semantically verified catalog bindings are wrong.
+    # All structural/inventory/observation failures still block the check.
+    blocking = any(item["kind"] != "primary_source_changed" for item in report["changes"])
+    if args.check and not blocking and report["materialDrift"] and os.getenv("GITHUB_ACTIONS") == "true":
+        print(
+            f"::warning title=Systemkatalog source review::{report['changeCount']} changed primary source documents require semantic review",
+            file=sys.stderr,
+        )
+    return 2 if args.check and blocking else 0
 
 
 if __name__ == "__main__":
