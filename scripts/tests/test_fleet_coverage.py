@@ -141,7 +141,7 @@ repos:
         with tempfile.TemporaryDirectory() as directory:
             target = Path(directory) / "repo"
             shutil.copytree(
-                ROOT, target, ignore=shutil.ignore_patterns(".git", "__pycache__")
+                ROOT, target, ignore=shutil.ignore_patterns(".git", "__pycache__", ".adler")
             )
             nodes = self._repository_nodes(target) | {"repo:unmapped"}
             with self.assertRaisesRegex(
@@ -153,7 +153,7 @@ repos:
         with tempfile.TemporaryDirectory() as directory:
             target = Path(directory) / "repo"
             shutil.copytree(
-                ROOT, target, ignore=shutil.ignore_patterns(".git", "__pycache__")
+                ROOT, target, ignore=shutil.ignore_patterns(".git", "__pycache__", ".adler")
             )
             path = target / "registry/ecosystem/fleet-coverage.v1.json"
             data = json.loads(path.read_text(encoding="utf-8"))

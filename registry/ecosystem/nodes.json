@@ -256,11 +256,13 @@
         "repository": "https://github.com/heimgewebe/alpha-lab"
       },
       "lifecycle": {
-        "state": "active",
-        "reviewedAt": "2026-08-07",
+        "state": "archived",
+        "reviewedAt": "2026-11-15",
         "evidenceRefs": [
           "registry/ecosystem/source-bindings.v1.json",
-          "registry/ecosystem/component-admissions.v1.json"
+          "registry/ecosystem/component-admissions.v1.json",
+          "https://github.com/heimgewebe/metarepo/pull/756",
+          "https://github.com/heimgewebe/alpha-lab"
         ]
       }
     },
@@ -421,10 +423,12 @@
         "repository": "https://github.com/heimgewebe/leitstand"
       },
       "lifecycle": {
-        "state": "active",
-        "reviewedAt": "2026-08-01",
+        "state": "archived",
+        "reviewedAt": "2026-11-15",
         "evidenceRefs": [
-          "https://github.com/heimgewebe/leitstand/blob/362dda6ac161bf275a38682d18998fc284eebe52/README.md"
+          "https://github.com/heimgewebe/leitstand/blob/362dda6ac161bf275a38682d18998fc284eebe52/README.md",
+          "https://github.com/heimgewebe/metarepo/pull/756",
+          "https://github.com/heimgewebe/leitstand"
         ]
       }
     },
@@ -443,10 +447,12 @@
         "repository": "https://github.com/heimgewebe/plexer"
       },
       "lifecycle": {
-        "state": "active",
-        "reviewedAt": "2026-07-26",
+        "state": "archived",
+        "reviewedAt": "2026-11-15",
         "evidenceRefs": [
-          "registry/ecosystem/organization-scope.v1.json"
+          "registry/ecosystem/organization-scope.v1.json",
+          "https://github.com/heimgewebe/metarepo/pull/756",
+          "https://github.com/heimgewebe/plexer"
         ]
       }
     },
@@ -564,10 +570,12 @@
         "repository": "https://github.com/heimgewebe/semantAH"
       },
       "lifecycle": {
-        "state": "active",
-        "reviewedAt": "2026-07-26",
+        "state": "archived",
+        "reviewedAt": "2026-11-15",
         "evidenceRefs": [
-          "registry/ecosystem/organization-scope.v1.json"
+          "registry/ecosystem/organization-scope.v1.json",
+          "https://github.com/heimgewebe/metarepo/pull/756",
+          "https://github.com/heimgewebe/semantAH"
         ]
       }
     },
@@ -642,10 +650,12 @@
         "contracts": "https://github.com/heimgewebe/obsidian-bridge/tree/main/contracts"
       },
       "lifecycle": {
-        "state": "active",
-        "reviewedAt": "2026-07-26",
+        "state": "archived",
+        "reviewedAt": "2026-11-15",
         "evidenceRefs": [
-          "registry/ecosystem/organization-scope.v1.json"
+          "registry/ecosystem/organization-scope.v1.json",
+          "https://github.com/heimgewebe/metarepo/pull/756",
+          "https://github.com/heimgewebe/obsidian-bridge"
         ]
       }
     },

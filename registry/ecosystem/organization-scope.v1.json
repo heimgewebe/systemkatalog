@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
   "kind": "system_catalog_organization_scope",
-  "updatedAt": "2026-11-09",
+  "updatedAt": "2026-11-15",
   "source": {
     "provider": "github",
     "organization": "heimgewebe",
-    "observedAt": "2026-11-09T18:10:00Z",
+    "observedAt": "2026-11-15T10:15:47Z",
     "selection": {
       "archived": "include",
       "fork": false
@@ -17,9 +17,9 @@
       "name": "alpha-lab",
       "repository": "heimgewebe/alpha-lab",
       "visibility": "private",
-      "classification": "catalog",
+      "classification": "archived_reference",
       "node": "repo:alpha-lab",
-      "reason": "Read-only research repository with reproducible point-in-time evidence and deterministic shadow evaluation."
+      "reason": "Read-only research repository with reproducible point-in-time evidence and deterministic shadow evaluation. On GitHub archived 2026-11-15; historical role only, no active execution or Fleet authority."
     },
     {
       "name": "asr",
@@ -49,9 +49,9 @@
       "name": "capacity-marketplace",
       "repository": "heimgewebe/capacity-marketplace",
       "visibility": "private",
-      "classification": "excluded",
+      "classification": "archived_excluded",
       "node": null,
-      "reason": "Active companion/control repository for an external Bubble-based B2B product. Bubble is runtime truth. The repository is not yet admitted as a Systemkatalog system; exclusion records complete GitHub organization scope without granting catalog authority pending explicit component admission and truth-owner modeling."
+      "reason": "Archived on GitHub 2026-11-15; never admitted as a Systemkatalog system. Historical Bubble companion only; no active repository work or Fleet authority."
     },
     {
       "name": "chronik",
@@ -185,9 +185,9 @@
       "name": "leitstand",
       "repository": "heimgewebe/leitstand",
       "visibility": "public",
-      "classification": "catalog",
+      "classification": "archived_reference",
       "node": "repo:leitstand",
-      "reason": "read-only ecosystem observability and status projection"
+      "reason": "read-only ecosystem observability and status projection. On GitHub archived 2026-11-15; historical role only, no active execution or Fleet authority."
     },
     {
       "name": "metarepo",
@@ -209,17 +209,17 @@
       "name": "obsidian-bridge",
       "repository": "heimgewebe/obsidian-bridge",
       "visibility": "public",
-      "classification": "catalog",
+      "classification": "archived_reference",
       "node": "repo:obsidian-bridge",
-      "reason": "deterministic CLI and artifact bridge for using Obsidian as a projection and observatory interface"
+      "reason": "deterministic CLI and artifact bridge for using Obsidian as a projection and observatory interface. On GitHub archived 2026-11-15; historical role only, no active execution or Fleet authority."
     },
     {
       "name": "plexer",
       "repository": "heimgewebe/plexer",
       "visibility": "public",
-      "classification": "catalog",
+      "classification": "archived_reference",
       "node": "repo:plexer",
-      "reason": "bounded event delivery and queueing gateway"
+      "reason": "bounded event delivery and queueing gateway. On GitHub archived 2026-11-15; historical role only, no active execution or Fleet authority."
     },
     {
       "name": "recovery-evidence-authority",
@@ -257,9 +257,9 @@
       "name": "semantAH",
       "repository": "heimgewebe/semantAH",
       "visibility": "public",
-      "classification": "catalog",
+      "classification": "archived_reference",
       "node": "repo:semantAH",
-      "reason": "Semantic index, embeddings and knowledge-graph pipeline"
+      "reason": "Semantic index, embeddings and knowledge-graph pipeline. On GitHub archived 2026-11-15; historical role only, no active execution or Fleet authority."
     },
     {
       "name": "snippet-engine-control",

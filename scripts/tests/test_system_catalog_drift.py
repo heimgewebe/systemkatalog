@@ -25,7 +25,7 @@ def matching_observations() -> dict:
     repositories = [
         {
             "nameWithOwner": item["repository"],
-            "isArchived": item["classification"] == "archived_reference",
+            "isArchived": item["classification"] in {"archived_reference", "archived_excluded"},
             "isFork": False,
             "visibility": item["visibility"],
         }

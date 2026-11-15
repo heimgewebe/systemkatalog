@@ -133,7 +133,7 @@ def render_text(root: Path = ROOT) -> str:
         (
             item
             for item in organization_rows
-            if item["classification"] == "archived_reference"
+            if item["classification"] in {"archived_reference", "archived_excluded"}
         ),
         key=lambda item: str(item["name"]).casefold(),
     )

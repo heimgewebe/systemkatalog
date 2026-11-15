@@ -26,7 +26,7 @@ from validate_system_catalog import validate  # noqa: E402
 class SourceBindingTests(unittest.TestCase):
     def _copy_repository(self, directory: str) -> Path:
         target = Path(directory) / "repo"
-        shutil.copytree(ROOT, target, ignore=shutil.ignore_patterns(".git", "__pycache__"))
+        shutil.copytree(ROOT, target, ignore=shutil.ignore_patterns(".git", "__pycache__", ".adler"))
         return target
 
     def test_bindings_cover_all_systems_and_relations(self) -> None:
