@@ -65,6 +65,71 @@ class SystemCatalogDriftTests(unittest.TestCase):
         self.assertIn("primary_source_changed", {item["kind"] for item in report["changes"]})
         self.assertEqual(report["bureauCandidate"]["candidateId"], "SYSTEMKATALOG-DRIFT-CLOSED-LOOP-V1")
 
+    def test_primary_source_change_is_advisory_not_silent(self) -> None:
+        data = matching_observations()
+        original = next(row for row in data["observations"] if row["locator"]["kind"] == "file")
+        original["contentSha256"] = "f" * 64
+        report = build_report(ROOT, data)
+        self.assertTrue(report["materialDrift"])
+        self.assertEqual(report["changeCount"], 1)
+        self.assertEqual(
+            set(report),
+            {
+                "schemaVersion", "kind", "generatedAt", "materialDrift",
+                "changeCount", "changes", "bureauCandidate", "proposal",
+                "doesNotEstablish",
+            },
+        )
+        self.assertIsNotNone(report["bureauCandidate"])
+        with tempfile.TemporaryDirectory() as raw_tmp:
+            path = Path(raw_tmp) / "observations.json"
+            path.write_text(json.dumps(data), encoding="utf-8")
+            result = subprocess.run(
+                [
+                    sys.executable, str(SCRIPTS / "system_catalog_drift.py"),
+                    "--root", str(ROOT),
+                    "--github-observations", str(path),
+                    "--check",
+                ],
+                cwd=ROOT, text=True, capture_output=True, check=False,
+                env={**os.environ, "GITHUB_ACTIONS": "true"},
+            )
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertIn("::warning title=Systemkatalog source review::1", result.stderr)
+            cli_report = json.loads(result.stdout)
+            self.assertEqual(cli_report["changeCount"], 1)
+            self.assertTrue(cli_report["materialDrift"])
+
+    def test_structural_or_unobserved_source_drift_still_fails_check(self) -> None:
+        for drift in ("unclassified", "source_missing", "branch_changed"):
+            with self.subTest(drift=drift):
+                data = matching_observations()
+                if drift == "unclassified":
+                    data["repositories"].append({
+                        "nameWithOwner": "heimgewebe/unclassified",
+                        "isArchived": False, "isFork": False, "visibility": "public",
+                    })
+                elif drift == "source_missing":
+                    data["observations"].pop()
+                else:
+                    data["observations"][0]["defaultBranch"] = "trunk"
+                report = build_report(ROOT, data)
+                self.assertTrue(report["materialDrift"])
+                self.assertGreater(report["changeCount"], 0)
+                with tempfile.TemporaryDirectory() as raw_tmp:
+                    path = Path(raw_tmp) / "observations.json"
+                    path.write_text(json.dumps(data), encoding="utf-8")
+                    result = subprocess.run(
+                        [
+                            sys.executable, str(SCRIPTS / "system_catalog_drift.py"),
+                            "--root", str(ROOT),
+                            "--github-observations", str(path),
+                            "--check",
+                        ],
+                        cwd=ROOT, text=True, capture_output=True, check=False,
+                    )
+                    self.assertEqual(result.returncode, 2, result.stderr)
+
     def test_new_repository_is_unclassified(self) -> None:
         data = matching_observations()
         data["repositories"].append({
