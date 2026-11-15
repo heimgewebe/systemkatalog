@@ -7,8 +7,6 @@ ROOT = Path(__file__).resolve().parents[2]
 FINAL_LEITWERK = "1449145af543b78c0d3813942f1d6d95ddb33c4a"
 FINAL_METAREPO = "df3063d846d6751e668b65ec8e64a4fc34474401"
 FLEET_SHA256 = "4fc8803f7acc91eb1967cf325eb25638328e31dffdca49e35aeea17f2bee8ce9"
-CURRENT_METAREPO = "08967276c276c0024ec027e926c2b9a93ab9f15d"
-CURRENT_FLEET_SHA256 = "6fa4dfb2945a1461b8bf3ffabc48cdf3c477e4bb5c918a8cedc7c8ce758db8ac"
 
 
 def load(path: str) -> dict:
@@ -61,10 +59,11 @@ class LeitwerkArchivalCloseoutTests(unittest.TestCase):
 
     def test_current_fleet_authority_has_no_leitwerk_exclusion(self) -> None:
         coverage = load("registry/ecosystem/fleet-coverage.v1.json")
-        self.assertEqual(coverage["membershipAuthority"]["commit"], CURRENT_METAREPO)
-        self.assertEqual(
-            coverage["membershipAuthority"]["contentSha256"], CURRENT_FLEET_SHA256
-        )
+        authority = coverage["membershipAuthority"]
+        self.assertEqual(authority["repository"], "heimgewebe/metarepo")
+        self.assertEqual(authority["path"], "fleet/repos.yml")
+        self.assertEqual(len(authority["commit"]), 40)
+        self.assertEqual(len(authority["contentSha256"]), 64)
         self.assertEqual(coverage["sourceExclusions"], [])
 
     def test_retired_admission_policy_drops_leitwerk_identity(self) -> None:

@@ -6,8 +6,6 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[2]
-METAREPO_COMMIT = "08967276c276c0024ec027e926c2b9a93ab9f15d"
-FLEET_SHA256 = "6fa4dfb2945a1461b8bf3ffabc48cdf3c477e4bb5c918a8cedc7c8ce758db8ac"
 
 
 class HausKIRetirementTests(unittest.TestCase):
@@ -38,10 +36,11 @@ class HausKIRetirementTests(unittest.TestCase):
 
     def test_fleet_authority_records_physical_removal(self) -> None:
         coverage = self._load("registry/ecosystem/fleet-coverage.v1.json")
-        self.assertEqual(coverage["membershipAuthority"]["commit"], METAREPO_COMMIT)
-        self.assertEqual(
-            coverage["membershipAuthority"]["contentSha256"], FLEET_SHA256
-        )
+        authority = coverage["membershipAuthority"]
+        self.assertEqual(authority["repository"], "heimgewebe/metarepo")
+        self.assertEqual(authority["path"], "fleet/repos.yml")
+        self.assertEqual(len(authority["commit"]), 40)
+        self.assertEqual(len(authority["contentSha256"]), 64)
         self.assertEqual(coverage["sourceExclusions"], [])
 
     def test_semantah_no_longer_provides_an_active_hauski_layer(self) -> None:

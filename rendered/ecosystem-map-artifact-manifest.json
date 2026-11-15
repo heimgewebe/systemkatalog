@@ -9,11 +9,11 @@
       "sha256": "f265732039d21aa333f413af9119e4326989bc200578923ef5ff88ff65af1626"
     },
     {
-      "bytes": 49055,
+      "bytes": 49101,
       "contentType": "text/markdown",
       "path": "rendered/system-catalog.md",
       "role": "rendered_catalog_markdown",
-      "sha256": "856d2da970cea5cf249dfea01d7613a634cd8a7c56bd53350aeec5393f79e513"
+      "sha256": "c928fb85d01cb175b9ea5f6750f1f473bae0e488a4c2a893ee00181893f1964e"
     },
     {
       "bytes": 33903,
@@ -58,8 +58,8 @@
   "schemaPath": "catalog/ecosystem-map-artifact-manifest.schema.v1.json",
   "schemaVersion": 1,
   "source": {
-    "commit": "51e2e6ad6b9109915ec64bab6c1582907752801b",
-    "generatedAt": "2026-11-15T10:22:51Z",
+    "commit": "78e28f9e999d865c047f7229a9fb0197b609a779",
+    "generatedAt": "2026-11-15T10:34:21Z",
     "repository": "heimgewebe/systemkatalog"
   }
 }
