@@ -53,7 +53,7 @@ Metarepo ist Primärquelle für die Fleet-Mitgliedschaft. Der Systemkatalog blei
 
 | System | Repository | Einordnung | Einstieg |
 |---|---|---|---|
-| Alpha Lab | `heimgewebe/alpha-lab` | `catalog-only` | [https://github.com/heimgewebe/alpha-lab](https://github.com/heimgewebe/alpha-lab) |
+| Alpha Lab | `heimgewebe/alpha-lab` | `archived-reference` | [https://github.com/heimgewebe/alpha-lab](https://github.com/heimgewebe/alpha-lab) |
 | audio | `heimgewebe/audio` | `fleet` | [https://github.com/heimgewebe/audio](https://github.com/heimgewebe/audio) |
 | Bureau | `heimgewebe/bureau` | `catalog-only` | [https://github.com/heimgewebe/bureau](https://github.com/heimgewebe/bureau) |
 | Chronik | `heimgewebe/chronik` | `fleet` | [https://github.com/heimgewebe/chronik](https://github.com/heimgewebe/chronik) |
@@ -68,14 +68,14 @@ Metarepo ist Primärquelle für die Fleet-Mitgliedschaft. Der Systemkatalog blei
 | Infra | `heimgewebe/infra` | `catalog-only` | [https://github.com/heimgewebe/infra](https://github.com/heimgewebe/infra) |
 | Konvergenzregelkreis | `heimgewebe/konvergenzregelkreis` | `fleet` | [https://github.com/heimgewebe/konvergenzregelkreis](https://github.com/heimgewebe/konvergenzregelkreis) |
 | Labor | `heimgewebe/labor` | `catalog-only` | [https://github.com/heimgewebe/labor](https://github.com/heimgewebe/labor) |
-| Leitstand | `heimgewebe/leitstand` | `fleet` | [https://github.com/heimgewebe/leitstand](https://github.com/heimgewebe/leitstand) |
+| Leitstand | `heimgewebe/leitstand` | `archived-reference` | [https://github.com/heimgewebe/leitstand](https://github.com/heimgewebe/leitstand) |
 | Metarepo | `heimgewebe/metarepo` | `fleet` | [https://github.com/heimgewebe/metarepo](https://github.com/heimgewebe/metarepo) |
-| Obsidian Bridge | `heimgewebe/obsidian-bridge` | `catalog-only` | [https://github.com/heimgewebe/obsidian-bridge](https://github.com/heimgewebe/obsidian-bridge) |
-| Plexer | `heimgewebe/plexer` | `fleet` | [https://github.com/heimgewebe/plexer](https://github.com/heimgewebe/plexer) |
+| Obsidian Bridge | `heimgewebe/obsidian-bridge` | `archived-reference` | [https://github.com/heimgewebe/obsidian-bridge](https://github.com/heimgewebe/obsidian-bridge) |
+| Plexer | `heimgewebe/plexer` | `archived-reference` | [https://github.com/heimgewebe/plexer](https://github.com/heimgewebe/plexer) |
 | RepoGround | `heimgewebe/repoground` | `fleet` | [https://github.com/heimgewebe/repoground](https://github.com/heimgewebe/repoground) |
 | Reposkop | `heimgewebe/reposkop` | `catalog-only` | [https://github.com/heimgewebe/reposkop](https://github.com/heimgewebe/reposkop) |
-| Schauwerk | `heimgewebe/schauwerk` | `catalog-only` | [https://github.com/heimgewebe/schauwerk](https://github.com/heimgewebe/schauwerk) |
-| semantAH | `heimgewebe/semantAH` | `fleet` | [https://github.com/heimgewebe/semantAH](https://github.com/heimgewebe/semantAH) |
+| Schauwerk | `heimgewebe/schauwerk` | `related` | [https://github.com/heimgewebe/schauwerk](https://github.com/heimgewebe/schauwerk) |
+| semantAH | `heimgewebe/semantAH` | `archived-reference` | [https://github.com/heimgewebe/semantAH](https://github.com/heimgewebe/semantAH) |
 | Snippet Engine Control | `heimgewebe/snippet-engine-control` | `catalog-only` | [https://github.com/heimgewebe/snippet-engine-control](https://github.com/heimgewebe/snippet-engine-control) |
 | Systemkatalog | `heimgewebe/systemkatalog` | `catalog-only` | [https://github.com/heimgewebe/systemkatalog](https://github.com/heimgewebe/systemkatalog) |
 | WGX | `heimgewebe/wgx` | `fleet` | [https://github.com/heimgewebe/wgx](https://github.com/heimgewebe/wgx) |

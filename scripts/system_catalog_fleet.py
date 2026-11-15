@@ -241,10 +241,16 @@ def compare_with_source(
         for row in coverage["repositories"]
         if row["membership"] == "archived-reference"
     }
-    if catalog_archived != source_archived:
+    # An archived catalog reference may outlive its removal from the source Fleet.
+    # Still reject anything active in the source or explicitly excluded for another reason.
+    unexpected_archived = catalog_archived & (
+        set(included) | (set(excluded) - source_archived)
+    )
+    missing_archived = source_archived - catalog_archived
+    if missing_archived or unexpected_archived:
         raise FleetCoverageError(
-            f"Fleet archived-reference drift; source={sorted(source_archived)}, "
-            f"catalog={sorted(catalog_archived)}"
+            f"Fleet archived-reference drift; missing={sorted(missing_archived)}, "
+            f"unexpected={sorted(unexpected_archived)}"
         )
     return {
         "status": "valid",

@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
   "kind": "system_catalog_fleet_coverage",
-  "updatedAt": "2026-11-09",
+  "updatedAt": "2026-11-15",
   "membershipAuthority": {
     "repository": "heimgewebe/metarepo",
-    "commit": "08967276c276c0024ec027e926c2b9a93ab9f15d",
+    "commit": "df6ccc2fe8f9e7c11bca2539ea5edf9b7e200796",
     "path": "fleet/repos.yml",
-    "contentSha256": "6fa4dfb2945a1461b8bf3ffabc48cdf3c477e4bb5c918a8cedc7c8ce758db8ac",
+    "contentSha256": "36adab74da33db4513190661c4664ba00e78cf5661abb9a0026c36170d39ce20",
     "scope": "fleet_membership_only"
   },
   "catalogAuthority": {
@@ -19,7 +19,7 @@
       "node": "repo:alpha-lab",
       "repository": "heimgewebe/alpha-lab",
       "entrypoint": "https://github.com/heimgewebe/alpha-lab",
-      "membership": "catalog-only"
+      "membership": "archived-reference"
     },
     {
       "node": "repo:bureau",
@@ -91,7 +91,7 @@
       "node": "repo:leitstand",
       "repository": "heimgewebe/leitstand",
       "entrypoint": "https://github.com/heimgewebe/leitstand",
-      "membership": "fleet"
+      "membership": "archived-reference"
     },
     {
       "node": "repo:metarepo",
@@ -103,13 +103,13 @@
       "node": "repo:obsidian-bridge",
       "repository": "heimgewebe/obsidian-bridge",
       "entrypoint": "https://github.com/heimgewebe/obsidian-bridge",
-      "membership": "catalog-only"
+      "membership": "archived-reference"
     },
     {
       "node": "repo:plexer",
       "repository": "heimgewebe/plexer",
       "entrypoint": "https://github.com/heimgewebe/plexer",
-      "membership": "fleet"
+      "membership": "archived-reference"
     },
     {
       "node": "repo:repoground",
@@ -127,13 +127,13 @@
       "node": "repo:schauwerk",
       "repository": "heimgewebe/schauwerk",
       "entrypoint": "https://github.com/heimgewebe/schauwerk",
-      "membership": "catalog-only"
+      "membership": "related"
     },
     {
       "node": "repo:semantAH",
       "repository": "heimgewebe/semantAH",
       "entrypoint": "https://github.com/heimgewebe/semantAH",
-      "membership": "fleet"
+      "membership": "archived-reference"
     },
     {
       "node": "repo:snippet-engine-control",

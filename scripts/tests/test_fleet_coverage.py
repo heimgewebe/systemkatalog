@@ -37,9 +37,9 @@ class FleetCoverageTests(unittest.TestCase):
             coverage["membershipAuthority"],
             {
                 "repository": "heimgewebe/metarepo",
-                "commit": "08967276c276c0024ec027e926c2b9a93ab9f15d",
+                "commit": "df6ccc2fe8f9e7c11bca2539ea5edf9b7e200796",
                 "path": "fleet/repos.yml",
-                "contentSha256": "6fa4dfb2945a1461b8bf3ffabc48cdf3c477e4bb5c918a8cedc7c8ce758db8ac",
+                "contentSha256": "36adab74da33db4513190661c4664ba00e78cf5661abb9a0026c36170d39ce20",
                 "scope": "fleet_membership_only",
             },
         )
@@ -48,12 +48,30 @@ class FleetCoverageTests(unittest.TestCase):
                 item["membership"] in {"fleet", "related"}
                 for item in coverage["repositories"]
             ),
-            13,
+            11,
         )
         self.assertEqual(coverage["sourceExclusions"], [])
         repositories = {item["repository"] for item in coverage["repositories"]}
         for deleted in ("heimlern", "hausKI", "leitwerk", "vault-gewebe", "sichter"):
             self.assertNotIn(f"heimgewebe/{deleted}", repositories)
+
+    def test_archived_catalog_references_can_remain_outside_metarepo(self) -> None:
+        coverage = load_coverage(ROOT)
+        source = (
+            {
+                item["repository"].split("/", 1)[1]: item["membership"]
+                for item in coverage["repositories"]
+                if item["membership"] in {"fleet", "related"}
+            },
+            {},
+        )
+        self.assertEqual(compare_with_source(coverage, source)["fleetRepositories"], 11)
+        archived = {
+            item["repository"].split("/", 1)[1]
+            for item in coverage["repositories"]
+            if item["membership"] == "archived-reference"
+        }
+        self.assertEqual(archived, {"semantAH", "plexer", "leitstand", "obsidian-bridge", "alpha-lab"})
 
     def test_parser_and_comparison_accept_authority_shape(self) -> None:
         source_text = """---
