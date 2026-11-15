@@ -19,7 +19,7 @@ from validate_system_catalog import validate  # noqa: E402
 class SystemCatalogTests(unittest.TestCase):
     def _copy_repository(self, directory: str) -> Path:
         target = Path(directory) / "repo"
-        shutil.copytree(ROOT, target, ignore=shutil.ignore_patterns(".git", "__pycache__"))
+        shutil.copytree(ROOT, target, ignore=shutil.ignore_patterns(".git", "__pycache__", ".adler"))
         return target
 
     def test_repository_catalog_is_valid_and_roomless(self) -> None:
@@ -29,12 +29,12 @@ class SystemCatalogTests(unittest.TestCase):
         self.assertEqual(result["registryRelations"], 43)
         self.assertEqual(result["authorityDomains"], 20)
         self.assertEqual(result["catalogRepositories"], 26)
-        self.assertEqual(result["fleetRepositories"], 13)
+        self.assertEqual(result["fleetRepositories"], 11)
         self.assertEqual(result["fleetExclusions"], 0)
         self.assertEqual(result["organizationRepositories"], 34)
-        self.assertEqual(result["organizationCatalogRepositories"], 26)
-        self.assertEqual(result["organizationArchivedReferences"], 0)
-        self.assertEqual(result["organizationExclusions"], 8)
+        self.assertEqual(result["organizationCatalogRepositories"], 21)
+        self.assertEqual(result["organizationArchivedReferences"], 6)
+        self.assertEqual(result["organizationExclusions"], 7)
         self.assertEqual(result["activeLegacyRooms"], 0)
         for room in (
             "bestand",

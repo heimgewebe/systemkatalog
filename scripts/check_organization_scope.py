@@ -43,7 +43,7 @@ def main() -> int:
                 row["classification"] == "catalog" for row in scope["repositories"]
             ),
             "archivedReferenceRepositories": sum(
-                row["classification"] == "archived_reference"
+                row["classification"] in {"archived_reference", "archived_excluded"}
                 for row in scope["repositories"]
             ),
             "excludedRepositories": sum(

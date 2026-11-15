@@ -11,7 +11,7 @@ from typing import Any
 SCOPE_REL = Path("registry/ecosystem/organization-scope.v1.json")
 REPOSITORY_RE = re.compile(r"^heimgewebe/([A-Za-z0-9_.-]+)$")
 VISIBILITIES = {"public", "private", "internal"}
-CLASSIFICATIONS = {"catalog", "archived_reference", "excluded"}
+CLASSIFICATIONS = {"catalog", "archived_reference", "archived_excluded", "excluded"}
 
 
 class OrganizationScopeError(ValueError):
@@ -177,7 +177,7 @@ def validate_github_inventory(
         row["name"]: {
             "repository": row["repository"],
             "visibility": row["visibility"],
-            "archived": row["classification"] == "archived_reference",
+            "archived": row["classification"] in {"archived_reference", "archived_excluded"},
         }
         for row in scope["repositories"]
         if visibility is None or row["visibility"] == visibility

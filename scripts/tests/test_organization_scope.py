@@ -38,15 +38,15 @@ class OrganizationScopeTests(unittest.TestCase):
         self.assertEqual(len(scope["repositories"]), 34)
         self.assertEqual(
             sum(row["classification"] == "catalog" for row in scope["repositories"]),
-            26,
+            21,
         )
         self.assertEqual(
             {
                 row["name"]
                 for row in scope["repositories"]
-                if row["classification"] == "archived_reference"
+                if row["classification"] in {"archived_reference", "archived_excluded"}
             },
-            set(),
+            {"alpha-lab", "capacity-marketplace", "leitstand", "obsidian-bridge", "plexer", "semantAH"},
         )
         self.assertEqual(
             {
@@ -56,7 +56,6 @@ class OrganizationScopeTests(unittest.TestCase):
             },
             {
                 "asr",
-                "capacity-marketplace",
                 "digitalisierer",
                 "fotoatelier",
                 "gegner",
@@ -70,7 +69,7 @@ class OrganizationScopeTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             target = Path(directory) / "repo"
             shutil.copytree(
-                ROOT, target, ignore=shutil.ignore_patterns(".git", "__pycache__")
+                ROOT, target, ignore=shutil.ignore_patterns(".git", "__pycache__", ".adler")
             )
             path = target / "registry/ecosystem/organization-scope.v1.json"
             data = json.loads(path.read_text(encoding="utf-8"))
@@ -86,7 +85,7 @@ class OrganizationScopeTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             target = Path(directory) / "repo"
             shutil.copytree(
-                ROOT, target, ignore=shutil.ignore_patterns(".git", "__pycache__")
+                ROOT, target, ignore=shutil.ignore_patterns(".git", "__pycache__", ".adler")
             )
             path = target / "registry/ecosystem/organization-scope.v1.json"
             data = json.loads(path.read_text(encoding="utf-8"))
@@ -105,7 +104,7 @@ class OrganizationScopeTests(unittest.TestCase):
                 "name": row["name"],
                 "nameWithOwner": row["repository"],
                 "visibility": row["visibility"].upper(),
-                "isArchived": row["classification"] == "archived_reference",
+                "isArchived": row["classification"] in {"archived_reference", "archived_excluded"},
                 "isFork": False,
             }
             for row in scope["repositories"]
@@ -119,7 +118,7 @@ class OrganizationScopeTests(unittest.TestCase):
                 "name": row["name"],
                 "nameWithOwner": row["repository"],
                 "visibility": row["visibility"].upper(),
-                "isArchived": row["classification"] == "archived_reference",
+                "isArchived": row["classification"] in {"archived_reference", "archived_excluded"},
                 "isFork": False,
             }
             for row in scope["repositories"]
@@ -132,14 +131,12 @@ class OrganizationScopeTests(unittest.TestCase):
 
     def test_archived_reference_mismatch_fails_closed(self) -> None:
         scope = copy.deepcopy(load_scope(ROOT))
-        alpha = next(row for row in scope["repositories"] if row["name"] == "alpha-lab")
-        alpha["classification"] = "archived_reference"
         inventory = [
             {
                 "name": row["name"],
                 "nameWithOwner": row["repository"],
                 "visibility": row["visibility"].upper(),
-                "isArchived": False,
+                "isArchived": row["classification"] in {"archived_reference", "archived_excluded"} and row["name"] != "alpha-lab",
                 "isFork": False,
             }
             for row in scope["repositories"]

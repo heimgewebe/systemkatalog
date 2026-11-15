@@ -10,7 +10,7 @@ flowchart TD
     end
 
     subgraph kind_repository[Repos und Organe]
-        repo_alpha_lab["Alpha Lab<br/>id: repo:alpha-lab<br/>repository<br/>lifecycle: active · reviewed: 2026-08-07<br/>read-only research tool for reproducible point-in-time analysis of public filings and deterministic shadow evaluation"]
+        repo_alpha_lab["Alpha Lab<br/>id: repo:alpha-lab<br/>repository<br/>lifecycle: archived · reviewed: 2026-11-15<br/>read-only research tool for reproducible point-in-time analysis of public filings and deterministic shadow evaluation"]
         repo_audio["audio<br/>id: repo:audio<br/>repository<br/>lifecycle: active · reviewed: 2026-08-01<br/>Canonical Heim-PC audio configuration, recording, playback, instruments and experimental music systems"]
         repo_bureau["Bureau<br/>id: repo:bureau<br/>repository<br/>lifecycle: active · reviewed: 2026-07-26<br/>task cadence, delegation, run reporting"]
         repo_chronik["Chronik<br/>id: repo:chronik<br/>repository<br/>lifecycle: active · reviewed: 2026-07-26<br/>append-only event ledger and historical evidence axis"]
@@ -25,14 +25,14 @@ flowchart TD
         repo_infra["Infra<br/>id: repo:infra<br/>repository<br/>lifecycle: active · reviewed: 2026-07-26<br/>host, network, cockpit and operational runbooks"]
         repo_konvergenzregelkreis["Konvergenzregelkreis<br/>id: repo:konvergenzregelkreis<br/>repository<br/>lifecycle: active · reviewed: 2026-07-26<br/>public stateless convergence protocol and conformance core for evidence-bound closure of ecosystem changes"]
         repo_labor["Labor<br/>id: repo:labor<br/>repository<br/>lifecycle: active · reviewed: 2026-07-26<br/>bounded prospective experiments, evidence review and proposal-ready learning candidates"]
-        repo_leitstand["Leitstand<br/>id: repo:leitstand<br/>repository<br/>lifecycle: active · reviewed: 2026-08-01<br/>read-only ecosystem observability and status projection"]
+        repo_leitstand["Leitstand<br/>id: repo:leitstand<br/>repository<br/>lifecycle: archived · reviewed: 2026-11-15<br/>read-only ecosystem observability and status projection"]
         repo_metarepo["Metarepo<br/>id: repo:metarepo<br/>repository<br/>lifecycle: active · reviewed: 2026-08-01<br/>Fleet membership, canonical shared contracts and repository templates"]
-        repo_obsidian_bridge["Obsidian Bridge<br/>id: repo:obsidian-bridge<br/>repository<br/>lifecycle: active · reviewed: 2026-07-26<br/>deterministic CLI and artifact bridge for using Obsidian as a projection and observatory interface"]
-        repo_plexer["Plexer<br/>id: repo:plexer<br/>repository<br/>lifecycle: active · reviewed: 2026-07-26<br/>bounded event delivery and queueing gateway"]
+        repo_obsidian_bridge["Obsidian Bridge<br/>id: repo:obsidian-bridge<br/>repository<br/>lifecycle: archived · reviewed: 2026-11-15<br/>deterministic CLI and artifact bridge for using Obsidian as a projection and observatory interface"]
+        repo_plexer["Plexer<br/>id: repo:plexer<br/>repository<br/>lifecycle: archived · reviewed: 2026-11-15<br/>bounded event delivery and queueing gateway"]
         repo_repoground["RepoGround<br/>id: repo:repoground<br/>repository<br/>lifecycle: active · reviewed: 2026-08-03<br/>verifiable, citable repository context for humans and AI systems under one canonical RepoGround product identity"]
         repo_reposkop["Reposkop<br/>id: repo:reposkop<br/>repository<br/>lifecycle: active · reviewed: 2026-08-01<br/>canonical local checkout identity, transition and continuity truth for explicitly selected repository targets"]
         repo_schauwerk["Schauwerk<br/>id: repo:schauwerk<br/>repository<br/>lifecycle: active · reviewed: 2026-07-26<br/>visual surface and projection layer"]
-        repo_semantAH["semantAH<br/>id: repo:semantAH<br/>repository<br/>lifecycle: active · reviewed: 2026-07-26<br/>Semantic index, embeddings and knowledge-graph pipeline"]
+        repo_semantAH["semantAH<br/>id: repo:semantAH<br/>repository<br/>lifecycle: archived · reviewed: 2026-11-15<br/>Semantic index, embeddings and knowledge-graph pipeline"]
         repo_snippet_engine_control["Snippet Engine Control<br/>id: repo:snippet-engine-control<br/>repository<br/>lifecycle: active · reviewed: 2026-07-26<br/>engine-neutral contract, diagnostics and diffable export-planning layer for text-expansion systems"]
         repo_systemkatalog["Systemkatalog<br/>id: repo:systemkatalog<br/>repository<br/>lifecycle: active · reviewed: 2026-08-01<br/>app-independent catalog for system purposes, truth ownership, stable relations and entrypoints"]
         repo_wgx["WGX<br/>id: repo:wgx<br/>repository<br/>lifecycle: active · reviewed: 2026-08-09<br/>WGX-v1 profile compatibility and repository-declared validation/task runner"]
@@ -102,9 +102,11 @@ flowchart TD
 
     %% Lifecycle is stable catalog semantics, not runtime status.
     classDef lifecycleActive stroke-width:1.5px;
-    class actor_alexander,artifact_ecosystem_map,repo_systemkatalog,repo_bureau,repo_grabowski,repo_commonthing,repo_repoground,repo_reposkop,repo_labor,repo_alpha_lab,repo_chronik,repo_schauwerk,repo_infra,repo_device_graph,service_github,service_ci,repo_leitstand,repo_plexer,repo_metarepo,repo_wgx,repo_contracts_mirror,repo_audio,repo_semantAH,repo_heim_pc,repo_commonworld,repo_obsidian_bridge,repo_snippet_engine_control,repo_konvergenzregelkreis,concept_weltgewebe_os,concept_gewebezelle,concept_weltgewebe_federation_planes,concept_gewebezelle_betreiberrolle,repo_heim_pc_dashboard_chatgpt_app,service_heim_pc_chatgpt_dashboard,repo_grosser_adler lifecycleActive;
+    class actor_alexander,artifact_ecosystem_map,repo_systemkatalog,repo_bureau,repo_grabowski,repo_commonthing,repo_repoground,repo_reposkop,repo_labor,repo_chronik,repo_schauwerk,repo_infra,repo_device_graph,service_github,service_ci,repo_metarepo,repo_wgx,repo_contracts_mirror,repo_audio,repo_heim_pc,repo_commonworld,repo_snippet_engine_control,repo_konvergenzregelkreis,concept_weltgewebe_os,concept_gewebezelle,concept_weltgewebe_federation_planes,concept_gewebezelle_betreiberrolle,repo_heim_pc_dashboard_chatgpt_app,service_heim_pc_chatgpt_dashboard,repo_grosser_adler lifecycleActive;
     classDef lifecycleTransition stroke:#fbbf24,stroke-width:3px,stroke-dasharray:6 3;
     class concept_weltgewebe_platform_target lifecycleTransition;
+    classDef lifecycleArchived fill:#1f2937,stroke:#64748b,color:#cbd5e1;
+    class repo_alpha_lab,repo_leitstand,repo_plexer,repo_semantAH,repo_obsidian_bridge lifecycleArchived;
 
     %% Visual anchor only; does not establish canonical truth.
     classDef mapAnchor stroke-width:2px;

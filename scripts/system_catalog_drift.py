@@ -65,7 +65,7 @@ def build_report(root: Path, github_data: dict[str, Any] | list[Any], *, fleet_f
                 "expected": expected_visibility,
                 "actual": actual_visibility,
             })
-        expected_archived = expected[repository].get("classification") == "archived_reference"
+        expected_archived = expected[repository].get("classification") in {"archived_reference", "archived_excluded"}
         actual_archived = actual[repository].get("isArchived") is True
         if expected_archived != actual_archived:
             changes.append({

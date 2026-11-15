@@ -585,7 +585,7 @@ def validate(root: Path = ROOT) -> dict[str, Any]:
             for item in organization_scope["repositories"]
         ),
         "organizationArchivedReferences": sum(
-            item["classification"] == "archived_reference"
+            item["classification"] in {"archived_reference", "archived_excluded"}
             for item in organization_scope["repositories"]
         ),
         "organizationExclusions": sum(

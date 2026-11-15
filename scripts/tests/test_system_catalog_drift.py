@@ -25,7 +25,7 @@ def matching_observations() -> dict:
     repositories = [
         {
             "nameWithOwner": item["repository"],
-            "isArchived": item["classification"] == "archived_reference",
+            "isArchived": item["classification"] in {"archived_reference", "archived_excluded"},
             "isFork": False,
             "visibility": item["visibility"],
         }
@@ -120,12 +120,6 @@ class SystemCatalogDriftTests(unittest.TestCase):
             if item["name"] in archived_names:
                 lines.append("    status: archived-reference")
             lines.append("    fleet: false")
-        excluded_names = {item["name"] for item in coverage["sourceExclusions"]}
-        for name in sorted(archived_names - excluded_names):
-            lines.append(f"  - name: {name}")
-            lines.append("    status: archived-reference")
-            lines.append("    fleet: false")
-
         with tempfile.TemporaryDirectory() as raw_tmp:
             tmp = Path(raw_tmp)
             shutil.copytree(ROOT / "scripts", tmp / "scripts", ignore=shutil.ignore_patterns("__pycache__", "*.pyc"))
