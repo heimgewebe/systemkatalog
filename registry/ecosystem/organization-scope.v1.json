@@ -1,16 +1,16 @@
 {
   "schemaVersion": 1,
   "kind": "system_catalog_organization_scope",
-  "updatedAt": "2026-11-15",
+  "updatedAt": "2026-11-22",
   "source": {
     "provider": "github",
     "organization": "heimgewebe",
-    "observedAt": "2026-11-15T10:15:47Z",
+    "observedAt": "2026-11-22T12:40:39Z",
     "selection": {
       "archived": "include",
       "fork": false
     },
-    "repositoryCount": 34
+    "repositoryCount": 35
   },
   "repositories": [
     {
@@ -60,6 +60,14 @@
       "classification": "catalog",
       "node": "repo:chronik",
       "reason": "append-only event ledger and historical evidence axis"
+    },
+    {
+      "name": "claim-audit-lab",
+      "repository": "heimgewebe/claim-audit-lab",
+      "visibility": "public",
+      "classification": "excluded",
+      "node": null,
+      "reason": "Active Python repository listed in the heimgewebe organization since 2026-11 (created 2026-05-09). Not yet admitted as a Systemkatalog system; exclusion records complete GitHub organization scope pending explicit component admission and truth-owner modeling."
     },
     {
       "name": "commonthing",

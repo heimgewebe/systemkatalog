@@ -182,12 +182,22 @@ def validate_github_inventory(
         for row in scope["repositories"]
         if visibility is None or row["visibility"] == visibility
     }
-    if set(remote) != set(expected):
+    # Retired (archived) repositories carry no authority. GitHub may stop
+    # listing them for the inventory token (removed from the App installation,
+    # transferred or deleted), so their absence is not drift. If they are still
+    # listed, identity, visibility and archive state must match exactly.
+    missing = sorted(
+        name for name in set(expected) - set(remote) if not expected[name]["archived"]
+    )
+    unexpected = sorted(set(remote) - set(expected))
+    if missing or unexpected:
         raise OrganizationScopeError(
-            f"GitHub organization scope drift; missing={sorted(set(expected) - set(remote))}, "
-            f"unexpected={sorted(set(remote) - set(expected))}"
+            f"GitHub organization scope drift; missing={missing}, "
+            f"unexpected={unexpected}"
         )
-    wrong = sorted(name for name in expected if expected[name] != remote[name])
+    wrong = sorted(
+        name for name in expected if name in remote and expected[name] != remote[name]
+    )
     if wrong:
         raise OrganizationScopeError(
             f"GitHub organization identity or visibility drift: {wrong}"
