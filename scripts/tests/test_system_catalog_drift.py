@@ -130,6 +130,36 @@ class SystemCatalogDriftTests(unittest.TestCase):
                     )
                     self.assertEqual(result.returncode, 2, result.stderr)
 
+    def test_retired_repositories_absent_from_github_are_not_drift(self) -> None:
+        scope = json.loads((ROOT / "registry/ecosystem/organization-scope.v1.json").read_text(encoding="utf-8"))
+        retired = {
+            item["repository"]
+            for item in scope["repositories"]
+            if item["classification"] in {"archived_reference", "archived_excluded"}
+        }
+        self.assertTrue(retired)
+        data = matching_observations()
+        data["repositories"] = [
+            item for item in data["repositories"] if item["nameWithOwner"] not in retired
+        ]
+        data["observations"] = [
+            item for item in data["observations"] if item["repository"] not in retired
+        ]
+        report = build_report(ROOT, data)
+        self.assertEqual(report["changes"], [])
+        self.assertFalse(report["materialDrift"])
+
+    def test_missing_active_repository_is_still_drift(self) -> None:
+        data = matching_observations()
+        data["repositories"] = [
+            item for item in data["repositories"] if item["nameWithOwner"] != "heimgewebe/bureau"
+        ]
+        report = build_report(ROOT, data)
+        self.assertIn(
+            {"kind": "repository_missing_or_archived", "repository": "heimgewebe/bureau"},
+            report["changes"],
+        )
+
     def test_new_repository_is_unclassified(self) -> None:
         data = matching_observations()
         data["repositories"].append({

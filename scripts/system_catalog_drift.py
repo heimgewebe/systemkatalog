@@ -54,7 +54,16 @@ def build_report(root: Path, github_data: dict[str, Any] | list[Any], *, fleet_f
 
     for repository in sorted(set(actual) - set(expected)):
         changes.append({"kind": "repository_unclassified", "repository": repository})
-    for repository in sorted(set(expected) - set(actual)):
+    retired = {
+        repository
+        for repository, item in expected.items()
+        if item.get("classification") in {"archived_reference", "archived_excluded"}
+    }
+    # Retired repositories carry no authority; GitHub may stop listing them
+    # (removed from the App installation, transferred or deleted). Their
+    # absence, and the absence of their source observations, is not drift.
+    retired_absent = retired - set(actual)
+    for repository in sorted(set(expected) - set(actual) - retired_absent):
         changes.append({"kind": "repository_missing_or_archived", "repository": repository})
     for repository in sorted(set(expected) & set(actual)):
         expected_visibility = expected[repository].get("visibility")
@@ -89,6 +98,8 @@ def build_report(root: Path, github_data: dict[str, Any] | list[Any], *, fleet_f
             continue
         key = _observation_key(source["repository"], locator)
         observed = observations.get(key)
+        if observed is None and source["repository"] in retired_absent:
+            continue
         if observed is None:
             changes.append({
                 "kind": "source_observation_missing",
