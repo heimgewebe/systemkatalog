@@ -67,7 +67,7 @@ class SystemCatalogTests(unittest.TestCase):
             "sichter",
         ):
             self.assertNotIn(f"heimgewebe/{deleted}", actual)
-        self.assertIn("34 nicht geforkte Repositories", actual)
+        self.assertIn("35 nicht geforkte Repositories", actual)
 
     def test_entrypoint_href_uses_raw_target_not_markdown_escape(self) -> None:
         from render_system_catalog import _entrypoints_cell
