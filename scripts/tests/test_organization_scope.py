@@ -35,7 +35,7 @@ class OrganizationScopeTests(unittest.TestCase):
 
     def test_all_organization_repositories_are_classified(self) -> None:
         scope = self._validate()
-        self.assertEqual(len(scope["repositories"]), 34)
+        self.assertEqual(len(scope["repositories"]), 35)
         self.assertEqual(
             sum(row["classification"] == "catalog" for row in scope["repositories"]),
             21,
@@ -56,6 +56,7 @@ class OrganizationScopeTests(unittest.TestCase):
             },
             {
                 "asr",
+                "claim-audit-lab",
                 "digitalisierer",
                 "fotoatelier",
                 "gegner",
@@ -109,7 +110,7 @@ class OrganizationScopeTests(unittest.TestCase):
             }
             for row in scope["repositories"]
         ]
-        self.assertEqual(validate_github_inventory(scope, inventory), 34)
+        self.assertEqual(validate_github_inventory(scope, inventory), 35)
 
     def test_public_github_drift_fails_closed(self) -> None:
         scope = load_scope(ROOT)
@@ -144,6 +145,44 @@ class OrganizationScopeTests(unittest.TestCase):
         with self.assertRaisesRegex(
             OrganizationScopeError, "identity or visibility drift: .*alpha-lab"
         ):
+            validate_github_inventory(scope, inventory)
+
+    def test_retired_repositories_may_disappear_from_github_inventory(self) -> None:
+        scope = load_scope(ROOT)
+        inventory = [
+            {
+                "name": row["name"],
+                "nameWithOwner": row["repository"],
+                "visibility": row["visibility"].upper(),
+                "isArchived": False,
+                "isFork": False,
+            }
+            for row in scope["repositories"]
+            if row["classification"] not in {"archived_reference", "archived_excluded"}
+        ]
+        self.assertEqual(validate_github_inventory(scope, inventory), 35)
+
+    def test_unclassified_github_repository_fails_closed(self) -> None:
+        scope = load_scope(ROOT)
+        inventory = [
+            {
+                "name": row["name"],
+                "nameWithOwner": row["repository"],
+                "visibility": row["visibility"].upper(),
+                "isArchived": row["classification"] in {"archived_reference", "archived_excluded"},
+                "isFork": False,
+            }
+            for row in scope["repositories"]
+        ] + [
+            {
+                "name": "brand-new",
+                "nameWithOwner": "heimgewebe/brand-new",
+                "visibility": "PUBLIC",
+                "isArchived": False,
+                "isFork": False,
+            }
+        ]
+        with self.assertRaisesRegex(OrganizationScopeError, "unexpected=.*brand-new"):
             validate_github_inventory(scope, inventory)
 
 

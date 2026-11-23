@@ -85,7 +85,7 @@ Explizit ohne aktive Fleet-Mitgliedschaft:
 
 ## Organisationsumfang
 
-Der GitHub-Snapshot umfasst 34 nicht geforkte Repositories. Davon sind 21 aktive Katalogsysteme, 6 archivierte Referenzen und 7 begründet ausgeschlossen.
+Der GitHub-Snapshot umfasst 35 nicht geforkte Repositories. Davon sind 21 aktive Katalogsysteme, 6 archivierte Referenzen und 8 begründet ausgeschlossen.
 
 Archivierte Referenzen ohne aktive Betriebsautorität:
 
@@ -99,6 +99,7 @@ Archivierte Referenzen ohne aktive Betriebsautorität:
 Begründete Ausschlüsse:
 
 - `heimgewebe/asr` (`public`) — Canonical local-first ASR capability (engine routing, transcript contracts, policy) referenced by the heim-pc capability locator. Not yet admitted as a Systemkatalog system; exclusion records complete GitHub organization scope without granting catalog authority pending explicit component admission and truth-owner modeling.
+- `heimgewebe/claim-audit-lab` (`public`) — Active Python repository listed in the heimgewebe organization since 2026-11 (created 2026-05-09). Not yet admitted as a Systemkatalog system; exclusion records complete GitHub organization scope pending explicit component admission and truth-owner modeling.
 - `heimgewebe/digitalisierer` (`public`) — Local-first workbench for scanning, OCR, transcription and media digitization. Not yet admitted as a Systemkatalog system; exclusion records complete GitHub organization scope without granting catalog authority pending explicit component admission and truth-owner modeling.
 - `heimgewebe/fotoatelier` (`private`) — Private photo studio application for FOTOLABOR with off-machine backup on heim-pc. Not yet admitted as a Systemkatalog system; exclusion records complete GitHub organization scope without granting catalog authority pending explicit component admission and truth-owner modeling.
 - `heimgewebe/gegner` (`public`) — Minimal same-thread countercheck surface. It is not a reviewer, evidence source, decision authority or execution authority; inclusion in GitHub organization scope does not grant Systemkatalog admission.
