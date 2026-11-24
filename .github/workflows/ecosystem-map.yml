@@ -121,6 +121,7 @@ jobs:
             --output "${RUNNER_TEMP}/systemkatalog-observations.json"
 
       - name: Check proposal-only catalog drift
+        id: catalog-drift
         if: github.event_name != 'pull_request'
         run: |
           set +e
@@ -133,3 +134,13 @@ jobs:
           status=$?
           cat "${RUNNER_TEMP}/systemkatalog-drift-report.json"
           exit "$status"
+
+      # Reuse the observed proposal-only report, never raw source observations.
+      - name: Publish proposal-only drift report
+        if: always() && github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && (steps.catalog-drift.outcome == 'success' || steps.catalog-drift.outcome == 'failure')
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: systemkatalog-drift-report
+          path: ${{ runner.temp }}/systemkatalog-drift-report.json
+          if-no-files-found: error
+          retention-days: 7
