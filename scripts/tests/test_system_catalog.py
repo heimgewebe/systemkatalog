@@ -193,19 +193,47 @@ class SystemCatalogTests(unittest.TestCase):
         self.assertEqual(heim_pc["truthOwnership"], [])
         self.assertEqual(
             heim_pc["entrypoints"]["operatorEntry"],
-            "https://github.com/heimgewebe/heim-pc/blob/671565d78b115cf2205d8a05bdeb709ac998f428/manifest/operator-entry.v1.json",
+            "https://github.com/heimgewebe/heim-pc/blob/8a8ba30aec53a732c1dc170f690b61773fc541c5/manifest/operator-entry.v1.json",
         )
         self.assertEqual(
             heim_pc["entrypoints"]["asrPolicy"],
-            "https://github.com/heimgewebe/heim-pc/blob/671565d78b115cf2205d8a05bdeb709ac998f428/manifest/asr-engine-policy.v1.json",
+            "https://github.com/heimgewebe/asr/blob/55fbf9fc817ce5bef72bde0e8038a748b4a501ea/manifest/asr-engine-policy.v1.json",
         )
         self.assertEqual(
             heim_pc["entrypoints"]["asrEntrypoint"],
-            "https://github.com/heimgewebe/heim-pc/blob/671565d78b115cf2205d8a05bdeb709ac998f428/scripts/asr_engine.py",
+            "https://github.com/heimgewebe/asr/blob/55fbf9fc817ce5bef72bde0e8038a748b4a501ea/scripts/asr_engine.py",
         )
         self.assertIn(
             "registry/ecosystem/source-bindings.v1.json",
             heim_pc["lifecycle"]["evidenceRefs"],
+        )
+        self.assertEqual(
+            heim_pc["entrypoints"]["asrArchitecture"],
+            "https://github.com/heimgewebe/asr/blob/55fbf9fc817ce5bef72bde0e8038a748b4a501ea/architecture/asr-engine.md",
+        )
+        self.assertEqual(
+            heim_pc["entrypoints"]["asrCapability"],
+            "https://github.com/heimgewebe/asr/blob/55fbf9fc817ce5bef72bde0e8038a748b4a501ea/manifest/asr-capability.v1.json",
+        )
+        self.assertEqual(
+            heim_pc["entrypoints"]["asrRunbook"],
+            "https://github.com/heimgewebe/asr/blob/55fbf9fc817ce5bef72bde0e8038a748b4a501ea/runbooks/asr-local-transcription.md",
+        )
+        self.assertEqual(
+            heim_pc["entrypoints"]["documentTextArchitecture"],
+            "https://github.com/heimgewebe/heim-pc/blob/8a8ba30aec53a732c1dc170f690b61773fc541c5/architecture/document-text-engine.md",
+        )
+        self.assertEqual(
+            heim_pc["entrypoints"]["documentTextPolicy"],
+            "https://github.com/heimgewebe/heim-pc/blob/8a8ba30aec53a732c1dc170f690b61773fc541c5/manifest/document-text-engine-policy.v1.json",
+        )
+        self.assertEqual(
+            heim_pc["entrypoints"]["documentTextContract"],
+            "https://github.com/heimgewebe/heim-pc/blob/8a8ba30aec53a732c1dc170f690b61773fc541c5/manifest/document-text-contract.v1.json",
+        )
+        self.assertEqual(
+            heim_pc["entrypoints"]["documentTextEntrypoint"],
+            "https://github.com/heimgewebe/heim-pc/blob/8a8ba30aec53a732c1dc170f690b61773fc541c5/scripts/document_text_engine.py",
         )
         rendered_heim_pc = json.dumps(heim_pc, ensure_ascii=False).lower()
         self.assertNotIn("faster-whisper", rendered_heim_pc)
