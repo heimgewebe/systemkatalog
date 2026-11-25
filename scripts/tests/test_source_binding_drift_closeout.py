@@ -80,8 +80,8 @@ EXPECTED = {
     },
     "repo:heim-pc": {
         "repository": "heimgewebe/heim-pc",
-        "commit": "671565d78b115cf2205d8a05bdeb709ac998f428",
-        "sha256": "b8539db377f17808719f59efc33a63fae8fa2ca97f29f674f0824fc843033b94",
+        "commit": "8a8ba30aec53a732c1dc170f690b61773fc541c5",
+        "sha256": "ff2b197f473cac119348c98d30090c3db40bd0acb164f2c649f3739e06141b17",
         "path": "manifest/operator-entry.v1.json",
     },
     "repo:commonworld": {
