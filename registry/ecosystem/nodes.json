@@ -595,7 +595,9 @@
         "operatorEntry": "https://github.com/heimgewebe/heim-pc/blob/671565d78b115cf2205d8a05bdeb709ac998f428/manifest/operator-entry.v1.json",
         "asrArchitecture": "https://github.com/heimgewebe/heim-pc/blob/671565d78b115cf2205d8a05bdeb709ac998f428/architecture/asr-engine.md",
         "asrPolicy": "https://github.com/heimgewebe/heim-pc/blob/671565d78b115cf2205d8a05bdeb709ac998f428/manifest/asr-engine-policy.v1.json",
-        "asrEntrypoint": "https://github.com/heimgewebe/heim-pc/blob/671565d78b115cf2205d8a05bdeb709ac998f428/scripts/asr_engine.py"
+        "asrEntrypoint": "https://github.com/heimgewebe/heim-pc/blob/671565d78b115cf2205d8a05bdeb709ac998f428/scripts/asr_engine.py",
+        "nixosFunctionMap": "https://github.com/heimgewebe/heim-pc/blob/main/README.md#nixos-funktionskarte-f%C3%BCr-agenten",
+        "nixosIntegrationPersistence": "https://github.com/heimgewebe/heim-pc/blob/main/README.md#dauerhafte-integrationen-und-rollout-vergleich"
       },
       "lifecycle": {
         "state": "active",
