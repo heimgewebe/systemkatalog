@@ -258,28 +258,28 @@
       "to": "concept:weltgewebe-os",
       "type": "provides",
       "stability": "stable",
-      "meaning": "The commonThing repository carries the normative Weltgewebe OS target architecture and its product implementation."
+      "meaning": "The commonThing repository carries the normative commonThing OS target architecture and its product implementation."
     },
     {
       "from": "concept:weltgewebe-os",
       "to": "concept:gewebezelle",
       "type": "provides",
       "stability": "stable",
-      "meaning": "Weltgewebe OS defines autonomous cells as the unit of local truth, moderation, infrastructure boundaries and federation policy."
+      "meaning": "commonThing OS defines autonomous cells as the unit of local truth, moderation, infrastructure boundaries and federation policy."
     },
     {
       "from": "concept:weltgewebe-os",
       "to": "concept:weltgewebe-platform-target",
       "type": "provides",
       "stability": "stable",
-      "meaning": "Weltgewebe OS defines Kubernetes and GitOps as the target platform without claiming current production readiness."
+      "meaning": "commonThing OS defines Kubernetes and GitOps as the target platform without claiming current production readiness."
     },
     {
       "from": "concept:weltgewebe-os",
       "to": "concept:weltgewebe-federation-planes",
       "type": "provides",
       "stability": "stable",
-      "meaning": "Weltgewebe OS keeps infrastructure, event and public domain federation as separate connection planes."
+      "meaning": "commonThing OS keeps infrastructure, event and public domain federation as separate connection planes."
     },
     {
       "from": "concept:gewebezelle-betreiberrolle",

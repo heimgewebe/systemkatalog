@@ -5,8 +5,8 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-REPOGROUND_COMMIT = "5548ca2d23a3d22ffe14fb1006363e4078e7c009"
-REPOGROUND_README_SHA256 = "34de5eedbd3cc9c7340887c12c97e5241b8060c17f2ff90f9facc1e175f03d9c"
+REPOGROUND_COMMIT = "e4bf307dd70f34be3f99f9817000cac1d62e6219"
+REPOGROUND_README_SHA256 = "735f822843c13958a236cb65d5034b352829187ce8e10692cde091d5ba606974"
 
 
 def _load(relative_path: str) -> dict:
