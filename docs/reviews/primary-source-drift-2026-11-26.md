@@ -19,3 +19,5 @@ All eleven original bound and observed file byte pairs were SHA-256 verified and
 | repo:grosser-adler | [7a1be9d8:AUTHORITY.md](https://github.com/heimgewebe/grosser-adler/blob/7a1be9d820d6116c853678ecbb413993cd70c1d6/AUTHORITY.md) | Bounded lab and primary-source reads plus immutable findings remain advisory; no write/claim/merge/deployment authority or independent-review substitution. |
 
 Historical source commits remain available in Git history. The old commonThing architecture path at the reviewed commit is a redirect, not a valid substitute for the new normative source.
+
+The four renamed edge descriptions preserve all 43 edge identities, their stability and all other fields. The existing whole-file provenance contract requires all 43 relation locators to bind the exact newly published edge file at 1078177cfbcc72558d70d6c3f88b738aa7245f10 (SHA-256 749fcebd478118d2445c947b29273fdc306c694cfd426bef899c5859b0be2b90). Unchanged relation review dates are preserved; only the four reviewed display-name changes receive a new review date. No historical IDs are renamed.
