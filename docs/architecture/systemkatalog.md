@@ -68,4 +68,6 @@ Quellenbindungen und Frische bleiben getrennte Verträge:
 - `scripts/system_catalog_drift.py` erzeugt einen maschinenlesbaren Bericht und einen proposal-only Änderungsvorschlag;
 - Bureau oder ein unabhängiger Operator-Watchdog kann materielle Drift als deduplizierten Kandidaten sichtbar machen.
 
+Die planmäßige Quellbeobachtung für Repository-Inventar, Fleet-Zugehörigkeit und Primärdokumente erfolgt im täglichen `Ecosystem Map`-Workflow. Das Erkennungsziel von 1440 Minuten beschreibt diese Soll-Kadenz, keine garantierte maximale Latenz: GitHub-Schedule-Verzögerungen, Ausfälle und der nachgelagerte stündliche Abruf können die tatsächliche Erkennung verzögern. Ein schnellerer Abruf erkennt keine noch nicht beobachteten Änderungen. Push- und manuelle Läufe können die Erkennung beschleunigen. Das kürzere Ziel für CI-Prüffehler gehört zur ereignisgetriebenen CI, nicht zum täglichen Inventarlauf. Systemkatalog besitzt die Projektion seines eigenen Driftberichts; daraus entsteht keine allgemeine Operator-Anzeige oder Runtime-Wahrheit.
+
 Keiner dieser Schritte darf Zwecke, Grenzen, Wahrheitsbesitz oder Beziehungen ungeprüft in `main` schreiben. Erkennung ist automatisierbar; semantische Annahme bleibt reviewpflichtig.
