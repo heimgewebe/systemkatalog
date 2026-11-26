@@ -306,6 +306,28 @@ class SourceBindingTests(unittest.TestCase):
                 {"id": "repo:second"},
             )
 
+    def test_freshness_policy_matches_daily_source_observation(self) -> None:
+        data = json.loads((ROOT / "policy/freshness-slo.v1.json").read_text(encoding="utf-8"))
+        workflow = (ROOT / ".github/workflows/ecosystem-map.yml").read_text(encoding="utf-8")
+        self.assertRegex(workflow, r'(?m)^\s*- cron: "\d+ \d+ \* \* \*"\s*$')
+        rules = {rule["id"]: rule for rule in data["rules"]}
+        for rule_id in ("repository_inventory", "fleet_membership", "primary_source_document"):
+            self.assertEqual(rules[rule_id]["detectWithinMinutes"], 1440)
+        self.assertEqual(rules["check_failure"]["detectWithinMinutes"], 15)
+        self.assertEqual(data["statusProjectionOwner"], "repo:systemkatalog")
+        self.assertTrue(data["proposalOnly"])
+        self.assertFalse(data["autoMerge"])
+
+    def test_freshness_policy_rejects_retired_projection_owner(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            target = self._copy_repository(directory)
+            path = target / "policy/freshness-slo.v1.json"
+            data = json.loads(path.read_text(encoding="utf-8"))
+            data["statusProjectionOwner"] = "repo:leitstand"
+            path.write_text(json.dumps(data), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "freshness policy ownership mismatch"):
+                validate(target)
+
     def test_freshness_policy_cannot_enable_auto_merge(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             target = self._copy_repository(directory)

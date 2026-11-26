@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "kind": "system_catalog_freshness_policy",
   "owner": "repo:systemkatalog",
-  "statusProjectionOwner": "repo:leitstand",
+  "statusProjectionOwner": "repo:systemkatalog",
   "proposalOnly": true,
   "autoMerge": false,
   "driftCandidateId": "SYSTEMKATALOG-DRIFT-CLOSED-LOOP-V1",
@@ -10,21 +10,21 @@
     {
       "id": "repository_inventory",
       "authority": "service:github",
-      "detectWithinMinutes": 60,
+      "detectWithinMinutes": 1440,
       "reviewWithinHours": 24,
       "effect": "register_bureau_candidate"
     },
     {
       "id": "fleet_membership",
       "authority": "repo:metarepo",
-      "detectWithinMinutes": 60,
+      "detectWithinMinutes": 1440,
       "reviewWithinHours": 24,
       "effect": "register_bureau_candidate"
     },
     {
       "id": "primary_source_document",
       "authority": "repository_context_citations",
-      "detectWithinMinutes": 360,
+      "detectWithinMinutes": 1440,
       "reviewWithinHours": 168,
       "effect": "request_semantic_review"
     },

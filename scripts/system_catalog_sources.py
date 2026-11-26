@@ -303,7 +303,7 @@ def validate_freshness_policy(root: Path) -> dict[str, Any]:
         raise ValueError("freshness policy fields mismatch")
     if doc.get("schemaVersion") != 1 or doc.get("kind") != "system_catalog_freshness_policy":
         raise ValueError("freshness policy identity mismatch")
-    if doc.get("owner") != "repo:systemkatalog" or doc.get("statusProjectionOwner") != "repo:leitstand":
+    if doc.get("owner") != "repo:systemkatalog" or doc.get("statusProjectionOwner") != "repo:systemkatalog":
         raise ValueError("freshness policy ownership mismatch")
     if doc.get("proposalOnly") is not True or doc.get("autoMerge") is not False:
         raise ValueError("freshness policy must remain proposal-only")
