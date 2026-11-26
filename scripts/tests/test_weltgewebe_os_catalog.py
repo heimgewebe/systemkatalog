@@ -5,8 +5,8 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-ARCH_SHA = "322655285b520d04363e48487ae64d57264de573"
-ARCH_PATH = "architecture/weltgewebe-os.md"
+ARCH_SHA = "1ad6f258b0d3634f338c72f7472ffd8ea4ec4042"
+ARCH_PATH = "architecture/commonthing-os.md"
 ARCH_URL = f"https://github.com/heimgewebe/commonthing/blob/{ARCH_SHA}/{ARCH_PATH}"
 
 
@@ -27,6 +27,13 @@ class WeltgewebeOsCatalogTests(unittest.TestCase):
         }
         self.assertTrue(required <= set(nodes))
         self.assertEqual(nodes["repo:commonthing"]["entrypoints"]["targetArchitecture"], ARCH_URL)
+        self.assertEqual(nodes["concept:weltgewebe-os"]["name"], "commonThing OS")
+        for node_id in required - {"repo:commonthing"}:
+            self.assertEqual(nodes[node_id]["entrypoints"]["architecture"], ARCH_URL)
+        self.assertEqual(
+            next(item for item in load("registry/ecosystem/component-admissions.v1.json")["admissions"]
+                 if item["componentId"] == "repo:commonthing")["source"]["ref"], ARCH_URL
+        )
         self.assertEqual(nodes["repo:commonthing"]["truthOwnership"], ["weltgewebe_target_architecture"])
         self.assertEqual(nodes["concept:gewebezelle"]["truthOwnership"], ["weltgewebe_cell_domain_truth"])
         platform = nodes["concept:weltgewebe-platform-target"]
