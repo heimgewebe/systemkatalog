@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "kind": "system_catalog_authority_matrix",
-  "updatedAt": "2026-08-29",
+  "updatedAt": "2026-11-26",
   "canonicalMap": "rendered/ecosystem-registry-map.mmd",
   "registryInputs": [
     "registry/ecosystem/nodes.json",
@@ -14,7 +14,6 @@
       "domain": "tasks_claims_completion",
       "owner": "bureau",
       "projections": [
-        "leitstand",
         "heim-pc-chatgpt-dashboard"
       ]
     },
@@ -22,7 +21,6 @@
       "domain": "local_fleet_execution",
       "owner": "grabowski",
       "projections": [
-        "leitstand",
         "heim-pc-chatgpt-dashboard"
       ]
     },
@@ -38,7 +36,6 @@
       "domain": "ecosystem_semantics",
       "owner": "systemkatalog",
       "projections": [
-        "leitstand",
         "schauwerk"
       ]
     },
@@ -46,15 +43,7 @@
       "domain": "repository_checkout_identity_continuity",
       "owner": "reposkop",
       "projections": [
-        "grabowski",
-        "leitstand"
-      ]
-    },
-    {
-      "domain": "general_operator_display",
-      "owner": "leitstand",
-      "projections": [
-        "heim-pc-chatgpt-dashboard"
+        "grabowski"
       ]
     },
     {
@@ -65,9 +54,7 @@
     {
       "domain": "append_only_history",
       "owner": "chronik",
-      "projections": [
-        "leitstand"
-      ]
+      "projections": []
     },
     {
       "domain": "reviewed_learning_proposals",
@@ -101,7 +88,6 @@
       "owner": "github",
       "projections": [
         "bureau",
-        "leitstand",
         "heim-pc-chatgpt-dashboard"
       ]
     },
@@ -109,15 +95,13 @@
       "domain": "technical_check_results",
       "owner": "ci",
       "projections": [
-        "github",
-        "leitstand"
+        "github"
       ]
     },
     {
       "domain": "live_service_state",
       "owner": "runtime",
       "projections": [
-        "leitstand",
         "heim-pc-chatgpt-dashboard"
       ]
     },

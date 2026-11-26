@@ -129,6 +129,18 @@ class SystemkatalogQueryTests(unittest.TestCase):
             "foundational",
         )
 
+    def test_archived_display_has_no_current_truth_owner(self) -> None:
+        result = query_safe(ROOT, "truth-owner", "general_operator_display")
+        self.assertEqual(result["status"], "degraded")
+        self.assertEqual(result["error"]["code"], "query_not_unique")
+        self.assertEqual(result["error"]["details"]["matchCount"], 0)
+        leitstand = query(ROOT, "system", "leitstand")["result"]["system"]
+        self.assertEqual(leitstand["lifecycle"]["state"], "archived")
+        self.assertEqual(leitstand["truthOwnership"], [])
+        matrix = query(ROOT, "authority-matrix")["result"]["authorities"]
+        self.assertTrue(all(item["owner"] != "leitstand" for item in matrix))
+        self.assertTrue(all("leitstand" not in item["projections"] for item in matrix))
+
     def test_authority_matrix_query_is_bounded(self) -> None:
         result = query(ROOT, "authority-matrix")
         self.assertTrue(result["result"]["authorities"])

@@ -549,6 +549,8 @@ def validate(root: Path = ROOT) -> dict[str, Any]:
     if len(domains) != len(set(domains)):
         raise ValueError("authority domains duplicated")
     for node in nodes:
+        if node["lifecycle"]["state"] in {"archived", "retired"} and expected_truth_by_node[node["id"]]:
+            raise ValueError(f"archived or retired system owns active truth domain: {node['id']}")
         if set(node["truthOwnership"]) != expected_truth_by_node[node["id"]]:
             raise ValueError(f"truth ownership differs from authority matrix: {node['id']}")
     authority_by_domain = {item["domain"]: item for item in authorities}

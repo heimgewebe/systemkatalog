@@ -32,7 +32,7 @@ Der Katalog beantwortet, welche Systeme existieren, welchem Zweck sie dienen, we
 | Infra | repository | `active` · geprüft 2026-07-26 | `unknown` | identity:github<br>provider:github | host, network, cockpit and operational runbooks | task state<br>ecosystem semantics<br>product-domain truth | — | `repository`: [https://github.com/heimgewebe/infra](https://github.com/heimgewebe/infra) |
 | Konvergenzregelkreis | repository | `active` · geprüft 2026-07-26 | `essential` | identity:github<br>provider:github | public stateless convergence protocol and conformance core for evidence-bound closure of ecosystem changes | task state<br>queue or claims<br>execution, leases or recovery<br>merge authorization<br>deployment state or runtime health<br>ecosystem semantics<br>fleet membership<br>event history<br>product telemetry | convergence_protocol | `agentEntry`: [https://github.com/heimgewebe/konvergenzregelkreis/blob/main/AGENTS.md](https://github.com/heimgewebe/konvergenzregelkreis/blob/main/AGENTS.md)<br>`profiles`: [https://github.com/heimgewebe/konvergenzregelkreis/tree/main/profiles](https://github.com/heimgewebe/konvergenzregelkreis/tree/main/profiles)<br>`protocol`: [https://github.com/heimgewebe/konvergenzregelkreis/tree/main/protocol](https://github.com/heimgewebe/konvergenzregelkreis/tree/main/protocol)<br>`readme`: [https://github.com/heimgewebe/konvergenzregelkreis/blob/main/README.md](https://github.com/heimgewebe/konvergenzregelkreis/blob/main/README.md)<br>`repository`: [https://github.com/heimgewebe/konvergenzregelkreis](https://github.com/heimgewebe/konvergenzregelkreis)<br>`roleBoundary`: [https://github.com/heimgewebe/konvergenzregelkreis/blob/main/system/regelkreis-role.v1.json](https://github.com/heimgewebe/konvergenzregelkreis/blob/main/system/regelkreis-role.v1.json) |
 | Labor | repository | `active` · geprüft 2026-07-26 | `optional` | identity:github<br>provider:github | bounded prospective experiments, evidence review and proposal-ready learning candidates | production authority<br>task status<br>automatic policy or routing application<br>append-only historical truth | bounded_experiments<br>reviewed_learning_proposals | `repository`: [https://github.com/heimgewebe/labor](https://github.com/heimgewebe/labor) |
-| Leitstand | repository | `archived` · geprüft 2026-11-15 | `supporting` | identity:github<br>provider:github | read-only ecosystem observability and status projection | canonical truth ownership<br>task authorization<br>runtime mutation | general_operator_display | `repository`: [https://github.com/heimgewebe/leitstand](https://github.com/heimgewebe/leitstand) |
+| Leitstand | repository | `archived` · geprüft 2026-11-15 | `supporting` | identity:github<br>provider:github | read-only ecosystem observability and status projection | canonical truth ownership<br>task authorization<br>runtime mutation | — | `repository`: [https://github.com/heimgewebe/leitstand](https://github.com/heimgewebe/leitstand) |
 | Metarepo | repository | `active` · geprüft 2026-08-01 | `essential` | identity:github<br>provider:github | Fleet membership, canonical shared contracts and repository templates | repository purpose semantics<br>runtime health<br>task state | fleet_membership | `repository`: [https://github.com/heimgewebe/metarepo](https://github.com/heimgewebe/metarepo) |
 | Obsidian Bridge | repository | `archived` · geprüft 2026-11-15 | `unknown` | identity:github<br>provider:github | deterministic CLI and artifact bridge for using Obsidian as a projection and observatory interface | vault content truth<br>personal notes<br>task state<br>ecosystem semantics | — | `contracts`: [https://github.com/heimgewebe/obsidian-bridge/tree/main/contracts](https://github.com/heimgewebe/obsidian-bridge/tree/main/contracts)<br>`readme`: [https://github.com/heimgewebe/obsidian-bridge/blob/main/README.md](https://github.com/heimgewebe/obsidian-bridge/blob/main/README.md)<br>`repository`: [https://github.com/heimgewebe/obsidian-bridge](https://github.com/heimgewebe/obsidian-bridge) |
 | Plexer | repository | `archived` · geprüft 2026-11-15 | `unknown` | identity:github<br>provider:github | bounded event delivery and queueing gateway | task prioritization<br>canonical history<br>ecosystem semantics | — | `repository`: [https://github.com/heimgewebe/plexer](https://github.com/heimgewebe/plexer) |
@@ -112,22 +112,21 @@ Begründete Ausschlüsse:
 | Bereich | Primärquelle | Nicht-autoritative Projektionen |
 |---|---|---|
 | `agent_routing` | `grabowski` | bureau, systemkatalog |
-| `append_only_history` | `chronik` | leitstand |
+| `append_only_history` | `chronik` | — |
 | `bounded_experiments` | `labor` | systemkatalog |
-| `branches_prs_reviews` | `github` | bureau, leitstand, heim-pc-chatgpt-dashboard |
+| `branches_prs_reviews` | `github` | bureau, heim-pc-chatgpt-dashboard |
 | `commonworld_commons_admission` | `commonworld` | — |
 | `convergence_protocol` | `konvergenzregelkreis` | — |
-| `ecosystem_semantics` | `systemkatalog` | leitstand, schauwerk |
+| `ecosystem_semantics` | `systemkatalog` | schauwerk |
 | `fleet_membership` | `metarepo` | systemkatalog |
-| `general_operator_display` | `leitstand` | heim-pc-chatgpt-dashboard |
-| `live_service_state` | `runtime` | leitstand, heim-pc-chatgpt-dashboard |
-| `local_fleet_execution` | `grabowski` | leitstand, heim-pc-chatgpt-dashboard |
-| `repository_checkout_identity_continuity` | `reposkop` | grabowski, leitstand |
+| `live_service_state` | `runtime` | heim-pc-chatgpt-dashboard |
+| `local_fleet_execution` | `grabowski` | heim-pc-chatgpt-dashboard |
+| `repository_checkout_identity_continuity` | `reposkop` | grabowski |
 | `repository_context_citations` | `repoground` | repoground, systemkatalog |
 | `reviewed_learning_proposals` | `labor` | bureau, systemkatalog |
 | `specialized_visual_rendering` | `schauwerk` | — |
-| `tasks_claims_completion` | `bureau` | leitstand, heim-pc-chatgpt-dashboard |
-| `technical_check_results` | `ci` | github, leitstand |
+| `tasks_claims_completion` | `bureau` | heim-pc-chatgpt-dashboard |
+| `technical_check_results` | `ci` | github |
 | `weltgewebe_cell_domain_truth` | `gewebezelle` | weltgewebe |
 | `weltgewebe_target_architecture` | `weltgewebe` | systemkatalog |
 | `wgx_profile_runner_contract` | `wgx` | github_ci |
