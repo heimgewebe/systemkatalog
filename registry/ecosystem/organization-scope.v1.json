@@ -75,7 +75,7 @@
       "visibility": "public",
       "classification": "catalog",
       "node": "repo:commonthing",
-      "reason": "Canonical GitHub repository identity after the weltgewebe-to-commonthing rename; Weltgewebe remains the product/domain concept rather than a parallel repository node."
+      "reason": "Canonical GitHub repository identity after the weltgewebe-to-commonthing rename; commonThing OS is the current product/domain name; historical Weltgewebe identifiers retain provenance, not a parallel repository or product."
     },
     {
       "name": "commonworld",
