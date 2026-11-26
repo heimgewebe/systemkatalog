@@ -27,7 +27,7 @@ class SystemCatalogTests(unittest.TestCase):
         self.assertEqual(result["status"], "valid")
         self.assertEqual(result["registrySystems"], 36)
         self.assertEqual(result["registryRelations"], 43)
-        self.assertEqual(result["authorityDomains"], 20)
+        self.assertEqual(result["authorityDomains"], 19)
         self.assertEqual(result["catalogRepositories"], 26)
         self.assertEqual(result["fleetRepositories"], 11)
         self.assertEqual(result["fleetExclusions"], 0)
@@ -304,6 +304,24 @@ class SystemCatalogTests(unittest.TestCase):
             systemkatalog["truthOwnership"] = []
             path.write_text(json.dumps(data), encoding="utf-8")
             with self.assertRaisesRegex(ValueError, "truth ownership differs from authority matrix"):
+                validate(target)
+
+    def test_archived_authority_owner_fails_closed(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            target = self._copy_repository(directory)
+            nodes_path = target / "registry/ecosystem/nodes.json"
+            authority_path = target / "registry/ecosystem/authority-matrix.v1.json"
+            nodes = json.loads(nodes_path.read_text(encoding="utf-8"))
+            authority = json.loads(authority_path.read_text(encoding="utf-8"))
+            leitstand = next(node for node in nodes["nodes"] if node["id"] == "repo:leitstand")
+            self.assertEqual(leitstand["lifecycle"]["state"], "archived")
+            leitstand["truthOwnership"] = ["general_operator_display"]
+            authority["authorities"].append(
+                {"domain": "general_operator_display", "owner": "leitstand", "projections": []}
+            )
+            nodes_path.write_text(json.dumps(nodes), encoding="utf-8")
+            authority_path.write_text(json.dumps(authority), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "archived or retired system owns active truth domain"):
                 validate(target)
 
     def test_unknown_authority_owner_fails_closed(self) -> None:

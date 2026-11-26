@@ -416,9 +416,7 @@
         "task authorization",
         "runtime mutation"
       ],
-      "truthOwnership": [
-        "general_operator_display"
-      ],
+      "truthOwnership": [],
       "entrypoints": {
         "repository": "https://github.com/heimgewebe/leitstand"
       },
